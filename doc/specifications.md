@@ -15,7 +15,8 @@
  * Database1 - scientific and user data
     * Schema (must be evolvable)
  * Database2 - internal tables
- * Filse store 
+ * File store 
+ * Name lookup, from ThePlantList
 
 ## Bulk upload process
 
@@ -43,6 +44,8 @@
  
 ### Backend XLS processing
 
+ * (Design template based on
+   <http://xmalesia.info/ezdbdb/doc/ezdbdb_template.ods>) 
  * Upload XLS
  * Convert in PHP to data arrays in memory, one for each table
  * Read `bulk_valid.php` and validate.
@@ -51,3 +54,7 @@
  * If valid, load to DB inside single transaction
  * Provide user feedback of errors, success.
 
+### For training
+
+ * use a standard short code for each person
+ * determinations only come from them
