@@ -15,4 +15,39 @@
  * Database1 - scientific and user data
     * Schema (must be evolvable)
  * Database2 - internal tables
+ * Filse store 
+
+## Bulk upload process
+
+### User page:
+
+ 1. Zip files and name as... Upload with filezilla
+ 2. Enter filename: [......] and [SUBMIT]
+    * get back report of image processing
+ 3. Submit XLS file
+    * get back report of image processing
+
+### Backend image processing:
+
+ * Zip photos into file - name as `user-date`.zip
+ * Upload using filezilla to safe shared directory
+ * They hit a link on site (after login), and give zip filename, and
+   PHP grabs the zip file and _copies_ it and expands it to
+   `/tmp/imgprocess`
+ * All image files are found and converted to three sizes 1000 max
+   dimension px, 500 px, 100 px and remamed
+   `<md5sum>.<1000|500|100px>.jpg` and data stored in `img` table in
+   DB (filename, user, hash, internal zip directory structure), and
+   copied to `imgdata/` (all files in one dir).
+ * Tmp files deleted
  
+### Backend XLS processing
+
+ * Upload XLS
+ * Convert in PHP to data arrays in memory, one for each table
+ * Read `bulk_valid.php` and validate.
+    * E.g., all image filenames in `image` table from spreadsheet must
+      already exist in DB, and vice versa
+ * If valid, load to DB inside single transaction
+ * Provide user feedback of errors, success.
+
