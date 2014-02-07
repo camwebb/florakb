@@ -2,6 +2,7 @@
 defined ('MICRODATA') or exit ( 'Forbidden Access' );
 
 require_once ('config/config.php');
+require_once ('config/access.php');
 require_once ('config/routes.php');
 require_once ('config/locale.php');
 require_once (COREPATH .'helper.php');
