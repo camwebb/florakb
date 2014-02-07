@@ -28,7 +28,7 @@ class Database
 		if (array_key_exists('dashboard',$CONFIG)) $this->keyconfig = 'dashboard';
 		if (array_key_exists('services',$CONFIG))$this->keyconfig = 'services';
 		
-		// pr($this->config);
+		// pr($this->dbConfig);exit;
 		/* Open connection */
 		$this->open_connection();
 		
@@ -39,7 +39,7 @@ class Database
 		if ((is_array($this->dbConfig)) and ($this->dbConfig !=''))
 		{
 			
-			if ($this->dbConfig['server'] !=''){
+			if ($this->dbConfig[1]['server'] !=''){
 				
 				$db_status = 1;
 				
@@ -49,26 +49,26 @@ class Database
 				exit;
 			}
 			
-			switch ($this->dbConfig['server'])
+			switch ($this->dbConfig[1]['server'])
 			{
 				case 'mysql':
 				{
 					
 					if ($this->config[$this->keyconfig]['app_status'] == 'Production'){
-						$connect = @mysql_connect($this->dbConfig['host'], $this->dbConfig['user'], $this->dbConfig['pass']) or die ($this->db_error('Connection error'));
+						$connect = @mysql_connect($this->dbConfig[1]['host'], $this->dbConfig[1]['user'], $this->dbConfig[1]['pass']) or die ($this->db_error('Connection error'));
 					
 					}else{
-						$connect = mysql_connect($this->dbConfig['host'], $this->dbConfig['user'], $this->dbConfig['pass']) or die ($this->db_error('Connection error'));
+						$connect = mysql_connect($this->dbConfig[1]['host'], $this->dbConfig[1]['user'], $this->dbConfig[1]['pass']) or die ($this->db_error('Connection error'));
 					}
 					
 					
 					if ($connect){
 					
 						if ($this->config[$this->keyconfig]['app_status'] == 'Production'){
-							@mysql_select_db($this->dbConfig['name'], $connect) or die ($this->db_error('No Database Selected'));	
+							@mysql_select_db($this->dbConfig[1]['name'], $connect) or die ($this->db_error('No Database Selected'));	
 						
 						}else{
-							mysql_select_db($this->dbConfig['name'], $connect) or die ($this->db_error('No Database Selected'));
+							mysql_select_db($this->dbConfig[1]['name'], $connect) or die ($this->db_error('No Database Selected'));
 						}
 						
 						return $connect;
@@ -96,7 +96,7 @@ class Database
 	public function query($data)
 	{
                 // cek server database yang dipakai
-		switch ($this->dbConfig['server'])
+		switch ($this->dbConfig[1]['server'])
 		{
                     case 'mysql':
                         if ($this->config[$this->keyconfig]['app_status'] == 'Production'){
