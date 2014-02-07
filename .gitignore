@@ -1,5 +1,5 @@
-config/access.php
-config/config.php
-.htaccess
-tmp/*
-public_assets/*
+flora-kalbar.info/config/access.php
+flora-kalbar.info/config/config.php
+flora-kalbar.info/.htaccess
+flora-kalbar.info/tmp/*
+flora-kalbar.info/public_assets/*
