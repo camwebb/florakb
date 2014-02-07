@@ -1,0 +1,5 @@
+config/access.php
+config/config.php
+.htaccess
+tmp/*
+public_assets/*
