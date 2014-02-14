@@ -19,27 +19,36 @@ class Database
 	
 	public function __construct() {
 		
-		global $CONFIG, $dbConfig; 
-		$this->config = $CONFIG;
-		$this->dbConfig = $dbConfig;
+		/* nothing here */
+	}
+	
+	function setAppKey()
+	{
+		global $CONFIG;
+		if (array_key_exists('default',$CONFIG)) $keyconfig = 'default';
+		if (array_key_exists('admin',$CONFIG)) $keyconfig = 'admin';
+		if (array_key_exists('dashboard',$CONFIG)) $keyconfig = 'dashboard';
+		if (array_key_exists('services',$CONFIG))$keyconfig = 'services';
 		
-		if (array_key_exists('default',$CONFIG)) $this->keyconfig = 'default';
-		if (array_key_exists('admin',$CONFIG)) $this->keyconfig = 'admin';
-		if (array_key_exists('dashboard',$CONFIG)) $this->keyconfig = 'dashboard';
-		if (array_key_exists('services',$CONFIG))$this->keyconfig = 'services';
-		
-		// pr($this->dbConfig);exit;
-		/* Open connection */
-		$this->open_connection();
+		return $keyconfig;
+	}
+	
+	function setDbConfig()
+	{
+		global $dbConfig;
 		
 	}
 	
-	public function open_connection() {
+	public function open_connection($dbuse) {
 		
-		if ((is_array($this->dbConfig)) and ($this->dbConfig !=''))
+		global $dbConfig, $CONFIG;
+		
+		$this->keyconfig = $this->setAppKey();
+		
+		if ((is_array($dbConfig)) and ($dbConfig !=''))
 		{
 			
-			if ($this->dbConfig[1]['server'] !=''){
+			if ($dbConfig[$dbuse]['server'] !=''){
 				
 				$db_status = 1;
 				
@@ -49,26 +58,28 @@ class Database
 				exit;
 			}
 			
-			switch ($this->dbConfig[1]['server'])
+			switch ($dbConfig[$dbuse]['server'])
 			{
 				case 'mysql':
 				{
 					
-					if ($this->config[$this->keyconfig]['app_status'] == 'Production'){
-						$connect = @mysql_connect($this->dbConfig[1]['host'], $this->dbConfig[1]['user'], $this->dbConfig[1]['pass']) or die ($this->db_error('Connection error'));
+					if ($CONFIG[$this->keyconfig]['app_status'] == 'Production'){
+						$connect = @mysql_connect($dbConfig[$dbuse]['host'], $dbConfig[$dbuse]['user'], $dbConfig[$dbuse]['pass']) or die ($this->db_error('Connection error'));
 					
 					}else{
-						$connect = mysql_connect($this->dbConfig[1]['host'], $this->dbConfig[1]['user'], $this->dbConfig[1]['pass']) or die ($this->db_error('Connection error'));
+						$connect = mysql_connect($dbConfig[$dbuse]['host'], $dbConfig[$dbuse]['user'], $dbConfig[$dbuse]['pass']) or die ($this->db_error('Connection error'));
+						
 					}
 					
 					
 					if ($connect){
 					
-						if ($this->config[$this->keyconfig]['app_status'] == 'Production'){
-							@mysql_select_db($this->dbConfig[1]['name'], $connect) or die ($this->db_error('No Database Selected'));	
+						if ($CONFIG[$this->keyconfig]['app_status'] == 'Production'){
+							@mysql_select_db($dbConfig[$dbuse]['name'], $connect) or die ($this->db_error('No Database Selected'));	
 						
 						}else{
-							mysql_select_db($this->dbConfig[1]['name'], $connect) or die ($this->db_error('No Database Selected'));
+							mysql_select_db($dbConfig[$dbuse]['name'], $connect) or die ($this->db_error('No Database Selected'));
+							
 						}
 						
 						return $connect;
@@ -90,56 +101,76 @@ class Database
 	}
 	
         
-        /*
-         * fungsi query digunakan untuk menjalankan query seperti insert, update atau query yang tidak diperlukan nilai kembalian
-         */
-	public function query($data)
+	/*
+		fungsi query digunakan untuk menjalankan query seperti insert, 
+		update atau query yang tidak diperlukan nilai kembalian dalam bentuk data
+	 */
+	public function query($data, $dbuse=0)
 	{
+		global $dbConfig, $CONFIG;
+		$this->keyconfig = $this->setAppKey();
+		
+		$this->open_connection($dbuse);
                 // cek server database yang dipakai
-		switch ($this->dbConfig[1]['server'])
+		switch ($dbConfig[$dbuse]['server'])
 		{
-                    case 'mysql':
-                        if ($this->config[$this->keyconfig]['app_status'] == 'Production'){
-                                // if ($this->dbConfig[''])
-                                $this->var_query = @mysql_query($data);
+			case 'mysql':
+				if ($CONFIG[$this->keyconfig]['app_status'] == 'Production'){
+						// if ($this->dbConfig[''])
+						$this->var_query = @mysql_query($data);
 
-                        }else{
-                                $this->var_query = mysql_query($data) or die ($this->error($data));
-                        }
-                        break;
-                    
-                }
+				}else{
+						$this->var_query = mysql_query($data) or die ($this->error($data,$dbuse));
+				}
+				break;
+			
+		}
+		$this->close_connection();
 		
 		return $this->var_query;
 	}
 	
 
-
-	public function fetch($data=false, $bool=false)
+	
+	public function fetch($data=false, $loop=false, $dbuse=0)
 	{
+		/* $dbuse [0] = config default database */
+		// pr($dbuse);
+		global $dbConfig, $CONFIG;
 		
 		if (!$data) return false;
 		
-		$this->var_result = $this->query($data) or die ($this->error($data));
-		switch ($this->dbConfig['server'])
+		$dataArray = array();
+		$this->keyconfig = $this->setAppKey();
+		
+		switch ($dbConfig[$dbuse]['server'])
 		{
-                    case 'mysql':
-                        if ($bool == true){			
-                                if ($this->num_rows($data)){
+			case 'mysql':
+				$this->open_connection($dbuse);
+				$this->var_result = $this->query($data,$dbuse) or die ($this->error($data,$dbuse));
+				if ($loop){
+					if ($this->num_rows($data,$dbuse)){
 
-                                        while ($data = mysql_fetch_assoc($this->var_result)){
-                                                $dataArray[] = $data;
-                                        }
-                                        return $dataArray;
-                                }else{
-                                        return false;
-                                }
-                        }else{
-                                return mysql_fetch_assoc($this->var_result);
-                        }
-                        break;
+						while ($data = mysql_fetch_assoc($this->var_result)){
+								$dataArray[] = $data;
+						}
+						
+						return $dataArray;
+					}else{
+						return false;
+					}
+				}else{
+					
+					$dataArray = mysql_fetch_assoc($this->var_result);
+					
+					return $dataArray;
+				}
+				$this->close_connection();
+			break;
                     
-                }
+		}
+		
+		
 		
 	}
         
@@ -156,12 +187,12 @@ class Database
 		return mysql_fetch_field($this->var_result);
 	}
 	
-	public function num_rows($data)
+	public function num_rows($data=false,$dbuse)
 	{
-		$this->var_result = $this->query($data) or die ($this->error($data));
-		$this->var_numRec = mysql_num_rows($this->var_result);
-		
-		return $this->var_numRec;
+		if (!$data) return false;
+		$result = $this->query($data,$dbuse) or die ($this->error($data));
+		$numRec = mysql_num_rows($result);
+		return $result;
 	}
 	
 	public function insert_id()
@@ -171,13 +202,17 @@ class Database
 	
 	public function close_connection()
 	{
-                switch ($this->dbConfig['server'])
+		
+		global $dbConfig;
+		$this->keyconfig = $this->setAppKey();
+		
+		switch ($dbConfig[0]['server'])
 		{
-                    case 'mysql':
-                        return mysql_close();
-                        break;
-                   
-                }
+			case 'mysql':
+				return mysql_close();
+				break;
+		   
+		}
 		
 	}
 	
@@ -191,20 +226,24 @@ class Database
 		return mysql_real_escape_string($data);
 	}
 	
-	public function error($data)
+	public function error($data,$dbuse)
 	{
-		if ($this->config[$this->keyconfig]['app_status'] == 'Production'){
+		
+		global $dbConfig, $CONFIG;
+		$this->keyconfig = $this->setAppKey();
+		
+		if ($CONFIG[$this->keyconfig]['app_status'] == 'Production'){
 			$message = 'Your query error, please check again';
 			return $message;
 		}else{
 			
-                        switch ($this->dbConfig['server'])
-                        {
-                            case 'mysql':
-                                return mysql_error();
-                                break;
-                            
-                        }
+			switch ($dbConfig[$dbuse]['server'])
+			{
+				case 'mysql':
+					return mysql_error();
+					break;
+				
+			}
 			
 		}
 		
