@@ -33,5 +33,8 @@ $page = @$DATA['default']['uri']['page'];
 		<li class="<?php if ($page == 'news') echo 'selected'?>">
 			<a href="<?=$basedomain?>news">News</a>
 		</li>
+        <li class="<?php if ($page == 'upload') echo 'selected'?>">
+			<a href="<?=$basedomain?>upload">Upload</a>
+		</li>
 	</ul>
 </div>

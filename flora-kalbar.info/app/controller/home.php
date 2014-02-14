@@ -4,13 +4,13 @@ defined ('MICRODATA') or exit ( 'Forbidden Access' );
 class home extends Controller {
 	
 	var $models = FALSE;
-	
+	var $view;
 	public function __construct()
 	{
+		global $basedomain;
 		$this->loadmodule();
-		// pr($this->view);
-		// exit;
-		// $this->validatePage();
+        $this->view = $this->setSmarty();
+        $this->view->assign('basedomain',$basedomain);
 	}
 	public function loadmodule()
 	{
@@ -23,8 +23,8 @@ class home extends Controller {
 		$var = array(1,2,3);
 		
 		
-		vd($this);
-		// $this->view->assign('test',$var);
+		//vd($this);
+		$this->view->assign('test',$var);
 		
 		$var = 'masuk';
 		return $this->loadView('home');
