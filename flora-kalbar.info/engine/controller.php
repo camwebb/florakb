@@ -4,29 +4,21 @@ class Controller extends Application{
 	
 	
 	var $GETDB = null;
-	var $view;
+	
 	public function __construct(){
 		
 		parent::__construct();
 		
 		$this->loadModel('helper_model');
 		
-		// $this->setSmarty();
-		
 	}
 	
-	function setSmarty()
-	{
-		$this->view = new Smarty();
-		
-		$this->view->setTemplateDir(APPPATH . 'view/');
-		$this->view->setCompileDir('./logs');
-		$this->view->setCacheDir(LIBS . 'smarty/cache');
-		$this->view->setConfigDir(LIBS . 'smarty/configs');
-	}
+	
 	
 	function index()
 	{
+		
+		
 		
 		global $CONFIG, $LOCALE, $basedomain, $title, $DATA, $app_domain;
 		$filePath = APP_CONTROLLER.$this->page.$this->php_ext;

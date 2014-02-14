@@ -6,10 +6,10 @@ class Application {
 	var $func;
 	var $configkey = 'default';
 	
-	
 	protected $php_ext = "";
 	protected $sessi = "";
 	protected $user = "";
+	
 	
 	public function __construct(){
 		global $CONFIG, $DATA, $LOCALE;
@@ -29,18 +29,56 @@ class Application {
 		
 	}
 	
+	function setSmarty()
+	{
+		global $SMARTY;
+		
+		$view = new Smarty();
+		$view->setTemplateDir($SMARTY[0]['template']);
+		$view->setCompileDir($SMARTY[0]['logs']);
+		$view->setCacheDir($SMARTY[0]['cache']);
+		$view->setConfigDir($SMARTY[0]['config']);
+		
+		return $view;
+	}
 	
+	function excel($file=false)
+	{
+		error_reporting(E_ALL ^ E_NOTICE);
+		
+		global $CONFIG, $EXCEL;
+		if (!$file) return false;
+		if (!in_array($_FILES[$file]['type'], $EXCEL[0]['filetype'])) return false;
+		
+		$excel = "";
+		$filename = ($_FILES[$file]['tmp_name']);
+		$excelEngine = LIBS . 'excel/excel_reader' . $CONFIG[$this->configkey]['php_ext'];
+		if (is_file($excelEngine)){
+			
+			require_once ($excelEngine);
+			
+			$excel = new Spreadsheet_Excel_Reader($filename);
+			
+		}
+		
+		return $excel;
+	}
 	
 	function loadView($fileName='home', $data="")
 	{
+		
+		
 		global $CONFIG, $basedomain, $app_domain;
+		
+		
 		
 		if ($fileName == "") return false;
 		if (array_key_exists('admin', $CONFIG)){
 			$this->configkey = 'admin';
 		}
 		$getFileView = null;
-		$php_ext = $CONFIG[$this->configkey]['php_ext'];
+		// $php_ext = $CONFIG[$this->configkey]['php_ext'];
+		$html_ext = $CONFIG[$this->configkey]['html_ext'];
 		
 		if ($data !=''){
 			/* Ubah subkey menjadi key utama */
@@ -51,24 +89,25 @@ class Application {
 		
 		
 		/* include file view */
-		if (is_file(APP_VIEW.$fileName.$php_ext)) {
-			if ($fileName !='') $fileName = $fileName.$php_ext;
+		if (is_file(APP_VIEW.$fileName.$html_ext)) {
+			if ($fileName !='') $fileName = $fileName.$html_ext;
 			
 			if (file_exists(APP_VIEW.$fileName)){
 			
 				ob_start();
-				include APP_VIEW.$fileName;
-				// $this->view->display(APP_VIEW.$fileName);
+				// include APP_VIEW.$fileName;
+				$this->view->display(APP_VIEW.$fileName);
 				$getFileView = ob_get_contents();
 				ob_end_clean();
 				
 				return $getFileView;
-			}else{
+			}else{ 
 				show_error_page('File not exist');
 				die();
 			}
 			
 		}else{
+		
 			show_error_page('File not exist');
 			die();
 		}

@@ -8,6 +8,7 @@
 define ('APPPATH', 'app/');
 define ('MICRODATA', true);
 define ('LIBS', 'libs/');
+define ('LOGS', 'logs/');
 
 require_once (COREPATH.'loader.php');
 

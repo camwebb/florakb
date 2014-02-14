@@ -49,11 +49,8 @@ class Database
 		{
 			
 			if ($dbConfig[$dbuse]['server'] !=''){
-				
 				$db_status = 1;
-				
 			}else{
-				
 				$this->db_error('Server not defined');
 				exit;
 			}
