@@ -94,9 +94,22 @@ function redirect($data) {
 
 }
 
-function uploadFile($data) {
+function uploadFile($data,$path=null){
 	global $CONFIG;
-
+	
+	if (array_key_exists('admin',$CONFIG)) $key = 'admin';
+	if (array_key_exists('default',$CONFIG)) $key = 'default';
+	
+	if (in_array($_FILES[$data]['type'], $CONFIG[$key]['fileignore'])) return false;
+	
+	if ($path!='') $path = $path.'/';
+	$pathFile = $CONFIG[$key]['upload_path'].$path;
+	$ext = explode ('.',$_FILES[$data]["name"]);
+	$countExt = count($ext);
+	$getExt = $ext[$countExt-1];
+	$shufflefilename = md5(str_shuffle('codekir-v0.3'.$CONFIG[$key]['max_filesize']));
+	$filename = $shufflefilename.'.'.$getExt;
+	
 	if ($_FILES[$data]["error"] > 0)
 		{
 			echo "Return Code: " . $_FILES[$data]["error"] . "<br>";
@@ -104,21 +117,24 @@ function uploadFile($data) {
 	else
 		{
 			$_FILES[$data]["name"];
-			($_FILES[$data]["size"] / $CONFIG['default']['max_filesize']);
+			($_FILES[$data]["size"] / $CONFIG[$key]['max_filesize']);
 			$_FILES[$data]["tmp_name"];
 
-		if (file_exists($CONFIG['default']['upload_path']. $_FILES[$data]["name"]))
+		if (file_exists($pathFile. $_FILES[$data]["name"]))
 		  {
-				$failed_result = 0;
-				return $failed_result;
+				$result['status'] = 0;
+				return $result;
 		  }
 		else
 		  {
-				move_uploaded_file($_FILES[$data]["tmp_name"],$CONFIG['default']['upload_path'] . $_FILES[$data]["name"]);
-				$success_result = 1;
-				return $success_result;
+				move_uploaded_file($_FILES[$data]["tmp_name"],$pathFile . $filename);
+				$result['status'] = 1;
+				$result['filename'] = $filename;
+				// pr($result);
+				return $result;
 		  }
 		}
+		return $filename;
 }
 
 function encode($data=false)
