@@ -14,14 +14,12 @@ $page = @$DATA['default']['uri']['page'];
 
 ?>
 
-<div>
-	<a href="<?=$basedomain?>" id="logo"></a>
+<div class="wrapper">
 	<ul>
 		<li class="<?php if (!isset($page)) echo 'selected'?>">
 			<a href="<?=$basedomain?>">Home</a>
 		</li>
-		<li class="
-		<?php if ($page=='specimen') echo 'selected'?>">
+		<li class="<?php if ($page=='specimen') echo 'selected'?>">
 			<a href="<?=$basedomain?>specimen">Specimen</a>
 		</li>
 		<li class="<?php if ($page == 'services') echo 'selected'?>">
@@ -36,5 +34,6 @@ $page = @$DATA['default']['uri']['page'];
         <li class="<?php if ($page == 'upload') echo 'selected'?>">
 			<a href="<?=$basedomain?>upload">Upload</a>
 		</li>
+        <div class="clear"></div>
 	</ul>
 </div>

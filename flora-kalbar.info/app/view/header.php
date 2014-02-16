@@ -1,22 +1,33 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<header>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Metro, free website template</title>
-<meta name="keywords" content="metro, free website template, beautiful grid, image grid menu, colorful theme" />
-<meta name="description" content="Metro is a free website template by templatemo.com and it features jQuery horizontal scrolling among pages." />
-
-	<link href="<?=base_url().APPPATH?>css/templatemo_style.css" type="text/css" rel="stylesheet" /> 
-	<script type="text/javascript" src="<?=base_url().APPPATH?>js/jquery.min.js"></script>
-	<script type="text/javascript" src="<?=base_url().APPPATH?>js/jquery.numeric.js"></script>
-	<script type="text/javascript" src="<?=base_url().APPPATH?>js/jquery-ui"></script>
-	<script type="text/javascript" src="<?=base_url().APPPATH?>js/jquery.scrollTo-min.js"></script> 
-	<script type="text/javascript" src="<?=base_url().APPPATH?>js/jquery.localscroll-min.js"></script> 
-	<script type="text/javascript" src="<?=base_url().APPPATH?>js/init.js"></script> 
+<div class="wrapper">
+    <div id="identity">
+        <span id="flora">FLORA</span><span id="kalbar"> KALBAR</span>
+        <h2>Records of Plants of Kalimantan Barat</h2>
+    </div>
     
-    <link rel="stylesheet" href="<?=base_url().APPPATH?>js/datepicker.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="<?=base_url().APPPATH?>js/jquery-ui.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="<?=base_url().APPPATH?>css/slimbox2.css" type="text/css" media="screen" />
-    <script type="text/JavaScript" src="<?=base_url().APPPATH?>js/slimbox2.js"></script> 
+    <div id="log-btn">
+        <a href="register.html" id="btn-reg" class="btn-box">Register</a>
+        <a href="#" id="btn-login" class="btn-box">Login</a>
+    </div>
+    
+    <div id="log-box">
+        <form>
+            <label for="input-username" class="label-login">Username</label>
+            <input id="input-username" class="input-box" type="text" name="username" />
+            <div class="clear"></div>
+            <label for="input-password" class="label-login">Password</label>
+            <input id="input-password" class="input-box" type="password" name="password" />
+            <div class="clear"></div>
+            <input class="btn-box" id="btn-login_submit" type="submit" value="Login" />
+        </form>
+    </div>
+    
+    <div class="clear"></div>
+</div>
 
-</header> 
+<script type="text/javascript">
+    $(document).ready(function() {		
+        $('a#btn-login').click(function(){
+           $('div#log-box').slideToggle(); 
+        });
+    });
+</script>
