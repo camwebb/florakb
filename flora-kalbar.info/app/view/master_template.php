@@ -22,6 +22,9 @@ include 'meta.php';
 	<main>
 		<?=$content?>
 	</main>
+    
+    <!-- MODAL -->
+    <?php include 'modal.php';?>
 	
 	
 	<!-- FOOTER -->

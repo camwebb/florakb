@@ -17,11 +17,3 @@
     
     <div class="clear"></div>
 </div>
-
-<script type="text/javascript">
-    $(document).ready(function() {		
-        $('a#btn-login').click(function(){
-           $('div#log-box').slideToggle(); 
-        });
-    });
-</script>

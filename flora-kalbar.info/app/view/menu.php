@@ -40,8 +40,8 @@ $page = @$DATA['default']['uri']['page'];
     </div>
     
     <div id="login"> 
-        <a href="#signup-modal" class="btn signup">Sign Up</a> 
-        <a href="#login-modal" class="btn login">Login</a> 
+        <a href="#signup-modal" id="btn-signup" class="btn signup">Sign Up</a> 
+        <a href="#login-modal" id="btn-login" class="btn login">Login</a> 
     </div>
     <div class="clear"></div>
 </div>
