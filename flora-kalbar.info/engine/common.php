@@ -94,16 +94,52 @@ function redirect($data) {
 
 }
 
+/**
+ * upload file function
+ * @param $data = name attribut of file to be upload
+ * @param $path = string path to upload file
+ * 
+ * @return $result = array('status' => '', 'message' => '', 'full_path' => '');
+ * @return status = 0/1
+ * @return message = message to print at view
+ * @return full_path = to process the uploaded file
+ * */
 function uploadFile($data,$path=null){
 	global $CONFIG;
 	
 	if (array_key_exists('admin',$CONFIG)) $key = 'admin';
 	if (array_key_exists('default',$CONFIG)) $key = 'default';
+    
+    /* result template
+    $result = array(
+        'status' => '',
+        'message' => '',
+        'full_path' => ''
+    );
+    */
 	
-	if (in_array($_FILES[$data]['type'], $CONFIG[$key]['fileignore'])) return false;
+    print_r($_FILES[$data]);
+    
+	if (in_array($_FILES[$data]['type'], $CONFIG[$key]['fileignore'])){
+        $result = array(
+            'status' => '0',
+            'message' => 'File type is not allowed.',
+            'full_path' => ''
+        );
+        return $result;
+	}
+    if (!in_array($_FILES[$data]['type'], $CONFIG[$key]['zip_ext'])){
+        $result = array(
+            'status' => '0',
+            'message' => 'File type is not allowed.',
+            'full_path' => ''
+        );
+        return $result;
+    }
 	
 	if ($path!='') $path = $path.'/';
 	$pathFile = $CONFIG[$key]['upload_path'].$path;
+    echo $pathFile;
 	$ext = explode ('.',$_FILES[$data]["name"]);
 	$countExt = count($ext);
 	$getExt = $ext[$countExt-1];
@@ -130,7 +166,7 @@ function uploadFile($data,$path=null){
 				move_uploaded_file($_FILES[$data]["tmp_name"],$pathFile . $filename);
 				$result['status'] = 1;
 				$result['filename'] = $filename;
-				// pr($result);
+				pr($result);
 				return $result;
 		  }
 		}

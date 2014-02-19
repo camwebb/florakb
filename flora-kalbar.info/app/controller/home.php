@@ -5,6 +5,7 @@ class home extends Controller {
 	
 	var $models = FALSE;
 	var $view;
+<<<<<<< HEAD
 	
 	function __construct()
 	{
@@ -12,6 +13,14 @@ class home extends Controller {
 		$this->loadmodule();
 		$this->view = $this->setSmarty();
 		$this->view->assign('basedomain',$basedomain);
+=======
+	public function __construct()
+	{
+		global $basedomain;
+		$this->loadmodule();
+        $this->view = $this->setSmarty();
+        $this->view->assign('basedomain',$basedomain);
+>>>>>>> b2fa80be39aa405a008d64497791f3523b943b95
 	}
 	
 	function loadmodule()
@@ -25,7 +34,11 @@ class home extends Controller {
 		$var = array(1,2,3);
 		
 		
+<<<<<<< HEAD
 		// vd($this);
+=======
+		//vd($this);
+>>>>>>> b2fa80be39aa405a008d64497791f3523b943b95
 		$this->view->assign('test',$var);
 		
 		$var = 'masuk';

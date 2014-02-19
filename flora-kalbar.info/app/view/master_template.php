@@ -8,19 +8,27 @@ include 'meta.php';
 	</script>
 	
 	<!-- HEADER -->
-    <div id="header">
+    <header>
+		<?php include 'header.php';?>
+	</header>
+    
+    <!-- NAVIGATION MENU -->
+    <nav>
 		<?php include 'menu.php';?>
-	</div>
+	</nav>
 	
 	
 	<!-- CONTENT -->
-	<div id="body" class="home">
+	<main>
 		<?=$content?>
-	</div>
+	</main>
+    
+    <!-- MODAL -->
+    <?php include 'modal.php';?>
 	
 	
 	<!-- FOOTER -->
-    <footer id="footer">
+    <footer>
 		<?php include 'footer.php';?>
 	</footer>
 	

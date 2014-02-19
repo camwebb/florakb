@@ -1,0 +1,14 @@
+{$test}
+
+{foreach $test as $val}
+
+    {$val}
+{/foreach}
+
+<div>
+    <form method="POST" action="{$basedomain}upload/zip" enctype="multipart/form-data">
+        <label for="zip_file"></label>
+        <input name="imagezip" id="zip_file" type="file" />
+        <input type="submit" value="Submit" />
+    </form>
+</div>

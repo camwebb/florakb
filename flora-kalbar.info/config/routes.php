@@ -13,5 +13,6 @@ $ROUTES = array(
 				'tulisan',
 				'testing',
 				'news',
+                'upload',
                 );
 ?>
