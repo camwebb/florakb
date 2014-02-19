@@ -6,9 +6,19 @@
 {/foreach}
 
 <div>
+	upload Zip :
     <form method="POST" action="{$basedomain}upload/zip" enctype="multipart/form-data">
         <label for="zip_file"></label>
         <input name="imagezip" id="zip_file" type="file" />
+        <input type="submit" value="Submit" />
+    </form>
+</div>
+
+<div>
+	upload Excel :
+    <form method="POST" action="{$basedomain}upload/parseExcel" enctype="multipart/form-data">
+        <label for="zip_file"></label>
+        <input name="tes" id="zip_file" type="file" />
         <input type="submit" value="Submit" />
     </form>
 </div>
