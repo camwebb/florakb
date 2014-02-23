@@ -29,11 +29,27 @@ class upload extends Controller {
 	}
     
     function zip(){
+        global $CONFIG;
+        
         //uploadFile --> engine function
         $name = 'imagezip';
         $path = '';
-        $test = uploadFile($name, $path);
-        pr($test);
+        $uploaded_file = uploadFile($name, $path);
+        
+        if($uploaded_file['status'] != '0'){
+            $path_extract = $uploaded_file['full_path'].$uploaded_file['raw_name'];
+            $file = $uploaded_file['full_path'].$uploaded_file['full_name'];
+            echo $path_extract;
+            
+            if($CONFIG['default']['unzip'] == 'shell'){
+                shell_unzip($file, $path_extract);
+            }elseif($CONFIG['default']['unzip'] == 'zipArchive'){
+                unzip($file, $path_extract);
+            }
+        }else{
+            echo json_encode(array('status' => 'error', 'message' => $uploaded_file['message']));
+        }
+        pr($uploaded_file);
     }
 	
 	function fetchExcel($sheet=1,$startRow=1,$startCol=0)

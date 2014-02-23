@@ -27,14 +27,15 @@ $CONFIG['default']['css'] = APPPATH.'css/';
 $CONFIG['default']['images'] = APPPATH.'images/';
 $CONFIG['default']['js'] = APPPATH.'js/';
 
+$CONFIG['default']['zip_ext'] = array('application/zip', 'application/x-zip', 'application/x-zip-compressed',  'application/octet-stream', 'application/x-compress', 'application/x-compressed', 'multipart/x-zip');
+
+$CONFIG['default']['unzip'] = 'shell'; //shell or zipArchive
+
 $basedomain = $CONFIG['default']['base_url'];
 
 $CONFIG['uri']['short'] = false;
 $CONFIG['uri']['friendly'] = true;
 $CONFIG['uri']['extension'] = ".html";
-
-$CONFIG['default']['fileignore'] = array('.php', '.js');
-$CONFIG['default']['zip_ext'] = array('application/zip', 'application/x-zip', 'application/x-zip-compressed',  'application/octet-stream', 'application/x-compress', 'application/x-compressed', 'multipart/x-zip');
 
 
 

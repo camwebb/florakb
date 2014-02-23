@@ -103,6 +103,8 @@ function redirect($data) {
  * @return status = 0/1
  * @return message = message to print at view
  * @return full_path = to process the uploaded file
+ * @return full_name = full name of uploaded file, include extension
+ * @return raw_name = raw name of uploaded file
  * */
 function uploadFile($data,$path=null){
 	global $CONFIG;
@@ -114,32 +116,25 @@ function uploadFile($data,$path=null){
     $result = array(
         'status' => '',
         'message' => '',
-        'full_path' => ''
+        'full_path' => '',
+        'full_name' => '',
+        'raw_name' => ''
     );
     */
-	
-    print_r($_FILES[$data]);
     
-	if (in_array($_FILES[$data]['type'], $CONFIG[$key]['fileignore'])){
-        $result = array(
-            'status' => '0',
-            'message' => 'File type is not allowed.',
-            'full_path' => ''
-        );
-        return $result;
-	}
     if (!in_array($_FILES[$data]['type'], $CONFIG[$key]['zip_ext'])){
         $result = array(
             'status' => '0',
             'message' => 'File type is not allowed.',
-            'full_path' => ''
+            'full_path' => '',
+            'full_name' => '',
+            'raw_name' => ''
         );
         return $result;
     }
 	
 	if ($path!='') $path = $path.'/';
 	$pathFile = $CONFIG[$key]['upload_path'].$path;
-    echo $pathFile;
 	$ext = explode ('.',$_FILES[$data]["name"]);
 	$countExt = count($ext);
 	$getExt = $ext[$countExt-1];
@@ -158,15 +153,26 @@ function uploadFile($data,$path=null){
 
 		if (file_exists($pathFile. $_FILES[$data]["name"]))
 		  {
-				$result['status'] = 0;
+				$result = array(
+                    'status' => '0',
+                    'message' => 'File exist.',
+                    'full_path' => $pathFile,
+                    'full_name' => $filename,
+                    'raw_name' => $shufflefilename
+                );
 				return $result;
 		  }
 		else
 		  {
 				move_uploaded_file($_FILES[$data]["tmp_name"],$pathFile . $filename);
-				$result['status'] = 1;
-				$result['filename'] = $filename;
-				pr($result);
+                $result = array(
+                    'status' => '1',
+                    'message' => 'Upload Succeed.',
+                    'full_path' => $pathFile,
+                    'full_name' => $filename,
+                    'raw_name' => $shufflefilename
+                );
+				
 				return $result;
 		  }
 		}
@@ -203,19 +209,34 @@ function getindexzip($name=null)
 	return false;
 }
 
-function unzip($name=null)
+function unzip($name=null, $path=null)
 {
 	global $CONFIG;
+    
+    echo $name;
 	
 	if ($name==null) return false;
 	
 	$zip = new ZipArchive;
 	if ($zip->open($name) === TRUE) {
-		$zip->extractTo($CONFIG['zip']['path']);
+		$zip->extractTo($path);
 		$zip->close();
 		return true;
 	} 
 	
 	return false;
+}
+
+/**
+ * unzip
+ * @param $file = full path to file that will be extract, including extension
+ * @param $path_extract = path to folder where $file will be extract
+ * */
+function shell_unzip($file, $path_extract){
+    mkdir($path_extract, 0755);
+
+    //extract and delete zip file             
+    shell_exec("unzip -jo $file  -d $path_extract");
+    unlink($file);
 }
 ?>
