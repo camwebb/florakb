@@ -232,7 +232,7 @@ function unzip($name=null, $path=null)
  * @param $file = full path to file that will be extract, including extension
  * @param $path_extract = path to folder where $file will be extract
  * */
-function shell_unzip($file, $path_extract){
+function s_linux_unzip($file, $path_extract){
     mkdir($path_extract, 0755);
 
     //extract and delete zip file             

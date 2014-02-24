@@ -34,22 +34,26 @@ class upload extends Controller {
         //uploadFile --> engine function
         $name = 'imagezip';
         $path = '';
-        $uploaded_file = uploadFile($name, $path);
         
-        if($uploaded_file['status'] != '0'){
-            $path_extract = $uploaded_file['full_path'].$uploaded_file['raw_name'];
-            $file = $uploaded_file['full_path'].$uploaded_file['full_name'];
-            echo $path_extract;
-            
-            if($CONFIG['default']['unzip'] == 'shell'){
-                shell_unzip($file, $path_extract);
-            }elseif($CONFIG['default']['unzip'] == 'zipArchive'){
-                unzip($file, $path_extract);
+        if (!empty($username)){
+            $uploaded_file = uploadFile($name, $path);
+            if($uploaded_file['status'] != '0'){
+                $path_extract = $uploaded_file['full_path'].$uploaded_file['raw_name'];
+                $file = $uploaded_file['full_path'].$uploaded_file['full_name'];
+                echo $path_extract;
+                
+                if($CONFIG['default']['unzip'] == 's_linux'){
+                    s_linux_unzip($file, $path_extract);
+                }elseif($CONFIG['default']['unzip'] == 'zipArchive'){
+                    unzip($file, $path_extract);
+                }
+            }else{
+                echo json_encode(array('status' => 'error', 'message' => $uploaded_file['message']));
             }
+            pr($uploaded_file);
         }else{
-            echo json_encode(array('status' => 'error', 'message' => $uploaded_file['message']));
+            echo json_encode(array('status' => 'error', 'message' => 'Username must be filled'));
         }
-        pr($uploaded_file);
     }
 	
 	function fetchExcel($sheet=1,$startRow=1,$startCol=0)

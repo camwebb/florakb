@@ -57,3 +57,19 @@ $(uploadform).ajaxForm({
 });
 
 });
+
+function validateFormUpload()
+{
+    if( $('#username').val() == ''){
+        $(".errorbox").html('Username must be filled');
+        return false;
+    }else{
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: data,
+            success: success,
+            dataType: json
+        });
+    }
+}
