@@ -95,16 +95,16 @@ function redirect($data) {
 }
 
 /**
- * upload file function
- * @param $data = name attribut of file to be upload
- * @param $path = string path to upload file
+ * @todo upload file function
+ * @param String $data = name attribut of file to be upload
+ * @param String $path = string path to upload file
  * 
- * @return $result = array('status' => '', 'message' => '', 'full_path' => '');
- * @return status = 0/1
- * @return message = message to print at view
- * @return full_path = to process the uploaded file
- * @return full_name = full name of uploaded file, include extension
- * @return raw_name = raw name of uploaded file
+ * @return Array $result = array('status' => '', 'message' => '', 'full_path' => '', 'full_name' => '', 'raw_name' => '');
+ * @return int status = 0/1
+ * @return String message = message to print at view
+ * @return String full_path = to process the uploaded file
+ * @return String full_name = full name of uploaded file, include extension
+ * @return String raw_name = raw name of uploaded file
  * */
 function uploadFile($data,$path=null){
 	global $CONFIG;
@@ -209,28 +209,30 @@ function getindexzip($name=null)
 	return false;
 }
 
-function unzip($name=null, $path=null)
+function unzip($file=null, $path=null)
 {
 	global $CONFIG;
-    
-    echo $name;
-	
-	if ($name==null) return false;
+
+	if ($file==null) return false;
 	
 	$zip = new ZipArchive;
-	if ($zip->open($name) === TRUE) {
+	if ($zip->open($file) === TRUE) {
 		$zip->extractTo($path);
 		$zip->close();
+        unlink($file);
 		return true;
-	} 
-	
-	return false;
+	}else{
+        unlink($file);
+        return false;
+	}
 }
 
 /**
- * unzip
- * @param $file = full path to file that will be extract, including extension
- * @param $path_extract = path to folder where $file will be extract
+ * @todo unzip file
+ * @param String $file = full path to file that will be extract, including extension
+ * @param String $path_extract = path to folder where $file will be extract
+ * 
+ * @return true
  * */
 function s_linux_unzip($file, $path_extract){
     mkdir($path_extract, 0755);
@@ -238,5 +240,19 @@ function s_linux_unzip($file, $path_extract){
     //extract and delete zip file             
     shell_exec("unzip -jo $file  -d $path_extract");
     unlink($file);
+    return true;
+}
+
+/**
+ * @todo create folder
+ * @param array $path_array = array contain folder that will be created array($path_1, $path_2)
+ * @param int $permission = value of permission access to folder
+ * */
+function createFolder($path_array, $permissions){
+    foreach ($path_array as $dir) {
+        if (!is_dir($dir)){
+            mkdir($dir, $permissions, TRUE);
+        }
+    }
 }
 ?>

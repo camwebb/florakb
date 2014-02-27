@@ -28,32 +28,54 @@ class upload extends Controller {
 
 	}
     
+    /**
+     * @todo upload zip function basedomain/upload/zip
+     * 
+     * @see s_linux_unzip Function
+     * @see unzip Function
+     * @see createFolder Function
+     * 
+     * */
     function zip(){
         global $CONFIG;
         
-        //uploadFile --> engine function
         $name = 'imagezip';
         $path = '';
+        $username = $_POST['username'];
         
-        if (!empty($username)){
-            $uploaded_file = uploadFile($name, $path);
-            if($uploaded_file['status'] != '0'){
-                $path_extract = $uploaded_file['full_path'].$uploaded_file['raw_name'];
-                $file = $uploaded_file['full_path'].$uploaded_file['full_name'];
-                echo $path_extract;
-                
-                if($CONFIG['default']['unzip'] == 's_linux'){
-                    s_linux_unzip($file, $path_extract);
-                }elseif($CONFIG['default']['unzip'] == 'zipArchive'){
-                    unzip($file, $path_extract);
-                }
-            }else{
-                echo json_encode(array('status' => 'error', 'message' => $uploaded_file['message']));
+        $uploaded_file = uploadFile($name, $path);
+        if($uploaded_file['status'] != '0'){
+            $path_extract = $uploaded_file['full_path'].$uploaded_file['raw_name'];
+            $file = $uploaded_file['full_path'].$uploaded_file['full_name'];
+            
+            if($CONFIG['default']['unzip'] == 's_linux'){
+                s_linux_unzip($file, $path_extract);
+            }elseif($CONFIG['default']['unzip'] == 'zipArchive'){
+                unzip($file, $path_extract);
             }
-            pr($uploaded_file);
+            
+            $path_data = 'public_assets/';
+            $path_user = $path_data.$username.'/';
+            $path_img = $path_user.'/img';
+            $path_img_ori = $path_img.'/ori';
+            $path_img_500px = $path_img.'/500px';
+            $path_img_100px = $path_img.'/100px';
+            
+            $toCreate = array($path_user, $path_img, $path_img_ori, $path_img_500px, $path_img_100px);
+            $permissions = 0755;
+            createFolder($toCreate, $permissions);
+            
+            echo json_encode(array('status' => 'error', 'message' => 'belom selesai'));
         }else{
-            echo json_encode(array('status' => 'error', 'message' => 'Username must be filled'));
+            echo json_encode(array('status' => 'error', 'message' => $uploaded_file['message']));
         }
+        exit;
+    }
+    
+    function validateUsername(){
+        $username = $_POST['username'];
+        echo json_encode(array('status' => "success"));
+        exit;
     }
 	
 	function fetchExcel($sheet=1,$startRow=1,$startCol=0)

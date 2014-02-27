@@ -9,3 +9,7 @@
     <script type="text/javascript" src="<?=$basedomain?>/assets/js/jquery.form.js"></script>
     <script type="text/javascript" src="<?=$basedomain?>/assets/js/jquery-ui.js"></script>
 </head>
+
+<script type="text/javascript">
+baseUrl = "<?=$basedomain ?>";
+</script>

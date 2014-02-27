@@ -40,19 +40,18 @@ $(uploadform).ajaxForm({
         }
     },
     complete: function(response) { // on complete
-        /*console.log(response.responseText);
         var message = JSON.parse(response.responseText);
         progressbar.progressbar({value: 100});
-        output.html(message.msg); //update element with received data                                              
+        output.html(message.message); //update element with received data                                              
         statustxt.html('Done');
         report.html(message.report)
         uploadform.resetForm();  // reset form
         input.prop('disabled', false);
         button.slideDown();
-        if(message.status != '0')
+        if(message.status != 'error')
   		{
-            alert('Succeed!')
-        }*/
+            output.html(message.message);
+        }
     },
 });
 
@@ -60,16 +59,33 @@ $(uploadform).ajaxForm({
 
 function validateFormUpload()
 {
-    if( $('#username').val() == ''){
+    var username = $('#username').val();
+    var file_zip = $('#zip_file').val();
+    if( username == ''){
         $(".errorbox").html('Username must be filled');
         return false;
     }else{
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: data,
-            success: success,
-            dataType: json
-        });
+        if (!hasExtension('zip_file', ['.zip'])) {
+            $(".errorbox").html('File type is not allowed');
+            return false;
+        }else{
+            var data = { 'username' : username };
+            var validateUsername = 
+                $.ajax({
+                    type: "POST",
+                    url: baseUrl+"upload/validateUsername",
+                    data: data,
+                    async: false,
+                    success: function(response){}
+                }).responseText;
+            
+            var resultUsername = JSON.parse(validateUsername);
+
+            if (resultUsername.status != 'error'){
+                return true;
+            }else{
+                return false;
+            }
+        }
     }
 }
