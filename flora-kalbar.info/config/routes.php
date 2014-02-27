@@ -12,7 +12,6 @@ $ROUTES = array(
 				'specimen',
 				'tulisan',
 				'testing',
-				'news',
-                'upload',
+				'upload',
                 );
 ?>

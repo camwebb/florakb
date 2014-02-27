@@ -61,10 +61,10 @@ class Database
 				{
 					
 					if ($CONFIG[$this->keyconfig]['app_status'] == 'Production'){
-						$connect = @mysql_connect($dbConfig[$dbuse]['host'], $dbConfig[$dbuse]['user'], $dbConfig[$dbuse]['pass']) or die ($this->db_error('Connection error'));
+						$connect = @mysql_connect(trim($dbConfig[$dbuse]['host']), $dbConfig[$dbuse]['user'], $dbConfig[$dbuse]['pass']) or die ($this->db_error('Connection error'));
 					
 					}else{
-						$connect = mysql_connect($dbConfig[$dbuse]['host'], $dbConfig[$dbuse]['user'], $dbConfig[$dbuse]['pass']) or die ($this->db_error('Connection error'));
+						$connect = mysql_connect(trim($dbConfig[$dbuse]['host']), $dbConfig[$dbuse]['user'], $dbConfig[$dbuse]['pass']) or die ($this->db_error('Connection error'));
 						
 					}
 					
@@ -72,10 +72,12 @@ class Database
 					if ($connect){
 					
 						if ($CONFIG[$this->keyconfig]['app_status'] == 'Production'){
-							@mysql_select_db($dbConfig[$dbuse]['name'], $connect) or die ($this->db_error('No Database Selected'));	
+							@mysql_select_db(trim($dbConfig[$dbuse]['name']), $connect) or die ($this->db_error('No Database Selected'));	
 						
 						}else{
-							mysql_select_db($dbConfig[$dbuse]['name'], $connect) or die ($this->db_error('No Database Selected'));
+							mysql_select_db(trim($dbConfig[$dbuse]['name']), $connect) or die ($this->db_error('No Database Selected'));
+							echo $dbConfig[$dbuse]['name'];
+							// mysql_select_db('florakalbar', $connect) or die ($this->db_error('No Database Selected'));
 							
 						}
 						
