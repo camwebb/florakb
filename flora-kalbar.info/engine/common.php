@@ -255,4 +255,12 @@ function createFolder($path_array, $permissions){
         }
     }
 }
+
+function execTime($timeStart, $timeEnd)
+{
+	$time = $timeEnd  - $timeStart ;
+	
+	$runTime = number_format($time,3) . ' Seconds';
+	return $runTime;
+}
 ?>
