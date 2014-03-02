@@ -263,4 +263,29 @@ function execTime($timeStart, $timeEnd)
 	$runTime = number_format($time,3) . ' Seconds';
 	return $runTime;
 }
+
+/**
+* @todo Delete a file, or a folder and its contents
+* @param string $dirPath Directory to delete
+* @return bool Returns TRUE on success, FALSE on failure
+*/
+function deleteDir($dirPath) {
+    if (! is_dir($dirPath)) {
+        throw new InvalidArgumentException("$dirPath must be a directory");
+    }
+    if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
+        $dirPath .= '/';
+    }
+    $files = glob($dirPath . '*', GLOB_MARK);
+    foreach ($files as $file) {
+        if (is_dir($file)) {
+            deleteDir($file);
+        } else {
+            unlink($file);
+        }
+    }
+    return rmdir($dirPath);
+}
+
+
 ?>
