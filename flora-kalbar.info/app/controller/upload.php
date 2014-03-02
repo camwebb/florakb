@@ -251,6 +251,7 @@ class upload extends Controller {
 			
 			if (empty($formName)) die;
 			
+			$startTime = microtime(true);
 			$parseExcel = $this->excelHelper->fetchExcel($formName, $numberOfSheet,$startRowData,$startColData);
 			
 			
@@ -275,10 +276,15 @@ class upload extends Controller {
 				}
 				
 				if ($newData){
-					$generateQuery = $this->excelHelper->generateQuery($newData);
+					$referenceQuery = $this->excelHelper->referenceData($newData);
+					$masterQuery = $this->excelHelper->parseMasterData($newData);
 					
-					pr($generateQuery);
-					$insertData = $this->collectionHelper->insertCollFromExcel($generateQuery);
+					
+					$endTime = microtime(true);
+					echo execTime($startTime,$endTime);
+					// pr($referenceQuery);
+					// pr($masterQuery);exit;
+					$insertData = $this->collectionHelper->insertCollFromExcel($referenceQuery);
 				}
 				
 			}

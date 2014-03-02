@@ -16,6 +16,7 @@ class Database
 	protected $config = array();
 	protected $dbConfig = array();
 	protected $keyconfig = null;
+	var $link = false;
 	
 	public function __construct() {
 		
@@ -75,12 +76,13 @@ class Database
 							@mysql_select_db(trim($dbConfig[$dbuse]['name']), $connect) or die ($this->db_error('No Database Selected'));	
 						
 						}else{
-							mysql_select_db(trim($dbConfig[$dbuse]['name']), $connect) or die ($this->db_error('No Database Selected'));
-							echo $dbConfig[$dbuse]['name'];
+							mysql_select_db(trim($dbConfig[$dbuse]['name']),$connect) or die ($this->db_error('No Database Selected'));
+							
 							// mysql_select_db('florakalbar', $connect) or die ($this->db_error('No Database Selected'));
 							
 						}
 						
+						$this->link = $connect;
 						return $connect;
 					
 					}else{
@@ -124,7 +126,7 @@ class Database
 				break;
 			
 		}
-		$this->close_connection();
+		// $this->close_connection();
 		
 		return $this->var_query;
 	}
@@ -208,7 +210,7 @@ class Database
 		switch ($dbConfig[0]['server'])
 		{
 			case 'mysql':
-				return mysql_close();
+				return mysql_close($this->link);
 				break;
 		   
 		}
@@ -239,7 +241,7 @@ class Database
 			switch ($dbConfig[$dbuse]['server'])
 			{
 				case 'mysql':
-					return mysql_error();
+					return mysql_error($this->link);
 					break;
 				
 			}
@@ -263,7 +265,51 @@ class Database
 		
 	}
 	
+	function autocommit($val=0,$dbuse=0)
+	{
+		$command = "SET autocommit={$val};";
+		$result = $this->query($command) or die ($this->error('autocommit failed'));
+		// if (!$this->link){
+			// $this->link = $this->open_connection(0);
+		// }
+		
+		// return mysql_autocommit($this->link, false);
+		
+	}
 	
+	function commit($dbuse=0)
+	{
+		$command = "COMMIT;";
+		$result = $this->query($command) or die ($this->error('commit failed'));
+		// mysql_commit();
+	}
+	
+	function rollback($dbuse=0)
+	{
+		$command = "ROLLBACK;";
+		$result = $this->query($command) or die ($this->error('commit failed'));
+		// if (!$this->link){
+			// $this->link = $this->open_connection(0);
+		// }
+		
+		// pr($this->link);
+		// mysql_rollback($this->link);
+		
+	}
+	
+	function begin($dbuse=0)
+	{
+		$command = "START TRANSACTION;";
+		$result = $this->query($command) or die ($this->error('commit failed'));
+		// if (!$this->link){
+			// $this->link = $this->open_connection(0);
+			
+		// }
+		// mysql_
+		// $res = mysql_begin_transaction($this->link);
+		if ($result) return true;
+		return false;
+	}
 }
 
 

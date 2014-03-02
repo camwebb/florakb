@@ -109,19 +109,19 @@ class excelHelper extends Database {
 		
 	}
 	
-	function generateQuery($newData=array())
+	function referenceData($newData=array())
 	{
 		global $C_SPEC;
 		// pr($C_SPEC);
 		if (empty($newData)) return false;
 		
 		$sql = array();
-		$numberTable = array(0,1,3,4);
-		$defineTable = array(0=>'coll', 1=>'taxon',3=>'person',4=>'locn');
+		$numberTable = array(1,2,3,4);
+		$defineTable = array(1=>'taxon',2=>'img',3=>'person',4=>'locn');
 		
-		// Taxon table identified
-		// $fieldFetch[0] = array('id', 'collCode','dateColl','indivID','collReps','dnaColl','notes','deposit'); 
-		// $fieldConvert[0] = array('db_id'=>'id','ssp_auth'=>'auth'); 
+		// Img table identified
+		$fieldFetch[2] = array('id','indivID','personID','md5sum','filename','directory','plantpart','notes','mimetype'); 
+		$fieldConvert[2] = array('tree_id'=>'id','photographer'=>'personID','plant_part'=>'plantpart'); 
 		
 		// Taxon table identified
 		$fieldFetch[1] = array('id','rank','morphotype','fam','gen','sp','subtype','ssp','auth','notes'); 
@@ -225,6 +225,110 @@ class excelHelper extends Database {
 		}
 		
 		return $cleanData;
+	}
+	
+	function parseMasterData($newData=array())
+	{
+		global $C_SPEC;
+		// pr($C_SPEC);
+		if (empty($newData)) return false;
+		
+		
+		// pr($newData);exit;
+		$sql = array();
+		$numberTable = array(0);
+		$defineTable = array(0=>'det',1=>'indiv', 2=>'obs');
+		
+		// Obs table identified
+		$fieldFetch[2] = array('id','indivID','date','personID','microhab','habit','dbh',
+								'height','bud','flower','fruit','localname','notes','char_lf_insert_alt','char_lf_insert_opp'); 
+		$fieldConvert[2] = array('unique_key'=>'indivID','obs_by'=>'personID'); 
+		
+		// Indiv table identified
+		$fieldFetch[1] = array('id','locnID','plot'); 
+		$fieldConvert[1] = array('locn'=>'locnID','unique_key'=>'id'); 
+		
+		// Indiv table identified
+		$fieldFetch[1] = array('id','collCode','dateColl','indivID','collReps','dnaColl','notes','deposit'); 
+		$fieldConvert[1] = array('locn'=>'locnID','unique_key'=>'id'); 
+		
+		// Det table identified
+		$fieldFetch[0] = array('id','indivID','personID','det_date','taxonID','confid','using','notes'); 
+		$fieldConvert[0] = array('unique_key'=>'id','det'=>'indivID','det_by'=>'personID','det_date'=>'date',
+								'det_notes'=>'notes','det_using'=>'using'); 
+								
+		$convert = 0;
+		// pr($newData[0]);exit;
+		
+		foreach ($defineTable as $a => $b){
+		
+			foreach ($newData as $key => $values){
+				
+				if (in_array($key,$numberTable)){
+					foreach ($values['data'] as $k=> $val){
+						
+						$keyField = array();
+						$tmpField = array();
+						$tmpData = array();
+						$t_field = array();
+						$t_data = array();
+						
+						$fieldKey = @array_keys($fieldConvert[$a]);
+						foreach ($val as $keys => $v){
+							
+							
+							
+							if (in_array($keys, $fieldKey)){
+							
+								// check if field excel not same with table DB, run convert field
+								$keyField = $fieldConvert[$a][$keys];
+								if (in_array($keyField, $fieldFetch[$a])){
+									$tmpkeyField = $keyField;
+									
+									// check collection libs before
+									$keyData = $this->validateField($defineTable[$key], $keyField, $v);
+								}else $tmpkeyField = false;
+								
+							}else{
+								// if field exist in table, then insert to array
+								if (in_array($keys, $fieldFetch[$a])){
+									$tmpkeyField = $keys;
+									
+									// check collection libs before
+									$keyData = $this->validateField($defineTable[$key], $keyField, $v);
+								}else $tmpkeyField = false;
+							}
+							
+							
+							// pr($tmpkeyField);
+							// if field empty don't store to array
+							if ($tmpkeyField){
+								$t_field[] = $tmpkeyField;
+								$t_data[] = "'$keyData'"; 
+							}
+							
+						}
+						
+						// pr($b);
+						// generate query
+						$tmpField = implode(',',$t_field); 
+						$tmpData = implode(',',$t_data); 
+						$sql[$b][] = "INSERT INTO {$b} ({$tmpField}) VALUES ({$tmpData})";
+						
+					}
+					
+				}
+				
+				$convert++;
+				
+			}
+		}
+		
+		
+		// pr($sql);
+					
+		// exit;
+		return $sql;
 	}
 }
 

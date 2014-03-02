@@ -5,24 +5,44 @@ class collectionHelper extends Database {
 	function insertCollFromExcel($newData=array())
 	{
 		
+		// echo phpinfo();exit;
 		if (empty($newData)) return false;
 		
 		$priority = array('taxon','locn','person');
 		
 		$sequence = $this->secqInsert($newData,$priority);
-		pr($sequence);exit;
+		// pr($sequence);
 		if ($sequence){
 			$count = 0;
-			foreach ($sequence as $val){
+			
+			// run insert query here 
+			try {
+				// First of all, let's begin a transaction
+				$auto = $this->autocommit();
+				$start = $this->begin();
 				
-				// run insert query here 
-				
-				$count++;
-				if ($count==100){
-					usleep(500);
-					$count = 0;
+				if (!$start) return false;
+				$failed = false;
+				foreach ($sequence as $val){
+					$sql = $this->query($val);
+					
+					if (!$sql) $failed = true;
+					$count++;
+					if ($count==100){
+						usleep(500);
+						$count = 0;
+					}
+					
+					
 				}
+				
+				if ($failed) $this->rollback();
+				else $this->commit();
+			} catch (Exception $e) {
+				
+				$this->rollback();
 			}
+				
 		}
 	}
 	
