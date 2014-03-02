@@ -18,10 +18,9 @@ class collectionHelper extends Database {
 			// run insert query here 
 			try {
 				// First of all, let's begin a transaction
-				$auto = $this->autocommit();
-				$start = $this->begin();
+				$startTransaction = $this->begin();
 				
-				if (!$start) return false;
+				if (!$startTransaction) return false;
 				$failed = false;
 				foreach ($sequence as $val){
 					$sql = $this->query($val);
@@ -32,8 +31,6 @@ class collectionHelper extends Database {
 						usleep(500);
 						$count = 0;
 					}
-					
-					
 				}
 				
 				if ($failed) $this->rollback();

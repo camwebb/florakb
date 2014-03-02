@@ -287,7 +287,7 @@ class Database
 	function rollback($dbuse=0)
 	{
 		$command = "ROLLBACK;";
-		$result = $this->query($command) or die ($this->error('commit failed'));
+		$result = $this->query($command) or die ($this->error('rollback failed'));
 		// if (!$this->link){
 			// $this->link = $this->open_connection(0);
 		// }
@@ -299,6 +299,8 @@ class Database
 	
 	function begin($dbuse=0)
 	{
+		
+		$this->autocommit();
 		$command = "START TRANSACTION;";
 		$result = $this->query($command) or die ($this->error('commit failed'));
 		// if (!$this->link){
