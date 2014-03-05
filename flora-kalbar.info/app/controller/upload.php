@@ -277,7 +277,7 @@ class upload extends Controller {
 				if ($newData){
 					$referenceQuery = $this->excelHelper->referenceData($newData);
 					
-					$masterQuery = $this->excelHelper->parseMasterData($newData,$subtitute);
+					$masterQuery = $this->excelHelper->parseMasterData($newData);
 					$masterQuery['rawdata']['img'] =  $referenceQuery['rawdata']['img'];
 					
 					

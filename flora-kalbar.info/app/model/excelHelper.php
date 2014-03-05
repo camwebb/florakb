@@ -6,7 +6,21 @@ Note :
 	- Dont forget to fill personID, taxonID, etc (Foreign Key) in excel sheet references
 	- rename field using to det_using, date to det_date in det table, because the fieldname is sql keywords
 
-
+Scenario :
+	- Upload excel file
+	- Parse all data in all sheet
+	- Store to array variable
+	- Clean data in array variable if record is null
+	- Check config field specimen in cpec.lib.php before get the data
+	- Store in new Array again
+	- Split master table and reference table in different array variable
+	- Parse references field if exist
+	- Generate query 
+	- Set priority table (insert priority) in all array variable
+	- Open transaction
+	- Excecute references insert query
+	- Excecute Master insert query
+	- Commit if success else rollback
 */
 class excelHelper extends Database {
 
