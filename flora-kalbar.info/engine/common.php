@@ -287,5 +287,16 @@ function deleteDir($dirPath) {
     return rmdir($dirPath);
 }
 
+function logFile($comment)
+{
+	
+	$path = LOGS;
+	
+	$fileName = 'Log-'.date('d-m-Y').'.txt';
+	
+	$handle = fopen($path.$fileName, "a");
+	fwrite($handle, "{$comment}"."\n");
+	fclose($handle);
+}
 
 ?>

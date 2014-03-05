@@ -252,11 +252,10 @@ class upload extends Controller {
 			if (empty($formName)) die;
 			
 			$startTime = microtime(true);
+			/* parse data excel */
 			$parseExcel = $this->excelHelper->fetchExcel($formName, $numberOfSheet,$startRowData,$startColData);
 			
 			
-			// pr($parseExcel);
-			// exit;
 			if ($parseExcel){
 				foreach ($parseExcel as $key => $val){
 					
@@ -277,16 +276,30 @@ class upload extends Controller {
 				
 				if ($newData){
 					$referenceQuery = $this->excelHelper->referenceData($newData);
-					$masterQuery = $this->excelHelper->parseMasterData($newData);
 					
+					$masterQuery = $this->excelHelper->parseMasterData($newData,$subtitute);
+					$masterQuery['rawdata']['img'] =  $referenceQuery['rawdata']['img'];
+					
+					
+					
+					
+					
+					$priority = array('taxon','locn','person');
+					$masterPriority = array('indiv','img','det','obs','coll');
+					
+					$param['ref'] = $referenceQuery;
+					$param['ref_priority'] = $priority;
+					$param['master'] = $masterQuery;
+					$param['master_priority'] = $masterPriority;
+					
+					
+					$insertData = $this->collectionHelper->insertCollFromExcel($param);
 					
 					$endTime = microtime(true);
-					echo execTime($startTime,$endTime);
-					// pr($referenceQuery);
-					// pr($masterQuery);exit;
-					$insertData = $this->collectionHelper->insertCollFromExcel($referenceQuery);
+					
+					if ($insertData) echo 'Insert Success on '. execTime($startTime,$endTime);
+					else echo 'insert data failed';
 				}
-				
 			}
 		}
 	}
