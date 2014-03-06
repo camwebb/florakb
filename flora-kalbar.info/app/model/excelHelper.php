@@ -384,6 +384,14 @@ class excelHelper extends Database {
 		
 		return $returnArr;
 	}
+	
+	function select2Database()
+	{
+		$sql = "select blablabla";
+		$res = $this->fetch($sql,1,1); // parameter 1 terakhir itu index database, kalo defaultnya pake 0 gk usah di pake
+		$res = $this->query($sql,1); // parameter 1 itu index database, kalo defaultnya pake 0 gk usah di tulis
+		
+	}
 }
 
 ?>
