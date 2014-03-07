@@ -198,7 +198,12 @@ class Database
 	
 	public function insert_id()
 	{
-		return mysql_insert_id();
+		$res['lastID'] = 0;
+		$sql = "SELECT LAST_INSERT_ID() AS lastID";
+		$res = $this->fetch($sql);
+		
+		if ($res['lastID']>0)return $res['lastID'];
+		return false;
 	}
 	
 	public function close_connection()

@@ -141,42 +141,40 @@ function uploadFile($data,$path=null){
 	$shufflefilename = md5(str_shuffle('codekir-v0.3'.$CONFIG[$key]['max_filesize']));
 	$filename = $shufflefilename.'.'.$getExt;
 	
-	if ($_FILES[$data]["error"] > 0)
-		{
-			echo "Return Code: " . $_FILES[$data]["error"] . "<br>";
-		}
-	else
-		{
-			$_FILES[$data]["name"];
-			($_FILES[$data]["size"] / $CONFIG[$key]['max_filesize']);
-			$_FILES[$data]["tmp_name"];
+	if ($_FILES[$data]["error"] > 0){
+	
+		echo "Return Code: " . $_FILES[$data]["error"] . "<br>";
+	
+	}else{
+	
+		$_FILES[$data]["name"];
+		($_FILES[$data]["size"] / $CONFIG[$key]['max_filesize']);
+		$_FILES[$data]["tmp_name"];
 
-		if (file_exists($pathFile. $_FILES[$data]["name"]))
-		  {
-				$result = array(
-                    'status' => '0',
-                    'message' => 'File exist.',
-                    'full_path' => $pathFile,
-                    'full_name' => $filename,
-                    'raw_name' => $shufflefilename
-                );
-				return $result;
-		  }
-		else
-		  {
-				move_uploaded_file($_FILES[$data]["tmp_name"],$pathFile . $filename);
-                $result = array(
-                    'status' => '1',
-                    'message' => 'Upload Succeed.',
-                    'full_path' => $pathFile,
-                    'full_name' => $filename,
-                    'raw_name' => $shufflefilename
-                );
-				
-				return $result;
-		  }
+		if (file_exists($pathFile. $_FILES[$data]["name"])){
+			$result = array(
+				'status' => '0',
+				'message' => 'File exist.',
+				'full_path' => $pathFile,
+				'full_name' => $filename,
+				'raw_name' => $shufflefilename
+			);
+			return $result;
+		}else{
+		
+			move_uploaded_file($_FILES[$data]["tmp_name"],$pathFile . $filename);
+			$result = array(
+				'status' => '1',
+				'message' => 'Upload Succeed.',
+				'full_path' => $pathFile,
+				'full_name' => $filename,
+				'raw_name' => $shufflefilename
+			);
+			return $result;
 		}
-		return $filename;
+	}
+	
+	return $filename;
 }
 
 function encode($data=false)
@@ -256,6 +254,12 @@ function createFolder($path_array, $permissions){
     }
 }
 
+/**
+ * @todo calculate excecution time
+ * @param int $timeStart = start time in microtime
+ * @param int $timeEnd = end time in microtime
+ * @return int/float
+ * */
 function execTime($timeStart, $timeEnd)
 {
 	$time = $timeEnd  - $timeStart ;
@@ -287,6 +291,10 @@ function deleteDir($dirPath) {
     return rmdir($dirPath);
 }
 
+/**
+ * @todo create log file
+ * @param string $comment = comment log
+ * */
 function logFile($comment)
 {
 	
