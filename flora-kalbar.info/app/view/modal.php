@@ -11,12 +11,12 @@
             <div class="modal-body">
               <form action="" role="form">
                 <div class="form-group">
-                  <input type="email" id="login-email" class="input-box" placeholder="Email"/>
+                  <input type="email" id="login-email" class="input-box" name="email" placeholder="Email"/>
                 </div>
                 <div class="form-group">
-                  <input type="password" id="login-password" class="input-box" placeholder="Password"/>
+                  <input type="password" id="login-password" class="input-box" name="pass" placeholder="Password"/>
                 </div>
-                <button type="button" class="btn">Login</button>
+                <input type="submit" class="btn" style="width: 100px;" value="Signup" />
               </form>
             </div>
             <div class="modal-footer"> 
@@ -38,26 +38,29 @@
               <div class="clear"></div>
             </div>
             <div class="modal-body">
-              <form action="" role="form">
+              <form action="<?=$basedomain?>home/signup" method="POST">
                 <div class="form-group">
-                  <input type="text" id="signup-name" class="input-box" placeholder="Name"/>
+                  <input type="text" id="signup-name" class="input-box" name="name" placeholder="Name" required aria-required="true"/>
                 </div>
                 <div class="form-group">
-                  <input type="email" id="signup-email" class="input-box" placeholder="Email"/>
+                  <input type="email" id="signup-email" class="input-box" name="email" placeholder="Email" required aria-required="true"/>
                 </div>
                 <div class="form-group">
-                  <input type="text" id="signup-twitter" class="input-box" placeholder="Twitter"/>
+                  <input type="text" id="signup-twitter" class="input-box" name="twitter" placeholder="Twitter"/>
                 </div>
                 <div class="form-group">
-                  <input type="text" id="signup-web" class="input-box" placeholder="Website"/>
+                  <input type="url" id="signup-web" class="input-box" name="web" placeholder="Website"/>
                 </div>
                 <div class="form-group">
-                  <input type="text" id="signup-phone" class="input-box" placeholder="Phone"/>
+                  <input type="text" id="signup-phone" class="input-box" name="phone" placeholder="Phone"/>
                 </div>
                 <div class="form-group">
-                  <input type="password" id="signup-password" class="input-box" placeholder="Password"/>
+                  <input type="password" id="signup-password" class="input-box" name="pass" placeholder="Password" required aria-required="true"/>
                 </div>
-                <button type="button" class="btn">Signup</button>
+                <div class="form-group">
+                  <input type="password" id="signup-re_password" class="input-box" name="re_pass" placeholder="Retype Password" required aria-required="true"/>
+                </div>
+                <input type="submit" class="btn" style="width: 100px;" value="Signup" />
               </form>
             </div>
             <div class="modal-footer"> 

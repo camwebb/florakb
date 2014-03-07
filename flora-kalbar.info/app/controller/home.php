@@ -17,16 +17,40 @@ class home extends Controller {
 	
 	function loadmodule()
 	{
-		
-		// $this->models = $this->loadModel('frontend');
+        //$this->models = $this->loadModel('frontend');
+        $this->loginHelper = $this->loadModel('loginHelper');
 	}
 	
 	function index(){
-        
-		return $this->loadView('home');
-
-	}
+    	return $this->loadView('home');
+    }
 	
+    function signup(){
+        
+        $name = $_POST["name"];
+        $email = $_POST["email"];
+        $twitter = $_POST["twitter"];
+        $website = $_POST["web"];
+        $phone = $_POST["phone"];
+        $pass = $_POST["pass"];
+        $re_pass = $_POST["re_pass"];
+        
+        //Do Validation first
+        // 1. Name, email, password and re-password are required
+        // 2. match password and re-password
+        // 3. is email exist?
+        // 4. is twitter exist?
+        //Insert into 2 database
+        // 1. name, email, twitter, web, and phone into florakb[person]
+        // 2. password and salt into app[florakb_person]
+        // 3. if data optional are empty set null
+        
+        $data = array();
+        $data[]= array('name'=>$name, 'email'=>$email, 'twitter'=>$twitter, 'website'=>$website, 'phone'=>$phone, 'password'=>$pass);
+        //pr($data);
+        $signup = $this->loginHelper->createUser($data);
+        
+    }
 	
 	function fetchExcel($sheet=1,$startRow=1,$startCol=0)
 	{
