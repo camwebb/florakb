@@ -204,7 +204,7 @@ class collectionHelper extends Database {
 	function checkDataRef($table=false,$field=false,$cond="short_namecode", $id=false)
 	{
 		
-		if (!$id && !$table && !$field) return false;
+		if (!$id && !$table && !$field) return false
 		
 		$sql = "SELECT {$field} FROM {$table} WHERE {$cond} = '{$id}' LIMIT 1";
 		// pr($sql);
@@ -213,6 +213,33 @@ class collectionHelper extends Database {
 		return false;
 	}
 	
+	/* end excel helper */
+	
+	
+	function insertData($table=false, $data=array())
+	{
+		if (!$table and empty($data)) return false;
+		
+		$data = array();
+		$data['status'] = false;
+		
+		foreach ($data as $key=>$val){
+			$tmpfield[] = $key;
+			$tmpvalue[] = "'{$val}'";
+		}
+		
+		$field = implode (',',$tmpfield);
+		$value = implode (',',$tmpvalue);
+		
+		$sql = "INSERT INTO {$table} ({$field}) VALUES ({$value})";
+		$res = $this->query($sql);
+		if ($res){
+			
+			$data['lastid'] = $this->insert_id();
+			$data['status'] = true;
+		}
+		return $data;
+	}	
 }
 
 ?>
