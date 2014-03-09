@@ -204,7 +204,7 @@ class collectionHelper extends Database {
 	function checkDataRef($table=false,$field=false,$cond="short_namecode", $id=false)
 	{
 		
-		if (!$id && !$table && !$field) return false
+		if (!$id && !$table && !$field) return false;
 		
 		$sql = "SELECT {$field} FROM {$table} WHERE {$cond} = '{$id}' LIMIT 1";
 		// pr($sql);
