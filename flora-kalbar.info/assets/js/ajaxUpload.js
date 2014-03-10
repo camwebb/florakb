@@ -89,3 +89,52 @@ function validateFormUpload()
         }
     }
 }
+
+function validateFormExtract()
+{
+    var username = $('#username').val();
+    var filename = $('#zip_file').val();
+    if( username == ''){
+        $(".errorbox").html('Username must be filled');
+        return false;
+    }else{
+        if ( filename == '') {
+            $(".errorbox").html('Filename can not be empty');
+            return false;
+        }else{
+            var data = { 'username' : username };
+            var validateUsername = 
+                $.ajax({
+                    type: "POST",
+                    url: baseUrl+"upload/validateUsername",
+                    data: data,
+                    async: false,
+                    success: function(response){}
+                }).responseText;
+            
+            var resultUsername = JSON.parse(validateUsername);
+
+            if (resultUsername.status != 'error'){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+}
+
+/*$( "#extract_zip" ).on( "submit", function( event ) {
+    //var data = { 'username' : username };
+    var validateUsername = 
+        $.ajax({
+            type: "POST",
+            url: baseUrl+"zip/extract",
+            //data: data,
+            async: false,
+            success: function(response){}
+        }).responseText;
+    
+    var resultUsername = JSON.parse(validateUsername);
+
+    console.log(resultUsername);
+}*/

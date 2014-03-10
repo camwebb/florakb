@@ -1,0 +1,10 @@
+<div>
+    <div class="errorbox"></div>
+    <form onsubmit="return validateFormExtract();" id="extract_zip" method="POST" action="{$basedomain}zip/extract">
+        <label for="username">Username :</label>
+        <input name="username" id="username" /><br />
+        <label for="zip_file">Filename (with zip extention ex. User-date.zip) :</label>
+        <input name="imagezip" id="zip_file" type="text" />
+        <input id="box_button" type="submit" value="Submit" />
+    </form>
+</div>
