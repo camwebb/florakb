@@ -206,13 +206,14 @@ class collectionHelper extends Database {
 				$imp = implode(',',$field);
 				$imps = implode(',',$datas);
 				$update = implode(',',$tmpForUpdate);
+				/*
 				if ($index=='img'){
 					$sql[] = "UPDATE {$index} SET ({$update}) WHERE indivID = {$indivID} AND personID = {$personID}"; 
 				}else{
 					$sql[] = "INSERT INTO {$index} ({$imp}) VALUES ({$imps})"; 
 				}
-				
-				
+				*/
+				$sql[] = "INSERT INTO {$index} ({$imp}) VALUES ({$imps})"; 
 			}
 			
 			
