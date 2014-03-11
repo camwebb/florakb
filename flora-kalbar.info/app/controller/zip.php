@@ -59,11 +59,11 @@ class zip extends Controller {
                 $path_data = 'public_assets/';
                 $path_user = $path_data.$username;
                 $path_img = $path_user.'/img';
-                $path_img_ori = $path_img.'/ori';
+                $path_img_1000px = $path_img.'/1000px';
                 $path_img_500px = $path_img.'/500px';
                 $path_img_100px = $path_img.'/100px';
                 
-                $toCreate = array($path_user, $path_img, $path_img_ori, $path_img_500px, $path_img_100px);
+                $toCreate = array($path_user, $path_img, $path_img_1000px, $path_img_500px, $path_img_100px);
                 $permissions = 0755;
                 createFolder($toCreate, $permissions);
                 
@@ -94,15 +94,31 @@ class zip extends Controller {
                                 
                                 //check file exist here
                                 
-                                copy($path_entry."/".$entry, $path_img_ori.'/'.$image_name_encrypt.'.ori.jpg');
-                                if(!@ copy($path_entry."/".$entry, $path_img_ori.'/'.$image_name_encrypt.'.ori.jpg')){
+                                copy($path_entry."/".$entry, $path_img_1000px.'/'.$image_name_encrypt.'.1000px.jpg');
+                                if(!@ copy($path_entry."/".$entry, $path_img_1000px.'/'.$image_name_encrypt.'.1000px.jpg')){
                                     $status = "error";
                                     $msg= error_get_last();
                                 }
                                 else{
                                     $src_tmp = $path_entry."/".$entry;
+                                    $dest_1000px = $CONFIG['default']['root_path'].'/'.$path_img_1000px.'/'.$image_name_encrypt.'.1000px.jpg';
                                     $dest_500px = $CONFIG['default']['root_path'].'/'.$path_img_500px.'/'.$image_name_encrypt.'.500px.jpg';
                                     $dest_100px = $CONFIG['default']['root_path'].'/'.$path_img_100px.'/'.$image_name_encrypt.'.100px.jpg';
+                                    
+                                    if ($fileinfo[0] >= 1000 || $fileinfo[1] >= 1000 ) {
+                                        if ($fileinfo[0] > $fileinfo[1]) {
+                                            $percentage = (1000/$fileinfo[0]);
+                                            $config['width'] = $percentage*$fileinfo[0];
+                                            $config['height'] = $percentage*$fileinfo[1];
+                                        }else{
+                                            $percentage = (1000/$fileinfo[1]);
+                                            $config['width'] = $percentage*$fileinfo[0];
+                                            $config['height'] = $percentage*$fileinfo[1];
+                                        }
+                                        
+                                        $this->resize_pic($src_tmp, $dest_1000px, $config);
+                                        unset($config);
+                                    }
                                     
                                     //Set cropping for y or x axis, depending on image orientation
                                     if ($fileinfo[0] > $fileinfo[1]) {
