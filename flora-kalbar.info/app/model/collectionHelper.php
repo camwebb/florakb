@@ -62,7 +62,7 @@ class collectionHelper extends Database {
 		$data['obs'] = $this->parseRef($newData['rawdata'], 'obs', $param['obs']);
 		$data['coll'] = $this->parseRef($newData['rawdata'], 'coll', $param['coll']);
 		$data['img'] = $this->parseRef($newData['rawdata'], 'img', $param['img']);
-		$data['collector'] = $this->parseRef($newData['rawdata'], 'collector', $param['collector']);
+		// $data['collector'] = $this->parseRef($newData['rawdata'], 'collector', $param['collector']);
 		
 		$sequence = $this->secqInsert($data,$priority, $ignore);
 		// pr($sequence);exit;
@@ -90,7 +90,7 @@ class collectionHelper extends Database {
 		if (!$startTransaction) return false;
 		logFile('====TRANSACTION READY====');
 		
-		// $insertRefData = $this->insertReference($referenceQuery,$priority);
+		$insertRefData = $this->insertReference($referenceQuery,$priority);
 		$insertMasterData = $this->insertMaster($masterQuery,$masterPriority);
 	
 		if ($insertRefData or $insertMasterData){

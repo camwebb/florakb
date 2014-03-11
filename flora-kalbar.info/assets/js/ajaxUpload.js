@@ -106,7 +106,7 @@ function validateFormExtract()
             var validateUsername = 
                 $.ajax({
                     type: "POST",
-                    url: baseUrl+"upload/validateUsername",
+                    url: baseUrl+"zip/validateUsername",
                     data: data,
                     async: false,
                     success: function(response){}
