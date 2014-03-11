@@ -20,7 +20,9 @@ include 'meta.php';
 	
 	<!-- CONTENT -->
 	<main>
+	<div class="wrapper">
 		<?=$content?>
+	</div>
 	</main>
     
     <!-- MODAL -->
