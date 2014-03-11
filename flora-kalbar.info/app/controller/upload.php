@@ -1,5 +1,4 @@
 <?php
-defined ('MICRODATA') or exit ( 'Forbidden Access' );
 
 class upload extends Controller {
 	
@@ -281,11 +280,11 @@ class upload extends Controller {
 					$masterQuery['rawdata']['img'] =  $referenceQuery['rawdata']['img'];
 					
 					
-					
-					
+					// pr($masterQuery['rawdata']);
+					// exit;
 					
 					$priority = array('taxon','locn','person');
-					$masterPriority = array('indiv','img','det','obs','coll');
+					$masterPriority = array('indiv','img','det','obs','coll','collector');
 					
 					$param['ref'] = $referenceQuery;
 					$param['ref_priority'] = $priority;

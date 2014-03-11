@@ -278,7 +278,7 @@ class excelHelper extends Database {
 		// pr($newData);exit;
 		$sql = array();
 		$numberTable = array(0);
-		$defineTable = array(0=>'indiv',1=>'det', 2=>'obs',3=>'coll');
+		$defineTable = array(0=>'indiv',1=>'det', 2=>'obs',3=>'coll',4=>'collector');
 		
 		// Obs table identified
 		$fieldFetch[2] = array('id','indivID','date','personID','microhab','habit','dbh',
@@ -294,8 +294,8 @@ class excelHelper extends Database {
 		$fieldConvert[3] = array('locn'=>'locnID','unique_key'=>'indivID'); 
 		
 		// Collector table identified
-		// $fieldFetch[4] = array('id','collID','personID','order'); 
-		// $fieldConvert[4] = array('obs_by'=>'personID'); 
+		$fieldFetch[4] = array('id','collID','personID','order'); 
+		$fieldConvert[4] = array('obs_by'=>'personID','unique_key'=>'collID'); 
 		
 		// Det table identified
 		$fieldFetch[1] = array('id','indivID','personID','det_date','taxonID','confid','det_using','notes'); 

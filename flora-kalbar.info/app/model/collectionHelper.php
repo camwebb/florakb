@@ -10,7 +10,7 @@ class collectionHelper extends Database {
 		$query = false;
 		
 		$sequence = $this->secqInsert($newData['query'],$priority, $ignore);
-		// pr($sequence);
+		// pr($sequence);exit;
 		if ($sequence){
 			
 			$query = $this->runQuery($sequence);
@@ -52,14 +52,20 @@ class collectionHelper extends Database {
 		$param['img']['field'] =  array('id');
 		$param['img']['condition'] =  array('short_namecode');
 		
+		$param['collector']['convertkey'] = array('personID');
+		$param['collector']['table'] = array('person');
+		$param['collector']['field'] =  array('id');
+		$param['collector']['condition'] =  array('short_namecode');
+		
 		$data['indiv'] = $this->parseRef($newData['rawdata'], 'indiv', $param['indiv']);
 		$data['det'] = $this->parseRef($newData['rawdata'], 'det', $param['det']);
 		$data['obs'] = $this->parseRef($newData['rawdata'], 'obs', $param['obs']);
 		$data['coll'] = $this->parseRef($newData['rawdata'], 'coll', $param['coll']);
 		$data['img'] = $this->parseRef($newData['rawdata'], 'img', $param['img']);
+		$data['collector'] = $this->parseRef($newData['rawdata'], 'collector', $param['collector']);
 		
 		$sequence = $this->secqInsert($data,$priority, $ignore);
-		// pr($sequence);
+		// pr($sequence);exit;
 		
 		if ($sequence){
 			$query = $this->runQuery($sequence);
@@ -84,9 +90,9 @@ class collectionHelper extends Database {
 		if (!$startTransaction) return false;
 		logFile('====TRANSACTION READY====');
 		
-		$insertRefData = $this->insertReference($referenceQuery,$priority);
+		// $insertRefData = $this->insertReference($referenceQuery,$priority);
 		$insertMasterData = $this->insertMaster($masterQuery,$masterPriority);
-		
+	
 		if ($insertRefData or $insertMasterData){
 			$this->rollback();
 			logFile('====ROLLBACK TRANSACTION====');
@@ -178,20 +184,34 @@ class collectionHelper extends Database {
 		
 		if ($data){
 			
-			
+			$ignoreImageField = array('indivID','personID');
 			$sql = array();
 			foreach ($data['data'] as $key => $val){
 				
 				$field = array();
 				$datas = array();
+				$tmpForUpdate = array();
 				foreach ($val as $k => $v){
 					$field[] = $k;
 					$datas[] = "'$v'";
+					
+					if (!in_array($k, $ignoreImageField)){
+						$tmpForUpdate[] = $k .'='. "'$v'";
+					}
+					
+					$indivID = $val['indivID'];
+					$personID = $val['personID'];
 				}
 				
 				$imp = implode(',',$field);
 				$imps = implode(',',$datas);
-				$sql[] = "INSERT INTO {$index} ({$imp}) VALUES ({$imps})"; 
+				$update = implode(',',$tmpForUpdate);
+				if ($index=='img'){
+					$sql[] = "UPDATE {$index} SET ({$update}) WHERE indivID = {$indivID} AND personID = {$personID}"; 
+				}else{
+					$sql[] = "INSERT INTO {$index} ({$imp}) VALUES ({$imps})"; 
+				}
+				
 				
 			}
 			
