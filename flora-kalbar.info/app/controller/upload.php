@@ -252,6 +252,8 @@ class upload extends Controller {
 			
 			$startTime = microtime(true);
 			/* parse data excel */
+			
+			logFile('load excel begin');
 			$parseExcel = $this->excelHelper->fetchExcel($formName, $numberOfSheet,$startRowData,$startColData);
 			
 			

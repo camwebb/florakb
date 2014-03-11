@@ -51,6 +51,8 @@ class excelHelper extends Database {
 			
 			$excel = new Spreadsheet_Excel_Reader($filename);
 			logFile('load excel success');
+		}else{
+			logFile('excel lib not found');
 		}
 		
 		return $excel;
