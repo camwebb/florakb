@@ -239,7 +239,8 @@ class excelHelper extends Database {
 		$returnArr['query'] = $sql;
 		$returnArr['rawdata'] = $arrTmp;
 		
-		logFile(serialize($returnArr));
+		// logFile(serialize($returnArr));
+		logFile('referenceData ready');
 		
 		return $returnArr;
 	}
@@ -382,7 +383,8 @@ class excelHelper extends Database {
 		$returnArr['query'] = $sql;
 		$returnArr['rawdata'] = $arrTmp;
 		
-		logFile(serialize($returnArr));
+		// logFile(serialize($returnArr));
+		logFile('parseMasterData success');
 		
 		return $returnArr;
 	}

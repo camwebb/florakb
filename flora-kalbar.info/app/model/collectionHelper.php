@@ -52,10 +52,10 @@ class collectionHelper extends Database {
 		$param['img']['field'] =  array('id');
 		$param['img']['condition'] =  array('short_namecode');
 		
-		$param['collector']['convertkey'] = array('personID');
-		$param['collector']['table'] = array('person');
-		$param['collector']['field'] =  array('id');
-		$param['collector']['condition'] =  array('short_namecode');
+		// $param['collector']['convertkey'] = array('personID','collID');
+		// $param['collector']['table'] = array('person','coll');
+		// $param['collector']['field'] =  array('id','id');
+		// $param['collector']['condition'] =  array('short_namecode','indivID');
 		
 		$data['indiv'] = $this->parseRef($newData['rawdata'], 'indiv', $param['indiv']);
 		$data['det'] = $this->parseRef($newData['rawdata'], 'det', $param['det']);
@@ -70,6 +70,32 @@ class collectionHelper extends Database {
 		if ($sequence){
 			$query = $this->runQuery($sequence);
 			logFile('query master success =>'.serialize($sequence));
+		}
+		return $query;
+	}
+	
+	
+	function weakMasterData($newData=array(),$priority=array())
+	{
+		if (empty($newData)) return false;
+		
+		$ignore = array('img');
+		$query = false;
+		$priority=array('collector');
+		
+		$param['collector']['convertkey'] = array('personID','collID');
+		$param['collector']['table'] = array('person','coll');
+		$param['collector']['field'] =  array('id','id');
+		$param['collector']['condition'] =  array('short_namecode','indivID');
+		
+		$data['collector'] = $this->parseRef($newData['rawdata'], 'collector', $param['collector']);
+		
+		$sequence = $this->secqInsert($data,$priority, $ignore);
+		// pr($sequence);exit;
+		
+		if ($sequence){
+			$query = $this->runQuery($sequence);
+			logFile('query weak master success =>'.serialize($sequence));
 		}
 		return $query;
 	}
@@ -92,8 +118,9 @@ class collectionHelper extends Database {
 		
 		$insertRefData = $this->insertReference($referenceQuery,$priority);
 		$insertMasterData = $this->insertMaster($masterQuery,$masterPriority);
+		$insertWeakMasterData = $this->weakMasterData($masterQuery,$masterPriority);
 	
-		if ($insertRefData or $insertMasterData){
+		if ($insertRefData or $insertMasterData or $insertWeakMasterData){
 			$this->rollback();
 			logFile('====ROLLBACK TRANSACTION====');
 			return false;
@@ -155,9 +182,13 @@ class collectionHelper extends Database {
 		foreach ($priority as $val){
 			
 			// get record from array $newData if priority value match
-			foreach ($newData[$val] as $value){
-				$seq[] = $value;
+			if (!empty($newData[$val])){
+			
+				foreach ($newData[$val] as $value){
+					$seq[] = $value;
+				}
 			}
+			
 		}
 		
 		return $seq;

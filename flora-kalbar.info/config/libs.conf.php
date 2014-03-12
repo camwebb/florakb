@@ -12,6 +12,6 @@ $EXCEL[0]['filetype'] = array('application/ms-excel', 'application/vnd.ms-excel'
 $SMARTY[0]['template'] = APPPATH.'view/';
 $SMARTY[0]['cache'] = LIBS.'smarty/cache';
 $SMARTY[0]['config'] = LIBS.'smarty/configs';
-$SMARTY[0]['logs'] = LOGS;
+$SMARTY[0]['logs'] = CACHE;
 
 ?>
