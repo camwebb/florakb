@@ -26,13 +26,30 @@ class loginHelper extends Database {
 		if (!$startTransaction) return false;
 		
         
-        //if (empty($data[0]['twitter'])){$data[0]['twitter'] = 'NULL';}
-        //if (empty($data[0]['website'])){$data[0]['website'] = 'NULL';}
-        //if (empty($data[0]['phone'])){$data[0]['phone'] = 'NULL';}
+        if (empty($data[0]['twitter'])){
+            $dataTwitter = 'NULL';
+        }else{
+            $dataTwitter = "'".$data[0]['twitter']."'";
+        }
         
-		$sql = "INSERT INTO person (id, name, email, twitter, website, phone, short_namecode) VALUES ('','{$data[0]['name']}','{$data[0]['email']}','{$data[0]['twitter']}','{$data[0]['website']}','{$data[0]['phone']}', '{$data[0]['shortName']}')";
+        if (empty($data[0]['website'])){
+            $dataWeb = 'NULL';
+        }else{
+            $dataWeb = "'".$data[0]['website']."'";
+        }
+        
+        if (empty($data[0]['phone'])){
+            $dataPhone = 'NULL';
+        }else{
+            $dataPhone = "'".$data[0]['phone']."'";
+        }
+        
+		$sql = "INSERT INTO person (id, name, email, twitter, website, phone, short_namecode) VALUES ('','{$data[0]['name']}','{$data[0]['email']}',$dataTwitter,$dataWeb,$dataPhone, '{$data[0]['shortName']}')";
 		$res = $this->query($sql,0);
-        $sql2 = "INSERT INTO florakb_person (id, password, salt) VALUES ('','{$password}','{$salt}')";
+        
+        $getID = "SELECT id from person WHERE email= '".$data[0]['email']."' AND short_namecode ='".$data[0]['shortName']."' ";
+		$resID = $this->fetch($getID,0);
+        $sql2 = "INSERT INTO florakb_person (id, password, salt) VALUES ('{$resID['id']}','{$password}','{$salt}')";
 		$res2 = $this->query($sql2,1);
 		
         if ($res && $res2){

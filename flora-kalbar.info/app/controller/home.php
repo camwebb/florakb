@@ -35,22 +35,6 @@ class home extends Controller {
         $phone = $_POST["phone"];
         $pass = $_POST["pass"];
         $re_pass = $_POST["re_pass"];
-        
-        //Do Validation first
-        // 1. Name, email, short_name, password and re-password are required [ok]
-        // 2. match password and re-password [ok]
-        // 3. is email exist? [ok]
-        // 4. is twitter exist? [ok]
-        // 5. is shortname exist? [ok]
-        //Insert into 2 database
-        // 1. name, email, twitter, web, phone, short_namecode into florakb[person]
-        // 2. password and salt into app[florakb_person]
-        // 3. if data optional are empty set null
-        
-        
-        //if ($twitter == ''){$twitter = NULL;}
-        //if ($website == ''){$website = NULL;}
-        //if ($phone == ''){$phone = NULL;} 
              
         $checkEmail = $this->loginHelper->checkEmail($email);         
         $checkTwitter = $this->loginHelper->checkTwitter($twitter);
