@@ -42,6 +42,16 @@ class zip extends Controller {
         
         $path_file = $CONFIG['default']['upload_path'];
         
+        $validateUsername = $this->validateUsername();
+        
+        if($validateUsername['status'] != 'success'){
+            $status = "error";
+            $msg = "Error occured while validating username";
+            
+            echo json_encode(array('status' => $status, 'message' => $msg));
+            exit;
+        }
+        
         if(!empty($name)){
             
             if(preg_match('#\.(zip|ZIP)$#i', $name)){
@@ -260,7 +270,8 @@ class zip extends Controller {
     
     function validateUsername(){
         $username = $_POST['username'];
-        echo json_encode(array('status' => "success"));
+        $return = array('status' => "success", 'message' => $username);        
+        return $return;
         exit;
     }
 	

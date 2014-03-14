@@ -1,6 +1,7 @@
 <div>
+    <div class="message"></div>
     <div class="errorbox"></div>
-    <form onsubmit="return validateFormExtract();" id="extract_zip" method="POST" action="{$basedomain}zip/extract">
+    <form onsubmit="zipExtract();return false;" id="extract_zip" method="POST" action="">
         <label for="username">Username :</label>
         <input name="username" id="username" /><br />
         <label for="zip_file">Filename (with zip extention ex. User-date.zip) :</label>

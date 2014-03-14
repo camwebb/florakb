@@ -29,7 +29,7 @@ $CONFIG['default']['js'] = APPPATH.'js/';
 
 $CONFIG['default']['zip_ext'] = array('application/zip', 'application/x-zip', 'application/x-zip-compressed',  'application/octet-stream', 'application/x-compress', 'application/x-compressed', 'multipart/x-zip');
 
-$CONFIG['default']['unzip'] = 'zipArchive'; //s_linux or zipArchive
+$CONFIG['default']['unzip'] = 'zipArchive'; //s_linux_unzip or zipArchive
 
 $basedomain = $CONFIG['default']['base_url'];
 
