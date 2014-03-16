@@ -167,20 +167,19 @@ class zip extends Controller {
                                     unset($config);
                                     
                                     //add file information to array
-                                    $fileToInsert = array('md5sum' => $image_name_encrypt, 'directory' => $folder, 'mimetype' => $fileinfo['mime']);
-                                    array_push($dataInsert,$fileToInsert);
-                                    
-                                    $status = 'success';
-                                    $msg = 'File extracted';
-                                    
+                                    $fileToInsert = array('filename' => $entry,'md5sum' => $image_name_encrypt, 'directory' => $folder, 'mimetype' => $fileinfo['mime']);
+                                    array_push($dataInsert,$fileToInsert);                                    
                                 }
                             }
                         }
                     }
                 }
                 
-                //add file info to database here $validateUsername
-                pr($dataInsert);
+                //add file info to database here $validateUsername                
+                $insertImage = $this->imagezip->insertImage($validateUsername['personID'], $dataInsert);
+                
+                $status = 'success';
+                $msg = 'File extracted';
                 
                 deleteDir($path_extract);
             }else{
@@ -282,7 +281,7 @@ class zip extends Controller {
     }
     
     /**
-     * @todo get id of a user using POST method form
+     * @todo get id of a user
      * 
      * @param username = short name code from user input
      * @return status = a status of success/error validate
