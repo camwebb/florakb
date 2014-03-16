@@ -3,5 +3,7 @@ flora-kalbar.info/config/access.php
 flora-kalbar.info/.htaccess
 flora-kalbar.info/tmp/*
 flora-kalbar.info/public_assets/*
-flora-kalbar.info/libs/*
+flora-kalbar.info/libs/smarty/*
+flora-kalbar.info/libs/excel/example.xls
 flora-kalbar.info/logs/*
+flora-kalbar.info/chace/*

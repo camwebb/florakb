@@ -15,8 +15,7 @@ class zip extends Controller {
 	public function loadmodule()
 	{
 		
-		$this->collectionHelper = $this->loadModel('collectionHelper');
-        $this->excelHelper = $this->loadModel('excelHelper');
+		$this->imagezip = $this->loadModel('imagezip');
 	}
 	
 	public function index(){
@@ -31,6 +30,10 @@ class zip extends Controller {
      * @see s_linux_unzip Function
      * @see unzip Function
      * @see createFolder Function
+     * @see getContents Function
+     * @see resize & crop Function
+     * @see validateUsername Function
+     * @see imagezip class
      * 
      * */
     function extract(){
@@ -42,8 +45,8 @@ class zip extends Controller {
         
         $path_file = $CONFIG['default']['upload_path'];
         
-        $validateUsername = $this->validateUsername();
-        
+        $validateUsername = $this->validateUsername($username);
+
         if($validateUsername['status'] != 'success'){
             $status = "error";
             $msg = "Error occured while validating username";
@@ -80,9 +83,14 @@ class zip extends Controller {
                 $images = $this->GetContents($path_extract);
                 $list = count($images);
                 
+                $dataInsert = array();
+                
                 foreach ($images as $image){
                     $entry = $image['filename'];
                     $path_entry = $image['path'];
+                    
+                    $len = strlen($path_extract);
+                    $folder = substr($path_entry,$len);
                     
                     if(preg_match('#\.(jpg|jpeg|JPG|JPEG)$#i', $entry)){
                         $image_name_encrypt = md5($entry);
@@ -158,7 +166,9 @@ class zip extends Controller {
                                     $this->resize_pic($dest_500px, $dest_100px, $config);
                                     unset($config);
                                     
-                                    //add file info to database here
+                                    //add file information to array
+                                    $fileToInsert = array('md5sum' => $image_name_encrypt, 'directory' => $folder, 'mimetype' => $fileinfo['mime']);
+                                    array_push($dataInsert,$fileToInsert);
                                     
                                     $status = 'success';
                                     $msg = 'File extracted';
@@ -168,6 +178,9 @@ class zip extends Controller {
                         }
                     }
                 }
+                
+                //add file info to database here $validateUsername
+                pr($dataInsert);
                 
                 deleteDir($path_extract);
             }else{
@@ -268,9 +281,22 @@ class zip extends Controller {
         return $files; 
     }
     
-    function validateUsername(){
-        $username = $_POST['username'];
-        $return = array('status' => "success", 'message' => $username);        
+    /**
+     * @todo get id of a user using POST method form
+     * 
+     * @param username = short name code from user input
+     * @return status = a status of success/error validate
+     * @return message = message
+     * @return personID = id for person (if success)
+     * 
+     * */
+    function validateUsername($username){
+        $validateUser = $this->imagezip->validateUser($username);
+        if($validateUser['id'] != ''){
+            $return = array('status' => "success", 'message' => $username, 'personID' => $validateUser['id']);
+        }else{
+            $return = array('status' => "error", 'message' => $username, 'personID' => $validateUser['id']);
+        }  
         return $return;
         exit;
     }
