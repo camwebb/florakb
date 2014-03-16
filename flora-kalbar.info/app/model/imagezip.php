@@ -5,8 +5,7 @@ class imagezip extends Database {
 	var $configkey = "default";
 	
 	function insertImage($personID, $data){
-        pr($data);
-        $sql = "INSERT INTO img (id, name, email, twitter, website, phone, short_namecode) VALUES ('','{$data[0]['name']}','{$data[0]['email']}',$dataTwitter,$dataWeb,$dataPhone, '{$data[0]['shortName']}')";
+        $sql = "UPDATE img SET md5sum = '$data[md5sum]', directory = '$data[directory]', mimetype = '$data[mimetype]' WHERE filename = '$data[filename]' AND personID = '$personID'";
 		$res = $this->query($sql,0);
         return $res;
 	}

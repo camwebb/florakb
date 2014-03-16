@@ -168,6 +168,7 @@ class zip extends Controller {
                                     
                                     //add file information to array
                                     $fileToInsert = array('filename' => $entry,'md5sum' => $image_name_encrypt, 'directory' => $folder, 'mimetype' => $fileinfo['mime']);
+                                    $insertImage = $this->imagezip->insertImage($validateUsername['personID'], $fileToInsert);
                                     array_push($dataInsert,$fileToInsert);                                    
                                 }
                             }
@@ -176,7 +177,7 @@ class zip extends Controller {
                 }
                 
                 //add file info to database here $validateUsername                
-                $insertImage = $this->imagezip->insertImage($validateUsername['personID'], $dataInsert);
+                
                 
                 $status = 'success';
                 $msg = 'File extracted';
