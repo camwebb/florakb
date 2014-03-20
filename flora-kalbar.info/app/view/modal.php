@@ -38,14 +38,14 @@
               <div class="clear"></div>
             </div>
             <div class="modal-body">
-                <p class="error">UI ERROR</p>
-            
+                
               <form onsubmit="doSignup();" action="" method="POST" id="formSignup">
                 <div class="form-group">
                   <input type="text" id="signup-name" class="input-box" name="name" placeholder="Name" required aria-required="true"/>
                 </div>
                 <div class="form-group">
-                  <input type="text" id="signup-short_name" class="input-box" name="shortName" placeholder="Short Name" required aria-required="true" pattern=".{3,5}" title="3 to 5 characters"/>
+                  <input type="text" id="signup-short_name" class="input-box" name="shortName" placeholder="Short Name required aria-required="true" pattern=".{3,5}" title="3 to 5 characters"/> 
+                  <span class="error">Test</span>                
                 </div>
                 <div class="form-group">
                   <input type="email" id="signup-email" class="input-box" name="email" placeholder="Email" required aria-required="true"/>
@@ -59,8 +59,8 @@
                         $('input#signup-twitter').css("padding-left","20px");
                         $('input#signup-twitter').css("width","315px");
                     }
-                    </script>   
-                  
+                 </script>   
+                    <span class="error">Test</span> 
                 </div>
                 <div class="form-group">
                   <input type="url" id="signup-web" class="input-box" name="web" placeholder="Website"/>

@@ -258,10 +258,6 @@ main{
     border-bottom: 1px solid #d9d9d9;
     margin-bottom: 5px;
 }
-.modal-content .modal-body p.error{
-    color: red;
-    margin-bottom: 10px;
-}
 .modal-content .modal-body .form-group{
         margin-bottom: 10px;
 }
@@ -284,6 +280,26 @@ main{
     text-decoration: underline;
 }
 /** END MODAL CSS **/
+
+.error{
+    background-color: #FF0202;
+    padding: 6px 12px;
+    color: white;
+    font-weight: bold;
+    margin-left: 355px;
+    margin-top: -32px;
+    position: absolute;
+}
+.error:before {
+    content: '';
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid #FF0202;
+    border-left: 8px solid transparent;
+    left: -16px;
+    position: absolute;
+    top: 5px;
+}
 
 footer{
     background-color: #333333;
