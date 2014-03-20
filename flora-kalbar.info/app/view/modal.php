@@ -38,7 +38,9 @@
               <div class="clear"></div>
             </div>
             <div class="modal-body">
-              <form action="<?=$basedomain?>home/signup" method="POST">
+                <p class="error">UI ERROR</p>
+            
+              <form onsubmit="doSignup();" action="" method="POST" id="formSignup">
                 <div class="form-group">
                   <input type="text" id="signup-name" class="input-box" name="name" placeholder="Name" required aria-required="true"/>
                 </div>
@@ -67,7 +69,7 @@
                   <input type="text" id="signup-phone" class="input-box" name="phone" placeholder="Phone"/>
                 </div>
                 <div class="form-group">
-                  <input type="password" id="signup-password" class="input-box" name="pass" placeholder="Password" required aria-required="true"/>                  
+                  <input type="password" id="signup-password" class="input-box" name="pass" placeholder="Password" required aria-required="true" pattern=".{6,}" required title="6 characters minimum"/>                  
                 </div>
                 <div class="form-group">
                   <input type="password" id="signup-re_password" class="input-box" name="re_pass" placeholder="Retype Password" required aria-required="true" oninput="check(this)"/>
