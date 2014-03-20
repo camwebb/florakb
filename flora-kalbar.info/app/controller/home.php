@@ -36,9 +36,32 @@ class home extends Controller {
         $pass = $_POST["pass"];
         $re_pass = $_POST["re_pass"];
              
-        $checkEmail = $this->loginHelper->checkEmail($email);         
+        $checkEmail = $this->loginHelper->checkEmail($email);        
         $checkTwitter = $this->loginHelper->checkTwitter($twitter);
         $checkShortName = $this->loginHelper->checkShortName($shortName);
+        
+        if($checkEmail !== true || $checkTwitter !== true || $checkShortName !== true){
+            $statusEmail = "";
+            $msgEmail = "";
+            $statusTwitter = "";
+            $msgTwitter = "";
+            $statusShortname = "";
+            $statusShortname = "";
+            if($checkEmail !== true){
+                $statusEmail = "exist";
+                $msgEmail = "Email already exist";
+            }
+            if($checkTwitter !== true){
+                $statusTwitter = "exist";
+                $msgTwitter = "Twitter already exist";
+            }
+            if($checkShortName !== true){
+                $statusShortname = "exist";
+                $statusShortname = "Shortname already exist";
+            }
+                echo json_encode(array('statusEmail' => $statusEmail, 'msgEmail' => $msgEmail, 'statusTwitter' => $statusTwitter, 'msgTwitter' => $msgTwitter, 'statusShortname' => $statusShortname, 'msgShortname' => $statusShortname));
+            exit;
+        }
         
         if($checkEmail && $checkTwitter && $checkShortName){
             $data = array();
