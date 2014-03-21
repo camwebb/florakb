@@ -36,7 +36,7 @@ class zip extends Controller {
      * @see imagezip class
      * 
      * */
-    function extract(){
+    function extract($status=NULL,$msg=NULL,$data=NULL){
         global $CONFIG;
         
         $name = $_POST['imagezip'];
@@ -58,10 +58,19 @@ class zip extends Controller {
         if(!empty($name)){
             
             if(preg_match('#\.(zip|ZIP)$#i', $name)){
+                
                 $tmp_path = md5($name);
                 $path_extract = $path_file.'imgprocess/'.$tmp_path;
                 $file = $path_file.$name;
-
+                
+                //check file zip exist
+                if(!file_exists($file)){
+                    $status = "error";
+                    $msg = "The system cannot find the file specified";
+                    
+                    echo json_encode(array('status' => $status, 'message' => $msg));
+                    exit;
+                }
                 
                 if($CONFIG['default']['unzip'] == 's_linux'){
                     s_linux_unzip($file, $path_extract);
@@ -83,7 +92,7 @@ class zip extends Controller {
                 $images = $this->GetContents($path_extract);
                 $list = count($images);
                 
-                $dataInsert = array();
+                $dataNotExist = array();
                 
                 foreach ($images as $image){
                     $entry = $image['filename'];
@@ -168,19 +177,28 @@ class zip extends Controller {
                                     
                                     //add file information to array
                                     $fileToInsert = array('filename' => $entry,'md5sum' => $image_name_encrypt, 'directory' => $folder, 'mimetype' => $fileinfo['mime']);
-                                    $insertImage = $this->imagezip->insertImage($validateUsername['personID'], $fileToInsert);
-                                    array_push($dataInsert,$fileToInsert);                                    
+                                    
+                                    //check data exist in db
+                                    $dataExist = $this->imagezip->dataExist($validateUsername['personID'], $entry);
+                                    
+                                    //if data exist, update data
+                                    if($dataExist){
+                                        $insertImage = $this->imagezip->insertImage($validateUsername['personID'], $fileToInsert);
+                                    }else{
+                                        //add data information to array
+                                        array_push($dataNotExist,$fileToInsert);
+                                    }                         
                                 }
                             }
                         }
                     }
                 }
                 
-                //add file info to database here $validateUsername                
-                
-                
+                //send dataNotExist information to user   
+
                 $status = 'success';
                 $msg = 'File extracted';
+                $data['dataNotExist'] = $dataNotExist;
                 
                 deleteDir($path_extract);
             }else{
@@ -192,7 +210,7 @@ class zip extends Controller {
             $msg = 'Filename can not be empty';
         }
         
-        echo json_encode(array('status' => $status, 'message' => $msg));
+        echo json_encode(array('status' => $status, 'message' => $msg, 'data' => $data));
         exit;
     }
     
@@ -299,6 +317,13 @@ class zip extends Controller {
         }  
         return $return;
         exit;
+    }
+    
+    function test(){
+        $id = '34';
+        $filename = 'IMG_0202.jpg';
+        $dataExist = $this->imagezip->dataExist($id, $filename);
+        pr($dataExist); exit;
     }
 	
 }
