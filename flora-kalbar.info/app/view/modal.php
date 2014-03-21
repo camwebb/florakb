@@ -39,16 +39,16 @@
             </div>
             <div class="modal-body">
             <form action="" method="POST" id="formSignup">
-                <div class="form-group">
+                <div class="form-group" id="nameGroup">
                   <input type="text" id="signup-name" class="input-box" name="name" placeholder="Name" required aria-required="true"/>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="shortnameGroup">
                   <input type="text" id="signup-short_name" class="input-box" name="shortName" placeholder="Short Name" required aria-required="true" pattern=".{3,5}" title="3 to 5 characters"/>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="emailGroup">
                   <input type="email" id="signup-email" class="input-box" name="email" placeholder="Email" required aria-required="true"/>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="twitterGroup">
                   <label for='signup-twitter' id="usernameValue" style="padding-top: 10px; color: #555; position: absolute; top: 218px; left: 20px; display: none;">@</label>
                     <input type="text" id="signup-twitter" class="input-box" name="twitter" placeholder="Twitter" oninput="usernameValue()"/>
                  <script language='javascript' type='text/javascript'>
@@ -91,6 +91,25 @@
             <div class="modal-footer"> 
                 Already a member? <a href="#" class="signup">Login now!</a><br />
                 <a href="#">Forgotten password?</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SIGNUP NOTIF-->
+<div id="modal-signupNotif" class="modal-background">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+              <form action="" role="form">
+                <div class="form-group">
+                  <input type="email" id="login-email" class="input-box" name="email" placeholder="Email"/>
+                </div>
+                <div class="form-group">
+                  <input type="password" id="login-password" class="input-box" name="pass" placeholder="Password"/>
+                </div>
+                <input type="submit" class="btn" style="width: 100px;" value="Signup" />
+              </form>
             </div>
         </div>
     </div>

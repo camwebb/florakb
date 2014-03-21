@@ -35,18 +35,26 @@ class home extends Controller {
         $phone = $_POST["phone"];
         $pass = $_POST["pass"];
         $re_pass = $_POST["re_pass"];
-             
+         
+        $checkName = $this->loginHelper->checkName($name);       
         $checkEmail = $this->loginHelper->checkEmail($email);        
         $checkTwitter = $this->loginHelper->checkTwitter($twitter);
         $checkShortName = $this->loginHelper->checkShortName($shortName);
         
-        if($checkEmail !== true || $checkTwitter !== true || $checkShortName !== true){
+        if($checkName !== true || $checkEmail !== true || $checkTwitter !== true || $checkShortName !== true){
+            $statusName = "";
+            $msgname = "";
             $statusEmail = "";
             $msgEmail = "";
             $statusTwitter = "";
             $msgTwitter = "";
             $statusShortname = "";
             $statusShortname = "";
+            
+            if($checkName !== true){
+                $statusName = "exist";
+                $msgName = "Name already exist";
+            }
             if($checkEmail !== true){
                 $statusEmail = "exist";
                 $msgEmail = "Email already exist";
@@ -57,17 +65,20 @@ class home extends Controller {
             }
             if($checkShortName !== true){
                 $statusShortname = "exist";
-                $statusShortname = "Shortname already exist";
+                $msgShortname = "Shortname already exist";
             }
-                echo json_encode(array('statusEmail' => $statusEmail, 'msgEmail' => $msgEmail, 'statusTwitter' => $statusTwitter, 'msgTwitter' => $msgTwitter, 'statusShortname' => $statusShortname, 'msgShortname' => $statusShortname));
-            exit;
+                echo json_encode(array('statusName' => $statusName, 'msgName' => $msgName, 'statusEmail' => $statusEmail, 'msgEmail' => $msgEmail, 'statusTwitter' => $statusTwitter, 'msgTwitter' => $msgTwitter, 'statusShortname' => $statusShortname, 'msgShortname' => $msgShortname));
+                exit;
         }
         
-        if($checkEmail && $checkTwitter && $checkShortName){
+        if($checkName && $checkEmail && $checkTwitter && $checkShortName){
             $data = array();
             $data[]= array('name'=>$name, 'shortName'=>$shortName, 'email'=>$email, 'twitter'=>$twitter, 'website'=>$website, 'phone'=>$phone, 'password'=>$pass);
             $signup = $this->loginHelper->createUser($data);
+            echo json_encode(array('test' => 'test'));
+            exit;
         }
+        exit;
     }
 	
 	function fetchExcel($sheet=1,$startRow=1,$startCol=0)

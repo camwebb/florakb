@@ -63,6 +63,19 @@ class loginHelper extends Database {
 		return false;
 	}
     
+    function checkName($data=false)
+    {
+        if($data==false) return false;
+        $sql = "SELECT COUNT(`id`) AS total FROM `person` WHERE `name` = '".$data."' ";
+        $res = $this->fetch($sql,0);
+        
+        if ($res['total'] > 0){
+            logFile('Name EXIST/');
+            return false;
+        }
+        return true;
+    }
+    
     function checkEmail($data=false)
     {
         if($data==false) return false;
