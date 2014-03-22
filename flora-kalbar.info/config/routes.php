@@ -13,6 +13,7 @@ $ROUTES = array(
 				'tulisan',
 				'testing',
 				'upload',
-                'zip',                
+                'zip', 
+                'login'               
                 );
 ?>
