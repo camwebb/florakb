@@ -9,12 +9,12 @@
               <div class="clear"></div>
             </div>
             <div class="modal-body">
-              <form action="" role="form">
+              <form action="<? echo $basedomain;?>login/doLogin" method="POST" id="formLogin">
                 <div class="form-group">
-                  <input type="email" id="login-email" class="input-box" name="email" placeholder="Email"/>
+                  <input type="email" id="login-email" class="input-box" name="email" placeholder="Email" required aria-required="true"/>
                 </div>
                 <div class="form-group">
-                  <input type="password" id="login-password" class="input-box" name="pass" placeholder="Password"/>
+                  <input type="password" id="login-password" class="input-box" name="pass" placeholder="Password" required aria-required="true"/>
                 </div>
                 <input type="submit" class="btn" style="width: 100px;" value="Signup" />
               </form>
@@ -61,7 +61,7 @@
                   
                 </div>
                 <div class="form-group">
-                  <input type="url" id="signup-web" class="input-box" name="web" placeholder="Website"/>
+                  <input type="url" id="signup-website" class="input-box" name="website" placeholder="Website"/>
                 </div>
                 <div class="form-group">
                   <input type="text" id="signup-phone" class="input-box" name="phone" placeholder="Phone"/>

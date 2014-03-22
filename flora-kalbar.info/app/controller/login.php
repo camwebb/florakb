@@ -27,19 +27,19 @@ class login extends Controller {
 	
     /**
      * @todo create new user
-     * 
-     * @return statusName and msgName = status and message for validating name
-     * @return statusEmail and msgEmail = status and message for validating email
-     * @return statusTwitter and msgTwitter = status and message for validating twitter
-     * @return statusShortname and msgShortname = status and message for validating shortname
-     */
-    function signup(){
+     *           
+     * @return $statusName and $msgName = status and message for validating name
+     * @return $statusEmail and $msgEmail = status and message for validating email
+     * @return $statusTwitter and $msgTwitter = status and message for validating twitter
+     * @return $statusShortname and $msgShortname = status and message for validating shortname                    
+     */    
+    function doSignup(){
         
         $name = $_POST["name"];
         $shortName = $_POST["shortName"];
         $email = $_POST["email"];
         $twitter = $_POST["twitter"];
-        $website = $_POST["web"];
+        $website = $_POST["website"];
         $phone = $_POST["phone"];
         $pass = $_POST["pass"];
         $re_pass = $_POST["re_pass"];
@@ -83,11 +83,31 @@ class login extends Controller {
             $data = array();
             $data[]= array('name'=>$name, 'shortName'=>$shortName, 'email'=>$email, 'twitter'=>$twitter, 'website'=>$website, 'phone'=>$phone, 'password'=>$pass);
             $signup = $this->loginHelper->createUser($data);
-            //echo json_encode(array('test' => 'test'));
+            echo json_encode(array('test' => 'test'));
             exit;
         }
         exit;
     }
+    
+    /**
+     * @todo enter the site as user
+     * 
+     */        
+    function doLogin(){
+        $email = $_POST["email"]; 
+        $pass = $_POST["pass"];
+        
+        // To protect MySQL injection
+        $email = stripslashes($email);
+        $pass = stripslashes($pass);
+        $email = mysql_real_escape_string($email);
+        $pass = mysql_real_escape_string($pass); 
+        
+        //query data
+        $data = array();
+        $data[]= array('email'=>$email, 'password'=>$pass);
+        $login = $this->loginHelper->loginUser($data); 
+    }            
 }
 
 ?>

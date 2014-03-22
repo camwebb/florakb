@@ -4,7 +4,7 @@ $('#formSignup').submit(function(event) {
     event.preventDefault();
 
     $.ajax({
-        url: baseUrl+"login/signup",
+        url: baseUrl+"login/doSignup",
         type: 'POST',
         data: $(this).serialize(),
         success: function(data) {

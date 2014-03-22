@@ -16,6 +16,18 @@ class loginHelper extends Database {
 		return false;
 	}
 	
+    /**
+     * @todo insert data user into person and florakb_person
+     * 
+     * @param $data[0]['name'] = name of user
+     * @param $data[0]['shortname'] = code shortname of user
+     * @param $data[0]['email'] = email of user
+     * @param $data[0]['twitter'] = twitter of user
+     * @param $data[0]['website'] = website of user
+     * @param $data[0]['phone'] = phone of user
+     * @param $data[0]['pass'] = password of user
+     * @return boolean
+     */
 	function createUser($data=false)
 	{
 		if($data==false) return false;
@@ -63,6 +75,12 @@ class loginHelper extends Database {
 		return false;
 	}
     
+    /**
+     * @todo check if name of user exist or not
+     * 
+     * @param $data = inputted name
+     * @return boolean
+     */
     function checkName($data=false)
     {
         if($data==false) return false;
@@ -76,6 +94,12 @@ class loginHelper extends Database {
         return true;
     }
     
+    /**
+     * @todo check if email of user exist or not
+     * 
+     * @param $data = inputted email
+     * @return boolean
+     */
     function checkEmail($data=false)
     {
         if($data==false) return false;
@@ -89,6 +113,12 @@ class loginHelper extends Database {
         return true;
     }
     
+    /**
+     * @todo check if twitter of user exist or not
+     * 
+     * @param $data = inputted twitter
+     * @return boolean
+     */
     function checkTwitter($data)
     {
         $sql = "SELECT COUNT(`id`) AS total FROM `person` WHERE `twitter` = '".$data."' ";
@@ -101,6 +131,12 @@ class loginHelper extends Database {
         return true;
     }
     
+    /**
+     * @todo check if shortname of user exist or not
+     * 
+     * @param $data = inputted shortname
+     * @return boolean
+     */
     function checkShortName($data=false)
     {
         if($data==false) return false;
@@ -112,6 +148,28 @@ class loginHelper extends Database {
             return false;
         }
         return true;
+    }
+    
+    function loginUser($data=false)
+    {
+        if($data==false) return false;
+        //Select email to get ID
+        $sql = "SELECT id FROM `person` WHERE `email` = '".$data[0]['email']."' ";
+        $res = $this->fetch($sql,0);
+        //select salt from ID
+        $sql2 = "SELECT salt,password FROM `florakb_person` WHERE `id` = '".$res['id']."' ";
+        $res2 = $this->fetch($sql2,1,1);
+        //match email and password
+        $salt = $res2[0]['salt'];
+        //$salt = '12345678Pn';
+		$password = sha1($data[0]['password']."$salt");
+        if(count($res)==1 && $res2[0]['password']==$password){
+            echo 'hahaha';
+        }
+        else{
+            echo count($res).'|||'.$res2[0]['password'].'|||'.$password.'|||'.$data[0]['password'].'|||'.$salt;
+        }
+        
     }
 	
 	function setSession($data=false)
