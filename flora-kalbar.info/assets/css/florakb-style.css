@@ -196,9 +196,12 @@ nav #nav-box #login .login{
             -webkit-border-radius: 0px 3px 3px 0px;
             float: left;
 }
+nav #nav-box #login .welcome{
+            float: left;
+}
 
 main{
-    min-height: 500px;
+    min-height: 450px;
 }
 
 /** MODAL CSS **/

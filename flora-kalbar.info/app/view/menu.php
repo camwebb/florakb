@@ -42,10 +42,21 @@ $page = @$DATA['default']['uri']['page'];
     	</ul>
     </div>
     
+    <?php 
+        if ($_SESSION){
+    ?>
+    
+    <div id="login"> 
+        <a href="<?=$basedomain?>login/doLogout" class="btn welcome">Welcome, <?php echo $_SESSION['name']?></a> 
+    </div>
+    <div class="clear"></div>
+    
+    <?php } else { ?>
     <div id="login"> 
         <a href="#signup-modal" id="btn-signup" class="btn signup">Sign Up</a> 
         <a href="#login-modal" id="btn-login" class="btn login">Login</a> 
     </div>
     <div class="clear"></div>
+    <?php }?>
 </div>
 </div>

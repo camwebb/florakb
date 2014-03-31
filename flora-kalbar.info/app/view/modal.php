@@ -16,7 +16,7 @@
                 <div class="form-group">
                   <input type="password" id="login-password" class="input-box" name="pass" placeholder="Password" required aria-required="true"/>
                 </div>
-                <input type="submit" class="btn" style="width: 100px;" value="Signup" />
+                <input type="submit" class="btn" style="width: 100px;" value="Login" />
               </form>
             </div>
             <div class="modal-footer"> 

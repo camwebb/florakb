@@ -91,7 +91,6 @@ class login extends Controller {
     
     /**
      * @todo enter the site as user
-     * 
      */        
     function doLogin(){
         $email = $_POST["email"]; 
@@ -107,7 +106,15 @@ class login extends Controller {
         $data = array();
         $data[]= array('email'=>$email, 'password'=>$pass);
         $login = $this->loginHelper->loginUser($data); 
-    }            
+        $startSession = $this->loginHelper->setSession($login); 
+    } 
+    
+    /**
+     * @todo log out as user
+     */
+    function doLogout(){
+        $logout = $this->loginHelper->logoutUser(); 
+    }           
 }
 
 ?>

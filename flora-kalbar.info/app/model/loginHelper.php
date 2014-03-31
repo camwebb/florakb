@@ -34,6 +34,7 @@ class loginHelper extends Database {
 		
 		$salt = '12345678PnD';
 		$password = sha1($data[0]['password'].$salt);
+        //echo $password.' = '.$data[0]['password'].' + '.$salt;
 		$startTransaction = $this->begin();
 		if (!$startTransaction) return false;
 		
@@ -150,31 +151,63 @@ class loginHelper extends Database {
         return true;
     }
     
+    
+    /**
+     * @todo validate data into login process
+     * 
+     * @param $data = email and password
+     * @var $sql = get data from the email inputted
+     * @var $sql2 = get password the other database 
+     */
     function loginUser($data=false)
     {
         if($data==false) return false;
         //Select email to get ID
-        $sql = "SELECT id FROM `person` WHERE `email` = '".$data[0]['email']."' ";
+        $sql = "SELECT * FROM `person` WHERE `email` = '".$data[0]['email']."' ";
         $res = $this->fetch($sql,0);
+        if(empty($res)){return false;}
+        
         //select salt from ID
         $sql2 = "SELECT salt,password FROM `florakb_person` WHERE `id` = '".$res['id']."' ";
         $res2 = $this->fetch($sql2,1,1);
         //match email and password
-        $salt = $res2[0]['salt'];
-        //$salt = '12345678Pn';
-		$password = sha1($data[0]['password']."$salt");
-        if(count($res)==1 && $res2[0]['password']==$password){
-            echo 'hahaha';
+        $salt = $res2[0]['salt']; 
+        $password = sha1($data[0]['password']."$salt");
+        if(count($res['id'])==1 && $res2[0]['password']==$password){
+        //if(count($res)==1){
+            $user = array();
+            $user[]= array('id'=>$res['id'], 'name'=>$res['name'], 'email'=>$res['email'], 'twitter'=>$res['twitter'], 'website'=>$res['website'], 'phone'=>$res['phone'], 'short_namecode'=>$res['short_namecode']);
+            return $user;
         }
         else{
-            echo count($res).'|||'.$res2[0]['password'].'|||'.$password.'|||'.$data[0]['password'].'|||'.$salt;
+            echo $password.' = '.$data[0]['password'].' + '.$salt;
+            return false;
         }
         
     }
 	
+    /**
+     * @todo create session after success login
+     * 
+     * @param $data = userdata(id,name,email,twitter,website,phone,short_namecode)
+     */
 	function setSession($data=false)
 	{
-		
+        if($data==false) return false;
+		session_start();
+        // store session data
+        $_SESSION['id']=$data[0]['id'];
+        $_SESSION['name']=$data[0]['name'];
+        $_SESSION['email']=$data[0]['email'];
+        $_SESSION['twitter']=$data[0]['twitter'];
+        $_SESSION['website']=$data[0]['website'];
+        $_SESSION['phone']=$data[0]['phone'];
+        $_SESSION['short_namecode']=$data[0]['short_namecode'];
 	}
+    
+    function logoutUser()
+    {
+        session_destroy();    
+    }
 }
 ?>
