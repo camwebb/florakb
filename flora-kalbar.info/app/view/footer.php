@@ -1,1 +1,0 @@
-<?=$LOCALE['default']['footer']?>
