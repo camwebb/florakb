@@ -16,6 +16,7 @@ class Database
 	protected $config = array();
 	protected $dbConfig = array();
 	protected $keyconfig = null;
+	var $link = false;
 	
 	public function __construct() {
 		
@@ -61,10 +62,10 @@ class Database
 				{
 					
 					if ($CONFIG[$this->keyconfig]['app_status'] == 'Production'){
-						$connect = @mysql_connect($dbConfig[$dbuse]['host'], $dbConfig[$dbuse]['user'], $dbConfig[$dbuse]['pass']) or die ($this->db_error('Connection error'));
+						$connect = @mysql_connect(trim($dbConfig[$dbuse]['host']), $dbConfig[$dbuse]['user'], $dbConfig[$dbuse]['pass']) or die ($this->db_error('Connection error'));
 					
 					}else{
-						$connect = mysql_connect($dbConfig[$dbuse]['host'], $dbConfig[$dbuse]['user'], $dbConfig[$dbuse]['pass']) or die ($this->db_error('Connection error'));
+						$connect = mysql_connect(trim($dbConfig[$dbuse]['host']), $dbConfig[$dbuse]['user'], $dbConfig[$dbuse]['pass']) or die ($this->db_error('Connection error'));
 						
 					}
 					
@@ -72,13 +73,16 @@ class Database
 					if ($connect){
 					
 						if ($CONFIG[$this->keyconfig]['app_status'] == 'Production'){
-							@mysql_select_db($dbConfig[$dbuse]['name'], $connect) or die ($this->db_error('No Database Selected'));	
+							@mysql_select_db(trim($dbConfig[$dbuse]['name']), $connect) or die ($this->db_error('No Database Selected'));	
 						
 						}else{
-							mysql_select_db($dbConfig[$dbuse]['name'], $connect) or die ($this->db_error('No Database Selected'));
+							mysql_select_db(trim($dbConfig[$dbuse]['name']),$connect) or die ($this->db_error('No Database Selected'));
+							
+							// mysql_select_db('florakalbar', $connect) or die ($this->db_error('No Database Selected'));
 							
 						}
 						
+						$this->link = $connect;
 						return $connect;
 					
 					}else{
@@ -122,7 +126,7 @@ class Database
 				break;
 			
 		}
-		$this->close_connection();
+		// $this->close_connection();
 		
 		return $this->var_query;
 	}
@@ -194,7 +198,12 @@ class Database
 	
 	public function insert_id()
 	{
-		return mysql_insert_id();
+		$res['lastID'] = 0;
+		$sql = "SELECT LAST_INSERT_ID() AS lastID";
+		$res = $this->fetch($sql);
+		
+		if ($res['lastID']>0)return $res['lastID'];
+		return false;
 	}
 	
 	public function close_connection()
@@ -206,7 +215,7 @@ class Database
 		switch ($dbConfig[0]['server'])
 		{
 			case 'mysql':
-				return mysql_close();
+				return mysql_close($this->link);
 				break;
 		   
 		}
@@ -237,7 +246,7 @@ class Database
 			switch ($dbConfig[$dbuse]['server'])
 			{
 				case 'mysql':
-					return mysql_error();
+					return mysql_error($this->link);
 					break;
 				
 			}
@@ -261,7 +270,53 @@ class Database
 		
 	}
 	
+	function autocommit($val=0,$dbuse=0)
+	{
+		$command = "SET autocommit={$val};";
+		$result = $this->query($command) or die ($this->error('autocommit failed'));
+		// if (!$this->link){
+			// $this->link = $this->open_connection(0);
+		// }
+		
+		// return mysql_autocommit($this->link, false);
+		
+	}
 	
+	function commit($dbuse=0)
+	{
+		$command = "COMMIT;";
+		$result = $this->query($command) or die ($this->error('commit failed'));
+		// mysql_commit();
+	}
+	
+	function rollback($dbuse=0)
+	{
+		$command = "ROLLBACK;";
+		$result = $this->query($command) or die ($this->error('rollback failed'));
+		// if (!$this->link){
+			// $this->link = $this->open_connection(0);
+		// }
+		
+		// pr($this->link);
+		// mysql_rollback($this->link);
+		
+	}
+	
+	function begin($dbuse=0)
+	{
+		
+		$this->autocommit();
+		$command = "START TRANSACTION;";
+		$result = $this->query($command) or die ($this->error('commit failed'));
+		// if (!$this->link){
+			// $this->link = $this->open_connection(0);
+			
+		// }
+		// mysql_
+		// $res = mysql_begin_transaction($this->link);
+		if ($result) return true;
+		return false;
+	}
 }
 
 
