@@ -5,8 +5,10 @@ class Application {
 	var $page;
 	var $func;
 	var $configkey = 'default';
+	var $view = false;
 	
 	protected $php_ext = "";
+	protected $html_ext = "";
 	protected $sessi = "";
 	protected $user = "";
 	
@@ -22,10 +24,19 @@ class Application {
 			$this->configkey = 'dashboard';
 		}
 		$this->php_ext = $CONFIG[$this->configkey]['php_ext'];
+		$this->html_ext = $CONFIG[$this->configkey]['html_ext'];
 		$this->page = $DATA[$this->configkey]['page'];
 		$this->func = $DATA[$this->configkey]['function'];
 		
+		$this->loadLibrary();
 		
+	}
+	/* load every library */
+	function loadLibrary()
+	{
+		
+		$GLOBALS['CODEKIR']['smarty'] = $this->setSmarty();
+		$GLOBALS['CODEKIR']['purifier'] = $this->setPurifier();
 		
 	}
 	
@@ -40,6 +51,28 @@ class Application {
 		$view->setConfigDir($SMARTY[0]['config']);
 		
 		return $view;
+	}
+	
+	function setPurifier()
+	{
+		
+		$filePath = LIBS.'purifier/library/HTMLPurifier.auto.php';
+		
+		if (is_file($filePath)){
+			
+			require_once $filePath;
+		
+			$puri_config = HTMLPurifier_Config::createDefault();
+			$puri_config->set('Core.Encoding', 'UTF-8'); // replace with your encoding
+			// $puri_config->set('HTML.Doctype', 'XHTML 1.0 Transitional'); // replace with your doctype
+			
+			$purifier = new HTMLPurifier($puri_config);
+			
+			return $purifier;
+		}
+		
+		return false;
+		
 	}
 	
 	function excel($file=false)
@@ -67,10 +100,7 @@ class Application {
 	function loadView($fileName='home', $data="")
 	{
 		
-		
 		global $CONFIG, $basedomain, $app_domain;
-		
-		
 		
 		if ($fileName == "") return false;
 		if (array_key_exists('admin', $CONFIG)){
@@ -87,6 +117,9 @@ class Application {
 			}
 		}
 		
+		if (!$this->view) $this->view = $this->setSmarty();
+		
+		$this->view->assign('basedomain',$basedomain);
 		
 		/* include file view */
 		if (is_file(APP_VIEW.$fileName.$html_ext)) {

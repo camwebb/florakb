@@ -12,7 +12,6 @@
  * Date : 2012-07-31
  */
 
-defined ('MICRODATA') or exit ( 'Forbidden Access' );
  
 class Session
 {
@@ -63,16 +62,48 @@ class Session
 		return true;
 	}
 	
-	public function set_session($dataSesion)
+	public function set_session($dataSesion=false, $sessName=false)
 	{
-		$_SESSION[$dataSesion['ses_name']] = $dataSesion['ses_value'];
+		global $CONFIG;
+		if (array_key_exists('admin', $CONFIG)){
+			$configkey = 'admin';
+		}
+		if (array_key_exists('default', $CONFIG)){
+			$configkey = 'default';
+		}
+		if ($sessName){
+			$_SESSION[$sessName] = $dataSesion;
+		}else{
+			
+			// default session App
+			$uniqSess = sha1($CONFIG[$configkey]['root_path'].'codekir-v0.1');
+			$_SESSION[$uniqSess]['user'] = $dataSesion;
+		}
+		
 		
 		return true;
 	}
 	
-	public function get_session($dataSession)
+	public function get_session($sessName=false)
 	{
-		$session->$dataSession['title'] = $_SESSION[$dataSession['ses_name']];
+		global $CONFIG;
+		
+		if (array_key_exists('admin', $CONFIG)){
+			$configkey = 'admin';
+		}
+		if (array_key_exists('default', $CONFIG)){
+			$configkey = 'default';
+		}
+		
+		$session = false;
+		
+		if ($sessName){
+			$session[$sessName] = $_SESSION[$sessName];
+		}else{
+			$uniqSess = sha1($CONFIG[$configkey]['root_path'].'codekir-v0.1');
+			if (isset($_SESSION[$uniqSess])) $session['ses_user'] = $_SESSION[$uniqSess];
+		}
+		
 		
 		return $session;
 	}

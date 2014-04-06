@@ -6,10 +6,11 @@
  */
  
 define ('APPPATH', 'app/');
-define ('MICRODATA', true);
+define ('CODEKIR', true);
 define ('LIBS', 'libs/');
 define ('LOGS', 'logs/');
 define ('CACHE', 'cache/');
+define ('TMP', 'tmp/');
 
 require_once (COREPATH.'loader.php');
 
@@ -26,6 +27,7 @@ if (is_array($CONFIG)) {
 
 $setPage = NULL;
 $setFunction = NULL;
+$getURI = array();
 
 /* Get page berdasarkan method GET 
 $baseURI = ($_GET);
@@ -39,7 +41,7 @@ $baseURI = strip_tags($_SERVER['QUERY_STRING']);
 	yeah.... :-)
 */
 
-// pr($_SERVER);exit;
+
 if ($baseURI){
 
 	$explURI = explode('/', $baseURI);
@@ -74,7 +76,7 @@ if ($vPage){
 	
 }
 
-// pr($validation);exit;
+
 if (isset($validation)) {
 	
 	if (isset($validation['pid'])) {

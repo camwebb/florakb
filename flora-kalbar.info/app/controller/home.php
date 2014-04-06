@@ -1,5 +1,4 @@
 <?php
-defined ('MICRODATA') or exit ( 'Forbidden Access' );
 
 class home extends Controller {
 	

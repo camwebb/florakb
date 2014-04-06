@@ -4,7 +4,7 @@ class Controller extends Application{
 	
 	
 	var $GETDB = null;
-	
+
 	public function __construct(){
 		
 		parent::__construct();
@@ -18,17 +18,25 @@ class Controller extends Application{
 	function index()
 	{
 		
-		
-		
-		global $CONFIG, $LOCALE, $basedomain, $title, $DATA, $app_domain;
+		global $CONFIG, $LOCALE, $basedomain, $title, $DATA, $app_domain, $CODEKIR;
 		$filePath = APP_CONTROLLER.$this->page.$this->php_ext;
 		
+		$this->view = $CODEKIR['smarty'];
+		$this->view->assign('basedomain',$basedomain);
+		$this->view->assign('page',$DATA[$this->configkey]);
+		
+		if ($this->configkey=='default')$this->view->assign('user',$this->isUserOnline());
+		if ($this->configkey=='admin')$this->view->assign('admin',$this->isAdminOnline());
+		
+		// $this->inject();
+		// vd($this->isAdminOnline());
+		// exit;
 		if (file_exists($filePath)){
 			
 			if ($DATA[$this->configkey]['page']!=='login'){
 				
 				if (array_key_exists('admin',$CONFIG)) {
-					if (!isset($_SESSION['user'])){
+					if (!$this->isAdminOnline()){
 						redirect($basedomain.$CONFIG[$this->configkey]['login']);
 						exit;
 					}
@@ -51,7 +59,7 @@ class Controller extends Application{
 				$function = $this->func;
 				
 				$content = $createObj->$function();
-				
+				$this->view->assign('content',$content);
 			} else {
 				
 				if ($config['app_debug'] == TRUE) {
@@ -64,12 +72,14 @@ class Controller extends Application{
 				
 			}
 			
-			$masterTemplate = APP_VIEW.'master_template'.$this->php_ext;
+			// $masterTemplate = APP_VIEW.'master_template'.$this->php_ext;
+			$masterTemplate = APP_VIEW.'master_template'.$this->html_ext;
 			if (file_exists($masterTemplate)){
 				
 				$title = $this->page;
-				
-				include $masterTemplate;
+				// $this->view->display(APP_VIEW.$fileName);
+				$this->view->display($masterTemplate);
+				// include $masterTemplate;
 			
 			}else{
 				
@@ -84,14 +94,40 @@ class Controller extends Application{
 	{
 		$session = new Session;
 		
-		$userOnline = @$_SESSION['user'];
+		// $userOnline = @$_SESSION['user'];
+		$userOnline = $session->get_session();
 		
 		if ($userOnline){
-			return $userOnline;
+			return $userOnline['ses_user'];
 		}else{
 			return false;
 		}
 		
+	}
+	
+	function isAdminOnline()
+	{
+		global $CONFIG;
+		
+		if (!$this->configkey) $this->configkey = 'admin';
+		$uniqSess = sha1($CONFIG['admin']['root_path'].'codekir-v0.1'.$this->configkey);
+		$session = new Session;
+		$userOnline = $session->get_session();
+		
+		if ($userOnline){
+			return $userOnline['ses_admin'];
+		}else{
+			return false;
+		}
+		
+	}
+	
+	function inject()
+	{
+		$session = new Session;
+		
+		$data = array('id'=>1,'name'=>'ovancop');
+		$session->set_session($data);
 	}
 	
 	function loadLeftView($fileName, $data="")
@@ -132,13 +168,7 @@ class Controller extends Application{
 	function getModelHelper($param=false)
 	{
 		
-		/* 
-			Panggil helper model berdasarkan parameter 
-			hahahahaha
-		*/
-		//pr($param);
-		
-			//$getDB = $this->loadModel('helper_model');
+		//$getDB = $this->loadModel('helper_model');
 		
 		$showFunct = $this->GETDB->getData_sel($param);
 		
