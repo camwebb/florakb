@@ -1,5 +1,5 @@
 <?php
-defined ('MICRODATA') or exit ( 'Forbidden Access' );
+defined ('CODEKIR') or exit ( 'Forbidden Access' );
 
 class zip extends Controller {
 	

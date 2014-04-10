@@ -22,12 +22,17 @@ function zipExtract()
                 }).responseText;
                 
             var resultExtract = JSON.parse(extract_file);
-            console.log(resultExtract);
+
             if(resultExtract.status != 'error'){
                 $('#extract_zip').resetForm();
                 $(".message").html(resultExtract.message);
             }else{
+                $(".message").html('');
                 $(".errorbox").html(resultExtract.message);
+            }
+            
+            if(resultExtract.data){
+                console.log(resultExtract.data);
             }
         }
     }

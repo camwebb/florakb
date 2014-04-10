@@ -14,6 +14,7 @@ $ROUTES = array(
 				'testing',
 				'upload',
                 'zip', 
-                'login'               
+                'login',
+                'onebyone'               
                 );
 ?>
