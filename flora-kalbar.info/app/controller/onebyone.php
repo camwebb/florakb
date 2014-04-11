@@ -18,13 +18,25 @@ class onebyone extends Controller {
 	}
 	
 	public function index(){
-
 		return $this->loadView('onebyone');
-
 	}
+    
+    public function location(){
+        return $this->loadView('formLocation');
+    }
     
     public function person(){
         return $this->loadView('formPerson');
+    }
+    
+    public function taxon(){
+        return $this->loadView('formTaxon');
+    }
+    
+    public function insertPerson(){
+        echo "berhasil";
+        pr($_POST);
+        exit;
     }
 }
 
