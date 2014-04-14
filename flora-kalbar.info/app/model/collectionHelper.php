@@ -100,6 +100,386 @@ class collectionHelper extends Database {
 		return $query;
 	}
 	
+	
+	/* insert data to tmp table */
+	function tmp_data($newData=array())
+	{
+		if (!is_array($newData)) return false;
+		// pr($newData);
+		$defineTable = array('tmp_plant','tmp_taxon','tmp_photo','tmp_person','tmp_location');
+		
+		foreach ($defineTable as $k =>$val){
+			$fields = array();
+			$datas = array();
+			foreach ($newData[$k]['data'] as $value){
+				
+				foreach ($value as $key => $v){
+				
+					$fields[] = "`$key`";
+					$cleanData = addslashes($v);
+					$datas[] = "'$cleanData'";
+				}
+				
+				$tmpField = implode(',',$fields);
+				$tmpData = implode(',',$datas);
+				
+				$sql[] = "INSERT INTO {$val} ({$tmpField}) VALUES ({$tmpData})"; 
+				
+				$fields = null;
+				$datas = null;
+			}
+			
+		}
+		
+		
+		if ($sql){
+		
+			// pr($sql);exit;
+			$startTransaction = $this->begin();
+			if (!$startTransaction) return false;
+			logFile('====TRANSACTION READY====');
+			$failed = false;
+			
+			foreach ($sql as $key => $val){
+				logFile('Insert tmp data '.$key);
+				logFile($val);
+				$res = $this->query($val,1);
+				if (!$res) $failed = true;
+			}
+			
+			if ($failed){
+				$this->rollback();
+				logFile('====ROLLBACK TRANSACTION====');
+				return false;
+			}else{
+				$this->commit();
+				logFile('====COMMIT TRANSACTION====');
+				return true;
+			}
+			
+			echo 'success upload data to tmp';
+		}
+		
+		return false;
+		
+	}
+	
+	/* try to insert ref data */
+	function storeRefData($data)
+	{
+		
+		$tmpTable = array('tmp_taxon','tmp_person','tmp_location');
+		$defineTable = array('taxon','person','locn');
+		$defineFieldIndiv = array('taxon'=>'tmp_taxon_key','person'=>'tmp_person_key','locn'=>'tmp_location_key');
+		
+		$query = $data['query'];
+		$unique = $data['uniqkey'];
+		
+		if ($query){
+			$i = 0;
+			
+			// $startTransaction = $this->begin();
+			// if (!$startTransaction) return false;
+			logFile('====TRANSACTION READY====');
+			
+			$failed = false;
+			foreach ($defineTable as $val){
+				
+				$j = 0;
+				foreach ($query[$val] as $key => $value){
+					logFile($value);
+					$sql = $this->query($value);
+					if (!$sql) $failed = true;
+					usleep(50);
+					$lastID = $this->insert_id();
+					logFile($update);
+					$update = "UPDATE {$tmpTable[$i]} SET tmp_unique_key = '{$lastID}' WHERE 
+								unique_key = '{$unique[$val][$j]}' LIMIT 1";
+					// pr($update);
+					$res = $this->query($update,1);
+					if (!$res) $failed = true;
+					
+					// pr($tmpTable[$i]);
+					if ($defineTable[$i] == 'taxon'){
+						$updateTaxon = "UPDATE tmp_plant SET tmp_taxon_key = '{$lastID}' WHERE 
+								det = '{$unique[$val][$j]}' ";
+						// pr($updateTaxon);
+						$res = $this->query($updateTaxon,1);
+					}
+					
+					if ($defineTable[$i] == 'person'){
+						$updatePerson = "UPDATE tmp_plant SET tmp_person_key = '{$lastID}' WHERE 
+								obs_by = '{$unique[$val][$j]}' ";
+						// pr($updatePerson);
+						$res = $this->query($updatePerson,1);
+						$updatePhoto = "UPDATE  tmp_photo SET tmp_person_key = '{$lastID}' WHERE 
+								photographer = '{$unique[$val][$j]}' ";
+						// pr($updateLocn);
+						$res = $this->query($updatePhoto,1);
+					}
+					
+					if ($defineTable[$i] == 'locn'){
+						$updateLocn = "UPDATE tmp_plant SET tmp_location_key = '{$lastID}' WHERE 
+								locn = '{$unique[$val][$j]}' ";
+						// pr($updateLocn);
+						$res = $this->query($updateLocn,1);
+					}
+					
+					$j++;
+				}
+				
+				$i++;
+			}
+			
+			if ($failed){
+				// $this->rollback();
+				logFile('====ROLLBACK TRANSACTION====');
+				return false;
+			}else{
+				// $this->commit();
+				logFile('====COMMIT TRANSACTION====');
+				return true;
+			}
+		}
+		
+	}
+	
+	/* try to insert indiv data */
+	function storeIndivData($data)
+	{
+		
+		$tmpTable = array('tmp_photo');
+		$defineTable = array('indiv');
+		$defineFieldIndiv = array('indiv'=>'tmp_indiv_key');
+		
+		$query = $data['query'];
+		$unique = $data['uniqkey'];
+		
+		if ($query){
+			$i = 0;
+			
+			// $startTransaction = $this->begin();
+			// if (!$startTransaction) return false;
+			logFile('====TRANSACTION READY====');
+			
+			$failed = false;
+			foreach ($defineTable as $val){
+				
+				$j = 0;
+				foreach ($query[$val] as $key => $value){
+					logFile($value);
+					$sql = $this->query($value);
+					if (!$sql) $failed = true;
+					usleep(50);
+					$lastID = $this->insert_id();
+					logFile($update);
+					
+					if ($defineTable[$i]=='indiv'){
+						$updateIndiv = "UPDATE  tmp_plant SET tmp_indiv_key = '{$lastID}' WHERE 
+								unique_key = '{$unique[$val][$j]}'";
+						// pr($updateIndiv);
+						$res = $this->query($updateIndiv,1);
+						
+						$updateImg = "UPDATE {$tmpTable[$i]} SET tmp_indiv_key = '{$lastID}' WHERE 
+								tree_id = '{$unique[$val][$j]}'";
+						// pr($update);
+						$res = $this->query($updateImg,1);
+						if (!$res) $failed = true;
+					}
+					
+					
+					
+					$j++;
+				}
+				
+				$i++;
+			}
+			
+			if ($failed){
+				// $this->rollback();
+				logFile('====ROLLBACK TRANSACTION====');
+				return false;
+			}else{
+				// $this->commit();
+				logFile('====COMMIT TRANSACTION====');
+				return true;
+			}
+		}
+		
+	}
+	
+	/* try to insert indiv data */
+	function storeSingleData($data,$table='collector')
+	{
+		
+		
+		$defineTable = array($table);
+		$query = $data['query'];
+		$unique = $data['uniqkey'];
+		
+		if ($query){
+			$i = 0;
+			
+			// $startTransaction = $this->begin();
+			// if (!$startTransaction) return false;
+			logFile('====TRANSACTION READY====');
+			
+			$failed = false;
+			foreach ($defineTable as $val){
+				
+				$j = 0;
+				foreach ($query[$val] as $key => $value){
+					logFile($value);
+					$sql = $this->query($value);
+					if (!$sql) $failed = true;
+					
+					$j++;
+				}
+				
+				$i++;
+			}
+			
+			if ($failed){
+				// $this->rollback();
+				logFile('====ROLLBACK TRANSACTION====');
+				return false;
+			}else{
+				// $this->commit();
+				logFile('====COMMIT TRANSACTION====');
+				return true;
+			}
+		}
+		
+	}
+	
+	function storeMasterData($data)
+	{
+		
+		$tmpTable = array('tmp_plant');
+		$defineTable = array('det','obs','coll');
+		$defineFieldIndiv = array('coll'=>'tmp_coll_key');
+		
+		$query = $data['query'];
+		$unique = $data['uniqkey'];
+		
+		if ($query){
+			$i = 0;
+			
+			// $startTransaction = $this->begin();
+			// if (!$startTransaction) return false;
+			logFile('====TRANSACTION READY====');
+			
+			$failed = false;
+			foreach ($defineTable as $val){
+				
+				$j = 0;
+				foreach ($query[$val] as $key => $value){
+					logFile($value);
+					$sql = $this->query($value);
+					if (!$sql) $failed = true;
+					usleep(50);
+					$lastID = $this->insert_id();
+					logFile($update);
+					
+					if ($defineTable[$i]=='coll'){
+						$updateIndiv = "UPDATE tmp_plant SET tmp_coll_key = '{$lastID}' WHERE 
+								tmp_indiv_key = '{$unique[$val][$j]}'";
+						// pr($update);
+						logFile($updateIndiv);
+						$res = $this->query($updateIndiv,1);
+						if (!$res) $failed = true;
+					}
+					
+					
+					
+					$j++;
+				}
+				
+				$i++;
+			}
+			
+			if ($failed){
+				// $this->rollback();
+				logFile('====ROLLBACK TRANSACTION====');
+				return false;
+			}else{
+				// $this->commit();
+				logFile('====COMMIT TRANSACTION====');
+				return true;
+			}
+		}
+		
+	}
+	
+	/* get ref data */
+	function getRefData()
+	{
+		/* Scenario 
+		1. get data from tmp table
+		2. store to real table
+		3. return insert id
+		4. update tmp table id with new id
+		*/
+		$defineTable = array('tmp_taxon','tmp_photo','tmp_person','tmp_location');
+		$realTable = array('taxon','img','person','locn');
+		
+		$sql = array();
+		$dataArr = array();
+		$index = 1;
+		foreach ($defineTable as $k =>$val){
+		
+			$sqlP = "SELECT * FROM {$val}";
+			$resP = $this->fetch($sqlP,1,1);
+			// pr($resP);
+			if ($resP){
+				
+				$dataArr[$index]['data'] = $resP;
+				
+			}
+			
+			$index++;
+		}
+		
+		return $dataArr;
+	}
+	
+	/* get ref data */
+	function getMasterData($single=false, $table='tmp_plant')
+	{
+		/* Scenario 
+		1. get data from tmp table
+		2. store to real table
+		3. return insert id
+		4. update tmp table id with new id
+		*/
+		$defineTable = array($table);
+		if ($single){
+			$realTable = array('img');
+		}else{
+			$realTable = array('indiv','det','obs','coll','collector');
+		}
+		
+		
+		$sql = array();
+		$dataArr = array();
+		$index = 0;
+		foreach ($defineTable as $k =>$val){
+		
+			$sqlP = "SELECT * FROM {$val}";
+			$resP = $this->fetch($sqlP,1,1);
+			// pr($resP);
+			if ($resP){
+				
+				$dataArr[$index]['data'] = $resP;
+				
+			}
+			
+			$index++;
+		}
+		
+		return $dataArr;
+	}
+	
 	/* insert data from excel */
 	function insertCollFromExcel($newData=array())
 	{
@@ -112,6 +492,7 @@ class collectionHelper extends Database {
 		$insertRefData = false;
 		$insertMasterData = false;
 		
+		
 		$startTransaction = $this->begin();
 		if (!$startTransaction) return false;
 		logFile('====TRANSACTION READY====');
@@ -120,6 +501,7 @@ class collectionHelper extends Database {
 		$insertMasterData = $this->insertMaster($masterQuery,$masterPriority);
 		$insertWeakMasterData = $this->weakMasterData($masterQuery,$masterPriority);
 	
+		
 		if ($insertRefData or $insertMasterData or $insertWeakMasterData){
 			$this->rollback();
 			logFile('====ROLLBACK TRANSACTION====');
@@ -143,13 +525,13 @@ class collectionHelper extends Database {
 			try {
 			
 				
-				$failed = false;
+				$failed = true;
 				$count = 0;
 				foreach ($data as $val){
 					logFile('excecute query =>'.serialize($val));
 					$sql = $this->query($val);
 					
-					if (!$sql) $failed = true;
+					if (!$sql) $failed = false;
 					$count++;
 					if ($count==100){
 						usleep(500);
@@ -162,7 +544,7 @@ class collectionHelper extends Database {
 			} catch (Exception $e) {
 				
 			}
-				
+			
 		}
 		
 		
@@ -291,7 +673,50 @@ class collectionHelper extends Database {
 			$data['status'] = true;
 		}
 		return $data;
-	}	
+	}
+
+	function truncateData($ori=false, $tmp=false)
+	{
+		$data1 = array('collector','det','img','obs','coll','indiv','locn','person','taxon');
+		$data2 = array('tmp_location','tmp_person','tmp_photo','tmp_plant','tmp_taxon');
+		
+		if ($ori){
+			foreach ($data1 as $val){
+				
+				$this->query("DELETE FROM ".$val);
+			}
+		}
+		
+		if ($tmp){
+			foreach ($data2 as $val){
+				
+				$this->query("DELETE FROM ".$val,1);
+			}
+		}
+		
+	}
+	
+	function startTransaction()
+	{
+		$startTransaction = $this->begin();
+		if (!$startTransaction) return false;
+		logFile('====TRANSACTION READY====');
+		return true;
+	}
+	
+	function rollbackTransaction()
+	{
+		$this->rollback();
+		logFile('====ROLLBACK TRANSACTION====');
+		return true;
+	}
+	
+	function commitTransaction()
+	{
+		$this->commit();
+		logFile('====COMMIT TRANSACTION====');
+		return true;
+	}
 }
 
 ?>

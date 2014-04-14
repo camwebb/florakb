@@ -26,6 +26,16 @@ class upload extends Controller {
 	
 	function parseExcel()
 	{
+		/*
+		New scenario !
+		1. Parse data xls 
+		2. Validate data before upload
+		3. Store data to tmp table
+		3. Try to move data from tmp table to real table
+		4. Done
+		
+		*/
+		
 		global $EXCEL;
 		
 		
@@ -64,15 +74,62 @@ class upload extends Controller {
 					
 				}
 				
+				/* here begin process */
 				if ($newData){
-					$referenceQuery = $this->excelHelper->referenceData($newData);
+					
+					// pr($newData);
+					$referenceQuery = $this->collectionHelper->tmp_data($newData);
+					
+					$insertData = false;
+					// $referenceQuery = true;
+					if ($referenceQuery){
+						
+						$this->collectionHelper->startTransaction();
+						
+						$getRef = $this->collectionHelper->getRefData($newData);
+						$referenceQuery = $this->excelHelper->referenceData($getRef);
+						$insertRef = $this->collectionHelper->storeRefData($referenceQuery);
+						
+						$getMaster = $this->collectionHelper->getMasterData();
+						// insert indiv
+						$indivQuery = $this->excelHelper->parseMasterData($getMaster,true);
+						$insertIndiv = $this->collectionHelper->storeIndivData($indivQuery);
+						
+						// insert det,obs,coll
+						sleep(1);
+						$getMaster = $this->collectionHelper->getMasterData();
+						$masterQuery = $this->excelHelper->parseMasterData($getMaster);
+						$insertIndiv = $this->collectionHelper->storeMasterData($masterQuery);
+						
+						// insert collector
+						$getMaster = $this->collectionHelper->getMasterData();
+						$collectorQuery = $this->excelHelper->parseMasterData($getMaster,true,5,'collector');
+						$insertCollector = $this->collectionHelper->storeSingleData($collectorQuery);
+						
+						$getMaster = $this->collectionHelper->getMasterData(true,'tmp_photo');
+						$imgQuery = $this->excelHelper->parseMasterData($getMaster,true,4,'img');
+						$insertImage = $this->collectionHelper->storeSingleData($imgQuery,'img');
+						// pr($imgQuery);
+						if ($insertImage){
+							$this->collectionHelper->commitTransaction();
+							sleep(1);
+							$this->collectionHelper->truncateData(false,true);
+							$insertData = true;
+						}else{
+							$this->collectionHelper->rollbackTransaction();
+						}
+						
+					}else{
+						sleep(1);
+						$this->collectionHelper->truncateData(false,true);
+					}
+					
+					// exit;
+					/*
+					[Old script]
 					
 					$masterQuery = $this->excelHelper->parseMasterData($newData);
 					$masterQuery['rawdata']['img'] =  $referenceQuery['rawdata']['img'];
-					
-					
-					// pr($masterQuery['rawdata']);
-					// exit;
 					
 					$priority = array('taxon','locn','person');
 					$masterPriority = array('indiv','img','det','obs','coll','collector');
@@ -82,16 +139,22 @@ class upload extends Controller {
 					$param['master'] = $masterQuery;
 					$param['master_priority'] = $masterPriority;
 					
-					
 					$insertData = $this->collectionHelper->insertCollFromExcel($param);
-					
+					*/ 
 					$endTime = microtime(true);
 					
-					if ($insertData) echo 'Insert Success on '. execTime($startTime,$endTime);
-					else echo 'insert data failed';
+					if ($insertData) echo 'Insert success  ('. execTime($startTime,$endTime).')';
+					else echo 'Insert data failed';
+					
+					exit;
 				}
 			}
 		}
+	}
+	
+	function truncate()
+	{
+		$this->collectionHelper->truncateData(true,true);
 	}
 	
 }

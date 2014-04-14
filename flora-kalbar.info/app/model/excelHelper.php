@@ -22,6 +22,8 @@ Scenario :
 	- Excecute Master insert query
 	- Commit if success else rollback
 */
+
+
 class excelHelper extends Database {
 
 	var $configkey = "default";
@@ -142,6 +144,8 @@ class excelHelper extends Database {
 		
 		$sql = array();
 		$arrTmp = array();
+		$dataKey = array();
+		
 		$ignoreTable = array(2);
 		$numberTable = array(1,2,3,4);
 		$defineTable = array(1=>'taxon',2=>'img',3=>'person',4=>'locn');
@@ -149,22 +153,25 @@ class excelHelper extends Database {
 		// Img table identified
 		$fieldFetch[2] = array('id','indivID','personID','md5sum','filename','directory','plantpart','notes','mimetype'); 
 		$fieldConvert[2] = array('tree_id'=>'indivID','plant_part'=>'plantpart','photographer'=>'personID'); 
+		$fieldUnique[2] = array('unique_key'); 
 		
 		// Taxon table identified
-		$fieldFetch[1] = array('id','rank','morphotype','fam','gen','sp','subtype','ssp','auth','notes','short_namecode'); 
-		$fieldConvert[1] = array('db_id'=>'id','ssp_auth'=>'auth','unique_key'=>'short_namecode'); 
+		$fieldFetch[1] = array('tmp_unique_key','morphotype','fam','gen','sp','subtype','ssp','auth','notes'); 
+		$fieldConvert[1] = array('ssp_auth'=>'auth', 'unique_key'=>'tmp_unique_key'); 
+		$fieldUnique[1] = array('tmp_unique_key'); 
 		
 		// Person table identified
-		$fieldFetch[3] = array('id','name','email','twitter','website','phone','short_namecode'); 
-		$fieldConvert[3] = array('db_id'=>'id','unique_key'=>'short_namecode'); 
+		$fieldFetch[3] = array('tmp_unique_key','name','email','twitter','website','phone','short_namecode'); 
+		$fieldConvert[3] = array('db_id'=>'id','unique_key'=>'tmp_unique_key'); 
+		$fieldUnique[3] = array('tmp_unique_key'); 
 		
 		// Locn table identified
-		$fieldFetch[4] = array('id','longitude','latitude', 'elev', 'geomorph','locality','county',
+		$fieldFetch[4] = array('tmp_unique_key','longitude','latitude', 'elev', 'geomorph','locality','county',
 								'province','island','country','notes','short_namecode'); 
-		$fieldConvert[4] = array('long'=>'longitude', 'lat'=>'latitude','geomorphology'=>'geomorph','kabupaten'=>'county',
-								'unique_id'=>'short_namecode'); 
+		$fieldConvert[4] = array('long'=>'longitude', 'lat'=>'latitude','geomorphology'=>'geomorph','kabupaten'=>'county','unique_key'=>'tmp_unique_key'); 
+		$fieldUnique[4] = array('tmp_unique_key'); 
 		
-		$convert = 0;
+		$convert = 1;
 		foreach ($newData as $key => $values){
 			
 			
@@ -178,6 +185,8 @@ class excelHelper extends Database {
 					$t_field = array();
 					$t_data = array();
 					$t_dataraw = array();
+					$uniqueKey = array();
+					
 					
 					foreach ($val as $keys => $v){
 						
@@ -207,9 +216,16 @@ class excelHelper extends Database {
 						
 						// if field empty don't store to array
 						if ($keyField){
-							$t_field[] = $keyField;
-							$t_data[] = "'$keyData'"; 
-							$t_dataraw[$keyField] = $keyData; 
+						// echo $keyField.'<br>';
+							if (in_array($keyField, $fieldUnique[$convert])){
+								if ($keyData) $uniqueKey = $keyData;
+								
+							}else{
+								$t_field[] = $keyField;
+								$t_data[] = "'$keyData'"; 
+								$t_dataraw[$keyField] = $keyData; 
+							}
+							
 						}
 						
 					}
@@ -223,8 +239,8 @@ class excelHelper extends Database {
 						
 						
 					}
-					
-					
+					// pr($uniqueKey);
+					if ($uniqueKey) $dataKey[$defineTable[$key]][] = $uniqueKey;
 					// $arrTmp[$defineTable[$key]]['field'][] = $t_field;
 					$arrTmp[$defineTable[$key]]['data'][] = $t_dataraw;
 				}
@@ -237,10 +253,189 @@ class excelHelper extends Database {
 		// pr($arrTmp);
 		
 		$returnArr['query'] = $sql;
+		$returnArr['uniqkey'] = $dataKey;
 		$returnArr['rawdata'] = $arrTmp;
 		
 		// logFile(serialize($returnArr));
 		logFile('referenceData ready');
+		
+		return $returnArr;
+	}
+	
+	
+	function parseMasterData($newData=array(), $subtitute=false, $index=0, $table='indiv')
+	{
+		global $C_SPEC;
+		
+		if (empty($newData)) return false;
+		
+		$arrTmp = array();
+		// pr($newData);exit;
+		$sql = array();
+		
+		
+		$numberTable = array(0);
+		if ($subtitute){
+			$defineTable = array($index=>$table);
+			$startconvert = 0;
+		}else{
+			$defineTable = array(1=>'det', 2=>'obs',3=>'coll');
+			$startconvert = 1;
+		}
+		
+		$fieldFetch = array();
+		$fieldUnique = array();
+		
+		// Indiv table identified
+		$fieldFetch[0] = array('locnID','plot','tag','unique_key'); 
+		$fieldConvert[0] = array('tmp_location_key'=>'locnID'); 
+		$fieldUnique[0] = array('unique_key');
+		
+		// Det table identified
+		$fieldFetch[1] = array('indivID','personID','det_date','taxonID','confid','notes','det_using'); 
+		$fieldConvert[1] = array('tmp_indiv_key'=>'indivID','tmp_taxon_key'=>'taxonID','tmp_person_key'=>'personID',
+								'det_notes'=>'notes'); 
+		$fieldUnique[1] = array('unique_key');
+		
+		// Obs table identified
+		$fieldFetch[2] = array('indivID','date','personID','microhab','habit','dbh',
+								'height','bud','flower','fruit','localname','notes','char_lf_insert_alt','char_lf_insert_opp'); 
+		$fieldConvert[2] = array('tmp_indiv_key'=>'indivID','tmp_person_key'=>'personID'); 
+		$fieldUnique[2] = array('unique_key');
+		
+		// Coll table identified
+		$fieldFetch[3] = array('dateColl','indivID','collReps','dnaColl','notes','deposit'); 
+		$fieldConvert[3] = array('tmp_indiv_key'=>'indivID','indiv_notes'=>'notes'); 
+		$fieldUnique[3] = array('indivID');
+		
+		// Image table identified
+		$fieldFetch[4] = array('indivID','personID','filename','notes'); 
+		$fieldConvert[4] = array('tmp_person_key'=>'personID','tmp_indiv_key'=>'indivID'); 
+		$fieldUnique[4] = array('unique_key');
+		
+		// Collector table identified
+		$fieldFetch[5] = array('collID','personID','order'); 
+		$fieldConvert[5] = array('tmp_person_key'=>'personID','tmp_coll_key'=>'collID'); 
+		$fieldUnique[5] = array('unique_key');
+		
+		
+		
+		$convert = $startconvert;
+		$dataKey = array();
+		$returnArr = array();
+		
+		foreach ($defineTable as $a => $b){
+		
+			foreach ($newData as $key => $values){
+				
+				if (in_array($key,$numberTable)){
+					foreach ($values['data'] as $k=> $val){
+						
+						$keyField = array();
+						$tmpField = array();
+						$tmpData = array();
+						$t_field = array();
+						$t_data = array();
+						$t_dataraw = array();
+						$uniqueKey = array();
+						
+						$fieldKey = @array_keys($fieldConvert[$a]);
+						foreach ($val as $keys => $v){
+							
+							if (in_array($keys, $fieldKey)){
+								
+								// check if field excel not same with table DB, run convert field
+								$keyField = $fieldConvert[$a][$keys];
+								if (in_array($keyField, $fieldFetch[$a])){
+									
+									$tmpkeyField = $keyField;
+									// check collection libs before
+									$keyData = $this->validateField($defineTable[$key], $keyField, $v);
+									
+									
+								}else $tmpkeyField = false;
+								
+							}else{
+								// if field exist in table, then insert to array
+								if (in_array($keys, $fieldFetch[$a])){
+									
+									$tmpkeyField = $keys;
+									
+									// check collection libs before
+									$keyData = $this->validateField($defineTable[$key], $keyField, $v);
+									
+								}else $tmpkeyField = false;
+								
+							}
+							
+							
+							// if field empty don't store to array
+							if ($tmpkeyField){
+								
+								
+								
+								
+								
+								if ($b=='indiv'){
+									if (in_array($tmpkeyField, $fieldUnique[$convert])){
+										if ($keyData) $uniqueKey = $keyData;
+										
+									}else{
+										$t_field[] = $tmpkeyField;
+										$t_data[] = "'$keyData'"; 
+										$t_dataraw[$tmpkeyField] = $keyData; 
+									}
+								}else{
+									if (in_array($tmpkeyField, $fieldUnique[$convert])){
+										if ($keyData) $uniqueKey = $keyData;
+										
+									}
+									
+									$t_field[] = $tmpkeyField;
+									$t_data[] = "'$keyData'"; 
+									$t_dataraw[$tmpkeyField] = $keyData; 
+								}
+								
+									
+								
+							}
+							
+						}
+						
+						/* inject data to table */
+						if ($b == 'coll'){
+							
+							$t_field[] = 'collCode';
+							$tmpCode = str_shuffle('ABCDEFGHIJ1234567890');
+							$t_data[] = "'$tmpCode'";
+							// $dataKey[$b][] = $tmpCode;
+						}	
+
+						// pr($tmpkeyField);
+						// generate query
+						$tmpField = implode(',',$t_field); 
+						$tmpData = implode(',',$t_data); 
+						$sql[$b][] = "INSERT INTO {$b} ({$tmpField}) VALUES ({$tmpData})";
+						
+						$arrTmp[$b]['data'][] = $t_dataraw;
+						
+						if ($uniqueKey) $dataKey[$b][] = $uniqueKey;
+					}
+					
+				}
+				
+				$convert++;
+				
+			}
+		}
+		// pr($dataKey);
+		// exit;
+		$returnArr['query'] = $sql;
+		$returnArr['uniqkey'] = $dataKey;
+		$returnArr['rawdata'] = $arrTmp;
+		// pr($returnArr);
+		// logFile(serialize($returnArr));
+		logFile('parseMasterData success');
 		
 		return $returnArr;
 	}
@@ -269,124 +464,6 @@ class excelHelper extends Database {
 		}
 		
 		return $cleanData;
-	}
-	
-	function parseMasterData($newData=array(), $subtitute=array())
-	{
-		global $C_SPEC;
-		
-		if (empty($newData)) return false;
-		
-		$arrTmp = array();
-		// pr($newData);exit;
-		$sql = array();
-		$numberTable = array(0);
-		$defineTable = array(0=>'indiv',1=>'det', 2=>'obs',3=>'coll',4=>'collector');
-		
-		// Obs table identified
-		$fieldFetch[2] = array('id','indivID','date','personID','microhab','habit','dbh',
-								'height','bud','flower','fruit','localname','notes','char_lf_insert_alt','char_lf_insert_opp'); 
-		$fieldConvert[2] = array('unique_key'=>'indivID','obs_by'=>'personID'); 
-		
-		// Indiv table identified
-		$fieldFetch[0] = array('id','locnID','plot'); 
-		$fieldConvert[0] = array('locn'=>'locnID','unique_key'=>'id'); 
-		
-		// Coll table identified
-		$fieldFetch[3] = array('id','collCode','dateColl','indivID','collReps','dnaColl','notes','deposit'); 
-		$fieldConvert[3] = array('locn'=>'locnID','unique_key'=>'indivID'); 
-		
-		// Collector table identified
-		$fieldFetch[4] = array('id','collID','personID','order'); 
-		$fieldConvert[4] = array('obs_by'=>'personID','unique_key'=>'collID'); 
-		
-		// Det table identified
-		$fieldFetch[1] = array('id','indivID','personID','det_date','taxonID','confid','det_using','notes'); 
-		$fieldConvert[1] = array('unique_key'=>'indivID','det'=>'taxonID','det_by'=>'personID',
-								'det_notes'=>'notes'); 
-								
-		$convert = 0;
-		
-		foreach ($defineTable as $a => $b){
-		
-			foreach ($newData as $key => $values){
-				
-				if (in_array($key,$numberTable)){
-					foreach ($values['data'] as $k=> $val){
-						
-						$keyField = array();
-						$tmpField = array();
-						$tmpData = array();
-						$t_field = array();
-						$t_data = array();
-						$t_dataraw = array();
-						
-						$fieldKey = @array_keys($fieldConvert[$a]);
-						foreach ($val as $keys => $v){
-							
-							
-							
-							if (in_array($keys, $fieldKey)){
-							
-								// check if field excel not same with table DB, run convert field
-								$keyField = $fieldConvert[$a][$keys];
-								if (in_array($keyField, $fieldFetch[$a])){
-									$tmpkeyField = $keyField;
-									
-									// check collection libs before
-									$keyData = $this->validateField($defineTable[$key], $keyField, $v);
-								}else $tmpkeyField = false;
-								
-							}else{
-								// if field exist in table, then insert to array
-								if (in_array($keys, $fieldFetch[$a])){
-									$tmpkeyField = $keys;
-									
-									// check collection libs before
-									$keyData = $this->validateField($defineTable[$key], $keyField, $v);
-								}else{
-									/* inject data to table */
-									if ($b == 'coll'){
-										$tmpkeyField = 'collCode';
-										$keyData = str_shuffle('ABCDEFGHIJ1234567890');
-									}else $tmpkeyField = false;
-								}
-							}
-							
-							
-							// if field empty don't store to array
-							if ($tmpkeyField){
-								$t_field[] = $tmpkeyField;
-								$t_data[] = "'$keyData'"; 
-								$t_dataraw[$tmpkeyField] = $keyData; 
-							}
-							
-						}
-						
-						
-						// generate query
-						$tmpField = implode(',',$t_field); 
-						$tmpData = implode(',',$t_data); 
-						$sql[$b][] = "INSERT INTO {$b} ({$tmpField}) VALUES ({$tmpData})";
-						
-						$arrTmp[$b]['data'][] = $t_dataraw;
-					}
-					
-				}
-				
-				$convert++;
-				
-			}
-		}
-		
-		
-		$returnArr['query'] = $sql;
-		$returnArr['rawdata'] = $arrTmp;
-		
-		// logFile(serialize($returnArr));
-		logFile('parseMasterData success');
-		
-		return $returnArr;
 	}
 	
 	function select2Database()
