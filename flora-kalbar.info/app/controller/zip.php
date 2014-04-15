@@ -183,7 +183,7 @@ class zip extends Controller {
                                     
                                     //if data exist, update data
                                     if($dataExist){
-                                        $insertImage = $this->imagezip->insertImage($validateUsername['personID'], $fileToInsert);
+                                        $insertImage = $this->imagezip->updateImage($validateUsername['personID'], $fileToInsert);
                                     }else{
                                         //add data information to array
                                         array_push($dataNotExist,$fileToInsert);

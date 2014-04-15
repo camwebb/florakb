@@ -14,7 +14,7 @@ class onebyone extends Controller {
 	}
 	public function loadmodule()
 	{
-		$this->imagezip = $this->loadModel('imagezip');
+        $this->insertonebyone = $this->loadModel('insertonebyone');
 	}
 	
 	public function index(){
@@ -34,8 +34,8 @@ class onebyone extends Controller {
     }
     
     public function insertPerson(){
-        echo "berhasil";
-        pr($_POST);
+        $data = $_POST;
+        $insertData = $this->insertonebyone->insertTransaction('person',$data);
         exit;
     }
 }
