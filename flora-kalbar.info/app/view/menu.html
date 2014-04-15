@@ -3,7 +3,7 @@
 <div id="nav-box">
 	<div id="menu">
         <ul>
-    		<li class="{if $page.page}selected{/if}">
+    		<li class="{if $page.page=='home'}selected{/if}">
     			<a href="{$basedomain}">Home</a>
     		</li>
     		<li class="{if $page.page=='upload'}selected{/if}">
@@ -14,9 +14,6 @@
     		</li>
             <li class="{if $page.page=='onebyone'}selected{/if}">
     			<a href="{$basedomain}onebyone">One By One</a>
-    		</li>
-            <li class="{if $page.page=='contact'}selected{/if}">
-    			<a href="{$basedomain}contact">Contact</a>
     		</li>
     	</ul>
     </div>

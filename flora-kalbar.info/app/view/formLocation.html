@@ -1,51 +1,55 @@
-<div>
+<div class="content">
+    <h2 class="title">Insert Location</h2>
     <form method="POST" action="{$basedomain}onebyone/insertLocation">
-    
-        <label for="short_namecode">Short Namecode</label>
-        <input type="text" id="short_namecode" name="short_namecode" />
-        <br /><br />
-        
-        <label for="longitude">Longitude</label>
-        <input type="text" id="longitude" name="longitude" />
-        <br /><br />
-        
-        <label for="latitude">Latitude</label>
-        <input type="text" id="latitude" name="latitude" />
-        <br /><br />
-        
-        <label for="elevation">Elevation ASL (m)</label>
-        <input type="text" id="elevation" name="elev" />
-        <br /><br />
-        
-        <label for="geomorph">Geomorph</label>
-        <input type="text" id="geomorph" name="geomorph" />
-        <br /><br />
-        
-        <label for="locality">Locality (Descriptive name of place)</label>
-        <input type="text" id="locality" name="locality" />
-        <br /><br />
-        
-        <label for="county">County</label>
-        <input type="text" id="county" name="county" />
-        <br /><br />
-        
-        <label for="province">Province</label>
-        <input type="text" id="province" name="province" />
-        <br /><br />
-        
-        <label for="island">Island</label>
-        <input type="text" id="island" name="island" />
-        <br /><br />
-        
-        <label for="country">Country</label>
-        <input type="text" id="country" name="country" />
-        <br /><br />
-        
-        <label for="notes">Notes</label>
-        <textarea id="notes" name="notes"></textarea>
-        <br /><br />
-        
-        <input type="submit" value="Submit" />
-        
+        <table class="form-tbl">
+            <tr>
+                <td><label for="short_namecode">Short Namecode</label></td>
+                <td><input class="inputbox" type="text" id="short_namecode" name="short_namecode" /></td>
+            </tr>
+            <tr>
+                <td><label for="longitude">Longitude</label></td>
+                <td><input class="inputbox" type="text" id="longitude" name="longitude" /></td>
+            </tr>
+            <tr>
+                <td><label for="latitude">Latitude</label></td>
+                <td><input class="inputbox" type="text" id="latitude" name="latitude" /></td>
+            </tr>
+            <tr>
+                <td><label for="elevation">Elevation ASL (m)</label></td>
+                <td><input class="inputbox" type="text" id="elevation" name="elev" /></td>
+            </tr>
+            <tr>
+                <td><label for="geomorph">Geomorph</label></td>
+                <td><input class="inputbox" type="text" id="geomorph" name="geomorph" /></td>
+            </tr>
+            <tr>
+                <td><label for="locality">Locality<br /><i>(Descriptive name of place)</i></label></td>
+                <td><input class="inputbox" type="text" id="locality" name="locality" /></td>
+            </tr>
+            <tr>
+                <td><label for="county">County</label></td>
+                <td><input class="inputbox" type="text" id="county" name="county" /></td>
+            </tr>
+            <tr>
+                <td><label for="province">Province</label></td>
+                <td><input class="inputbox" type="text" id="province" name="province" /></td>
+            </tr>
+            <tr>
+                <td><label for="island">Island</label></td>
+                <td><input class="inputbox" type="text" id="island" name="island" /></td>
+            </tr>
+            <tr>
+                <td><label for="country">Country</label></td>
+                <td><input class="inputbox" type="text" id="country" name="country" /></td>
+            </tr>
+            <tr>
+                <td><label for="notes">Notes</label></td>
+                <td><textarea class="textareabox" id="notes" name="notes"></textarea></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input class="btn" type="submit" value="Submit" /></td>
+            </tr>
+        </table>
     </form>
 </div>

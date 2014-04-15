@@ -1,11 +1,28 @@
-<div>
+<div class="content">
+    <h2 class="title">Upload ZIP</h2>
     <div class="message"></div>
     <div class="errorbox"></div>
     <form onsubmit="zipExtract();return false;" id="extract_zip" method="POST" action=""> <!-- zipExtract();return false; -->
-        <label for="username">Username :</label>
-        <input name="username" id="username" /><br />
-        <label for="zip_file">Filename (with zip extention ex. User-date.zip) :</label>
-        <input name="imagezip" id="zip_file" type="text" />
-        <input id="box_button" type="submit" value="Submit" />
+        <table class="form-tbl">
+            <tr>
+                <td><label for="username">Username</label></td>
+                <td><input class="inputbox" name="username" id="username" /></td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="zip_file">Filename<br /><i>(with zip extention ex. User-date.zip)</i></label>
+                </td>
+                <td><input class="inputbox" name="imagezip" id="zip_file" type="text" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input class="btn" id="box_button" type="submit" value="Submit" /></td>
+            </tr>
+        </table>
+        
+        
+        
+        
+        
     </form>
 </div>

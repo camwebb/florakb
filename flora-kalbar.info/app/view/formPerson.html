@@ -1,30 +1,35 @@
-<div>
+<div class="content">
+    <h2 class="title">Insert Person</h2>
     <form method="POST" action="{$basedomain}onebyone/insertPerson">
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name" />
-        <br /><br />
-        
-        <label for="email">Email</label>
-        <input type="text" id="email" name="email" />
-        <br /><br />
-        
-        <label for="twitter">Twitter</label>
-        <input type="text" id="twitter" name="twitter" />
-        <br /><br />
-        
-        <label for="website">Website</label>
-        <input type="text" id="website" name="website" />
-        <br /><br />
-        
-        <label for="phone">Phone</label>
-        <input type="text" id="phone" name="phone" />
-        <br /><br />
-        
-        <label for="short_namecode">Short Namecode</label>
-        <input type="text" id="short_namecode" name="short_namecode" />
-        <br /><br />
-        
-        <input type="submit" value="Submit" />
-        
+        <table class="form-tbl">
+            <tr>
+                <td><label for="name">Name</label></td>
+                <td><input class="inputbox" type="text" id="name" name="name" /></td>
+            </tr>
+            <tr>
+                <td><label for="email">Email</label></td>
+                <td><input class="inputbox" type="text" id="email" name="email" /></td>
+            </tr>
+            <tr>
+                <td><label for="twitter">Twitter</label></td>
+                <td><input class="inputbox" type="text" id="twitter" name="twitter" /></td>
+            </tr>
+            <tr>
+                <td><label for="website">Website</label></td>
+                <td><input class="inputbox" type="text" id="website" name="website" /></td>
+            </tr>
+            <tr>
+                <td><label for="phone">Phone</label></td>
+                <td><input class="inputbox" type="text" id="phone" name="phone" /></td>
+            </tr>
+            <tr>
+                <td><label for="short_namecode">Short Namecode</label></td>
+                <td><input class="inputbox" type="text" id="short_namecode" name="short_namecode" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input class="btn" type="submit" value="Submit" /></td>
+            </tr>
+        </table>
     </form>
 </div>

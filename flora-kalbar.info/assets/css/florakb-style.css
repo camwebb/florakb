@@ -23,6 +23,18 @@ body{
 
 a{text-decoration: none;}
 
+h2.title{
+    font-family: 'Collaborate-Regular',Helvetica,Arial,sans-serif;
+    font-size: 25px;
+    color: #00adbb;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 15px;
+}
+
+input[type="file"]#zip_file{
+    border: 1px solid #ccc;
+}
+
 .wrapper{
     width: 1000px;
     margin: 0 auto;
@@ -56,6 +68,10 @@ a{text-decoration: none;}
     -webkit-border-radius: 3px;
 }
 
+input.btn{
+    padding: 5px 10px;
+}
+
 .btn:hover{
     background-color: #0095a2;
 }
@@ -74,6 +90,17 @@ a{text-decoration: none;}
     -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
+
+.inputbox,.textareabox{
+    padding: 5px;
+    border: 1px solid #0095a2;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    min-width: 200px;
+}
+table.form-tbl{border-spacing:0;}
+table.form-tbl td{padding: 10px;}
+table.form-tbl tr:hover{background-color: #A0CDD1;}
 
 .content{
     background-color: #FFFFFF;

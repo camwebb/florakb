@@ -23,21 +23,23 @@
 .bar { background-color: #B4F5B4; width:0%; height:20px; border-radius: 3px; }
 .percent { position:absolute; display:inline-block; top:3px; left:48%; }
 </style>
-<div>
-	Upload Excel :
-    <form method="POST" action="{$basedomain}upload/parseExcel" enctype="multipart/form-data" id="uploadExcel">
-        <label for="zip_file"></label>
-        <input name="tes" id="zip_file" type="file" />
-        <input type="submit" value="Submit" />
-    </form>
-	<div class="progress">
-        <div class="bar"></div >
-        <div class="percent">0%</div >
+<div class="content">
+    <div>
+    	<h2 class="title">Upload Excel :</h2>
+        <form method="POST" action="{$basedomain}upload/parseExcel" enctype="multipart/form-data" id="uploadExcel">
+            <label for="zip_file"></label>
+            <input name="tes" id="zip_file" type="file" />
+            <input class="btn" type="submit" value="Submit" />
+        </form>
+        
+    	<div class="progress" style="margin-top: 15px;">
+            <div class="bar"></div >
+            <div class="percent">0%</div >
+        </div>
+        
+        <div id="status"></div>
     </div>
-    
-    <div id="status"></div>
 </div>
-
 <script>
 {literal}
 	(function() {
