@@ -77,6 +77,8 @@ class upload extends Controller {
 				/* here begin process */
 				if ($newData){
 					
+					$this->collectionHelper->truncateData(false,true);
+					
 					// pr($newData);
 					$referenceQuery = $this->collectionHelper->tmp_data($newData);
 					
@@ -112,16 +114,11 @@ class upload extends Controller {
 						// pr($imgQuery);
 						if ($insertImage){
 							$this->collectionHelper->commitTransaction();
-							sleep(1);
-							$this->collectionHelper->truncateData(false,true);
 							$insertData = true;
 						}else{
 							$this->collectionHelper->rollbackTransaction();
 						}
 						
-					}else{
-						sleep(1);
-						$this->collectionHelper->truncateData(false,true);
 					}
 					
 					// exit;
@@ -146,10 +143,16 @@ class upload extends Controller {
 					if ($insertData) echo 'Insert success  ('. execTime($startTime,$endTime).')';
 					else echo 'Insert data failed';
 					
-					exit;
+					
 				}
 			}
+		}else{
+		
+			echo "File is empty";
 		}
+		
+		
+		exit;
 	}
 	
 	function truncate()

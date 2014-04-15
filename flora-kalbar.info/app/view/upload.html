@@ -55,13 +55,21 @@
 		},
 		uploadProgress: function(event, position, total, percentComplete) {
 			var percentVal = percentComplete + '%';
-			bar.width(percentVal)
-			percent.html(percentVal);
+			var zip_file = $('#zip_file').val();
+			if (zip_file){
+				bar.width(percentVal)
+				percent.html(percentVal);
+			}
+			
 		},
 		success: function() {
 			var percentVal = '100%';
-			bar.width(percentVal)
-			percent.html(percentVal);
+			var zip_file = $('#zip_file').val();
+			
+			if (zip_file){
+				bar.width(percentVal)
+				percent.html(percentVal);
+			}
 		},
 		complete: function(xhr) {
 			status.html(xhr.responseText);
