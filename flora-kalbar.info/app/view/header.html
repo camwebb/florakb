@@ -6,14 +6,19 @@
         <p>Records of Plants of Kalimantan Barat</p>
     </div>
     
-    <div id="search">  
-        <form role="form">
-            <div class="search-box">
-              <input type="text" placeholder="Search" />
-              <button class="btn btn-search" type="button">Search</button>
-            </div>
-        </form>
-    </div>
+    {if $smarty.session}
     
+    
+    <div id="login"> 
+        <a href="{$basedomain}login/doLogout" class="btn welcome">Welcome, {$smarty.session.name}</a> 
+    </div>
     <div class="clear"></div>
+    
+    {else}
+    <div id="login"> 
+        <a href="#signup-modal" id="btn-signup" class="btn signup">Sign Up</a> 
+        <a href="#login-modal" id="btn-login" class="btn login">Login</a> 
+    </div>
+    <div class="clear"></div>
+	{/if}
 </div>

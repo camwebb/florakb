@@ -117,9 +117,25 @@ header #slogan{
             color: #AAAAAA;
         }
         
-header #search{
-    float: right;
-    padding-top: 5px;
+header #login{
+        float: right;
+        margin-top: -30px;
+}
+
+header #login .signup, #login .login{
+            border-radius: 3px 0px 0px 3px;
+            -webkit-border-radius: 3px 0px 0px 3px;
+            border: none;
+            float: left;
+}
+header #login .login{
+            border-radius: 0px 3px 3px 0px;
+            -webkit-border-radius: 0px 3px 3px 0px;
+            border-left: 1px solid #0095a2;
+            float: left;
+}
+header #login .welcome{
+            float: left;
 }
 
 nav{
@@ -181,23 +197,9 @@ nav #nav-box #menu li a:hover{
             color: #FFFFFF;
 }
 
-nav #nav-box #login{
-        float: right;
-        margin-top: 3px;
-}
-
-nav #nav-box #login .signup, #nav-box #login .login{
-            border-radius: 3px 0px 0px 3px;
-            -webkit-border-radius: 3px 0px 0px 3px;
-            float: left;
-}
-nav #nav-box #login .login{
-            border-radius: 0px 3px 3px 0px;
-            -webkit-border-radius: 0px 3px 3px 0px;
-            float: left;
-}
-nav #nav-box #login .welcome{
-            float: left;
+nav #nav-box #search{
+    float: right;
+    padding-top: 5px;
 }
 
 main{

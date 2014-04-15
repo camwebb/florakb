@@ -20,7 +20,6 @@ class loginHelper extends Database {
      * @todo insert data user into person and florakb_person
      * 
      * @param $data[0]['name'] = name of user
-     * @param $data[0]['shortname'] = code shortname of user
      * @param $data[0]['email'] = email of user
      * @param $data[0]['twitter'] = twitter of user
      * @param $data[0]['website'] = website of user
@@ -57,10 +56,10 @@ class loginHelper extends Database {
             $dataPhone = "'".$data[0]['phone']."'";
         }
         
-		$sql = "INSERT INTO person (id, name, email, twitter, website, phone, short_namecode) VALUES ('','{$data[0]['name']}','{$data[0]['email']}',$dataTwitter,$dataWeb,$dataPhone, '{$data[0]['shortName']}')";
+		$sql = "INSERT INTO person (id, name, email, twitter, website, phone) VALUES ('','{$data[0]['name']}','{$data[0]['email']}',$dataTwitter,$dataWeb,$dataPhone)";
 		$res = $this->query($sql,0);
         
-        $getID = "SELECT id from person WHERE email= '".$data[0]['email']."' AND short_namecode ='".$data[0]['shortName']."' ";
+        $getID = "SELECT id from person WHERE email= '".$data[0]['email']."' ";
 		$resID = $this->fetch($getID,0);
         $sql2 = "INSERT INTO florakb_person (id, password, salt) VALUES ('{$resID['id']}','{$password}','{$salt}')";
 		$res2 = $this->query($sql2,1);
@@ -130,27 +129,7 @@ class loginHelper extends Database {
             return false;
         }
         return true;
-    }
-    
-    /**
-     * @todo check if shortname of user exist or not
-     * 
-     * @param $data = inputted shortname
-     * @return boolean
-     */
-    function checkShortName($data=false)
-    {
-        if($data==false) return false;
-        $sql = "SELECT COUNT(`id`) AS total FROM `person` WHERE `short_namecode` = '".$data."' ";
-        $res = $this->fetch($sql,0);
-        
-        if ($res['total'] > 0){
-            logFile('Shortname EXIST/');
-            return false;
-        }
-        return true;
-    }
-    
+    }    
     
     /**
      * @todo validate data into login process
@@ -205,9 +184,15 @@ class loginHelper extends Database {
         $_SESSION['short_namecode']=$data[0]['short_namecode'];
 	}
     
+    /**
+     * @todo destroy session
+     * 
+     */
     function logoutUser()
     {
-        session_destroy();    
+        session_destroy();
+        global $basedomain;  
+        header( 'Location: '.$basedomain ) ;  
     }
 }
 ?>

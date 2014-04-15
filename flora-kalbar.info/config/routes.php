@@ -8,10 +8,6 @@
 $ROUTES = array(
 				'home',
 				'contact',
-				'search',
-				'specimen',
-				'tulisan',
-				'testing',
 				'upload',
                 'zip', 
                 'login',

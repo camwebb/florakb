@@ -44,4 +44,17 @@ $('#formSignup').submit(function(event) {
     });
 });
 
+$('#formLogin').submit(function(event){
+    event.preventDefault();
+    
+    $.ajax({
+        url: baseUrl+"login/doLogin",
+        type: 'POST',
+        data: $(this).serialize(),
+        success: function(data) {
+            location.reload();
+        }
+    });
+});
+
 });

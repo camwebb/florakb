@@ -1,5 +1,4 @@
 <?php
-defined ('MICRODATA') or exit ( 'Forbidden Access' );
 
 class login extends Controller {
 	
@@ -30,13 +29,11 @@ class login extends Controller {
      *           
      * @return $statusName and $msgName = status and message for validating name
      * @return $statusEmail and $msgEmail = status and message for validating email
-     * @return $statusTwitter and $msgTwitter = status and message for validating twitter
-     * @return $statusShortname and $msgShortname = status and message for validating shortname                    
+     * @return $statusTwitter and $msgTwitter = status and message for validating twitter                  
      */    
     function doSignup(){
         
         $name = $_POST["name"];
-        $shortName = $_POST["shortName"];
         $email = $_POST["email"];
         $twitter = $_POST["twitter"];
         $website = $_POST["website"];
@@ -47,17 +44,14 @@ class login extends Controller {
         $checkName = $this->loginHelper->checkName($name);       
         $checkEmail = $this->loginHelper->checkEmail($email);        
         $checkTwitter = $this->loginHelper->checkTwitter($twitter);
-        $checkShortName = $this->loginHelper->checkShortName($shortName);
         
-        if($checkName !== true || $checkEmail !== true || $checkTwitter !== true || $checkShortName !== true){
+        if($checkName !== true || $checkEmail !== true || $checkTwitter !== true){
             $statusName = "";
             $msgname = "";
             $statusEmail = "";
             $msgEmail = "";
             $statusTwitter = "";
             $msgTwitter = "";
-            $statusShortname = "";
-            $statusShortname = "";
             
             if($checkName !== true){
                 $statusName = "exist";
@@ -71,17 +65,13 @@ class login extends Controller {
                 $statusTwitter = "exist";
                 $msgTwitter = "Twitter already exist";
             }
-            if($checkShortName !== true){
-                $statusShortname = "exist";
-                $msgShortname = "Shortname already exist";
-            }
-                echo json_encode(array('statusName' => $statusName, 'msgName' => $msgName, 'statusEmail' => $statusEmail, 'msgEmail' => $msgEmail, 'statusTwitter' => $statusTwitter, 'msgTwitter' => $msgTwitter, 'statusShortname' => $statusShortname, 'msgShortname' => $msgShortname));
+                echo json_encode(array('statusName' => $statusName, 'msgName' => $msgName, 'statusEmail' => $statusEmail, 'msgEmail' => $msgEmail, 'statusTwitter' => $statusTwitter, 'msgTwitter' => $msgTwitter));
                 exit;
         }
         
-        if($checkName && $checkEmail && $checkTwitter && $checkShortName){
+        if($checkName && $checkEmail && $checkTwitter){
             $data = array();
-            $data[]= array('name'=>$name, 'shortName'=>$shortName, 'email'=>$email, 'twitter'=>$twitter, 'website'=>$website, 'phone'=>$phone, 'password'=>$pass);
+            $data[]= array('name'=>$name, 'email'=>$email, 'twitter'=>$twitter, 'website'=>$website, 'phone'=>$phone, 'password'=>$pass);
             $signup = $this->loginHelper->createUser($data);
             echo json_encode(array('test' => 'test'));
             exit;
@@ -110,7 +100,7 @@ class login extends Controller {
     } 
     
     /**
-     * @todo log out as user
+     * @todo log out from site
      */
     function doLogout(){
         $logout = $this->loginHelper->logoutUser(); 

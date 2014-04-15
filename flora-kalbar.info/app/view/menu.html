@@ -6,19 +6,7 @@
     		<li class="{if $page.page}selected{/if}">
     			<a href="{$basedomain}">Home</a>
     		</li>
-    		<li class="{if $page.page=='specimen'}selected{/if}">
-    			<a href="{$basedomain}specimen">Specimen</a>
-    		</li>
-    		<li class="{if $page.page=='services'}selected{/if}">
-    			<a href="{$basedomain}services/">Services</a>
-    		</li>
-    		<li class="{if $page.page=='contact'}selected{/if}">
-    			<a href="{$basedomain}contact">Contact</a>
-    		</li>
-    		<li class="{if $page.page=='news'}selected{/if}">
-    			<a href="{$basedomain}news">News</a>
-    		</li>
-            <li class="{if $page.page=='upload'}selected{/if}">
+    		<li class="{if $page.page=='upload'}selected{/if}">
     			<a href="{$basedomain}upload">Upload</a>
     		</li>
             <li class="{if $page.page=='zip'}selected{/if}">
@@ -27,23 +15,20 @@
             <li class="{if $page.page=='onebyone'}selected{/if}">
     			<a href="{$basedomain}onebyone">One By One</a>
     		</li>
+            <li class="{if $page.page=='contact'}selected{/if}">
+    			<a href="{$basedomain}contact">Contact</a>
+    		</li>
     	</ul>
     </div>
     
-	{if $user}
-    
-    
-    <div id="login"> 
-        <a href="{$basedomain}login/doLogout" class="btn welcome">Welcome, {$user.name}</a> 
+	<div id="search">  
+        <form role="form">
+            <div class="search-box">
+              <input type="text" placeholder="Search" />
+              <button class="btn btn-search" type="button">Search</button>
+            </div>
+        </form>
     </div>
-    <div class="clear"></div>
-    
-    {else}
-    <div id="login"> 
-        <a href="#signup-modal" id="btn-signup" class="btn signup">Sign Up</a> 
-        <a href="#login-modal" id="btn-login" class="btn login">Login</a> 
-    </div>
-    <div class="clear"></div>
-	{/if}
+    <div class="clear"></div>    
 </div>
 </div>
