@@ -5,18 +5,19 @@
         <div class="modal-content">
             <div class="modal-header">
               <h4>Login</h4>
-              <button type="button" class="close">×</button>
+              <img src="{$basedomain}assets/img/bg-login.png" />
               <div class="clear"></div>
             </div>
             <div class="modal-body">
               <form action="" method="POST" id="formLogin">
                 <div class="form-group">
-                  <input type="email" id="login-email" class="input-box" name="email" placeholder="Email" required aria-required="true"/>
+                  <input type="email" id="login-email" class="input-modal" name="email" placeholder="Email" required aria-required="true"/>
                 </div>
                 <div class="form-group">
-                  <input type="password" id="login-password" class="input-box" name="pass" placeholder="Password" required aria-required="true"/>
+                  <input type="password" id="login-password" class="input-modal" name="pass" placeholder="Password" required aria-required="true"/>
                 </div>
-                <input type="submit" class="btn" style="width: 100px;" value="Login" />
+                <button type="button" class="btn close" style="width: 49%;">Cancel</button>
+                <input type="submit" class="btn" style="width: 49%;" value="Login" />
               </form>
             </div>
             <div class="modal-footer"> 
@@ -34,20 +35,20 @@
         <div class="modal-content">
             <div class="modal-header">
               <h4>Sign Up</h4>
-              <button type="button" class="close">×</button>
+              <img src="{$basedomain}assets/img/bg-signup.png" />
               <div class="clear"></div>
             </div>
             <div class="modal-body">
             <form action="" method="POST" id="formSignup">
                 <div class="form-group" id="nameGroup">
-                  <input type="text" id="signup-name" class="input-box" name="name" placeholder="Name" required aria-required="true"/>
+                  <input type="text" id="signup-name" class="input-modal" name="name" placeholder="Name" required aria-required="true"/>
                 </div>
                 <div class="form-group" id="emailGroup">
-                  <input type="email" id="signup-email" class="input-box" name="email" placeholder="Email" required aria-required="true"/>
+                  <input type="email" id="signup-email" class="input-modal" name="email" placeholder="Email" required aria-required="true"/>
                 </div>
                 <div class="form-group" id="twitterGroup">
                   <label for='signup-twitter' id="usernameValue" style="padding-top: 10px; color: #555; position: absolute; top: 170px; left: 20px; display: none;">@</label>
-                    <input type="text" id="signup-twitter" class="input-box" name="twitter" placeholder="Twitter" oninput="usernameValue()"/>
+                    <input type="text" id="signup-twitter" class="input-modal" name="twitter" placeholder="Twitter" oninput="usernameValue()"/>
                  <script language='javascript' type='text/javascript'>
 					{literal}
                     function usernameValue() {
@@ -60,16 +61,16 @@
                   
                 </div>
                 <div class="form-group">
-                  <input type="url" id="signup-website" class="input-box" name="website" placeholder="Website"/>
+                  <input type="url" id="signup-website" class="input-modal" name="website" placeholder="Website"/>
                 </div>
                 <div class="form-group">
-                  <input type="text" id="signup-phone" class="input-box" name="phone" placeholder="Phone"/>
+                  <input type="text" id="signup-phone" class="input-modal" name="phone" placeholder="Phone"/>
                 </div>
                 <div class="form-group">
-                  <input type="password" id="signup-password" class="input-box" name="pass" placeholder="Password" required aria-required="true"/>                  
+                  <input type="password" id="signup-password" class="input-modal" name="pass" placeholder="Password" required aria-required="true"/>                  
                 </div>
                 <div class="form-group">
-                  <input type="password" id="signup-re_password" class="input-box" name="re_pass" placeholder="Retype Password" required aria-required="true" oninput="check(this)"/>
+                  <input type="password" id="signup-re_password" class="input-modal" name="re_pass" placeholder="Retype Password" required aria-required="true" oninput="check(this)"/>
                   
                   <script language='javascript' type='text/javascript'>
                     {literal}
@@ -86,7 +87,8 @@
                   
                   
                 </div>
-                <input type="submit" class="btn" style="width: 100px;" value="Signup" />
+                <button type="button" class="btn close" style="width: 49%;">Cancel</button>
+                <input type="submit" class="btn" style="width: 49.5%;" value="Signup" />
               </form>
             </div>
             <div class="modal-footer"> 

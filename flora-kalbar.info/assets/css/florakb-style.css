@@ -68,27 +68,12 @@ input[type="file"]#zip_file{
     -webkit-border-radius: 3px;
 }
 
-input.btn{
+input.btn, button.btn{
     padding: 5px 10px;
 }
 
 .btn:hover{
     background-color: #0095a2;
-}
-
-.input-box {
-    display: block;
-    padding: 10px 5px;
-    font-size: 14px;
-    color: #555;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;    
-    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
-    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
-    -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 
 .inputbox,.textareabox{
@@ -253,8 +238,8 @@ main{
 .modal-content{
     -webkit-box-shadow: rgba(0, 0, 0, 0.498039) 0px 5px 15px;
     box-shadow: rgba(0, 0, 0, 0.498039) 0px 5px 15px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
+    -webkit-border-radius: 14px;
+    border-radius: 14px;
     position: relative;
     background-color: #fff;
     border: 1px solid #999;
@@ -264,14 +249,17 @@ main{
 }
 
 .modal-content .modal-header{
+    background-color:  #00adbb;
     padding: 15px;
-    border-bottom: 1px solid #d9d9d9;
-    margin-bottom: 5px;
+    border-bottom: 3px solid #CCCCCC;
+    text-align: center;
+    -webkit-border-radius: 10px 10px 0 0;
+    border-radius: 10px 10px 0 0;
 }
 .modal-content .modal-header h4{
         font-size: 16px;
-        color: #333333;
-        float: left;
+        color: #FFFFFF;
+        margin-bottom: 10px;       
 }
 .modal-content .modal-header button{
         float: right;
@@ -286,9 +274,9 @@ main{
 }
 
 .modal-content .modal-body{
+    background-color: #DDDDDD;
     padding: 15px;
     border-bottom: 1px solid #d9d9d9;
-    margin-bottom: 5px;
 }
 .modal-content .modal-body .form-group{
         margin-bottom: 10px;
@@ -296,14 +284,16 @@ main{
 .modal-content .modal-body input{
         width: 330px;
 }
-.modal-content .modal-body button{
-        padding: 10px 30px;
-}
 
 .modal-content .modal-footer{
+    background-color: rgb(27, 27, 27);
+    border-top: 3px solid #00adbb;
     padding: 15px;
     text-align: right;
     font-size: 11px;
+    -webkit-border-radius: 0 0 10px 10px;
+    border-radius: 0 0 10px 10px;
+    color: #FFFFFF;
 }
 .modal-content .modal-footer a{
     color: #00adbb;
@@ -311,6 +301,16 @@ main{
 .modal-content .modal-footer a:hover{
     text-decoration: underline;
 }
+.input-modal {
+    display: block;
+    padding: 10px 5px;
+    font-size: 14px;
+    color: #555;
+    background-color: #fff;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;    
+}
+
 /** END MODAL CSS **/
 
 .error{
