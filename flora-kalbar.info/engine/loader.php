@@ -9,6 +9,7 @@ require_once ('config/libs.conf.php');
 require_once ('config/coll_conf.php');
 require_once (COREPATH .'helper.php');
 require_once (COREPATH .'common.php');
+require_once (COREPATH .'class_messages.php');
 require_once (COREPATH .'class_db.php');
 require_once (COREPATH .'class_session.php');
 require_once (LIBS . 'smarty/Smarty.class.php');

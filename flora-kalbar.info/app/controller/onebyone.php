@@ -1,6 +1,11 @@
 <?php
 defined ('CODEKIR') or exit ( 'Forbidden Access' );
 
+//------------------------------------------------------------------------------
+// A session is required for the messages to work
+//------------------------------------------------------------------------------
+if( !session_id() ) session_start();
+
 class onebyone extends Controller {
 	
 	var $models = FALSE;
@@ -11,6 +16,7 @@ class onebyone extends Controller {
 		$this->loadmodule();
         $this->view = $this->setSmarty();
         $this->view->assign('basedomain',$basedomain);
+        $this->msg = new Messages();
 	}
 	public function loadmodule()
 	{
@@ -26,6 +32,10 @@ class onebyone extends Controller {
     }
     
     public function person(){
+        $this->msg->add('s', 'This is a sample Success Message');
+        $msg = $this->msg->display('all', false);
+        $this->view->assign('msg', $msg);
+        
         return $this->loadView('formPerson');
     }
     
@@ -36,6 +46,7 @@ class onebyone extends Controller {
     public function insertPerson(){
         $data = $_POST;
         $insertData = $this->insertonebyone->insertTransaction('person',$data);
+        pr($insertData);
         exit;
     }
 }
