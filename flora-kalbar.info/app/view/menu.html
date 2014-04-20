@@ -15,6 +15,9 @@
             <li class="{if $page.page=='onebyone'}selected{/if}">
     			<a href="{$basedomain}onebyone">One By One</a>
     		</li>
+            <li class="{if $page.page=='browse'}selected{/if}">
+    			<a href="{$basedomain}browse">Browse</a>
+    		</li>
 
             {*}<li class="{if $page.page=='contact'}selected{/if}">
     			<a href="{$basedomain}contact">Contact</a>
@@ -23,7 +26,7 @@
     	</ul>
     </div>
     
-	<div id="search">  
+	<div id="search-menu">  
         <form role="form">
             <div class="search-box">
               <input type="text" placeholder="Search" />

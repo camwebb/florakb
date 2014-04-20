@@ -11,6 +11,7 @@ $ROUTES = array(
 				'upload',
                 'zip', 
                 'login',
-                'onebyone'               
+                'onebyone',
+                'browse'               
                 );
 ?>
