@@ -42,7 +42,7 @@ class Messages {
 	// Class Variables
 	//-----------------------------------------------------------------------------------------------	
 	var $msgId;
-	var $msgTypes = array( 'help', 'info', 'warning', 'success', 'error' );
+	var $msgTypes = array( 'help', 'info', 'warning', 'success', 'erroren' );
 	var $msgClass = 'messages';
 	var $msgWrapper = "<div class='%s %s'><a href='#' class='closeMessage'></a>\n%s</div>\n";
 	var $msgBefore = '<p>';
@@ -82,7 +82,7 @@ class Messages {
 
 		// Replace any shorthand codes with their full version
 		if( strlen(trim($type)) == 1 ) {
-			$type = str_replace( array('h', 'i', 'w', 'e', 's'), array('help', 'info', 'warning', 'error', 'success'), $type );
+			$type = str_replace( array('h', 'i', 'w', 'e', 's'), array('help', 'info', 'warning', 'erroren', 'success'), $type );
 		
 		// Backwards compatibility...
 		} elseif( $type == 'information' ) {

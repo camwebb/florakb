@@ -19,8 +19,8 @@ class insertonebyone extends Database {
 		
 		$sql = "INSERT INTO {$table} ({$field}) VALUES ({$value})";
 		$res = $this->query($sql);
+        
 		if ($res){
-			
 			$return['lastid'] = $this->insert_id();
 			$return['status'] = true;
 		}

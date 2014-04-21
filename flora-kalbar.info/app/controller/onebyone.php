@@ -28,26 +28,32 @@ class onebyone extends Controller {
 	}
     
     public function location(){
+        $msg = $this->msg->display('all', false);
+        $this->view->assign('msg', $msg);
         return $this->loadView('formLocation');
     }
     
     public function person(){
-        $this->msg->add('s', 'This is a sample Success Message');
         $msg = $this->msg->display('all', false);
         $this->view->assign('msg', $msg);
-        
         return $this->loadView('formPerson');
     }
     
     public function taxon(){
+        $msg = $this->msg->display('all', false);
+        $this->view->assign('msg', $msg);
         return $this->loadView('formTaxon');
     }
     
     public function insertPerson(){
         $data = $_POST;
         $insertData = $this->insertonebyone->insertTransaction('person',$data);
-        pr($insertData);
-        exit;
+        if($insertData){
+            $this->msg->add('s', 'This is a sample Success Message');
+        }else{
+            $this->msg->add('e', 'This is a sample Error Message');
+        }
+        header('Location: ../onebyone/person');
     }
 }
 
