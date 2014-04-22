@@ -2,15 +2,23 @@ function zipExtract()
 {
     var username = $('#username').val();
     var filename = $('#zip_file').val();
-
+    var first_error = '<div class="messages erroren"><a href="#" class="closeMessage"></a><p>';
+    var first_info = '<div class="messages info"><a href="#" class="closeMessage"></a><p>';
+    var first_success = '<div class="messages success"><a href="#" class="closeMessage"></a><p>';
+    var first_warning = '<div class="messages warning"><a href="#" class="closeMessage"></a><p>';
+    var end = '</p></div>';
+    
+    $(".errorbox").html('');
+    $(".message").html('');
+    
     if( username == ''){
-        $(".errorbox").html('Username must be filled');
+        $(".errorbox").html(first_error + 'Username must be filled' + end);
     }else{
         if ( filename == '') {
-            $(".errorbox").html('Filename can not be empty');
+            $(".errorbox").html(first_error + 'Filename can not be empty' + end);
         }else{
             $(".errorbox").html('');
-            $(".message").html('Fetching files ...');
+            $(".message").html(first_info + 'Fetching files ...' + end);
             var data = { 'username' : username, 'imagezip' : filename };
             
             var extract_file = 
@@ -27,20 +35,23 @@ function zipExtract()
             if(resultExtract.status != 'error'){
                 $('#extract_zip').resetForm();
                 $(".errorbox").html('');
-                $(".message").html(resultExtract.message);
+                $(".message").html(first_success + resultExtract.message + end);
             }else{
                 $(".message").html('');
-                $(".errorbox").html(resultExtract.message);
+                $(".errorbox").html(first_error + resultExtract.message + end);
             }
             
             if(resultExtract.data){
-                $(".errorbox").append('The following file(s) is not associated with any data <br /><table id="data"></table>');
+                $(".errorbox").append(first_warning +
+                    'The following file(s) is not associated with any data <br /><table id="data">' +
+                    '<tr><td>Filename</td><td>Directory</td><td>Mimetype</td></tr></table>' +
+                    end
+                );
                 var dataResult = resultExtract.data;
                 var dataNotExist = dataResult.dataNotExist;
                 dataNotExist.forEach(function(entry) {
                     console.log(entry);
                     $("#data").append(
-                        '<tr><td>Filename</td><td>Directory</td><td>Mimetype</td></tr>' +
                         '<tr><td>'+ entry.filename +'</td><td>'+ entry.directory +'</td><td>'+ entry.mimetype +'</td></tr>'
                     );
                 });

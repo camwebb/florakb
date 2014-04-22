@@ -324,7 +324,7 @@ main{
 
 /** END MODAL CSS **/
 
-.error{
+.florakb-error{
     background-color: #FF0202;
     padding: 6px 12px;
     color: white;
@@ -334,7 +334,7 @@ main{
     position: absolute;
     width: 40%;
 }
-.error:before {
+.florakb-error:before {
     content: '';
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;

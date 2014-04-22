@@ -7,3 +7,7 @@ function hasExtension(inputID, exts) {
     var fileName = document.getElementById(inputID).value;
     return (new RegExp('(' + exts.join('|').replace(/\./g, '\\.') + ')$')).test(fileName);
 }
+
+function checkName(){
+    var name = $('#name').val();
+}

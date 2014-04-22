@@ -48,6 +48,7 @@ class onebyone extends Controller {
     public function insertPerson(){
         $data = $_POST;
         $insertData = $this->insertonebyone->insertTransaction('person',$data);
+        
         if($insertData){
             $this->msg->add('s', 'This is a sample Success Message');
         }else{

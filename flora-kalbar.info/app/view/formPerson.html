@@ -1,11 +1,48 @@
+<script language='javascript' type='text/javascript'>
+$().ready(function() {
+    $("#formPerson").validate({
+        rules: {
+			name: "required",
+			email: {
+				required: true,
+				email: true
+			},
+			twitter: {
+				minlength: 2
+			},
+			website: {
+                url: true
+			},
+            short_namecode: {
+                required: true,
+                minlength: 3
+            }
+		},
+		messages: {
+			name: " Please enter your name",
+			email: " Please enter a valid email address",
+			twitter: {
+				minlength: " Please enter a valid twitter account"
+			},
+			website: {
+				url: " Please enter a valid url"
+			},
+            short_namecode: {
+                required: " Please enter a shortname",
+                minlength: " Your short namecode must be at least 3 characters long"
+            }
+		}
+    });
+});
+</script>
 <div class="content">
     <h2 class="title">Insert Person</h2>
     {$msg}
-    <form method="POST" action="{$basedomain}onebyone/insertPerson">
+    <form id="formPerson" method="POST" action="{$basedomain}onebyone/insertPerson">
         <table class="form-tbl">
             <tr>
                 <td><label for="name">Name</label></td>
-                <td><input class="inputbox" type="text" id="name" name="name" /></td>
+                <td><input class="inputbox" type="text" id="name" name="name" onblur="checkName()" /></td>
             </tr>
             <tr>
                 <td><label for="email">Email</label></td>

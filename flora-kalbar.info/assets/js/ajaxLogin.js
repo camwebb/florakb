@@ -12,16 +12,16 @@ $('#formSignup').submit(function(event) {
             if(result.statusName == 'exist' || result.statusEmail == 'exist' || result.statusShortname == 'exist' || result.statusTwitter == 'exist'){
                 $('#signup-password,#signup-re_password').val('');
                 if(result.statusName == 'exist'){
-                    $('#nameGroup').append('<span class="error">'+result.msgName+'</span>');
+                    $('#nameGroup').append('<span class="florakb-error">'+result.msgName+'</span>');
                 }
                 if(result.statusEmail == 'exist'){
-                    $('#emailGroup').append('<span class="error">'+result.msgEmail+'</span>');
+                    $('#emailGroup').append('<span class="florakb-error">'+result.msgEmail+'</span>');
                 } 
                 if(result.statusShortname == 'exist'){
-                    $('#shortnameGroup').append('<span class="error">'+result.msgShortname+'</span>');
+                    $('#shortnameGroup').append('<span class="florakb-error">'+result.msgShortname+'</span>');
                 }
                 if(result.statusTwitter == 'exist'){
-                    $('#twitterGroup').append('<span class="error">'+result.msgTwitter+'</span>');
+                    $('#twitterGroup').append('<span class="florakb-error">'+result.msgTwitter+'</span>');
                 }
             }
             else{
