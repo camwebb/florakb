@@ -40,14 +40,14 @@ class login extends Controller {
         $phone = $_POST["phone"];
         $pass = $_POST["pass"];
         $re_pass = $_POST["re_pass"];
-         
+        
         $checkName = $this->loginHelper->checkName($name);       
         $checkEmail = $this->loginHelper->checkEmail($email);        
         $checkTwitter = $this->loginHelper->checkTwitter($twitter);
         
         if($checkName !== true || $checkEmail !== true || $checkTwitter !== true){
             $statusName = "";
-            $msgname = "";
+            $msgName = "";
             $statusEmail = "";
             $msgEmail = "";
             $statusTwitter = "";

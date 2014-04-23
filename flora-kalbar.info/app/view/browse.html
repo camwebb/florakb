@@ -11,38 +11,26 @@
     </div>
     <div class="clear"></div> 
     
+    
     <table class="browse">
         <thead>
             <tr>
                 <th>Species</th>
                 <th>Genus</th>
                 <th>Family</th>
-                <th>Species</th>
-                <th>Species</th>
+                <th>Images</th>
             </tr>
         </thead>
         <tbody>
+        {foreach $taxon as $dataTaxon}
+        
             <tr>
-                <td>Species</td>
-                <td>Genus</td>
-                <td>Family</td>
-                <td>Species</td>
+                <td><i>{$dataTaxon['sp']}</i></td>
+                <td>{$dataTaxon['gen']}</td>
+                <td>{$dataTaxon['fam']}</td>
                 <td>Species</td>
             </tr>
-            <tr>
-                <td>Species</td>
-                <td>Genus</td>
-                <td>Family</td>
-                <td>Species</td>
-                <td>Species</td>
-            </tr>
-            <tr>
-                <td>Species</td>
-                <td>Genus</td>
-                <td>Family</td>
-                <td>Species</td>
-                <td>Species</td>
-            </tr>
+        {/foreach}
         </tbody>
     </table>
 </div>

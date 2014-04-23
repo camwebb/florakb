@@ -8,19 +8,22 @@ class browse extends Controller {
 	
 	function __construct()
 	{
-		global $basedomain;
-		$this->loadmodule();
-		$this->view = $this->setSmarty();
-		$this->view->assign('basedomain',$basedomain);
+    	global $basedomain;
+    	$this->loadmodule();
+    	$this->view = $this->setSmarty();
+    	$this->view->assign('basedomain',$basedomain);
     }
 	
 	function loadmodule()
 	{
         //$this->models = $this->loadModel('frontend');
+        $this->browseHelper = $this->loadModel('browseHelper');
 	}
 	
 	function index(){
-    	return $this->loadView('browse');
+        $taxon = $this->browseHelper->dataTaxon(); 
+        $this->view->assign('taxon',$taxon);
+        return $this->loadView('browse');
     }
 	
 }
