@@ -1,14 +1,20 @@
 <script language='javascript' type='text/javascript'>
 $().ready(function() {
+    
     $("#formPerson").validate({
         rules: {
-			name: "required",
+			name: {
+                required: true,
+                checkNameExist: true
+			},
 			email: {
 				required: true,
-				email: true
+				email: true,
+                checkEmailExist: true
 			},
 			twitter: {
-				minlength: 2
+				minlength: 2,
+                checkTwitterExist: true
 			},
 			website: {
                 url: true
@@ -20,8 +26,12 @@ $().ready(function() {
             }
 		},
 		messages: {
-			name: " Please enter a name",
-			email: " Please enter a valid email address",
+			name: {
+                required: " Please enter a name"
+			},
+			email: {
+                required: " Please enter a valid email address"
+			},
 			twitter: {
 				minlength: " Please enter a valid twitter account"
 			},
@@ -44,15 +54,15 @@ $().ready(function() {
         <table class="form-tbl">
             <tr>
                 <td><label for="name">Name</label></td>
-                <td id="nameGroup"><input class="inputbox" type="text" id="name" name="name" onblur="checkName()" /></td>
+                <td><input class="inputbox" type="text" id="name" name="name" /></td>
             </tr>
             <tr>
                 <td><label for="email">Email</label></td>
-                <td id="emailGroup"><input class="inputbox" type="text" id="email" name="email" /></td>
+                <td><input class="inputbox" type="text" id="email" name="email" /></td>
             </tr>
             <tr>
                 <td><label for="twitter">Twitter</label></td>
-                <td id="twitterGroup"><input class="inputbox" type="text" id="twitter" name="twitter" /></td>
+                <td><input class="inputbox" type="text" id="twitter" name="twitter" /></td>
             </tr>
             <tr>
                 <td><label for="website">Website</label></td>

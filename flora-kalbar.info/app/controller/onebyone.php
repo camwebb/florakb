@@ -21,6 +21,8 @@ class onebyone extends Controller {
 	public function loadmodule()
 	{
         $this->insertonebyone = $this->loadModel('insertonebyone');
+        
+        //only used for check name, twitter, and email
         $this->loginHelper = $this->loadModel('loginHelper');
 	}
 	
@@ -74,14 +76,11 @@ class onebyone extends Controller {
         $data = $_POST['name'];
         $check = $this->loginHelper->checkName($data);
         if($check){
-            $status = 'success';
-            $msg = '';
+            $return = true;
         }else{
-            $status = 'error';
-            $msg = 'Name already exist';
+            $return = false;
         }
-        
-        echo json_encode(array('status' => $status, 'message' => $msg));
+        echo $return;
         exit;
     }
     
@@ -89,14 +88,26 @@ class onebyone extends Controller {
         $data = $_POST['twitter'];
         $check = $this->loginHelper->checkTwitter($data);
         if($check){
-            $status = 'success';
-            $msg = '';
+            $return = true;
         }else{
-            $status = 'error';
-            $msg = 'Twitter account exist!';
+            $return = false;
         }
+        echo $return;
+        exit;
+    }
+    
+    public function check_Email(){
+        $return = false;
+    
+        $data = $_POST['email'];
+        $check = $this->loginHelper->checkEmail($data);
         
-        echo json_encode(array('status' => $status, 'message' => $msg));
+        if($check){
+            $return = true;
+        }else{
+            $return = false;
+        }
+        echo $return;
         exit;
     }
 }
