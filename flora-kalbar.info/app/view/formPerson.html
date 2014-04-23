@@ -15,11 +15,12 @@ $().ready(function() {
 			},
             short_namecode: {
                 required: true,
-                minlength: 3
+                minlength: 3,
+                maxlength: 3
             }
 		},
 		messages: {
-			name: " Please enter your name",
+			name: " Please enter a name",
 			email: " Please enter a valid email address",
 			twitter: {
 				minlength: " Please enter a valid twitter account"
@@ -29,7 +30,8 @@ $().ready(function() {
 			},
             short_namecode: {
                 required: " Please enter a shortname",
-                minlength: " Your short namecode must be at least 3 characters long"
+                minlength: " Your short namecode must be 3 characters long",
+                maxlength: " Your short namecode must be 3 characters long"
             }
 		}
     });
@@ -42,15 +44,15 @@ $().ready(function() {
         <table class="form-tbl">
             <tr>
                 <td><label for="name">Name</label></td>
-                <td><input class="inputbox" type="text" id="name" name="name" onblur="checkName()" /></td>
+                <td id="nameGroup"><input class="inputbox" type="text" id="name" name="name" onblur="checkName()" /></td>
             </tr>
             <tr>
                 <td><label for="email">Email</label></td>
-                <td><input class="inputbox" type="text" id="email" name="email" /></td>
+                <td id="emailGroup"><input class="inputbox" type="text" id="email" name="email" /></td>
             </tr>
             <tr>
                 <td><label for="twitter">Twitter</label></td>
-                <td><input class="inputbox" type="text" id="twitter" name="twitter" /></td>
+                <td id="twitterGroup"><input class="inputbox" type="text" id="twitter" name="twitter" /></td>
             </tr>
             <tr>
                 <td><label for="website">Website</label></td>
