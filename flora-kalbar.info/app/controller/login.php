@@ -98,8 +98,7 @@ class login extends Controller {
         $data = array();
         $data[]= array('email'=>$email, 'password'=>$pass);
         $login = $this->loginHelper->loginUser($data);
-        pr($login); 
-        //$startSession = $this->loginHelper->setSession($login); 
+        $startSession = $this->loginHelper->setSession($login); 
     } 
     
     /**

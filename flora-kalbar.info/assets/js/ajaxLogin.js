@@ -44,7 +44,6 @@ $('#formSignup').submit(function(event) {
     });
 });
 
-/*
 $('#formLogin').submit(function(event){
     event.preventDefault();
     
@@ -57,5 +56,5 @@ $('#formLogin').submit(function(event){
         }
     });
 });
-*/
+
 });
