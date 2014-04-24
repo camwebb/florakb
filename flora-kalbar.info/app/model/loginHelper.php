@@ -175,7 +175,7 @@ class loginHelper extends Database {
         if($data==false) return false;
 		session_start();
         // store session data
-        /*$dataSession = array(
+        $dataSession = array(
                 'id' => $data[0]['id'],
                 'name' => $data[0]['name'],
                 'email' => $data[0]['email'],
@@ -184,14 +184,7 @@ class loginHelper extends Database {
                 'phone' => $data[0]['phone'],
                 'short_namecode' => $data[0]['short_namecode']
             );
-        $_SESSION['login'] = $dataSession;*/
-        $_SESSION['id']=$data[0]['id'];
-        $_SESSION['name']=$data[0]['name'];
-        $_SESSION['email']=$data[0]['email'];
-        $_SESSION['twitter']=$data[0]['twitter'];
-        $_SESSION['website']=$data[0]['website'];
-        $_SESSION['phone']=$data[0]['phone'];
-        $_SESSION['short_namecode']=$data[0]['short_namecode'];
+        $_SESSION['login'] = $dataSession;
 	}
     
     /**

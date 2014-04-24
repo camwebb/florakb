@@ -6,11 +6,11 @@
         <p>Records of Plants of Kalimantan Barat</p>
     </div>
     
-    {if isset($smarty.session.name)}
+    {if isset($smarty.session.login)}
     
     
     <div id="login"> 
-        <a href="{$basedomain}login/doLogout" class="btn welcome">Welcome, {$smarty.session.name}</a> 
+        <a href="{$basedomain}login/doLogout" class="btn welcome">Welcome, {$smarty.session.login.name}</a> 
     </div>
     <div class="clear"></div>
     
