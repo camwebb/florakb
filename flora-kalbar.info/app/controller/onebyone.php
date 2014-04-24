@@ -65,9 +65,9 @@ class onebyone extends Controller {
         $insertData = $this->insertonebyone->insertTransaction('person',$data);
         
         if($insertData){
-            $this->msg->add('s', 'This is a sample Success Message');
+            $this->msg->add('s', 'Update Success');
         }else{
-            $this->msg->add('e', 'This is a sample Error Message');
+            $this->msg->add('e', 'Update Failed');
         }
         header('Location: ../onebyone/person');
     }
