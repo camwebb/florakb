@@ -41,9 +41,10 @@ class zip extends Controller {
         
         $name = $_POST['imagezip'];
         $path = '';
-        $username = $_POST['username'];
-        
         $path_file = $CONFIG['default']['upload_path'];
+        $email = $_POST['email'];
+        
+        /*$username = $_POST['username'];
         
         $validateUsername = $this->validateUsername($username);
 
@@ -54,6 +55,21 @@ class zip extends Controller {
             echo json_encode(array('status' => $status, 'message' => $msg));
             exit;
         }
+        
+        $personID = $validateUsername['personID'];*/
+        
+        // input with email        
+        $validateEmail = $this->validateEmail($email);
+        if($validateEmail['status'] != 'success'){
+            $status = "error";
+            $msg = "Error occured while validating email";
+            
+            echo json_encode(array('status' => $status, 'message' => $msg));
+            exit;
+        }
+        $personID = $validateEmail['personID'];
+        $username = $validateEmail['short_namecode'];
+        //end input with email
         
         if(!empty($name)){
             
@@ -179,11 +195,11 @@ class zip extends Controller {
                                     $fileToInsert = array('filename' => $entry,'md5sum' => $image_name_encrypt, 'directory' => $folder, 'mimetype' => $fileinfo['mime']);
                                     
                                     //check data exist in db
-                                    $dataExist = $this->imagezip->dataExist($validateUsername['personID'], $entry);
+                                    $dataExist = $this->imagezip->dataExist($personID, $entry);
                                     
                                     //if data exist, update data
                                     if($dataExist){
-                                        $insertImage = $this->imagezip->updateImage($validateUsername['personID'], $fileToInsert);
+                                        $insertImage = $this->imagezip->updateImage($personID, $fileToInsert);
                                     }else{
                                         //add data information to array
                                         array_push($dataNotExist,$fileToInsert);
@@ -304,16 +320,35 @@ class zip extends Controller {
      * 
      * @param username = short name code from user input
      * @return status = a status of success/error validate
-     * @return message = message
      * @return personID = id for person (if success)
      * 
      * */
     function validateUsername($username){
         $validateUser = $this->imagezip->validateUser($username);
         if($validateUser['id'] != ''){
-            $return = array('status' => "success", 'message' => $username, 'personID' => $validateUser['id']);
+            $return = array('status' => "success", 'personID' => $validateUser['id']);
         }else{
-            $return = array('status' => "error", 'message' => $username, 'personID' => $validateUser['id']);
+            $return = array('status' => "error", 'personID' => $validateUser['id']);
+        }  
+        return $return;
+        exit;
+    }
+    
+    /**
+     * @todo get id and shortname of user
+     * 
+     * @param email = email from user input
+     * @return status = a status of success/error validate
+     * @return short_namecode = short name of user (if success)
+     * @return personID = id for person (if success)
+     * 
+     * */
+    function validateEmail($email){
+        $validate = $this->imagezip->validateEmail($email);
+        if($validate['id'] != ''){
+            $return = array('status' => "success", 'short_namecode' => $validate['short_namecode'], 'personID' => $validate['id']);
+        }else{
+            $return = array('status' => "error", 'short_namecode' => $validate['short_namecode'], 'personID' => $validate['id']);
         }  
         return $return;
         exit;

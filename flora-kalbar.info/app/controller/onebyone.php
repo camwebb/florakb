@@ -72,6 +72,11 @@ class onebyone extends Controller {
         header('Location: ../onebyone/person');
     }
     
+    /**
+     * @todo check input name exist from input
+     * 
+     * @return boolean true/false
+     * */
     public function check_Name(){
         $data = $_POST['name'];
         $check = $this->loginHelper->checkName($data);
@@ -84,6 +89,11 @@ class onebyone extends Controller {
         exit;
     }
     
+    /**
+     * @todo check input twitter exist from input
+     * 
+     * @return boolean true/false
+     * */
     public function check_Twitter(){
         $data = $_POST['twitter'];
         $check = $this->loginHelper->checkTwitter($data);
@@ -96,6 +106,11 @@ class onebyone extends Controller {
         exit;
     }
     
+    /**
+     * @todo check input email exist from input
+     * 
+     * @return boolean true/false
+     * */
     public function check_Email(){
         $return = false;
     

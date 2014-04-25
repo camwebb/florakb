@@ -1,6 +1,6 @@
 function zipExtract()
 {
-    var username = $('#username').val();
+    var email = $('#email').val();
     var filename = $('#zip_file').val();
     var first_error = '<div class="messages erroren"><a href="#" class="closeMessage"></a><p>';
     var first_info = '<div class="messages info"><a href="#" class="closeMessage"></a><p>';
@@ -11,15 +11,15 @@ function zipExtract()
     $(".errorbox").html('');
     $(".message").html('');
     
-    if( username == ''){
-        $(".errorbox").html(first_error + 'Username must be filled' + end);
+    if( email == ''){
+        $(".errorbox").html(first_error + 'Email must be filled' + end);
     }else{
         if ( filename == '') {
             $(".errorbox").html(first_error + 'Filename can not be empty' + end);
         }else{
             $(".errorbox").html('');
             $(".message").html(first_info + 'Fetching files ...' + end);
-            var data = { 'username' : username, 'imagezip' : filename };
+            var data = { 'email' : email, 'imagezip' : filename };
             
             var extract_file = 
                 $.ajax({

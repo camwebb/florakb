@@ -4,10 +4,19 @@
     <div class="errorbox"></div>
     <form onsubmit="zipExtract();return false;" id="extract_zip" method="POST" action=""> <!-- zipExtract();return false; -->
         <table class="form-tbl">
+            <!--
             <tr>
-                <td><label for="username">Username</label></td>
+                <td><label for="username">Short Name</label></td>
                 <td><input class="inputbox" name="username" id="username" /></td>
             </tr>
+            -->
+            
+            <tr>
+                <td><label for="email">Email</label></td>
+                <td><input class="inputbox" name="email" id="email" value="{$smarty.session.login.email}" /></td>
+            </tr>
+            
+            
             <tr>
                 <td>
                     <label for="zip_file">Filename<br /><i>(with zip extention ex. User-date.zip)</i></label>

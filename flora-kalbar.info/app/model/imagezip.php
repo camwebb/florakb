@@ -36,6 +36,19 @@ class imagezip extends Database {
     }
     
     /**
+     * @todo get id and short name of a user from database
+     * 
+     * @param $email = email from user input
+     * @return result sql id and short name user
+     * 
+     * */
+    function validateEmail($email){
+        $sql = "SELECT id, short_namecode FROM person WHERE email= '$email'";
+		$res = $this->fetch($sql,0);
+        return $res;
+    }
+    
+    /**
      * @todo check data image in database (exist or not)
      * 
      * @param $personID = id of a user
