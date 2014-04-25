@@ -86,13 +86,11 @@ class login extends Controller {
         $email = $_POST["email"]; 
         $pass = $_POST["pass"];
         
-        /*
         // To protect MySQL injection
         $email = stripslashes($email);
         $pass = stripslashes($pass);
-        $email = mysql_real_escape_string($email);
-        $pass = mysql_real_escape_string($pass); 
-        */
+        $email = @mysql_real_escape_string($email);
+        $pass = @mysql_real_escape_string($pass); 
         
         //query data
         $data = array();
