@@ -1,6 +1,43 @@
+<script language='javascript' type='text/javascript'>
+$().ready(function() {
+    
+    $("#formLocation").validate({
+        rules: {
+			locality: {
+                required: true
+			},
+            province: {
+                required: true
+            },
+            island: {
+                required: true
+            },
+            country: {
+                required: true
+            }
+		},
+		messages: {
+			locality: {
+                required: " Please enter locality"
+			},
+            province: {
+                required: " Please enter province"
+            },
+            island: {
+                required: " Please enter island"
+            },
+            country: {
+                required: " Please enter country"
+            }
+		}
+    });
+});
+</script>
+
 <div class="content">
     <h2 class="title">Insert Location</h2>
-    <form method="POST" action="{$basedomain}onebyone/insertLocation">
+    {$msg}
+    <form id="formLocation" method="POST" action="{$basedomain}onebyone/insertLocation">
         <table class="form-tbl">
             <tr>
                 <td><label for="short_namecode">Short Namecode</label></td>
@@ -32,15 +69,15 @@
             </tr>
             <tr>
                 <td><label for="province">Province</label></td>
-                <td><input class="inputbox" type="text" id="province" name="province" /></td>
+                <td><input class="inputbox" type="text" id="province" name="province" value="Kalimantan Barat" /></td>
             </tr>
             <tr>
                 <td><label for="island">Island</label></td>
-                <td><input class="inputbox" type="text" id="island" name="island" /></td>
+                <td><input class="inputbox" type="text" id="island" name="island" value="Borneo" /></td>
             </tr>
             <tr>
                 <td><label for="country">Country</label></td>
-                <td><input class="inputbox" type="text" id="country" name="country" /></td>
+                <td><input class="inputbox" type="text" id="country" name="country" value="Indonesia" /></td>
             </tr>
             <tr>
                 <td><label for="notes">Notes</label></td>

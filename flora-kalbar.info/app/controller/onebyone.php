@@ -73,6 +73,36 @@ class onebyone extends Controller {
     }
     
     /**
+     * @todo insert location from posted data
+     * */
+    public function insertLocation(){
+        $data = $_POST;
+        $insertData = $this->insertonebyone->insertTransaction('locn',$data);
+        
+        if($insertData){
+            $this->msg->add('s', 'Update Success');
+        }else{
+            $this->msg->add('e', 'Update Failed');
+        }
+        header('Location: ../onebyone/location');
+    }
+    
+    /**
+     * @todo insert taxon from posted data
+     * */
+    public function insertTaxon(){
+        $data = $_POST;
+        $insertData = $this->insertonebyone->insertTransaction('taxon',$data);
+        
+        if($insertData){
+            $this->msg->add('s', 'Update Success');
+        }else{
+            $this->msg->add('e', 'Update Failed');
+        }
+        header('Location: ../onebyone/location');
+    }
+    
+    /**
      * @todo check input name exist from input
      * 
      * @return boolean true/false

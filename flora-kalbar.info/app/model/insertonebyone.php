@@ -10,10 +10,8 @@ class insertonebyone extends Database {
 		$return['status'] = false;
 		
 		foreach ($data as $key=>$val){
-			$tmpfield[] = $key;
-            if(empty($val)){
-                $tmpvalue[] = 'NULL';
-            }else{
+            if(!empty($val)){
+                $tmpfield[] = $key;
                 $tmpvalue[] = "'{$val}'";
             }
 		}
