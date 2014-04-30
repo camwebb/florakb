@@ -1,0 +1,53 @@
+<script language='javascript' type='text/javascript'>
+$().ready(function() {
+    
+    $("#formImage").validate({
+        rules: {
+			email: {
+                required: true,
+                email: true,
+                checkEmailNotExist: true
+			},
+			filename: {
+				required: true
+			}
+		},
+		messages: {
+			email: {
+                required: " Please enter a valid email address"
+			},
+			filename: {
+                required: " Please choose an image file"
+			}
+		}
+    });
+});
+</script>
+<div class="content">
+    <h2 class="title">Insert Image</h2>
+    {$msg}
+    <form id="formImage" method="POST" action="{$basedomain}onebyone/insertImage" enctype="multipart/form-data">
+        <table class="form-tbl">
+            <tr>
+                <td><label for="email">Email</label></td>
+                <td><input class="inputbox" type="text" id="email" name="email" /></td>
+            </tr>
+            <tr>
+                <td><label for="filename">File Image</label></td>
+                <td><input class="inputbox" type="file" id="filename" name="filename" /></td>
+            </tr>
+            <tr>
+                <td><label for="plantpart">Plantpart</label></td>
+                <td><input class="inputbox" type="text" id="plantpart" name="plantpart" /></td>
+            </tr>
+            <tr>
+                <td><label for="notes">Notes</label></td>
+                <td><textarea class="textareabox" id="notes" name="notes"></textarea></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input class="btn" type="submit" value="Submit" /></td>
+            </tr>
+        </table>
+    </form>
+</div>

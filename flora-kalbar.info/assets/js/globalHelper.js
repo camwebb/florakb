@@ -32,6 +32,26 @@ $().ready(function() {
     }," Email already registered");
     
     /**
+    * checking email exist or not in database
+    */
+    $.validator.addMethod("checkEmailNotExist",function(value,element){
+        var data_input = $('#email').val();
+        var data = { 'email' : data_input };
+        var check = $.ajax({
+                        url: baseUrl+"onebyone/check_Email",
+                        type: "POST",
+                        async: false,
+                        data: data,
+                        success: function(output) {}
+                    }).responseText;
+        if(check){
+            return false;
+        }else{
+            return true;
+        }
+    }," Email Not Exist");
+    
+    /**
     * checking twitter exist or not in database
     */
     $.validator.addMethod("checkTwitterExist",function(value,element){

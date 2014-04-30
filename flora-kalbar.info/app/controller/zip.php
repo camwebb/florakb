@@ -204,7 +204,7 @@ class zip extends Controller {
                                         //add data information to array
                                         array_push($dataNotExist,$fileToInsert);
                                     }                         
-                                }
+                                } // end if copy
                             }
                         }
                     }
