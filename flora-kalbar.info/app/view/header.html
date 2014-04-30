@@ -10,9 +10,30 @@
     
     
     <div id="login"> 
-        <a href="{$basedomain}login/doLogout" class="btn welcome">Welcome, {$smarty.session.login.name}</a> 
+        <a id="welcome" href="#" class="btn welcome">Welcome, {$smarty.session.login.name}</a> 
+        
+        <div id="box-user">
+        <ul>
+            <li style="border-bottom: 1px dotted #0095a2;border-top: 1px dotted #0095a2;"><a href="">Edit Profile</a></li>
+            <li><a href="{$basedomain}login/doLogout">Logout</a></li>
+        </ul>
     </div>
+        
+    </div>
+    
     <div class="clear"></div>
+    
+    
+    <script type="text/javascript">
+    {literal}
+        $(document).ready(function () {
+            $('a.welcome').click(function(){
+                $('a#welcome').toggleClass('dua');
+                $('#box-user').slideToggle();
+            });
+        });
+    {/literal}
+    </script>
     
     {else}
     <div id="login"> 
@@ -22,3 +43,4 @@
     <div class="clear"></div>
 	{/if}
 </div>
+<div class="clear"></div>
