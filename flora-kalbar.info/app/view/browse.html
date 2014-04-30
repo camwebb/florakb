@@ -28,9 +28,20 @@
                 <td><i>{$dataTaxon['sp']}</i></td>
                 <td>{$dataTaxon['gen']}</td>
                 <td>{$dataTaxon['fam']}</td>
-                <td>Species</td>
+                <td><a class='gallery' href='{$basedomain}tmp/sample500px.jpg'><img src="{$basedomain}tmp/sample100px.jpg" /></a>
+    <a class='gallery' href='{$basedomain}tmp/sample500px.jpg'><img src="{$basedomain}tmp/sample100px.jpg" /></a>
+    <a class='gallery' href='{$basedomain}tmp/sample500px.jpg'><img src="{$basedomain}tmp/sample100px.jpg" /></a></td>
             </tr>
         {/foreach}
         </tbody>
     </table>
+    
+    <script type="text/javascript">
+    {literal}
+        $(document).ready(function () {
+            $('a.gallery').colorbox({ opacity:0.5 , rel:'group1' });
+        });
+    {/literal}
+    </script>
+    
 </div>

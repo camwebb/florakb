@@ -30,8 +30,8 @@ class loginHelper extends Database {
 	function createUser($data=false)
 	{
 		if($data==false) return false;
-		
-		$salt = '12345678PnD';
+		global $CONFIG;
+		$salt = $CONFIG['default']['salt'];
 		$password = sha1($data[0]['password'].$salt);
         //echo $password.' = '.$data[0]['password'].' + '.$salt;
 		$startTransaction = $this->begin();
