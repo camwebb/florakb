@@ -154,13 +154,16 @@ class loginHelper extends Database {
         $password = sha1($data[0]['password']."$salt");
         if(count($res['id'])==1 && $res2[0]['password']==$password){
         //if(count($res)==1){
+            $result = array();
             $user = array();
             $user[]= array('id'=>$res['id'], 'name'=>$res['name'], 'email'=>$res['email'], 'twitter'=>$res['twitter'], 'website'=>$res['website'], 'phone'=>$res['phone'], 'short_namecode'=>$res['short_namecode']);
-            return $user;
+            $result[] = array('message'=>'success','user'=>$user);
+            return $result;
         }
         else{
-            echo $password.' = '.$data[0]['password'].' + '.$salt;
-            return false;
+            //echo $password.' = '.$data[0]['password'].' + '.$salt;
+            $result[] = array('message'=>'error','user'=>'');
+            return $result;
         }
         
     }
@@ -173,8 +176,7 @@ class loginHelper extends Database {
 	function setSession($data=false)
 	{
         if($data==false) return false;
-		session_start();
-        // store session data
+		// store session data
         $dataSession = array(
                 'id' => $data[0]['id'],
                 'name' => $data[0]['name'],

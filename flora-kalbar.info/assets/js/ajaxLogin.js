@@ -51,8 +51,14 @@ $('#formLogin').submit(function(event){
         url: baseUrl+"login/doLogin",
         type: 'POST',
         data: $(this).serialize(),
-        success: function(data) {
-            location.reload();
+        success: function(response) {
+            var returnedData = JSON.parse(response);
+            if(returnedData == 'success'){
+                location.reload();
+            }
+            else{
+                alert('You have entered an invalid username or password');
+            }
         }
     });
 });

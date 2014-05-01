@@ -90,7 +90,14 @@ class login extends Controller {
         $data = array();
         $data[]= array('email'=>$email, 'password'=>$pass);
         $login = $this->loginHelper->loginUser($data);
-        $startSession = $this->loginHelper->setSession($login); 
+        if($login[0]['message']=='success'){
+            echo json_encode($login[0]['message']);
+            $startSession = $this->loginHelper->setSession($login[0]['user']);            
+        } 
+        else{
+            echo json_encode($login[0]['message']);
+        }
+        exit;     
     } 
     
     /**
