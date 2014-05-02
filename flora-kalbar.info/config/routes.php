@@ -12,6 +12,7 @@ $ROUTES = array(
                 'zip', 
                 'login',
                 'onebyone',
-                'browse'               
+                'browse',
+                'user'               
                 );
 ?>
