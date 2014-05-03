@@ -23,54 +23,67 @@ $().ready(function() {
 </script>
 
 <div class="content">
-    <h2 class="title">Insert Taxon</h2>
-    {$msg}
-    <form id="formTaxon" method="POST" action="{$basedomain}onebyone/insertTaxon">
-        <table class="form-tbl">
-            <tr>
-                <td><label for="rank">Rank</label></td>
-                <td><input class="inputbox" type="text" id="rank" name="rank" /></td>
-            </tr>
-            <tr>
-                <td><label for="morphotype">Morphotype</label></td>
-                <td><input class="inputbox" type="text" id="morphotype" name="morphotype" /></td>
-            </tr>
-            <tr>
-                <td><label for="fam">Family</label></td>
-                <td><input class="inputbox" type="text" id="fam" name="fam" /></td>
-            </tr>
-            <tr>
-                <td><label for="gen">Genus</label></td>
-                <td><input class="inputbox" type="text" id="gen" name="gen" /></td>
-            </tr>
-            <tr>
-                <td><label for="sp">Species</label></td>
-                <td><input class="inputbox" type="text" id="sp" name="sp" /></td>
-            </tr>
-            <tr>
-                <td><label for="subtype">Subtype</label></td>
-                <td><input class="inputbox" type="text" id="subtype" name="subtype" /></td>
-            </tr>
-            <tr>
-                <td><label for="ssp">Sub Species</label></td>
-                <td><input class="inputbox" type="text" id="ssp" name="ssp" /></td>
-            </tr>
-            <tr>
-                <td><label for="auth">Author</label></td>
-                <td><input class="inputbox" type="text" id="auth" name="auth" /></td>
-            </tr>
-            <tr>
-                <td><label for="notes">Notes</label></td>
-                <td><textarea class="textareabox" id="notes" name="notes"></textarea></td>
-            </tr>
-            <tr>
-                <td><label for="short_namecode">Short Name</label></td>
-                <td><input class="inputbox" type="text" id="short_namecode" name="short_namecode" /></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input class="btn" type="submit" value="Submit" /></td>
-            </tr>
-        </table>
-    </form>
+    <div class="sidebar-2-left">
+        <ul>
+            <li>Insert One By One</li>
+            <li><a href="{$basedomain}onebyone/location">Insert Location</a></li>
+            <li><a href="{$basedomain}onebyone/person">Insert Person</a></li>
+            <li class="selected"><a href="{$basedomain}onebyone/taxon">Insert Taxon</a></li>
+            <li><a href="{$basedomain}onebyone/image">Insert Image</a></li>
+        </ul>
+    </div>
+
+    <div class="sidebar-2-right">
+        <h2 class="title">Insert Taxon</h2>
+        {$msg}
+        <form id="formTaxon" method="POST" action="{$basedomain}onebyone/insertTaxon">
+            <table class="form-tbl">
+                <tr>
+                    <td><label for="rank">Rank</label></td>
+                    <td><input class="inputbox" type="text" id="rank" name="rank" /></td>
+                </tr>
+                <tr>
+                    <td><label for="morphotype">Morphotype</label></td>
+                    <td><input class="inputbox" type="text" id="morphotype" name="morphotype" /></td>
+                </tr>
+                <tr>
+                    <td><label for="fam">Family</label></td>
+                    <td><input class="inputbox" type="text" id="fam" name="fam" /></td>
+                </tr>
+                <tr>
+                    <td><label for="gen">Genus</label></td>
+                    <td><input class="inputbox" type="text" id="gen" name="gen" /></td>
+                </tr>
+                <tr>
+                    <td><label for="sp">Species</label></td>
+                    <td><input class="inputbox" type="text" id="sp" name="sp" /></td>
+                </tr>
+                <tr>
+                    <td><label for="subtype">Subtype</label></td>
+                    <td><input class="inputbox" type="text" id="subtype" name="subtype" /></td>
+                </tr>
+                <tr>
+                    <td><label for="ssp">Sub Species</label></td>
+                    <td><input class="inputbox" type="text" id="ssp" name="ssp" /></td>
+                </tr>
+                <tr>
+                    <td><label for="auth">Author</label></td>
+                    <td><input class="inputbox" type="text" id="auth" name="auth" /></td>
+                </tr>
+                <tr>
+                    <td><label for="notes">Notes</label></td>
+                    <td><textarea class="textareabox" id="notes" name="notes"></textarea></td>
+                </tr>
+                <tr>
+                    <td><label for="short_namecode">Short Name</label></td>
+                    <td><input class="inputbox" type="text" id="short_namecode" name="short_namecode" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input class="btn" type="submit" value="Submit" /></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="clear"></div>    
 </div>

@@ -48,38 +48,51 @@ $().ready(function() {
 });
 </script>
 <div class="content">
-    <h2 class="title">Insert Person</h2>
-    {$msg}
-    <form id="formPerson" method="POST" action="{$basedomain}onebyone/insertPerson">
-        <table class="form-tbl">
-            <tr>
-                <td><label for="name">Name</label></td>
-                <td><input class="inputbox" type="text" id="name" name="name" /></td>
-            </tr>
-            <tr>
-                <td><label for="email">Email</label></td>
-                <td><input class="inputbox" type="text" id="email" name="email" /></td>
-            </tr>
-            <tr>
-                <td><label for="twitter">Twitter</label></td>
-                <td><input class="inputbox" type="text" id="twitter" name="twitter" /></td>
-            </tr>
-            <tr>
-                <td><label for="website">Website</label></td>
-                <td><input class="inputbox" type="text" id="website" name="website" /></td>
-            </tr>
-            <tr>
-                <td><label for="phone">Phone</label></td>
-                <td><input class="inputbox" type="text" id="phone" name="phone" /></td>
-            </tr>
-            <tr>
-                <td><label for="short_namecode">Short Namecode</label></td>
-                <td><input class="inputbox" type="text" id="short_namecode" name="short_namecode" /></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input class="btn" type="submit" value="Submit" /></td>
-            </tr>
-        </table>
-    </form>
+    <div class="sidebar-2-left">
+        <ul>
+            <li>Insert One By One</li>
+            <li><a href="{$basedomain}onebyone/location">Insert Location</a></li>
+            <li class="selected"><a href="{$basedomain}onebyone/person">Insert Person</a></li>
+            <li><a href="{$basedomain}onebyone/taxon">Insert Taxon</a></li>
+            <li><a href="{$basedomain}onebyone/image">Insert Image</a></li>
+        </ul>
+    </div>
+
+    <div class="sidebar-2-right">
+        <h2 class="title">Insert Person</h2>
+        {$msg}
+        <form id="formPerson" method="POST" action="{$basedomain}onebyone/insertPerson">
+            <table class="form-tbl">
+                <tr>
+                    <td><label for="name">Name</label></td>
+                    <td><input class="inputbox" type="text" id="name" name="name" /></td>
+                </tr>
+                <tr>
+                    <td><label for="email">Email</label></td>
+                    <td><input class="inputbox" type="text" id="email" name="email" /></td>
+                </tr>
+                <tr>
+                    <td><label for="twitter">Twitter</label></td>
+                    <td><input class="inputbox" type="text" id="twitter" name="twitter" /></td>
+                </tr>
+                <tr>
+                    <td><label for="website">Website</label></td>
+                    <td><input class="inputbox" type="text" id="website" name="website" /></td>
+                </tr>
+                <tr>
+                    <td><label for="phone">Phone</label></td>
+                    <td><input class="inputbox" type="text" id="phone" name="phone" /></td>
+                </tr>
+                <tr>
+                    <td><label for="short_namecode">Short Namecode</label></td>
+                    <td><input class="inputbox" type="text" id="short_namecode" name="short_namecode" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input class="btn" type="submit" value="Submit" /></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="clear"></div>
 </div>

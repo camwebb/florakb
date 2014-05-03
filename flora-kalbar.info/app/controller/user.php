@@ -32,6 +32,11 @@ class user extends Controller {
         $this->view->assign('msg', $msg);
         return $this->loadView('editProfile');
     }
+    function editPassword(){
+        $msg = $this->msg->display('all', false);
+        $this->view->assign('msg', $msg);
+        return $this->loadView('editPassword');
+    }
 }
 
 ?>

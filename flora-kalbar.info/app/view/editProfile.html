@@ -37,10 +37,6 @@ $().ready(function() {
 			},
             password: {
                 required: true
-            },
-            re_password:{
-                required: true,
-                equalTo: "#password"
             }
 		},
 		messages: {
@@ -68,46 +64,54 @@ $().ready(function() {
 </script>
 </literal>
 <div class="content">
-    <h2 class="title">Edit Profile</h2>
-    {$msg}
-    <form id="formPerson" method="POST" action="{$basedomain}user/doEditProfile">
-        <table class="form-tbl">
-            <tr>
-                <td><label for="name">Name</label></td>
-                <td><input class="inputbox" type="text" id="name" name="name" value="{$smarty.session.login.name}" /></td>
-            </tr>
-            <tr>
-                <td><label for="email">Email</label></td>
-                <td><input class="inputbox" type="text" id="email" name="email" value="{$smarty.session.login.email}"/></td>
-            </tr>
-            <tr>
-                <td><label for="twitter">Twitter</label></td>
-                <td><input class="inputbox" type="text" id="twitter" name="twitter" value="{$smarty.session.login.twitter}"/></td>
-            </tr>
-            <tr>
-                <td><label for="website">Website</label></td>
-                <td><input class="inputbox" type="text" id="website" name="website" value="{$smarty.session.login.website}"/></td>
-            </tr>
-            <tr>
-                <td><label for="phone">Phone</label></td>
-                <td><input class="inputbox" type="text" id="phone" name="phone" value="{$smarty.session.login.phone}"/></td>
-            </tr>
-            <tr>
-                <td><label for="short_namecode">Short Namecode</label></td>
-                <td><input class="inputbox" type="text" id="short_namecode" name="short_namecode" value="{$smarty.session.login.short_namecode}"/></td>
-            </tr>
-            <tr>
-                <td><label for="password">Password</label></td>
-                <td><input class="inputbox" type="password" id="password" name="password" /></td>
-            </tr>
-            <tr>
-                <td><label for="re_password">Retype Password</label></td>
-                <td><input class="inputbox" type="password" id="re_password" name="re_password" /></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input class="btn" type="submit" value="Submit" /></td>
-            </tr>
-        </table>
-    </form>
+    <div class="sidebar-2-left">
+        <ul>
+            <li>Setting</li>
+            <li class="selected"><a href="#">Edit Profile</a></li>
+            <li><a href="{$basedomain}user/editPassword">Password</a></li>
+        </ul>
+    </div>
+    
+    <div class="sidebar-2-right">
+        <h2 class="title">Edit Profile</h2>
+        {$msg}
+        <form id="formPerson" method="POST" action="{$basedomain}user/doEditProfile">
+            <table class="form-tbl">
+                <tr>
+                    <td><label for="name">Name</label></td>
+                    <td><input class="inputbox" type="text" id="name" name="name" value="{$smarty.session.login.name}" /></td>
+                </tr>
+                <tr>
+                    <td><label for="email">Email</label></td>
+                    <td><input class="inputbox" type="text" id="email" name="email" value="{$smarty.session.login.email}"/></td>
+                </tr>
+                <tr>
+                    <td><label for="twitter">Twitter</label></td>
+                    <td><input class="inputbox" type="text" id="twitter" name="twitter" value="{$smarty.session.login.twitter}"/></td>
+                </tr>
+                <tr>
+                    <td><label for="website">Website</label></td>
+                    <td><input class="inputbox" type="text" id="website" name="website" value="{$smarty.session.login.website}"/></td>
+                </tr>
+                <tr>
+                    <td><label for="phone">Phone</label></td>
+                    <td><input class="inputbox" type="text" id="phone" name="phone" value="{$smarty.session.login.phone}"/></td>
+                </tr>
+                <tr>
+                    <td><label for="short_namecode">Short Namecode</label></td>
+                    <td><input class="inputbox" type="text" id="short_namecode" name="short_namecode" value="{$smarty.session.login.short_namecode}"/></td>
+                </tr>
+                <tr>
+                    <td><label for="password">Password</label></td>
+                    <td><input class="inputbox" type="password" id="password" name="password" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input class="btn" type="submit" value="Submit" /></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    
+    <div class="clear"></div>
 </div>
