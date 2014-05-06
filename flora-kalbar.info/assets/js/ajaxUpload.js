@@ -42,19 +42,24 @@ function zipExtract()
             }
             
             if(resultExtract.data){
-                $(".errorbox").append(first_warning +
-                    'The following file(s) is not associated with any data <br /><table id="data">' +
-                    '<tr><td>Filename</td><td>Directory</td><td>Mimetype</td></tr></table>' +
-                    end
-                );
+                
                 var dataResult = resultExtract.data;
                 var dataNotExist = dataResult.dataNotExist;
-                dataNotExist.forEach(function(entry) {
-                    console.log(entry);
-                    $("#data").append(
-                        '<tr><td>'+ entry.filename +'</td><td>'+ entry.directory +'</td><td>'+ entry.mimetype +'</td></tr>'
+                
+                if(dataNotExist){
+                    $(".errorbox").append(first_warning +
+                        'The following file(s) is not associated with any data <br /><table id="data">' +
+                        '<tr><td>Filename</td><td>Directory</td><td>Mimetype</td></tr></table>' +
+                        end
                     );
-                });
+                    
+                    dataNotExist.forEach(function(entry) {
+                        console.log(entry);
+                        $("#data").append(
+                            '<tr><td>'+ entry.filename +'</td><td>'+ entry.directory +'</td><td>'+ entry.mimetype +'</td></tr>'
+                        );
+                    });
+                }
             }
         }
     }
