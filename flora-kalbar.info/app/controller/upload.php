@@ -77,10 +77,16 @@ class upload extends Controller {
 				/* here begin process */
 				if ($newData){
 					
-					$this->collectionHelper->truncateData(false,true);
+					$emptyTmptable = $this->collectionHelper->truncateData(false,true);
 					
+					if ($emptyTmptable){
+						logFile('empty tmp table before insert');
+						sleep(1);
+						$referenceQuery = $this->collectionHelper->tmp_data($newData);
+
+					}
 					// pr($newData);
-					$referenceQuery = $this->collectionHelper->tmp_data($newData);
+					
 					
 					$insertData = false;
 					// $referenceQuery = true;
@@ -157,7 +163,7 @@ class upload extends Controller {
 	
 	function truncate()
 	{
-		$this->collectionHelper->truncateData(true,true);
+		$this->collectionHelper->truncateData(false,true);
 	}
 	
 }

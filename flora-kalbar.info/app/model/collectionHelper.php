@@ -685,6 +685,7 @@ class collectionHelper extends Database {
 				
 				$this->query("DELETE FROM ".$val);
 			}
+
 		}
 		
 		if ($tmp){
@@ -693,6 +694,8 @@ class collectionHelper extends Database {
 				$this->query("DELETE FROM ".$val,1);
 			}
 		}
+
+		return true;
 		
 	}
 	
