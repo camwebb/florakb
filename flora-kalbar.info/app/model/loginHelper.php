@@ -153,18 +153,10 @@ class loginHelper extends Database {
         
         //match email and password
         $salt = $res[0]['salt']; 
-        $password = sha1($dataPassword."$salt");
-        if(count($data['id'])==1 && $res[0]['password']==$password){
-            $result = array();
-            $user = array();
-            $user[]= array('id'=>$data['id'], 'name'=>$data['name'], 'email'=>$data['email'], 'twitter'=>$data['twitter'], 'website'=>$data['website'], 'phone'=>$data['phone'], 'short_namecode'=>$data['short_namecode']);
-            $result[] = array('message'=>'success','user'=>$user);
-            return $result;
-        }
-        else{
-            $result[] = array('message'=>'error','user'=>'');
-            return $result;
-        }
+        $passwordDB = sha1($dataPassword."$salt");
+        $password = $res[0]['password'];
+        if($passwordDB==$password){return TRUE;}
+        return FALSE;
     }
 	
     /**
@@ -177,13 +169,13 @@ class loginHelper extends Database {
         if($data==false) return false;
 		// store session data
         $dataSession = array(
-                'id' => $data[0]['id'],
-                'name' => $data[0]['name'],
-                'email' => $data[0]['email'],
-                'twitter' => $data[0]['twitter'],
-                'website' => $data[0]['website'],
-                'phone' => $data[0]['phone'],
-                'short_namecode' => $data[0]['short_namecode']
+                'id' => $data['id'],
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'twitter' => $data['twitter'],
+                'website' => $data['website'],
+                'phone' => $data['phone'],
+                'short_namecode' => $data['short_namecode']
             );
         $_SESSION['login'] = $dataSession;
 	}

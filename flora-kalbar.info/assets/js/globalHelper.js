@@ -66,6 +66,22 @@ $().ready(function() {
                     }).responseText;
         return check;
     }," Twitter name already exist");
+    
+    /**
+    * checking password
+    */
+    $.validator.addMethod("checkPassword",function(value,element){
+        var data_input = $('#password').val();
+        var data = { 'password' : data_input };
+        var check = $.ajax({
+                        url: baseUrl+"user/checkPassword",
+                        type: "POST",
+                        async: false,
+                        data: data,
+                        success: function(output) {}
+                    }).responseText;
+        return check;
+    }," Invalid password or incorrect password");
                 
 });
 
