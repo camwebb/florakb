@@ -88,7 +88,7 @@ class zip extends Controller {
                     exit;
                 }
                 
-                if($CONFIG['default']['unzip'] == 's_linux'){
+                if($CONFIG['default']['unzip'] == 's_linux_unzip'){
                     s_linux_unzip($file, $path_extract);
                 }elseif($CONFIG['default']['unzip'] == 'zipArchive'){
                     unzip($file, $path_extract);
