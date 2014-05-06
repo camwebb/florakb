@@ -33,17 +33,11 @@ class login extends Controller {
      */    
     function doSignup(){
         
-        $name = $_POST["name"];
-        $email = $_POST["email"];
-        $twitter = $_POST["twitter"];
-        $website = $_POST["website"];
-        $phone = $_POST["phone"];
-        $pass = $_POST["pass"];
-        $re_pass = $_POST["re_pass"];
+        $data = $_POST;
         
-        $checkName = $this->loginHelper->checkName($name);       
-        $checkEmail = $this->loginHelper->checkEmail($email);        
-        $checkTwitter = $this->loginHelper->checkTwitter($twitter);
+        $checkName = $this->loginHelper->checkName($data['name']);       
+        $checkEmail = $this->loginHelper->checkEmail($data['email']);        
+        $checkTwitter = $this->loginHelper->checkTwitter($data['twitter']);
         
         if($checkName !== true || $checkEmail !== true || $checkTwitter !== true){
             $statusName = "";
@@ -70,8 +64,6 @@ class login extends Controller {
         }
         
         if($checkName && $checkEmail && $checkTwitter){
-            $data = array();
-            $data[]= array('name'=>$name, 'email'=>$email, 'twitter'=>$twitter, 'website'=>$website, 'phone'=>$phone, 'password'=>$pass);
             $signup = $this->loginHelper->createUser($data);
             echo json_encode(array('test' => 'test'));
             exit;
@@ -83,13 +75,12 @@ class login extends Controller {
      * @todo enter the site as user
      */        
     function doLogin(){
-        $email = $_POST["email"]; 
-        $pass = $_POST["pass"];
+        $data = $_POST;
         
         //query data
-        $data = array();
-        $data[]= array('email'=>$email, 'password'=>$pass);
-        $login = $this->loginHelper->loginUser($data);
+        $getId = $this->loginHelper->getIdUser($data);
+        $login = $this->loginHelper->checkPassword($getId,$data['password']);
+        
         if($login[0]['message']=='success'){
             echo json_encode($login[0]['message']);
             $startSession = $this->loginHelper->setSession($login[0]['user']);            

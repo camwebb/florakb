@@ -19,12 +19,6 @@ class loginHelper extends Database {
     /**
      * @todo insert data user into person and florakb_person
      * 
-     * @param $data[0]['name'] = name of user
-     * @param $data[0]['email'] = email of user
-     * @param $data[0]['twitter'] = twitter of user
-     * @param $data[0]['website'] = website of user
-     * @param $data[0]['phone'] = phone of user
-     * @param $data[0]['pass'] = password of user
      * @return boolean
      */
 	function createUser($data=false)
@@ -32,46 +26,46 @@ class loginHelper extends Database {
 		if($data==false) return false;
 		global $CONFIG;
 		$salt = $CONFIG['default']['salt'];
-		$password = sha1($data[0]['password'].$salt);
+		$password = sha1($data['password'].$salt);
         //echo $password.' = '.$data[0]['password'].' + '.$salt;
 		$startTransaction = $this->begin();
 		if (!$startTransaction) return false;
 		
         
-        if (empty($data[0]['twitter'])){
+        if (empty($data['twitter'])){
             $dataTwitter = 'NULL';
         }else{
-            $dataTwitter = "'".$data[0]['twitter']."'";
+            $dataTwitter = "'".$data['twitter']."'";
         }
         
-        if (empty($data[0]['website'])){
+        if (empty($data['website'])){
             $dataWeb = 'NULL';
         }else{
-            $dataWeb = "'".$data[0]['website']."'";
+            $dataWeb = "'".$data['website']."'";
         }
         
-        if (empty($data[0]['phone'])){
+        if (empty($data['phone'])){
             $dataPhone = 'NULL';
         }else{
-            $dataPhone = "'".$data[0]['phone']."'";
+            $dataPhone = "'".$data['phone']."'";
         }
         
-		$sql = "INSERT INTO person (id, name, email, twitter, website, phone) VALUES ('','{$data[0]['name']}','{$data[0]['email']}',$dataTwitter,$dataWeb,$dataPhone)";
+		$sql = "INSERT INTO person (id, name, email, twitter, website, phone) VALUES ('','{$data['name']}','{$data['email']}',$dataTwitter,$dataWeb,$dataPhone)";
 		$res = $this->query($sql,0);
         
-        $getID = "SELECT id from person WHERE email= '".$data[0]['email']."' ";
+        $getID = "SELECT id from person WHERE email= '".$data['email']."' ";
 		$resID = $this->fetch($getID,0);
         $sql2 = "INSERT INTO florakb_person (id, password, salt) VALUES ('{$resID['id']}','{$password}','{$salt}')";
 		$res2 = $this->query($sql2,1);
 		
         if ($res && $res2){
 			$this->commit();
-			logFile('success create user');
+			logFile('==success create user==');
 			return true;
 		}
 		
 		$this->rollback();
-		logFile('failed create user');
+		logFile('==ROLLBACK || failed create user==');
 		return false;
 	}
     
@@ -132,40 +126,45 @@ class loginHelper extends Database {
     }    
     
     /**
-     * @todo validate data into login process
+     * @todo get ID user/person to verificate login process
      * 
-     * @param $data = email and password
-     * @var $sql = get data from the email inputted
-     * @var $sql2 = get password the other database 
+     * @param $data = email and password 
      */
-    function loginUser($data=false)
+    function getIdUser($data=false)
     {
         if($data==false) return false;
         //Select email to get ID
-        $sql = "SELECT * FROM `person` WHERE `email` = '".$data[0]['email']."' ";
+        $sql = "SELECT * FROM `person` WHERE `email` = '".$data['email']."' ";
         $res = $this->fetch($sql,0);
         if(empty($res)){return false;}
-        
+        return $res;
+     }
+     
+     /**
+     * @todo check password only
+     * 
+     * @param ID from db person
+     * @param password inputted to validate
+     */
+    function checkPassword($data=false,$dataPassword){
         //select salt from ID
-        $sql2 = "SELECT salt,password FROM `florakb_person` WHERE `id` = '".$res['id']."' ";
-        $res2 = $this->fetch($sql2,1,1);
+        $sql = "SELECT salt,password FROM `florakb_person` WHERE `id` = '".$data['id']."' ";
+        $res = $this->fetch($sql,1,1);
+        
         //match email and password
-        $salt = $res2[0]['salt']; 
-        $password = sha1($data[0]['password']."$salt");
-        if(count($res['id'])==1 && $res2[0]['password']==$password){
-        //if(count($res)==1){
+        $salt = $res[0]['salt']; 
+        $password = sha1($dataPassword."$salt");
+        if(count($data['id'])==1 && $res[0]['password']==$password){
             $result = array();
             $user = array();
-            $user[]= array('id'=>$res['id'], 'name'=>$res['name'], 'email'=>$res['email'], 'twitter'=>$res['twitter'], 'website'=>$res['website'], 'phone'=>$res['phone'], 'short_namecode'=>$res['short_namecode']);
+            $user[]= array('id'=>$data['id'], 'name'=>$data['name'], 'email'=>$data['email'], 'twitter'=>$data['twitter'], 'website'=>$data['website'], 'phone'=>$data['phone'], 'short_namecode'=>$data['short_namecode']);
             $result[] = array('message'=>'success','user'=>$user);
             return $result;
         }
         else{
-            //echo $password.' = '.$data[0]['password'].' + '.$salt;
             $result[] = array('message'=>'error','user'=>'');
             return $result;
         }
-        
     }
 	
     /**
