@@ -78,7 +78,7 @@ class zip extends Controller {
                 $tmp_path = md5($name);
                 $path_extract = $path_file.'imgprocess/'.$tmp_path;
                 $file = $path_file.$name;
-                echo json_encode(array('status' => 'success', 'message' => $path_file));exit;
+                
                 //check file zip exist
                 if(!file_exists($file)){
                     $status = "error";
