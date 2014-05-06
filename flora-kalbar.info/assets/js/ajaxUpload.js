@@ -29,8 +29,8 @@ function zipExtract()
                     async: false,
                     success: function(response){}
                 }).responseText;
-                
-            var resultExtract = JSON.parse(extract_file);
+                console.log(extract_file);
+            /*var resultExtract = JSON.parse(extract_file);
 
             if(resultExtract.status != 'error'){
                 $('#extract_zip').resetForm();
@@ -55,7 +55,7 @@ function zipExtract()
                         '<tr><td>'+ entry.filename +'</td><td>'+ entry.directory +'</td><td>'+ entry.mimetype +'</td></tr>'
                     );
                 });
-            }
+            }*/
         }
     }
     
