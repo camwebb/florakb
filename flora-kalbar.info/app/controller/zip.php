@@ -136,75 +136,74 @@ class zip extends Controller {
                             if($mime){
                                 
                                 //check file exist here
+                                $dataExist = $this->imagezip->dataExist($personID, $entry);
                                 
-                                copy($path_entry."/".$entry, $path_img_1000px.'/'.$image_name_encrypt.'.1000px.jpg');
-                                if(!@ copy($path_entry."/".$entry, $path_img_1000px.'/'.$image_name_encrypt.'.1000px.jpg')){
-                                    $status = "error";
-                                    $msg= error_get_last();
-                                }
-                                else{
-                                    $src_tmp = $path_entry."/".$entry;
-                                    $dest_1000px = $CONFIG['default']['root_path'].'/'.$path_img_1000px.'/'.$image_name_encrypt.'.1000px.jpg';
-                                    $dest_500px = $CONFIG['default']['root_path'].'/'.$path_img_500px.'/'.$image_name_encrypt.'.500px.jpg';
-                                    $dest_100px = $CONFIG['default']['root_path'].'/'.$path_img_100px.'/'.$image_name_encrypt.'.100px.jpg';
-                                    
-                                    if ($fileinfo[0] >= 1000 || $fileinfo[1] >= 1000 ) {
-                                        if ($fileinfo[0] > $fileinfo[1]) {
-                                            $percentage = (1000/$fileinfo[0]);
-                                            $config['width'] = $percentage*$fileinfo[0];
-                                            $config['height'] = $percentage*$fileinfo[1];
-                                        }else{
-                                            $percentage = (1000/$fileinfo[1]);
-                                            $config['width'] = $percentage*$fileinfo[0];
-                                            $config['height'] = $percentage*$fileinfo[1];
+                                //add file information to array
+                                $fileToInsert = array('filename' => $entry,'md5sum' => $image_name_encrypt, 'directory' => $folder, 'mimetype' => $fileinfo['mime']);
+                                
+                                if($dataExist){
+                                    copy($path_entry."/".$entry, $path_img_1000px.'/'.$image_name_encrypt.'.1000px.jpg');
+                                    if(!@ copy($path_entry."/".$entry, $path_img_1000px.'/'.$image_name_encrypt.'.1000px.jpg')){
+                                        $status = "error";
+                                        $msg= error_get_last();
+                                    }
+                                    else{
+                                        $src_tmp = $path_entry."/".$entry;
+                                        $dest_1000px = $CONFIG['default']['root_path'].'/'.$path_img_1000px.'/'.$image_name_encrypt.'.1000px.jpg';
+                                        $dest_500px = $CONFIG['default']['root_path'].'/'.$path_img_500px.'/'.$image_name_encrypt.'.500px.jpg';
+                                        $dest_100px = $CONFIG['default']['root_path'].'/'.$path_img_100px.'/'.$image_name_encrypt.'.100px.jpg';
+                                        
+                                        if ($fileinfo[0] >= 1000 || $fileinfo[1] >= 1000 ) {
+                                            if ($fileinfo[0] > $fileinfo[1]) {
+                                                $percentage = (1000/$fileinfo[0]);
+                                                $config['width'] = $percentage*$fileinfo[0];
+                                                $config['height'] = $percentage*$fileinfo[1];
+                                            }else{
+                                                $percentage = (1000/$fileinfo[1]);
+                                                $config['width'] = $percentage*$fileinfo[0];
+                                                $config['height'] = $percentage*$fileinfo[1];
+                                            }
+                                            
+                                            $this->resize_pic($src_tmp, $dest_1000px, $config);
+                                            unset($config);
                                         }
                                         
-                                        $this->resize_pic($src_tmp, $dest_1000px, $config);
+                                        //Set cropping for y or x axis, depending on image orientation
+                                        if ($fileinfo[0] > $fileinfo[1]) {
+                                            $config['width'] = $fileinfo[1];
+                                            $config['height'] = $fileinfo[1];
+                                            $config['x_axis'] = (($fileinfo[0] / 2) - ($config['width'] / 2));
+                                            $config['y_axis'] = 0;
+                                        }
+                                        else {
+                                            $config['width'] = $fileinfo[0];
+                                            $config['height'] = $fileinfo[0];
+                                            $config['x_axis'] = 0;
+                                            $config['y_axis'] = (($fileinfo[1] / 2) - ($config['height'] / 2));
+                                        }
+        
+                                        $this->cropToSquare($src_tmp, $dest_500px, $config);
                                         unset($config);
-                                    }
-                                    
-                                    //Set cropping for y or x axis, depending on image orientation
-                                    if ($fileinfo[0] > $fileinfo[1]) {
-                                        $config['width'] = $fileinfo[1];
-                                        $config['height'] = $fileinfo[1];
-                                        $config['x_axis'] = (($fileinfo[0] / 2) - ($config['width'] / 2));
-                                        $config['y_axis'] = 0;
-                                    }
-                                    else {
-                                        $config['width'] = $fileinfo[0];
-                                        $config['height'] = $fileinfo[0];
-                                        $config['x_axis'] = 0;
-                                        $config['y_axis'] = (($fileinfo[1] / 2) - ($config['height'] / 2));
-                                    }
-    
-                                    $this->cropToSquare($src_tmp, $dest_500px, $config);
-                                    unset($config);
-                                    
-                                    //set new config
-                                    $config['width'] = 500;
-                                    $config['height'] = 500;
-                                    $this->resize_pic($dest_500px, $dest_500px, $config);
-                                    unset($config);
-                                    
-                                    $config['width'] = 100;
-                                    $config['height'] = 100;
-                                    $this->resize_pic($dest_500px, $dest_100px, $config);
-                                    unset($config);
-                                    
-                                    //add file information to array
-                                    $fileToInsert = array('filename' => $entry,'md5sum' => $image_name_encrypt, 'directory' => $folder, 'mimetype' => $fileinfo['mime']);
-                                    
-                                    //check data exist in db
-                                    $dataExist = $this->imagezip->dataExist($personID, $entry);
-                                    
-                                    //if data exist, update data
-                                    if($dataExist){
+                                        
+                                        //set new config
+                                        $config['width'] = 500;
+                                        $config['height'] = 500;
+                                        $this->resize_pic($dest_500px, $dest_500px, $config);
+                                        unset($config);
+                                        
+                                        $config['width'] = 100;
+                                        $config['height'] = 100;
+                                        $this->resize_pic($dest_500px, $dest_100px, $config);
+                                        unset($config);
+                                        
+                                        //update data
                                         $insertImage = $this->imagezip->updateImage($personID, $fileToInsert);
-                                    }else{
-                                        //add data information to array
-                                        array_push($dataNotExist,$fileToInsert);
-                                    }                         
-                                } // end if copy
+                                                                
+                                    } // end if copy
+                                }else{
+                                    //add data information to array
+                                    array_push($dataNotExist,$fileToInsert);
+                                }
                             }
                         }
                     }
