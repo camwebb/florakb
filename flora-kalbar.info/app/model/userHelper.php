@@ -3,15 +3,69 @@ class userHelper extends Database {
 	
     function editProfile($data=false){
         if($data==false) return false;
-        $sql = "UPDATE `person` SET `name` = '".$data['name']."', `email` = '".$data['email']."', `twitter` = '".$data['twitter']."', `website` = '".$data['website']."', `phone` = '".$data['phone']."', `short_namecode` = '".$data['short_namecode']."' WHERE `id` = '".$_SESSION['login']['id']."' ";
+        
+        if (empty($data['twitter'])){
+            $dataTwitter = 'NULL';
+        }else{
+            $dataTwitter = "'".$data['twitter']."'";
+        }
+        
+        if (empty($data['website'])){
+            $dataWeb = 'NULL';
+        }else{
+            $dataWeb = "'".$data['website']."'";
+        }
+        
+        if (empty($data['phone'])){
+            $dataPhone = 'NULL';
+        }else{
+            $dataPhone = "'".$data['phone']."'";
+        }
+        
+        $sql = "UPDATE `person` SET `name` = '".$data['name']."', `email` = '".$data['email']."', `twitter` = $dataTwitter, `website` = $dataWeb, `phone` = $dataPhone WHERE `id` = '".$_SESSION['login']['id']."' ";
         $res = $this->query($sql,0);
+        $sql2 = "UPDATE `florakb_person` SET `username` = '".$data['username']."' WHERE `id` = '".$_SESSION['login']['id']."' ";
+        $res2 = $this->query($sql2,1);
+        if($res && $res2){return true;}
+    }
+    
+    function editPassword($data=false){
+        if($data==false) return false;
+        
+        global $CONFIG;
+		$salt = $CONFIG['default']['salt'];
+		$password = sha1($data['newPassword'].$salt);
+        
+        $sql = "UPDATE `florakb_person` SET `password` = '".$password."', `salt` = '".$salt."' WHERE `id` = '".$_SESSION['login']['id']."' ";
+        $res = $this->query($sql,1);
         if($res){return true;}
     }
     
+    /**
+     * @todo get data user/person
+     * 
+     * @param $data = 
+     * @param $field =  field name
+     */
     function getUserData($field,$data){
         if($data==false) return false;
         $sql = "SELECT * FROM `person` WHERE `$field` = '".$data."' ";
         $res = $this->fetch($sql,0);  
+        if(empty($res)){return false;}
+        return $res; 
+    }
+    
+    /**
+     * @todo get data user/person app
+     * 
+     * @param $data = 
+     * @param $field =  field name
+     */
+    function getUserappData($field,$data){
+        if($data==false) return false;
+        $sql = "SELECT * FROM `florakb_person` WHERE `$field` = '".$data."' ";
+        $res = $this->fetch($sql,0,1);  
+        if(empty($res)){return false;}
         return $res; 
     }
 }

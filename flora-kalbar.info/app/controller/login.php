@@ -16,7 +16,7 @@ class login extends Controller {
 	
 	function loadmodule()
 	{
-        //$this->models = $this->loadModel('frontend');
+        $this->userHelper = $this->loadModel('userHelper');
         $this->loginHelper = $this->loadModel('loginHelper');
 	}
 	
@@ -86,15 +86,15 @@ class login extends Controller {
         $data = $_POST;
         
         //query data
-        $getUserdata = $this->loginHelper->getUserdata($data);
-        $getUserappdata = $this->loginHelper->getUserappdata($getUserdata['id']);
+        $getUserData = $this->userHelper->getUserData('email',$data['email']);
+        $getUserappData = $this->userHelper->getUserappData('id',$getUserData['id']);
         
-        if(count($getUserdata['id'])==1){
-            $checkPassword = $this->loginHelper->checkPassword($getUserdata,$data['password']);
+        if(count($getUserData['id'])==1){
+            $checkPassword = $this->loginHelper->checkPassword($getUserData,$data['password']);
             if($checkPassword){
                 echo json_encode('success');
                 $data = array();
-                $data[] = array('person'=>$getUserdata,'person_app'=>$getUserappdata);
+                $data[] = array('person'=>$getUserData,'person_app'=>$getUserappData);
                 $startSession = $this->loginHelper->setSession($data);
             }
             else{

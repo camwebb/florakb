@@ -31,7 +31,6 @@ class loginHelper extends Database {
 		$startTransaction = $this->begin();
 		if (!$startTransaction) return false;
 		
-        
         if (empty($data['twitter'])){
             $dataTwitter = 'NULL';
         }else{
@@ -142,37 +141,7 @@ class loginHelper extends Database {
             return false;
         }
         return true;
-    }    
-    
-    /**
-     * @todo get data user/person
-     * 
-     * @param $data = email 
-     */
-    function getUserdata($data=false)
-    {
-        if($data==false) return false;
-        //Select email to get ID
-        $sql = "SELECT * FROM `person` WHERE `email` = '".$data['email']."' ";
-        $res = $this->fetch($sql,0);
-        if(empty($res)){return false;}
-        return $res;
-     }
-     
-     /**
-     * @todo get data user/person app
-     * 
-     * @param $data = email 
-     */
-    function getUserappdata($data=false)
-    {
-        if($data==false) return false;
-        
-        $sql = "SELECT * FROM `florakb_person` WHERE `id` = '".$data."' ";
-        $res = $this->fetch($sql,0,1);
-        if(empty($res)){return false;}
-        return $res;
-     }
+    }
      
      /**
      * @todo check password only

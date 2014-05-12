@@ -68,6 +68,29 @@ $().ready(function() {
     }," Twitter name already exist");
     
     /**
+    * checking username exist or not in database
+    */
+    $.validator.addMethod("checkUsernameExist",function(value,element){
+        var data_input = $('#username').val();
+        var data = { 'username' : data_input };
+        var check = $.ajax({
+                        url: baseUrl+"user/checkUsername",
+                        type: "POST",
+                        async: false,
+                        data: data,
+                        success: function(output) {}
+                    }).responseText;
+        return check;
+    }," Username name already exist");
+    
+    /**
+    * checking alphanumeric
+    */
+    $.validator.addMethod("alphanumeric", function(value, element) {
+        return this.optional(element) || /^[A-Za-z\d_]+$/.test(value);
+    }, "Must contain only letters, numbers, or dashes.");
+    
+    /**
     * checking password
     */
     $.validator.addMethod("checkPassword",function(value,element){
