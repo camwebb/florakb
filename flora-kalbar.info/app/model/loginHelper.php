@@ -145,16 +145,31 @@ class loginHelper extends Database {
     }    
     
     /**
-     * @todo get ID user/person to verificate login process
+     * @todo get data user/person
      * 
-     * @param $data = email and password 
+     * @param $data = email 
      */
-    function getIdUser($data=false)
+    function getUserdata($data=false)
     {
         if($data==false) return false;
         //Select email to get ID
         $sql = "SELECT * FROM `person` WHERE `email` = '".$data['email']."' ";
         $res = $this->fetch($sql,0);
+        if(empty($res)){return false;}
+        return $res;
+     }
+     
+     /**
+     * @todo get data user/person app
+     * 
+     * @param $data = email 
+     */
+    function getUserappdata($data=false)
+    {
+        if($data==false) return false;
+        
+        $sql = "SELECT * FROM `florakb_person` WHERE `id` = '".$data."' ";
+        $res = $this->fetch($sql,0,1);
         if(empty($res)){return false;}
         return $res;
      }
@@ -188,12 +203,13 @@ class loginHelper extends Database {
         if($data==false) return false;
 		// store session data
         $dataSession = array(
-                'id' => $data['id'],
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'twitter' => $data['twitter'],
-                'website' => $data['website'],
-                'phone' => $data['phone']
+                'id' => $data[0]['person']['id'],
+                'name' => $data[0]['person']['name'],
+                'email' => $data[0]['person']['email'],
+                'username' => $data[0]['person_app']['username'],
+                'twitter' => $data[0]['person']['twitter'],
+                'website' => $data[0]['person']['website'],
+                'phone' => $data[0]['person']['phone']
             );
         $_SESSION['login'] = $dataSession;
 	}

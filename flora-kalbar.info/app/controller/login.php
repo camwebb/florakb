@@ -86,12 +86,16 @@ class login extends Controller {
         $data = $_POST;
         
         //query data
-        $getId = $this->loginHelper->getIdUser($data);
-        if(count($getId['id'])==1){
-            $checkPassword = $this->loginHelper->checkPassword($getId,$data['password']);
+        $getUserdata = $this->loginHelper->getUserdata($data);
+        $getUserappdata = $this->loginHelper->getUserappdata($getUserdata['id']);
+        
+        if(count($getUserdata['id'])==1){
+            $checkPassword = $this->loginHelper->checkPassword($getUserdata,$data['password']);
             if($checkPassword){
                 echo json_encode('success');
-                $startSession = $this->loginHelper->setSession($getId);
+                $data = array();
+                $data[] = array('person'=>$getUserdata,'person_app'=>$getUserappdata);
+                $startSession = $this->loginHelper->setSession($data);
             }
             else{
                 echo json_encode('error');

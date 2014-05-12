@@ -58,6 +58,7 @@ $('#formLogin').submit(function(event){
             }
             else{
                 alert('You have entered an invalid username or password');
+                $('#login-password').val('');
             }
         }
     });
