@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.10deb1
+-- version 4.1.12
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: May 12, 2014 at 01:07 AM
--- Server version: 5.5.37-0ubuntu0.14.04.1
--- PHP Version: 5.5.9-1ubuntu4
+-- Host: 127.0.0.1
+-- Generation Time: May 12, 2014 at 06:39 AM
+-- Server version: 5.6.16
+-- PHP Version: 5.5.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -40,6 +40,8 @@ CREATE TABLE IF NOT EXISTS `coll` (
   KEY `indivID` (`indivID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `collector`
 --
@@ -54,6 +56,8 @@ CREATE TABLE IF NOT EXISTS `collector` (
   UNIQUE KEY `coll_person` (`collID`,`personID`),
   KEY `personID` (`personID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `det`
@@ -73,6 +77,8 @@ CREATE TABLE IF NOT EXISTS `det` (
   KEY `personID` (`personID`),
   KEY `taxonID` (`taxonID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `img`
@@ -94,6 +100,8 @@ CREATE TABLE IF NOT EXISTS `img` (
   KEY `personID` (`personID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
 
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `indiv`
 --
@@ -108,6 +116,8 @@ CREATE TABLE IF NOT EXISTS `indiv` (
   KEY `locnID` (`locnID`),
   KEY `personID` (`personID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24 ;
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `locn`
@@ -127,6 +137,8 @@ CREATE TABLE IF NOT EXISTS `locn` (
   `notes` varchar(500) DEFAULT NULL COMMENT 'Other notes about place',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `obs`
@@ -153,6 +165,9 @@ CREATE TABLE IF NOT EXISTS `obs` (
   KEY `indivID` (`indivID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `person`
 --
 
@@ -163,13 +178,13 @@ CREATE TABLE IF NOT EXISTS `person` (
   `twitter` varchar(50) DEFAULT NULL,
   `website` varchar(200) DEFAULT NULL,
   `phone` int(20) DEFAULT NULL,
-  `short_namecode` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `twitter` (`twitter`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
 
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `taxon`
@@ -189,7 +204,6 @@ CREATE TABLE IF NOT EXISTS `taxon` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `genSppSub` (`gen`,`sp`,`subtype`,`ssp`,`auth`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
-
 
 --
 -- Constraints for dumped tables
