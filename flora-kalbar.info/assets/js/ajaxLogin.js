@@ -9,7 +9,7 @@ $('#formSignup').submit(function(event) {
         data: $(this).serialize(),
         success: function(data) {
             var result = $.parseJSON(data);            
-            if(result.statusName == 'exist' || result.statusEmail == 'exist' || result.statusShortname == 'exist' || result.statusTwitter == 'exist'){
+            if(result.statusName == 'exist' || result.statusEmail == 'exist' || result.statusUsername == 'exist' || result.statusTwitter == 'exist'){
                 $('#signup-password,#signup-re_password').val('');
                 if(result.statusName == 'exist'){
                     $('#nameGroup').append('<span class="florakb-error">'+result.msgName+'</span>');
@@ -17,8 +17,8 @@ $('#formSignup').submit(function(event) {
                 if(result.statusEmail == 'exist'){
                     $('#emailGroup').append('<span class="florakb-error">'+result.msgEmail+'</span>');
                 } 
-                if(result.statusShortname == 'exist'){
-                    $('#shortnameGroup').append('<span class="florakb-error">'+result.msgShortname+'</span>');
+                if(result.statusUsername == 'exist'){
+                    $('#usernameGroup').append('<span class="florakb-error">'+result.msgUsername+'</span>');
                 }
                 if(result.statusTwitter == 'exist'){
                     $('#twitterGroup').append('<span class="florakb-error">'+result.msgTwitter+'</span>');
@@ -36,8 +36,8 @@ $('#formSignup').submit(function(event) {
     $('#signup-email').keyup(function(){
        $('#emailGroup > span').remove();
     });
-    $('#signup-shortname').keyup(function(){
-       $('#shortnameGroup > span').remove();
+    $('#signup-username').keyup(function(){
+       $('#usernameGroup > span').remove();
     });
     $('#signup-twitter').keyup(function(){
        $('#twitterGroup > span').remove();

@@ -55,7 +55,7 @@ class loginHelper extends Database {
         
         $getID = "SELECT id from person WHERE email= '".$data['email']."' ";
 		$resID = $this->fetch($getID,0);
-        $sql2 = "INSERT INTO florakb_person (id, password, salt) VALUES ('{$resID['id']}','{$password}','{$salt}')";
+        $sql2 = "INSERT INTO florakb_person (id, password, username, salt) VALUES ('{$resID['id']}','{$password}','{$data['username']}','{$salt}')";
 		$res2 = $this->query($sql2,1);
 		
         if ($res && $res2){
@@ -102,6 +102,25 @@ class loginHelper extends Database {
         
         if ($res['total'] > 0){
             logFile('Email EXIST/');
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * @todo check if username of user exist or not
+     * 
+     * @param $data = inputted username
+     * @return boolean
+     */
+    function checkUsername($data=false)
+    {
+        if($data==false) return false;
+        $sql = "SELECT COUNT(`id`) AS total FROM `florakb_person` WHERE `username` = '".$data."' ";
+        $res = $this->fetch($sql,0,1);
+        
+        if ($res['total'] > 0){
+            logFile('username EXIST/');
             return false;
         }
         return true;
@@ -162,7 +181,7 @@ class loginHelper extends Database {
     /**
      * @todo create session after success login
      * 
-     * @param $data = userdata(id,name,email,twitter,website,phone,short_namecode)
+     * @param $data = userdata(id,name,email,twitter,website,phone)
      */
 	function setSession($data=false)
 	{
@@ -174,8 +193,7 @@ class loginHelper extends Database {
                 'email' => $data['email'],
                 'twitter' => $data['twitter'],
                 'website' => $data['website'],
-                'phone' => $data['phone'],
-                'short_namecode' => $data['short_namecode']
+                'phone' => $data['phone']
             );
         $_SESSION['login'] = $dataSession;
 	}
