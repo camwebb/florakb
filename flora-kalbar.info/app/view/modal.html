@@ -1,6 +1,7 @@
 <!-- LOGIN MODAL -->
 
 <div id="modal-login" class="modal-background">
+    <div class="modal-overlay"></div>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -31,6 +32,7 @@
 <!-- LOGIN SIGNUP -->
 
 <div id="modal-signup" class="modal-background">
+    <div class="modal-overlay"></div>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -104,16 +106,16 @@
 
 <script type="text/javascript">
 {literal}
-    $(document).ready(function() {		
-        $('a#btn-login').click(function(){
+    	$('a#btn-login').click(function(){
            $('div#modal-login').fadeToggle("linear");
+           $('div.modal-overlay').show();
         });
         $('a#btn-signup').click(function(){
            $('div#modal-signup').fadeToggle("linear");
+           $('div.modal-overlay').show();
         });
-        $('.close').click(function(){
+        $('.close,.modal-overlay').click(function(){
            $('div#modal-login,div#modal-signup').fadeOut(); 
         });
-    });
 {/literal}
 </script>

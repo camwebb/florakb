@@ -30,7 +30,7 @@ class onebyone extends Controller {
 	}
 	
 	public function index(){
-		//return $this->loadView('onebyone');
+		return $this->loadView('onebyone');
 	}
     
     /**
