@@ -321,15 +321,27 @@ function sftpServices($host="localhost", $user=false, $pass=false, $filename=fal
 	if (!$user && !$pass && !$filename) return false;
 
 	$connection = ssh2_connect($host, $portDefine);
-	ssh2_auth_password($connection, $user, $pass);
 
-	logFile('sftp connected');
+	logFile("connect=".$connection." user=".$user." pass=".$pass);
+	
+	if (ssh2_auth_password($connection, $user, $pass)){
+		logFile('sftp connected'); 
+	}else{
+		logFile('sftp failed connected');
+		return false;
+	}
+
 	$sftp = ssh2_sftp($connection);
 
 	$pathFile = $CONFIG['default']['upload_path_temporary'].$filename;
 
-	ssh2_scp_recv($connection, $pathFile, $CONFIG['default']['upload_path'].$filename);
-	logFile('sftp move file to tmp');
+	if (ssh2_scp_recv($connection, $pathFile, $CONFIG['default']['upload_path'].$filename)){
+
+		logFile('sftp move file to tmp');
+	}else{
+		logFile('sftp failed move file to tmp');
+		return false;
+	}
 
 	unlink($pathFile);
 	logFile('delete current file');
