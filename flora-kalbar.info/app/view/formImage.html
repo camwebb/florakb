@@ -3,19 +3,11 @@ $().ready(function() {
     
     $("#formImage").validate({
         rules: {
-			email: {
-                required: true,
-                email: true,
-                checkEmailNotExist: true
-			},
 			filename: {
 				required: true
 			}
 		},
 		messages: {
-			email: {
-                required: " Please enter a valid email address"
-			},
 			filename: {
                 required: " Please choose an image file"
 			}
@@ -39,10 +31,6 @@ $().ready(function() {
         {$msg}
         <form id="formImage" method="POST" action="{$basedomain}onebyone/insertImage" enctype="multipart/form-data">
             <table class="form-tbl">
-                <tr>
-                    <td><label for="email">Email</label></td>
-                    <td><input class="inputbox" type="text" id="email" name="email" /></td>
-                </tr>
                 <tr>
                     <td><label for="filename">File Image</label></td>
                     <td><input class="inputbox" type="file" id="filename" name="filename" /></td>

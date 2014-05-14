@@ -129,7 +129,7 @@ class onebyone extends Controller {
         //if uploaded
         if($uploaded_file['status'] != '0'){
             //validate email and get short_namecode
-            $validateEmail = $this->validateEmail($data['email']);
+            /*$validateEmail = $this->validateEmail($data['email']);
             if($validateEmail['status'] != 'success'){
                 $this->msg->add('e', 'Email validation Failed');
                 header('Location: ../onebyone/image');
@@ -137,25 +137,33 @@ class onebyone extends Controller {
             }
             
             $personID = $validateEmail['personID'];
-            $username = $validateEmail['short_namecode'];
+            $username = $validateEmail['short_namecode'];*/
+            
+            $session = $_SESSION['login'];
+        
+            $username = $session['username'];
+            $personID = $session['id'];
+        
             $tmp_name = $uploaded_file['full_name'];
             $entry = $uploaded_file['real_name'];
             $image_name_encrypt = md5($entry);
             
             $dataExist = $this->imagezip->dataExist($personID, $entry);
             
+            $path_entry = $CONFIG['default']['upload_path'];
+            $src_tmp = $path_entry."/".$tmp_name;
+            
             if($dataExist){
-                $path_entry = $CONFIG['default']['upload_path'];
                 $path_data = 'public_assets/';
-                $path_user = $path_data.$username;
-                $path_img = $path_user.'/img';
+                //$path_user = $path_data.$username;
+                $path_img = $path_data.'/img';
                 $path_img_1000px = $path_img.'/1000px';
                 $path_img_500px = $path_img.'/500px';
                 $path_img_100px = $path_img.'/100px';
                 
                 $fileinfo = getimagesize($path_entry.'/'.$tmp_name);
                 
-                $toCreate = array($path_user, $path_img, $path_img_1000px, $path_img_500px, $path_img_100px);
+                $toCreate = array($path_img, $path_img_1000px, $path_img_500px, $path_img_100px);
                 createFolder($toCreate, 0755);
                 
                 copy($path_entry."/".$tmp_name, $path_img_1000px.'/'.$image_name_encrypt.'.1000px.jpg');
@@ -164,7 +172,6 @@ class onebyone extends Controller {
                     $msg= error_get_last();
                 }
                 else{
-                    $src_tmp = $path_entry."/".$tmp_name;
                     $dest_1000px = $CONFIG['default']['root_path'].'/'.$path_img_1000px.'/'.$image_name_encrypt.'.1000px.jpg';
                     $dest_500px = $CONFIG['default']['root_path'].'/'.$path_img_500px.'/'.$image_name_encrypt.'.500px.jpg';
                     $dest_100px = $CONFIG['default']['root_path'].'/'.$path_img_100px.'/'.$image_name_encrypt.'.100px.jpg';
@@ -220,13 +227,12 @@ class onebyone extends Controller {
                 } // end if copy
                 
             }else{
-                $this->msg->add('e', 'Data is not exist');
+                $this->msg->add('e', 'Image data is not exist in database');
             }
-            
+            unlink($src_tmp);
         }else{
             $this->msg->add('e', $uploaded_file['message']);
         }
-        unlink($src_tmp);
         header('Location: ../onebyone/image');
     }
     
