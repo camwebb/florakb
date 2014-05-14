@@ -22,26 +22,29 @@
             </tr>
         </thead>
         <tbody>
-        {foreach $taxon as $dataTaxon}
-        
+            
+            {foreach $data as $dataTaxon}
+            
             <tr>
-                <td><i>{$dataTaxon['sp']}</i></td>
-                <td>{$dataTaxon['gen']}</td>
-                <td>{$dataTaxon['fam']}</td>
-                <td><a class='gallery' href='{$basedomain}tmp/sample500px.jpg'><img src="{$basedomain}tmp/sample100px.jpg" /></a>
-    <a class='gallery' href='{$basedomain}tmp/sample500px.jpg'><img src="{$basedomain}tmp/sample100px.jpg" /></a>
-    <a class='gallery' href='{$basedomain}tmp/sample500px.jpg'><img src="{$basedomain}tmp/sample100px.jpg" /></a></td>
+                <td><i><a href="{$basedomain}browse/indiv/{$dataTaxon['taxon']['id']}">{$dataTaxon['taxon']['sp']}</a></i></td>
+                <td>{$dataTaxon['taxon']['gen']}</td>
+                <td>{$dataTaxon['taxon']['fam']}</td>
+                <td>
+                    {foreach $dataTaxon['img'] as $img}
+                     <a class="gallery{$dataTaxon['taxon']['id']}" href="{$basedomain}public_assets/img/500px/{$img['md5sum']}.500px.jpg"><img src="{$basedomain}public_assets/img/100px/{$img['md5sum']}.100px.jpg" /></a>
+                    {/foreach}
+                </td>
             </tr>
-        {/foreach}
+            <script type="text/javascript">
+            var a = "{$dataTaxon['taxon']['id']}";
+            {literal}
+                $('a.gallery'+a).colorbox({ opacity:0.5 , rel:'group'+a });
+            {/literal}
+            </script>
+            {/foreach}
         </tbody>
     </table>
     
-    <script type="text/javascript">
-    {literal}
-        $(document).ready(function () {
-            $('a.gallery').colorbox({ opacity:0.5 , rel:'group1' });
-        });
-    {/literal}
-    </script>
+    
     
 </div>

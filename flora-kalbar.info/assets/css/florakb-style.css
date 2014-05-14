@@ -382,7 +382,7 @@ main{
     border-radius: 4px;    
 }
 
-.close{
+.closebtn{
     position: absolute;
     top: 58px;
     right: 378px;

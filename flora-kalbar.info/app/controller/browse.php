@@ -21,8 +21,16 @@ class browse extends Controller {
 	}
 	
 	function index(){
-        $taxon = $this->browseHelper->dataTaxon(); 
-        $this->view->assign('taxon',$taxon);
+        
+        $listAll = array();
+        $taxon = $this->browseHelper->dataTaxon();
+        for($i=0;$i<count($taxon);$i++){
+            $img = $this->browseHelper->showImg($taxon[$i]['id']);
+            
+            $listAll[]= array('taxon'=>$taxon[$i],'img'=>$img);
+        }
+        
+        $this->view->assign('data',$listAll);
         return $this->loadView('browse');
     }
 	

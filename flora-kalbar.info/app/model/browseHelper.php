@@ -11,6 +11,18 @@ class browseHelper extends Database {
         $res = $this->fetch($sql,1);
         return $res;
     }
+    
+    /**
+     * @todo retrieve all images from taxon data
+     * @param $data = id taxon
+     */
+    function showImg($data){
+        $sql = "SELECT * 
+                FROM det INNER JOIN img ON 
+                    det.taxonID='$data' AND det.indivID=img.indivID";
+        $res = $this->fetch($sql,1);
+        return $res;
+    }
 	
 }
 ?>
