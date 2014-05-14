@@ -317,6 +317,7 @@ function sftpServices($host="localhost", $user=false, $pass=false, $filename=fal
 	global $CONFIG;
 
 	$portDefine = 22;
+	$folderTmp = $user."/upload_files/";
 
 	if (!$user && !$pass && !$filename) return false;
 
@@ -333,7 +334,7 @@ function sftpServices($host="localhost", $user=false, $pass=false, $filename=fal
 
 	$sftp = ssh2_sftp($connection);
 
-	$pathFile = $CONFIG['default']['upload_path_temporary'].$filename;
+	$pathFile = $CONFIG['default']['upload_path_temporary'].$folderTmp.$filename;
 
 	if (ssh2_scp_recv($connection, $pathFile, $CONFIG['default']['upload_path'].$filename)){
 
