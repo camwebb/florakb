@@ -106,7 +106,7 @@ function redirect($data) {
  * @return String full_name = full name of uploaded file, include extension
  * @return String raw_name = raw name of uploaded file
  * */
-function uploadFile($data,$path=null){
+function uploadFile($data,$path=null,$ext){
 	global $CONFIG;
 	
 	if (array_key_exists('admin',$CONFIG)) $key = 'admin';
@@ -118,17 +118,19 @@ function uploadFile($data,$path=null){
         'message' => '',
         'full_path' => '',
         'full_name' => '',
-        'raw_name' => ''
+        'raw_name' => '',
+        'real_name' => ''
     );
     */
     
-    if (!in_array($_FILES[$data]['type'], $CONFIG[$key]['zip_ext'])){
+    if (!in_array($_FILES[$data]['type'], $CONFIG[$key][$ext])){
         $result = array(
             'status' => '0',
             'message' => 'File type is not allowed.',
             'full_path' => '',
             'full_name' => '',
-            'raw_name' => ''
+            'raw_name' => '',
+            'real_name' => ''
         );
         return $result;
     }
@@ -157,7 +159,8 @@ function uploadFile($data,$path=null){
 				'message' => 'File exist.',
 				'full_path' => $pathFile,
 				'full_name' => $filename,
-				'raw_name' => $shufflefilename
+				'raw_name' => $shufflefilename,
+                'real_name' => $_FILES[$data]["name"]
 			);
 			return $result;
 		}else{
@@ -168,7 +171,8 @@ function uploadFile($data,$path=null){
 				'message' => 'Upload Succeed.',
 				'full_path' => $pathFile,
 				'full_name' => $filename,
-				'raw_name' => $shufflefilename
+				'raw_name' => $shufflefilename,
+                'real_name' => $_FILES[$data]["name"]
 			);
 			return $result;
 		}
