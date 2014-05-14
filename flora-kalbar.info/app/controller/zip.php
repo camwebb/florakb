@@ -82,14 +82,14 @@ class zip extends Controller {
         
         //move zip file to tmp folder
         
-        /*$copy_zip = sftpServices('10.10.200.115', $username, $password, $name);
+        $copy_zip = sftpServices($CONFIG['default']['hostname'], $username, $password, $name);
         
         if(!$copy_zip){
             $status = "error";
             $msg = "Error while fetching zip file";
             echo json_encode(array('status' => $status, 'message' => $msg));
             exit;
-        }*/
+        }
         
         if(!empty($name)){
             
