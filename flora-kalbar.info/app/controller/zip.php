@@ -42,7 +42,16 @@ class zip extends Controller {
         $name = $_POST['imagezip'];
         $path = '';
         $path_file = $CONFIG['default']['upload_path'];
-        $email = $_POST['email'];
+        
+        //get data user from session
+        $session = $_SESSION['login'];
+        
+        $username = $session['username'];
+        $personID = $session['id'];
+        $password = $session['password'];
+        
+        
+        //$email = $_POST['email'];
         
         /*$username = $_POST['username'];
         
@@ -59,7 +68,7 @@ class zip extends Controller {
         $personID = $validateUsername['personID'];*/
         
         // input with email        
-        $validateEmail = $this->validateEmail($email);
+        /*$validateEmail = $this->validateEmail($email);
         if($validateEmail['status'] != 'success'){
             $status = "error";
             $msg = "Error occured while validating email";
@@ -68,8 +77,19 @@ class zip extends Controller {
             exit;
         }
         $personID = $validateEmail['personID'];
-        $username = $validateEmail['short_namecode'];
+        $username = $validateEmail['short_namecode'];*/
         //end input with email
+        
+        //move zip file to tmp folder
+        
+        /*$copy_zip = sftpServices('10.10.200.115', $username, $password, $name);
+        
+        if(!$copy_zip){
+            $status = "error";
+            $msg = "Error while fetching zip file";
+            echo json_encode(array('status' => $status, 'message' => $msg));
+            exit;
+        }*/
         
         if(!empty($name)){
             
@@ -95,13 +115,13 @@ class zip extends Controller {
                 }
                 
                 $path_data = 'public_assets/';
-                $path_user = $path_data.$username;
-                $path_img = $path_user.'/img';
+                //$path_user = $path_data.$username;
+                $path_img = $path_data.'/img';
                 $path_img_1000px = $path_img.'/1000px';
                 $path_img_500px = $path_img.'/500px';
                 $path_img_100px = $path_img.'/100px';
                 
-                $toCreate = array($path_user, $path_img, $path_img_1000px, $path_img_500px, $path_img_100px);
+                $toCreate = array($path_img, $path_img_1000px, $path_img_500px, $path_img_100px);
                 $permissions = 0755;
                 createFolder($toCreate, $permissions);
                 
@@ -345,12 +365,26 @@ class zip extends Controller {
     function validateEmail($email){
         $validate = $this->imagezip->validateEmail($email);
         if($validate['id'] != ''){
-            $return = array('status' => "success", 'short_namecode' => $validate['short_namecode'], 'personID' => $validate['id']);
+            $return = array('status' => "success", 'personID' => $validate['id']);
         }else{
-            $return = array('status' => "error", 'short_namecode' => $validate['short_namecode'], 'personID' => $validate['id']);
+            $return = array('status' => "error", 'personID' => $validate['id']);
         }  
         return $return;
         exit;
+    }
+    
+    /**
+     * @todo move zip file from user folder (outside project folder) to tmp file inside project folder
+     * 
+     * @param $username = short name of user
+     * @param $filename = file to move
+     * @return boolean true/false
+     * */
+    function move_zip($username,$filename){
+        //test data
+        $username = 'nje';
+        $filename = 'filenotexist.zip';
+        
     }
     
     function test(){

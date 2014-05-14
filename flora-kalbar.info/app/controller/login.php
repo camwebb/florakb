@@ -89,13 +89,15 @@ class login extends Controller {
         $getUserData = $this->userHelper->getUserData('email',$data['email']);
         $getUserappData = $this->userHelper->getUserappData('id',$getUserData['id']);
         
+        $pwd = $data['password'];
+        
         if(count($getUserData['id'])==1){
-            $checkPassword = $this->loginHelper->checkPassword($getUserData,$data['password']);
+            $checkPassword = $this->loginHelper->checkPassword($getUserData,$pwd);
             if($checkPassword){
                 echo json_encode('success');
                 $data = array();
                 $data[] = array('person'=>$getUserData,'person_app'=>$getUserappData);
-                $startSession = $this->loginHelper->setSession($data);
+                $startSession = $this->loginHelper->setSession($data, $pwd);
             }
             else{
                 echo json_encode('error');

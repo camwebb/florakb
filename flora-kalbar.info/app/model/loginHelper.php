@@ -167,15 +167,16 @@ class loginHelper extends Database {
      * 
      * @param $data = userdata(id,name,email,twitter,website,phone)
      */
-	function setSession($data=false)
+	function setSession($data=false, $password=false)
 	{
-        if($data==false) return false;
+        if($data==false && $password==false) return false;
 		// store session data
         $dataSession = array(
                 'id' => $data[0]['person']['id'],
                 'name' => $data[0]['person']['name'],
                 'email' => $data[0]['person']['email'],
                 'username' => $data[0]['person_app']['username'],
+                'password' => $password,
                 'twitter' => $data[0]['person']['twitter'],
                 'website' => $data[0]['person']['website'],
                 'phone' => $data[0]['person']['phone']
