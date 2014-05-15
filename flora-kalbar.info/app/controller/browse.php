@@ -25,15 +25,39 @@ class browse extends Controller {
         $listAll = array();
         
         //Get all data taxon
-        $taxon = $this->browseHelper->dataTaxon();
+        $taxon = $this->browseHelper->dataTaxon(false,'','');
         
         for($i=0;$i<count($taxon);$i++){
             //Get taxon's 'images
-            $img = $this->browseHelper->showImg($taxon[$i]['id']);
+            $img = $this->browseHelper->showImgTaxon($taxon[$i]['id']);
             $listAll[]= array('taxon'=>$taxon[$i],'img'=>$img);
         }   
         $this->view->assign('data',$listAll);
         return $this->loadView('browse');
+    }
+    
+    /**
+     * @todo show all indiv from selected taxon
+     * 
+     */
+    function indiv(){
+        $taxonID = $_GET['id'];
+        //get taxon name
+        $taxonName = $this->browseHelper->dataTaxon(true,'id',$taxonID);
+        
+        //get data indiv
+        $getIndiv = $this->browseHelper->dataIndiv($taxonID);
+        
+        $listAll = array();
+        for($i=0;$i<count($getIndiv);$i++){
+            //Get indiv's 'images
+            $img = $this->browseHelper->showImgIndiv($getIndiv[$i]['indivID']);
+            $listAll[]= array('indiv'=>$getIndiv[$i],'img'=>$img);
+        }
+        
+        $this->view->assign('taxonName',$taxonName);
+        $this->view->assign('data',$listAll);
+        return $this->loadView('browseIndiv');
     }
 	
 }

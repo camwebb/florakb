@@ -1,6 +1,7 @@
 <div class="content">
-    <h2 class="title">Browse Data</h2>
-    
+    {foreach $taxonName as $title}
+        <h2 class="title">{$title['sp']}</h2>
+    {/foreach}
     <div id="search">  
         <form role="form">
             <div class="search-box">
@@ -15,27 +16,27 @@
     <table class="browse">
         <thead>
             <tr>
-                <th>Species</th>
-                <th>Genus</th>
-                <th>Family</th>
+                <th>Indiv Code</th>
+                <th>Location</th>
+                <th>Creator</th>
                 <th>Images</th>
             </tr>
         </thead>
         <tbody>
             
-            {foreach $data as $dataTaxon}
+            {foreach $data as $dataIndiv}
             <tr>
-                <td><i><a href="{$basedomain}browse/indiv/?id={$dataTaxon['taxon']['id']}">{$dataTaxon['taxon']['sp']}</a></i></td>
-                <td>{$dataTaxon['taxon']['gen']}</td>
-                <td>{$dataTaxon['taxon']['fam']}</td>
+                <td><i><a href="{$basedomain}browse/detail/?id={$dataIndiv['indiv']['indivID']}">??</a></i></td>
+                <td>{$dataIndiv['indiv']['province']}</td>
+                <td>{$dataIndiv['indiv']['name']}</td>
                 <td>
-                    {foreach $dataTaxon['img'] as $img}
-                     <a class="gallery{$dataTaxon['taxon']['id']}" href="{$basedomain}public_assets/img/500px/{$img['md5sum']}.500px.jpg"><img src="{$basedomain}public_assets/img/100px/{$img['md5sum']}.100px.jpg" /></a>
+                    {foreach $dataIndiv['img'] as $img}
+                     <a class="gallery{$dataIndiv['indiv']['indivID']}" href="{$basedomain}public_assets/img/500px/{$img['md5sum']}.500px.jpg"><img src="{$basedomain}public_assets/img/100px/{$img['md5sum']}.100px.jpg" /></a>
                     {/foreach}
                 </td>
             </tr>
             <script type="text/javascript">
-            var a = "{$dataTaxon['taxon']['id']}";
+            var a = "{$dataIndiv['indiv']['indivID']}";
             {literal}
                 $('a.gallery'+a).colorbox({ opacity:0.5 , rel:'group'+a });
             {/literal}
