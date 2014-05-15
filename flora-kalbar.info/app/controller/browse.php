@@ -23,13 +23,15 @@ class browse extends Controller {
 	function index(){
         
         $listAll = array();
-        $taxon = $this->browseHelper->dataTaxon();
-        for($i=0;$i<count($taxon);$i++){
-            $img = $this->browseHelper->showImg($taxon[$i]['id']);
-            
-            $listAll[]= array('taxon'=>$taxon[$i],'img'=>$img);
-        }
         
+        //Get all data taxon
+        $taxon = $this->browseHelper->dataTaxon();
+        
+        for($i=0;$i<count($taxon);$i++){
+            //Get taxon's 'images
+            $img = $this->browseHelper->showImg($taxon[$i]['id']);
+            $listAll[]= array('taxon'=>$taxon[$i],'img'=>$img);
+        }   
         $this->view->assign('data',$listAll);
         return $this->loadView('browse');
     }

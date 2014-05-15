@@ -19,9 +19,10 @@ class browseHelper extends Database {
     function showImg($data){
         $sql = "SELECT * 
                 FROM det INNER JOIN img ON 
-                    det.taxonID='$data' AND det.indivID=img.indivID";
+                    det.taxonID='$data' AND det.indivID=img.indivID GROUP BY img.md5sum LIMIT 0,5";
         $res = $this->fetch($sql,1);
         return $res;
+        
     }
 	
 }
