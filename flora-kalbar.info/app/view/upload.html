@@ -43,6 +43,12 @@
 <script>
 {literal}
 	(function() {
+	   
+    var first_error = '<div class="messages erroren"><a href="#" class="closeMessage"></a><p>';
+    var first_info = '<div class="messages info"><a href="#" class="closeMessage"></a><p>';
+    var first_success = '<div class="messages success"><a href="#" class="closeMessage"></a><p>';
+    var first_warning = '<div class="messages warning"><a href="#" class="closeMessage"></a><p>';
+    var end = '</p></div>';
 		
 	var bar = $('.bar');
 	var percent = $('.percent');
@@ -74,7 +80,7 @@
 			}
 		},
 		complete: function(xhr) {
-			status.html(xhr.responseText);
+			status.html(first_info + xhr.responseText + end);
 		}
 	}); 
 

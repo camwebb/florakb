@@ -1,0 +1,83 @@
+<form id="formIndiv" method="POST" action="{$basedomain}onebyone/insertIndiv">
+    <table class="form-tbl">
+        <tr>
+            <td><label for="">Plot</label></td>
+            <td><input class="inputbox" type="text" id="plot" name="plot" /></td>
+        </tr>
+        <tr>
+            <td><label for="">Tag</label></td>
+            <td><input class="inputbox" type="text" id="tag" name="tag" /></td>
+        </tr>
+        <tr>
+            <td><label for="">Location</label></td>
+            <td>
+                <select class="inputbox" name="locnID" id="locnID">
+                    {foreach from=$locn item=location}
+                        <option value="{$location.id}">{$location.locality}</option>
+                    {/foreach}
+                </select>
+                <a style="margin-left: 20px;" href="#testOnebyone-modal" class="btn" id="locationPopup">Add</a>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input class="btn" type="submit" value="Submit" /></td>
+        </tr>
+    </table>
+</form>
+<script type="text/javascript">
+$().ready(function() {
+    
+    $("#formLocation").validate({
+        rules: {
+			locality: {
+                required: true
+			},
+            province: {
+                required: true
+            },
+            island: {
+                required: true
+            },
+            country: {
+                required: true
+            }
+		},
+		messages: {
+			locality: {
+                required: " Please enter locality"
+			},
+            province: {
+                required: " Please enter province"
+            },
+            island: {
+                required: " Please enter island"
+            },
+            country: {
+                required: " Please enter country"
+            }
+		}
+    });
+    
+    $("#formIndiv").validate({
+        rules: {
+			plot: {
+                required: true
+			},
+            tag: {
+                required: true,
+                number: true
+            }
+		},
+		messages: {
+			plot: {
+                required: " Please enter plot"
+			},
+            tag: {
+                required: " Please enter tag",
+                number: "Please enter number"
+            }
+		}
+    });
+});
+</script>

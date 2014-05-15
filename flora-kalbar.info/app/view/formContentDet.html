@@ -1,0 +1,65 @@
+<div class="content">
+{$msg}
+    <div class="sidebar-2-left">
+        <ul class="step">
+            <li>Insert One By One</li>
+            <li><p>1. Insert Individu</p></li>
+            <li class="selected"><p>2. Insert Determinant</p></li>
+            <li><p>3. Insert Image</p></li>
+        </ul>
+    </div>
+    
+    <div class="sidebar-2-right">
+        <h2 class="title">Insert Determinant</h2>
+        {include file='formDet.html'}
+    </div>
+    <div class="clear"></div>
+</div>
+
+<!--START MODAL PERSON-->
+<div id="modal-person" class="modal-background">
+    <div class="modal-overlay"></div>
+    <div class="modal-dialog dialogStep">
+        <button type="button" class="closebtn close"></button>
+        <div class="modal-content">
+            <div class="modal-body bodyStep">
+              <h2 class="title">Insert Person</h2>
+                {include file='formPerson.html'}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--START MODAL TAXON-->
+<div id="modal-taxon" class="modal-background">
+    <div class="modal-overlay"></div>
+    <div class="modal-dialog dialogStep">
+        <button type="button" class="closebtn close"></button>
+        <div class="modal-content">
+            <div class="modal-body bodyStep">
+              <h2 class="title">Insert Taxon</h2>
+                {include file='formTaxon.html'}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+{literal}
+    $('a#personPopup').click(function(){
+       $('div#modal-person').fadeToggle("linear");
+       $('div.modal-overlay').show();
+    });
+    $('.close,.modal-overlay').click(function(){
+       $('div#modal-person').fadeOut(); 
+    });
+    
+    $('a#taxonPopup').click(function(){
+       $('div#modal-taxon').fadeToggle("linear");
+       $('div.modal-overlay').show();
+    });
+    $('.close,.modal-overlay').click(function(){
+       $('div#modal-taxon').fadeOut(); 
+    });
+{/literal}
+</script>

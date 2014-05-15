@@ -1,4 +1,7 @@
 <?php
+if(!$_SESSION){
+    header('Location: '.$basedomain);
+}
 
 class browse extends Controller {
 	

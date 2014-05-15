@@ -1,3 +1,52 @@
+<form id="formLocation" method="POST" action="{$basedomain}onebyone/insertLocation">
+    <table class="form-tbl">
+        <tr>
+            <td><label for="longitude">Longitude</label></td>
+            <td><input class="inputbox" type="text" id="longitude" name="longitude" /></td>
+        </tr>
+        <tr>
+            <td><label for="latitude">Latitude</label></td>
+            <td><input class="inputbox" type="text" id="latitude" name="latitude" /></td>
+        </tr>
+        <tr>
+            <td><label for="elevation">Elevation ASL (m)</label></td>
+            <td><input class="inputbox" type="text" id="elevation" name="elev" /></td>
+        </tr>
+        <tr>
+            <td><label for="geomorph">Geomorph</label></td>
+            <td><input class="inputbox" type="text" id="geomorph" name="geomorph" /></td>
+        </tr>
+        <tr>
+            <td><label for="locality">Locality<br /><i>(Descriptive name of place)</i></label></td>
+            <td><input class="inputbox" type="text" id="locality" name="locality" /></td>
+        </tr>
+        <tr>
+            <td><label for="county">County</label></td>
+            <td><input class="inputbox" type="text" id="county" name="county" /></td>
+        </tr>
+        <tr>
+            <td><label for="province">Province</label></td>
+            <td><input class="inputbox" type="text" id="province" name="province" value="Kalimantan Barat" /></td>
+        </tr>
+        <tr>
+            <td><label for="island">Island</label></td>
+            <td><input class="inputbox" type="text" id="island" name="island" value="Borneo" /></td>
+        </tr>
+        <tr>
+            <td><label for="country">Country</label></td>
+            <td><input class="inputbox" type="text" id="country" name="country" value="Indonesia" /></td>
+        </tr>
+        <tr>
+            <td><label for="notes">Notes</label></td>
+            <td><textarea class="textareabox" id="notes" name="notes"></textarea></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input class="btn" type="submit" value="Submit" /></td>
+        </tr>
+    </table>
+</form>
+
 <script language='javascript' type='text/javascript'>
 $().ready(function() {
     
@@ -33,74 +82,3 @@ $().ready(function() {
     });
 });
 </script>
-
-<div class="content">
-    
-    <div class="sidebar-2-left">
-        <ul>
-            <li>Insert One By One</li>
-            <li class="selected"><a href="{$basedomain}onebyone/location">Insert Location</a></li>
-            <li><a href="{$basedomain}onebyone/person">Insert Person</a></li>
-            <li><a href="{$basedomain}onebyone/taxon">Insert Taxon</a></li>
-            <li><a href="{$basedomain}onebyone/image">Insert Image</a></li>
-        </ul>
-    </div>
-
-    <div class="sidebar-2-right">
-        <h2 class="title">Insert Location</h2>
-        {$msg}
-        <form id="formLocation" method="POST" action="{$basedomain}onebyone/insertLocation">
-            <table class="form-tbl">
-                <tr>
-                    <td><label for="short_namecode">Short Namecode</label></td>
-                    <td><input class="inputbox" type="text" id="short_namecode" name="short_namecode" /></td>
-                </tr>
-                <tr>
-                    <td><label for="longitude">Longitude</label></td>
-                    <td><input class="inputbox" type="text" id="longitude" name="longitude" /></td>
-                </tr>
-                <tr>
-                    <td><label for="latitude">Latitude</label></td>
-                    <td><input class="inputbox" type="text" id="latitude" name="latitude" /></td>
-                </tr>
-                <tr>
-                    <td><label for="elevation">Elevation ASL (m)</label></td>
-                    <td><input class="inputbox" type="text" id="elevation" name="elev" /></td>
-                </tr>
-                <tr>
-                    <td><label for="geomorph">Geomorph</label></td>
-                    <td><input class="inputbox" type="text" id="geomorph" name="geomorph" /></td>
-                </tr>
-                <tr>
-                    <td><label for="locality">Locality<br /><i>(Descriptive name of place)</i></label></td>
-                    <td><input class="inputbox" type="text" id="locality" name="locality" /></td>
-                </tr>
-                <tr>
-                    <td><label for="county">County</label></td>
-                    <td><input class="inputbox" type="text" id="county" name="county" /></td>
-                </tr>
-                <tr>
-                    <td><label for="province">Province</label></td>
-                    <td><input class="inputbox" type="text" id="province" name="province" value="Kalimantan Barat" /></td>
-                </tr>
-                <tr>
-                    <td><label for="island">Island</label></td>
-                    <td><input class="inputbox" type="text" id="island" name="island" value="Borneo" /></td>
-                </tr>
-                <tr>
-                    <td><label for="country">Country</label></td>
-                    <td><input class="inputbox" type="text" id="country" name="country" value="Indonesia" /></td>
-                </tr>
-                <tr>
-                    <td><label for="notes">Notes</label></td>
-                    <td><textarea class="textareabox" id="notes" name="notes"></textarea></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input class="btn" type="submit" value="Submit" /></td>
-                </tr>
-            </table>
-        </form>
-    </div>
-    <div class="clear"></div>
-</div>

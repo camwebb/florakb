@@ -5,7 +5,9 @@ defined ('CODEKIR') or exit ( 'Forbidden Access' );
 // A session is required for the messages to work
 //------------------------------------------------------------------------------
 if( !session_id() ) session_start();
-
+if(!$_SESSION){
+    header('Location: '.$basedomain);
+}
 class onebyone extends Controller {
 	
 	var $models = FALSE;
@@ -34,39 +36,44 @@ class onebyone extends Controller {
 	}
     
     /**
-     * @todo show view for location form
+     * @todo show view for individu and location form
      * */
-    public function location(){
+    public function indivContent(){
         $msg = $this->msg->display('all', false);
         $this->view->assign('msg', $msg);
-        return $this->loadView('formLocation');
+        
+        //get list location
+        $listlocn = $this->insertonebyone->list_locn();
+        $this->view->assign('locn', $listlocn);
+        
+        return $this->loadView('formContentIndiv');
     }
     
     /**
-     * @todo show view for person form
+     * @todo show view for determinant, taxon, and person form
      * */
-    public function person(){
+    public function detContent(){
         $msg = $this->msg->display('all', false);
         $this->view->assign('msg', $msg);
-        return $this->loadView('formPerson');
-    }
-    
-    /**
-     * @todo show view for taxon form
-     * */
-    public function taxon(){
-        $msg = $this->msg->display('all', false);
-        $this->view->assign('msg', $msg);
-        return $this->loadView('formTaxon');
+        
+        //get list person
+        $listPerson = $this->insertonebyone->list_person();
+        $this->view->assign('person', $listPerson);
+        
+        //get list taxon
+        $listTaxon = $this->insertonebyone->list_taxon();
+        $this->view->assign('taxon', $listTaxon);
+        
+        return $this->loadView('formContentDet');
     }
     
     /**
      * @todo show view for image form
      * */
-    public function image(){
+    public function imageContent(){
         $msg = $this->msg->display('all', false);
         $this->view->assign('msg', $msg);
-        return $this->loadView('formImage');
+        return $this->loadView('formContentImage');
     }
     
     /**
@@ -92,11 +99,33 @@ class onebyone extends Controller {
         $insertData = $this->insertonebyone->insertTransaction('locn',$data);
         
         if($insertData){
-            $this->msg->add('s', 'Update Success');
+            $this->msg->add('s', 'Update Location Success');
         }else{
-            $this->msg->add('e', 'Update Failed');
+            $this->msg->add('e', 'Update Location Failed');
         }
-        header('Location: ../onebyone/location');
+        header('Location: ../onebyone/indivContent');
+    }
+    
+    /**
+     * @todo insert individu from posted data
+     * */
+    public function insertIndiv(){
+        $data = $_POST;
+        
+        //get data user from session
+        $session = $_SESSION['login'];
+        $personID = $session['id'];
+        $data['personID'] = $personID;
+        
+        $insertData = $this->insertonebyone->insertTransaction('indiv',$data);
+        $_SESSION['onebyone']['indivID'] = $insertData['lastid'];
+        
+        if($insertData){
+            $this->msg->add('s', 'Update Individu Success');
+        }else{
+            $this->msg->add('e', 'Update Individu Failed');
+        }
+        header('Location: ../onebyone/detContent');
     }
     
     /**

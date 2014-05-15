@@ -1,17 +1,23 @@
 <?php
 defined ('CODEKIR') or exit ( 'Forbidden Access' );
 
+if(!$_SESSION){
+    header('Location: '.$basedomain);
+}
+
 class zip extends Controller {
 	
 	var $models = FALSE;
 	var $view;
+    
 	public function __construct()
 	{
         global $basedomain;
 		$this->loadmodule();
         $this->view = $this->setSmarty();
-        $this->view->assign('basedomain',$basedomain);
+        $this->view->assign('basedomain',$basedomain);                       
 	}
+    
 	public function loadmodule()
 	{
 		
@@ -50,6 +56,14 @@ class zip extends Controller {
         $personID = $session['id'];
         $password = $session['password'];
         
+        if (empty($username) || empty($personID) || empty($password)){
+            $status = "error";
+            $msg = "Error occured while validating user data, please log out then login again";
+            
+            echo json_encode(array('status' => $status, 'message' => $msg));
+            exit;
+                    
+        }       
         
         //$email = $_POST['email'];
         

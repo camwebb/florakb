@@ -1,0 +1,98 @@
+<form id="formIndiv" method="POST" action="{$basedomain}onebyone/insertIndiv">
+    <table class="form-tbl">
+        <tr>
+            <td><label for="">Conf id</label></td>
+            <td><input class="inputbox" type="text" id="confid" name="confid" /></td>
+        </tr>
+        <tr>
+            <td><label for="notes">Notes</label></td>
+            <td><textarea class="textareabox" id="notes" name="notes"></textarea></td>
+        </tr>
+        <tr>
+            <td><label for="">Using</label></td>
+            <td><input class="inputbox" type="text" id="using" name="using" /></td>
+        </tr>
+        <tr>
+            <td><label for="">Taxon</label></td>
+            <td>
+                <select class="inputbox" name="taxon" id="taxon">
+                    {foreach from=$taxon item=itemTaxon}
+                        <option value="{$itemTaxon.id}">{$itemTaxon.sp}, {$itemTaxon.gen}, {$itemTaxon.fam}</option>
+                    {/foreach}
+                </select>
+                <a style="margin-left: 20px;" href="#taxon-modal" class="btn" id="taxonPopup">Add</a>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="">Person</label></td>
+            <td>
+                <select class="inputbox" name="person" id="person">
+                    {foreach from=$person item=itemPerson}
+                        <option value="{$itemPerson.id}">{$itemPerson.name}, {$itemPerson.email}</option>
+                    {/foreach}
+                </select>
+                <a style="margin-left: 20px;" href="#person-modal" class="btn" id="personPopup">Add</a>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input class="btn" type="submit" value="Submit" /></td>
+        </tr>
+    </table>
+</form>
+<script type="text/javascript">
+$().ready(function() {
+    
+    $("#formLocation").validate({
+        rules: {
+			locality: {
+                required: true
+			},
+            province: {
+                required: true
+            },
+            island: {
+                required: true
+            },
+            country: {
+                required: true
+            }
+		},
+		messages: {
+			locality: {
+                required: " Please enter locality"
+			},
+            province: {
+                required: " Please enter province"
+            },
+            island: {
+                required: " Please enter island"
+            },
+            country: {
+                required: " Please enter country"
+            }
+		}
+    });
+    
+    $("#formIndiv").validate({
+        rules: {
+			plot: {
+                required: true
+			},
+            tag: {
+                required: true,
+                number: true
+            }
+		},
+		messages: {
+			plot: {
+                required: " Please enter plot"
+			},
+            tag: {
+                required: " Please enter tag",
+                number: "Please enter number"
+            }
+		}
+    });
+});
+</script>

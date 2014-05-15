@@ -221,10 +221,10 @@ function unzip($file=null, $path=null)
 	if ($zip->open($file) === TRUE) {
 		$zip->extractTo($path);
 		$zip->close();
-        unlink($file);
+        //unlink($file);
 		return true;
 	}else{
-        unlink($file);
+        //unlink($file);
         return false;
 	}
 }
