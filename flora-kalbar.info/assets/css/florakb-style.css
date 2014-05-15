@@ -472,6 +472,12 @@ table.browse td, table.browse th {
         border-left: 1px solid #ccc;
         text-align: left;
 }
+table.indiv th:first-child {
+        -moz-border-radius: 0;
+        -webkit-border-radius: 0;
+        border-radius: 0;
+}
+table.det td {border:none;}
 
 #search{
     float: right;

@@ -59,6 +59,22 @@ class browse extends Controller {
         $this->view->assign('data',$listAll);
         return $this->loadView('browseIndiv');
     }
+    
+    /**
+     * @todo show all detail indiv from selected indiv
+     * 
+     */
+    function indivDetail(){
+        $indivID = $_GET['id'];
+        //get whole data indiv detail
+        $indivDetail = $this->browseHelper->detailIndiv($indivID);
+        //get determinant from selected indiv
+        $indivDeterminant = $this->browseHelper->dataDetIndiv($indivID);
+        
+        $this->view->assign('indiv',$indivDetail);
+        $this->view->assign('det',$indivDeterminant);
+        return $this->loadView('browseIndivDetail');
+    }
 	
 }
 

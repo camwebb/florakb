@@ -61,6 +61,34 @@ class browseHelper extends Database {
         $res = $this->fetch($sql,1);
         return $res;
     }
+    
+    /**
+     * @todo retrieve all indiv detail
+     * @param $data = id indiv
+     */
+    function detailIndiv($data){
+        $sql = "SELECT * 
+                FROM `indiv` INNER JOIN `locn` ON 
+                    indiv.id='$data' AND locn.id=indiv.locnID
+                INNER JOIN `person` ON
+                    person.id=indiv.personID";
+        $res = $this->fetch($sql,1);
+        return $res;
+    }
+    
+    /**
+     * @todo retrieve all det from indiv selected
+     * @param $data = id indiv
+     */
+    function dataDetIndiv($data){
+        $sql = "SELECT * 
+                FROM `det` INNER JOIN `taxon` ON 
+                    indivID='$data' AND taxon.id=det.taxonID
+                INNER JOIN `person` ON
+                    person.id=det.personID";
+        $res = $this->fetch($sql,1);
+        return $res;
+    }
 	
 }
 ?>

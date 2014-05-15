@@ -1,0 +1,60 @@
+<div class="content">
+    <a href="#" class="btn" style="float: right;">Edit</a>
+    <div class="clear"></div>
+    <br />
+    <table class="browse indiv">
+        {foreach $indiv as $dataIndiv}
+        <tr>
+            <th style="-moz-border-radius: 6px 0 0 0;-webkit-border-radius: 6px 0 0 0;border-radius: 6px 0 0 0">Creator</th>
+            <td>{$dataIndiv['name']}</td>
+        </tr>
+        <tr>
+            <th>Location</th>
+            <td>{$dataIndiv['province']}</td>
+        </tr>
+        {/foreach}
+        
+        <tr>
+            <th>Dets</th>
+            <td>
+                {foreach $det as $dataDet}
+                    
+                    <table class="det">
+                        <tr>
+                            <td><b>Det Creator</b></td>
+                            <td>:</td>
+                            <td>{$dataDet['name']}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Date</b></td>
+                            <td>:</td>
+                            <td>{$dataDet['det_date']}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Species</b></td>
+                            <td>:</td>
+                            <td><i>{$dataDet['sp']}</i></td>
+                        </tr>
+                        <tr>
+                            <td><b>Confid</b></td>
+                            <td>:</td>
+                            <td><i>{$dataDet['confid']}</i></td>
+                        </tr>
+                        <tr>
+                            <td><b>Using</b></td>
+                            <td>:</td>
+                            <td><i>{$dataDet['using']}</i></td>
+                        </tr>
+                        <tr>
+                            <td><b>Notes</b></td>
+                            <td>:</td>
+                            <td><i>{$dataDet['notes']}</i></td>
+                        </tr>
+                    </table>
+                    
+                {/foreach}
+            </td>
+        </tr>
+    </table>
+    
+</div>
