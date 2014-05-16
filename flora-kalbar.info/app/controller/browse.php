@@ -35,6 +35,14 @@ class browse extends Controller {
             $img = $this->browseHelper->showImgTaxon($taxon[$i]['id']);
             $listAll[]= array('taxon'=>$taxon[$i],'img'=>$img);
         }   
+        
+        if(empty($listAll)){
+            $this->view->assign('noData','empty');
+        }
+        else{
+            $this->view->assign('noData','data existed');
+        }
+        
         $this->view->assign('data',$listAll);
         return $this->loadView('browse');
     }
@@ -58,6 +66,12 @@ class browse extends Controller {
             $listAll[]= array('indiv'=>$getIndiv[$i],'img'=>$img);
         }
         
+        if(empty($listAll)){
+            $this->view->assign('noData','empty');
+        }
+        else{
+            $this->view->assign('noData','data existed');
+        }
         $this->view->assign('taxonName',$taxonName);
         $this->view->assign('data',$listAll);
         return $this->loadView('browseIndiv');
@@ -74,6 +88,12 @@ class browse extends Controller {
         //get determinant from selected indiv
         $indivDeterminant = $this->browseHelper->dataDetIndiv($indivID);
         
+        if(empty($indivDetail)){
+            $this->view->assign('noData','empty');
+        }
+        else{
+            $this->view->assign('noData','data existed');
+        }
         $this->view->assign('indiv',$indivDetail);
         $this->view->assign('det',$indivDeterminant);
         return $this->loadView('browseIndivDetail');

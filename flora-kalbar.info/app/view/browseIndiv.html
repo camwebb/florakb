@@ -2,6 +2,10 @@
     {foreach $taxonName as $title}
         <h2 class="title">{$title['sp']}</h2>
     {/foreach}
+    
+    {if $noData eq 'empty'}
+        <i>No data available</i>
+    {else}
     <div id="search">  
         <form role="form">
             <div class="search-box">
@@ -26,12 +30,15 @@
             
             {foreach $data as $dataIndiv}
             <tr>
-                <td><i><a href="{$basedomain}browse/indivDetail/?id={$dataIndiv['indiv']['indivID']}">??</a></i></td>
+                <td><i><a href="{$basedomain}browse/indivDetail/?id={$dataIndiv['indiv']['indivID']}">{$dataIndiv['indiv']['indivID']}</a></i></td>
                 <td>{$dataIndiv['indiv']['province']}</td>
                 <td>{$dataIndiv['indiv']['name']}</td>
                 <td>
                     {foreach $dataIndiv['img'] as $img}
                      <a class="gallery{$dataIndiv['indiv']['indivID']}" href="{$basedomain}public_assets/img/500px/{$img['md5sum']}.500px.jpg"><img src="{$basedomain}public_assets/img/100px/{$img['md5sum']}.100px.jpg" /></a>
+                     
+                     {foreachelse}<i>No image available</i>
+                        
                     {/foreach}
                 </td>
             </tr>
@@ -44,7 +51,6 @@
             {/foreach}
         </tbody>
     </table>
-    
-    
+    {/if}
     
 </div>
