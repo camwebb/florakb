@@ -235,7 +235,7 @@ class excelHelper extends Database {
 					$tmpData = implode(',',$t_data); 
 					
 					if (!in_array($key,$ignoreTable)){
-						$sql[$defineTable[$key]][] = "INSERT INTO {$defineTable[$key]} ({$tmpField}) VALUES ({$tmpData})";
+						$sql[$defineTable[$key]][] = "INSERT IGNORE INTO {$defineTable[$key]} ({$tmpField}) VALUES ({$tmpData})";
 						
 						
 					}
@@ -292,7 +292,7 @@ class excelHelper extends Database {
 		$fieldUnique[0] = array('unique_key');
 		
 		// Det table identified
-		$fieldFetch[1] = array('indivID','personID','det_date','taxonID','confid','notes','det_using'); 
+		$fieldFetch[1] = array('indivID','personID','det_date','taxonID','confid','notes','using'); 
 		$fieldConvert[1] = array('tmp_indiv_key'=>'indivID','tmp_taxon_key'=>'taxonID','tmp_person_key'=>'personID',
 								'det_notes'=>'notes'); 
 		$fieldUnique[1] = array('unique_key');
@@ -415,7 +415,7 @@ class excelHelper extends Database {
 						// generate query
 						$tmpField = implode(',',$t_field); 
 						$tmpData = implode(',',$t_data); 
-						$sql[$b][] = "INSERT INTO {$b} ({$tmpField}) VALUES ({$tmpData})";
+						$sql[$b][] = "INSERT IGNORE INTO {$b} ({$tmpField}) VALUES ({$tmpData})";
 						
 						$arrTmp[$b]['data'][] = $t_dataraw;
 						

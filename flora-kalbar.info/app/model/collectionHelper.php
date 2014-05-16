@@ -123,7 +123,7 @@ class collectionHelper extends Database {
 				$tmpField = implode(',',$fields);
 				$tmpData = implode(',',$datas);
 				
-				$sql[] = "INSERT INTO {$val} ({$tmpField}) VALUES ({$tmpData})"; 
+				$sql[] = "INSERT IGNORE INTO {$val} ({$tmpField}) VALUES ({$tmpData})"; 
 				
 				$fields = null;
 				$datas = null;
@@ -466,6 +466,7 @@ class collectionHelper extends Database {
 		foreach ($defineTable as $k =>$val){
 		
 			$sqlP = "SELECT * FROM {$val}";
+			logFile($sqlP);
 			$resP = $this->fetch($sqlP,1,1);
 			// pr($resP);
 			if ($resP){
@@ -626,7 +627,7 @@ class collectionHelper extends Database {
 					$sql[] = "INSERT INTO {$index} ({$imp}) VALUES ({$imps})"; 
 				}
 				*/
-				$sql[] = "INSERT INTO {$index} ({$imp}) VALUES ({$imps})"; 
+				$sql[] = "INSERT IGNORE INTO {$index} ({$imp}) VALUES ({$imps})"; 
 			}
 			
 			
@@ -665,7 +666,7 @@ class collectionHelper extends Database {
 		$field = implode (',',$tmpfield);
 		$value = implode (',',$tmpvalue);
 		
-		$sql = "INSERT INTO {$table} ({$field}) VALUES ({$value})";
+		$sql = "INSERT IGNORE INTO {$table} ({$field}) VALUES ({$value})";
 		$res = $this->query($sql);
 		if ($res){
 			
