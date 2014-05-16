@@ -12,6 +12,11 @@ class onebyone extends Controller {
 	
 	var $models = FALSE;
 	var $view;
+    
+    /**
+     * @todo asign variable basedomain, call function load module
+     * 
+     * */
 	public function __construct()
 	{
         global $basedomain;
@@ -20,6 +25,11 @@ class onebyone extends Controller {
         $this->view->assign('basedomain',$basedomain);
         $this->msg = new Messages();
 	}
+    
+    /**
+     * @todo load database module
+     * 
+     * */
 	public function loadmodule()
 	{
         $this->insertonebyone = $this->loadModel('insertonebyone');
@@ -31,6 +41,10 @@ class onebyone extends Controller {
         $this->imagezip = $this->loadModel('imagezip');
 	}
 	
+    /**
+     * @todo load master view onebyone
+     * 
+     * */
 	public function index(){
 		return $this->loadView('onebyone');
 	}

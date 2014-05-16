@@ -10,6 +10,10 @@ class zip extends Controller {
 	var $models = FALSE;
 	var $view;
     
+    /**
+     * @todo asign variable basedomain, call function load module
+     * 
+     * */
 	public function __construct()
 	{
         global $basedomain;
@@ -18,12 +22,20 @@ class zip extends Controller {
         $this->view->assign('basedomain',$basedomain);                       
 	}
     
+    /**
+     * @todo load database module
+     * 
+     * */
 	public function loadmodule()
 	{
 		
 		$this->imagezip = $this->loadModel('imagezip');
 	}
 	
+    /**
+     * @todo load master view
+     * 
+     * */
 	public function index(){
 
 		return $this->loadView('zip');
@@ -399,13 +411,6 @@ class zip extends Controller {
         $username = 'nje';
         $filename = 'filenotexist.zip';
         
-    }
-    
-    function test(){
-        $id = '34';
-        $filename = 'IMG_0202.jpg';
-        $dataExist = $this->imagezip->dataExist($id, $filename);
-        pr($dataExist); exit;
     }
 	
 }
