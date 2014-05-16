@@ -1,6 +1,7 @@
 <div class="content">
     <h2 class="title">Browse Data</h2>
     
+    {foreach $data as $dataTaxon}
     <div id="search">  
         <form role="form">
             <div class="search-box">
@@ -10,7 +11,6 @@
         </form>
     </div>
     <div class="clear"></div> 
-    
     
     <table class="browse">
         <thead>
@@ -31,6 +31,7 @@
                 <td>
                     {foreach $dataTaxon['img'] as $img}
                      <a class="gallery{$dataTaxon['taxon']['id']}" href="{$basedomain}public_assets/img/500px/{$img['md5sum']}.500px.jpg"><img src="{$basedomain}public_assets/img/100px/{$img['md5sum']}.100px.jpg" /></a>
+                     {foreachelse}<i>No image available</i>
                     {/foreach}
                 </td>
             </tr>
@@ -44,6 +45,7 @@
         </tbody>
     </table>
     
-    
+    {foreachelse}<i>No data available</i>
+    {/foreach}
     
 </div>

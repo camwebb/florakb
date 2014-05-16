@@ -2,6 +2,7 @@
     <a href="#" class="btn" style="float: right;">Edit</a>
     <div class="clear"></div>
     <br />
+    {foreach $indiv as $dataIndiv}
     <table class="browse indiv">
         {foreach $indiv as $dataIndiv}
         <tr>
@@ -17,35 +18,42 @@
         <tr>
             <th>Dets</th>
             <td>
-                {foreach $det as $dataDet}
+                {*foreach $det as $key=>$dataDet*}
+                {foreach from=$det key=myId item=dataDet}
                     
                     <table class="det">
                         <tr>
+                            <td><b>#{$myId+1}</b></td>
                             <td><b>Det Creator</b></td>
                             <td>:</td>
                             <td>{$dataDet['name']}</td>
                         </tr>
                         <tr>
+                            <td></td>
                             <td><b>Date</b></td>
                             <td>:</td>
                             <td>{$dataDet['det_date']}</td>
                         </tr>
                         <tr>
+                            <td></td>
                             <td><b>Species</b></td>
                             <td>:</td>
                             <td><i>{$dataDet['sp']}</i></td>
                         </tr>
                         <tr>
+                            <td></td>
                             <td><b>Confid</b></td>
                             <td>:</td>
                             <td><i>{$dataDet['confid']}</i></td>
                         </tr>
                         <tr>
+                            <td></td>
                             <td><b>Using</b></td>
                             <td>:</td>
                             <td><i>{$dataDet['using']}</i></td>
                         </tr>
                         <tr>
+                            <td></td>
                             <td><b>Notes</b></td>
                             <td>:</td>
                             <td><i>{$dataDet['notes']}</i></td>
@@ -56,5 +64,6 @@
             </td>
         </tr>
     </table>
-    
+    {foreachelse}<i>No data available</i>
+    {/foreach}
 </div>
