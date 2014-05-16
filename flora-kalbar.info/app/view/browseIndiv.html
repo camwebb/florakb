@@ -3,7 +3,9 @@
         <h2 class="title">{$title['sp']}</h2>
     {/foreach}
     
-    {foreach $data as $dataIndiv}
+    {if $noData eq 'empty'}
+        <i>No data available</i>
+    {else}
     <div id="search">  
         <form role="form">
             <div class="search-box">
@@ -49,7 +51,6 @@
             {/foreach}
         </tbody>
     </table>
-    {foreachelse}<i>No data available</i>
-    {/foreach}
+    {/if}
     
 </div>
