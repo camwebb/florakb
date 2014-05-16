@@ -39,6 +39,9 @@ class onebyone extends Controller {
      * @todo show view for individu and location form
      * */
     public function indivContent(){
+        if(isset($_SESSION['onebyone'])){
+            unset($_SESSION['onebyone']);
+        }
         $msg = $this->msg->display('all', false);
         $this->view->assign('msg', $msg);
         
@@ -64,6 +67,10 @@ class onebyone extends Controller {
         $listTaxon = $this->insertonebyone->list_taxon();
         $this->view->assign('taxon', $listTaxon);
         
+        //get list enum confid
+        $confid_enum = $this->insertonebyone->get_enum('det','confid');
+        $this->view->assign('confid_enum', $confid_enum);
+        
         return $this->loadView('formContentDet');
     }
     
@@ -73,6 +80,11 @@ class onebyone extends Controller {
     public function imageContent(){
         $msg = $this->msg->display('all', false);
         $this->view->assign('msg', $msg);
+        
+        //get plantpart enum
+        $plantpart_enum = $this->insertonebyone->get_enum('img','plantpart');
+        $this->view->assign('plantpart_enum', $plantpart_enum);
+        
         return $this->loadView('formContentImage');
     }
     
@@ -84,11 +96,11 @@ class onebyone extends Controller {
         $insertData = $this->insertonebyone->insertTransaction('person',$data);
         
         if($insertData){
-            $this->msg->add('s', 'Update Success');
+            $this->msg->add('s', 'Update Person Success');
         }else{
-            $this->msg->add('e', 'Update Failed');
+            $this->msg->add('e', 'Update Person Failed');
         }
-        header('Location: ../onebyone/person');
+        header('Location: ../onebyone/detContent');
     }
     
     /**
@@ -129,6 +141,28 @@ class onebyone extends Controller {
     }
     
     /**
+     * @todo insert individu from posted data
+     * */
+    public function insertDet(){
+        $data = $_POST;
+        
+        //get data user from session
+        $indivID = $_SESSION['onebyone']['indivID'];
+        
+        $data['indivID'] = $indivID;
+        $data['det_date'] = date("Y-m-d");
+        
+        $insertData = $this->insertonebyone->insertTransaction('det',$data);
+        
+        if($insertData){
+            $this->msg->add('s', 'Update Determinant Success');
+        }else{
+            $this->msg->add('e', 'Update Determinant Failed');
+        }
+        header('Location: ../onebyone/imageContent');
+    }
+    
+    /**
      * @todo insert taxon from posted data
      * */
     public function insertTaxon(){
@@ -136,11 +170,11 @@ class onebyone extends Controller {
         $insertData = $this->insertonebyone->insertTransaction('taxon',$data);
         
         if($insertData){
-            $this->msg->add('s', 'Update Success');
+            $this->msg->add('s', 'Update Taxon Success');
         }else{
-            $this->msg->add('e', 'Update Failed');
+            $this->msg->add('e', 'Update Taxon Failed');
         }
-        header('Location: ../onebyone/location');
+        header('Location: ../onebyone/detContent');
     }
     
     /**
@@ -149,6 +183,7 @@ class onebyone extends Controller {
     public function insertImage(){
         global $CONFIG;
         $data = $_POST;
+        //pr($data);exit;
         
         $name = 'filename';
         $path = '';
@@ -168,21 +203,22 @@ class onebyone extends Controller {
             $personID = $validateEmail['personID'];
             $username = $validateEmail['short_namecode'];*/
             
-            $session = $_SESSION['login'];
+            $login = $_SESSION['login'];
         
-            $username = $session['username'];
-            $personID = $session['id'];
+            $username = $login['username'];
+            $personID = $login['id'];
+            $indivID = $_SESSION['onebyone']['indivID'];
         
             $tmp_name = $uploaded_file['full_name'];
             $entry = $uploaded_file['real_name'];
             $image_name_encrypt = md5($entry);
             
-            $dataExist = $this->imagezip->dataExist($personID, $entry);
+            //$dataExist = $this->imagezip->dataExist($personID, $entry);
             
             $path_entry = $CONFIG['default']['upload_path'];
             $src_tmp = $path_entry."/".$tmp_name;
             
-            if($dataExist){
+            //if($dataExist){
                 $path_data = 'public_assets/';
                 //$path_user = $path_data.$username;
                 $path_img = $path_data.'/img';
@@ -249,20 +285,34 @@ class onebyone extends Controller {
                     unset($config);
                     
                     //add file information to array
-                    $fileToInsert = array('filename' => $entry,'md5sum' => $image_name_encrypt, 'directory' => '', 'mimetype' => $fileinfo['mime']);
+                    /*$fileToInsert = array('filename' => $entry,'md5sum' => $image_name_encrypt, 'directory' => '', 'mimetype' => $fileinfo['mime']);
                     
-                    $insertImage = $this->imagezip->updateImage($personID, $fileToInsert);
-                    $this->msg->add('s', 'Update success');
+                    $insertImage = $this->imagezip->updateImage($personID, $fileToInsert);*/
+                    
+                    $data['filename'] = $entry;
+                    $data['md5sum'] = $image_name_encrypt;
+                    $data['mimetype'] = $fileinfo['mime'];
+                    $data['indivID'] = $indivID;
+                    $data['personID'] = $personID;
+                    
+                    $insertData = $this->insertonebyone->insertTransaction('img',$data);
+                    
+                    if($insertData){
+                        $this->msg->add('s', 'Update image success');
+                        //unset($_SESSION['onebyone']);
+                    }else{
+                        $this->msg->add('e', 'Update image failed');
+                    }
                 } // end if copy
                 
-            }else{
-                $this->msg->add('e', 'Image data is not exist in database');
-            }
+            //}else{
+            //    $this->msg->add('e', 'Image data is not exist in database');
+            //}
             unlink($src_tmp);
         }else{
             $this->msg->add('e', $uploaded_file['message']);
         }
-        header('Location: ../onebyone/image');
+        header('Location: ../onebyone/imageContent');
     }
     
     /**

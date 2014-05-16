@@ -22,7 +22,7 @@ class insertonebyone extends Database {
 		
 		foreach ($data as $key=>$val){
             if(!empty($val)){
-                $tmpfield[] = $key;
+                $tmpfield[] = "`$key`";
                 $tmpvalue[] = "'{$val}'";
             }
 		}
@@ -65,8 +65,18 @@ class insertonebyone extends Database {
 		if (!$startTransaction) return false;
         
 		logFile('====TRANSACTION READY====');
-
-		$insert = $this->insertData($table,$data);
+        if($table == 'person'){
+            $dataPerson = array(
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'twitter' => $data['twitter'],
+                    'website' => $data['website'],
+                    'phone' => $data['phone']
+                );
+            $insert = $this->insertData($table,$dataPerson);
+        }else{
+            $insert = $this->insertData($table,$data);
+        }
 	    
 		if ($insert['status'] == 0){
 			$this->rollback();
@@ -85,7 +95,7 @@ class insertonebyone extends Database {
                 $password = sha1($genPass.$salt);
                 
                 //insert password id, password, salt
-                $dataPass = array('id' => $insert['lastid'], 'password' => $password, 'salt' => $salt);
+                $dataPass = array('id' => $insert['lastid'], 'password' => $password, 'salt' => $salt, 'username' => $data['username']);
                 $insert_dataPas = $this->insertData('florakb_person',$dataPass,true);
                 
                 if ($insert_dataPas['status'] == 0){
@@ -164,6 +174,26 @@ class insertonebyone extends Database {
         $sql = "SELECT id, fam, gen, sp FROM taxon";
 		$res = $this->fetch($sql,1);
         return $res;
+    }
+    
+    /**
+     * @todo get enum of confid field in table det
+     * @param $table = table name
+     * @param $field = field name
+     * 
+     * @return preg match of sql result
+     * 
+     * */
+    function get_enum($table, $field){
+        $sql = "SHOW COLUMNS FROM `$table` WHERE Field = '$field'";
+		$res = $this->fetch($sql,0);
+        
+        preg_match('/^enum\((.*)\)$/', $res['Type'], $matches);
+        foreach( explode(',', $matches[1]) as $value )
+        {
+             $enum[] = trim( $value, "'" );
+        }
+        return $enum;
     }
 }
 

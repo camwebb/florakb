@@ -1,38 +1,44 @@
-<form id="formIndiv" method="POST" action="{$basedomain}onebyone/insertIndiv">
+<form id="formDet" method="POST" action="{$basedomain}onebyone/insertDet">
     <table class="form-tbl">
         <tr>
             <td><label for="">Conf id</label></td>
-            <td><input class="inputbox" type="text" id="confid" name="confid" /></td>
-        </tr>
-        <tr>
-            <td><label for="notes">Notes</label></td>
-            <td><textarea class="textareabox" id="notes" name="notes"></textarea></td>
+            <td>
+                <select class="inputbox" name="confid" id="confid">
+                    {foreach from=$confid_enum item=enum}confid
+                        <option value="{$enum}">{$enum}</option>
+                    {/foreach}
+                </select>
+            </td>
         </tr>
         <tr>
             <td><label for="">Using</label></td>
             <td><input class="inputbox" type="text" id="using" name="using" /></td>
         </tr>
         <tr>
+            <td><label for="notes">Notes</label></td>
+            <td><textarea class="textareabox" id="notes" name="notes"></textarea></td>
+        </tr>
+        <tr>
             <td><label for="">Taxon</label></td>
             <td>
-                <select class="inputbox" name="taxon" id="taxon">
+                <select class="inputbox" name="taxonID" id="taxonID">
                     {foreach from=$taxon item=itemTaxon}
                         <option value="{$itemTaxon.id}">{$itemTaxon.sp}, {$itemTaxon.gen}, {$itemTaxon.fam}</option>
                     {/foreach}
                 </select>
-                <a style="margin-left: 20px;" href="#taxon-modal" class="btn" id="taxonPopup">Add</a>
             </td>
+            <td><a href="#taxon-modal" class="btn" id="taxonPopup">Add</a></td>
         </tr>
         <tr>
             <td><label for="">Person</label></td>
             <td>
-                <select class="inputbox" name="person" id="person">
+                <select class="inputbox" name="personID" id="personID">
                     {foreach from=$person item=itemPerson}
                         <option value="{$itemPerson.id}">{$itemPerson.name}, {$itemPerson.email}</option>
                     {/foreach}
                 </select>
-                <a style="margin-left: 20px;" href="#person-modal" class="btn" id="personPopup">Add</a>
             </td>
+            <td><a href="#person-modal" class="btn" id="personPopup">Add</a></td>
         </tr>
         <tr>
             <td></td>
@@ -43,54 +49,21 @@
 <script type="text/javascript">
 $().ready(function() {
     
-    $("#formLocation").validate({
+    $("#formDet").validate({
         rules: {
-			locality: {
+			confid: {
                 required: true
 			},
-            province: {
-                required: true
-            },
-            island: {
-                required: true
-            },
-            country: {
+            using: {
                 required: true
             }
 		},
 		messages: {
-			locality: {
-                required: " Please enter locality"
+			confid: {
+                required: " Please enter confid"
 			},
-            province: {
-                required: " Please enter province"
-            },
-            island: {
-                required: " Please enter island"
-            },
-            country: {
-                required: " Please enter country"
-            }
-		}
-    });
-    
-    $("#formIndiv").validate({
-        rules: {
-			plot: {
-                required: true
-			},
-            tag: {
-                required: true,
-                number: true
-            }
-		},
-		messages: {
-			plot: {
-                required: " Please enter plot"
-			},
-            tag: {
-                required: " Please enter tag",
-                number: "Please enter number"
+            using: {
+                required: " Please enter using"
             }
 		}
     });
