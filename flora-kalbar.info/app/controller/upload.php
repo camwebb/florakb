@@ -149,14 +149,21 @@ class upload extends Controller {
 					*/ 
 					$endTime = microtime(true);
 					
-					if ($insertData) echo 'Insert success  ('. execTime($startTime,$endTime).')';
-					else echo 'Insert data failed';
+					if ($insertData){
+						logFile('Insert xls success');
+						echo 'Insert success  ('. execTime($startTime,$endTime).')';	
+						exit;
+					}else{
+						logFile('Insert xls failed');
+						echo 'Insert data failed';	
+						exit;
+					} 
 					
 					
 				}
 			}
 		}else{
-		
+			logFile('File xls empty');
 			echo "File is empty";
 		}
 		
@@ -166,7 +173,7 @@ class upload extends Controller {
 	
 	function truncate()
 	{
-		$this->collectionHelper->truncateData(false,true);
+		$this->collectionHelper->truncateData(true,true);
 	}
 	
 }

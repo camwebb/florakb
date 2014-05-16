@@ -118,12 +118,16 @@ class collectionHelper extends Database {
 					$fields[] = "`$key`";
 					$cleanData = addslashes($v);
 					$datas[] = "'$cleanData'";
+
+					$updateTmp[] = "`$key` = '$cleanData'";
 				}
 				
 				$tmpField = implode(',',$fields);
 				$tmpData = implode(',',$datas);
+
+				$updateFIeld = implode(',', $updateTmp);
 				
-				$sql[] = "INSERT IGNORE INTO {$val} ({$tmpField}) VALUES ({$tmpData})"; 
+				$sql[] = "INSERT INTO {$val} ({$tmpField}) VALUES ({$tmpData})"; 
 				
 				$fields = null;
 				$datas = null;
@@ -144,6 +148,7 @@ class collectionHelper extends Database {
 				logFile('Insert tmp data '.$key);
 				logFile($val);
 				$res = $this->query($val,1);
+				logFile($res);
 				if (!$res) $failed = true;
 			}
 			
@@ -189,8 +194,9 @@ class collectionHelper extends Database {
 				foreach ($query[$val] as $key => $value){
 					logFile($value);
 					$sql = $this->query($value);
+					logFile($sql);
 					if (!$sql) $failed = true;
-					usleep(50);
+					// usleep(50);
 					$lastID = $this->insert_id();
 					logFile($update);
 					$update = "UPDATE {$tmpTable[$i]} SET tmp_unique_key = '{$lastID}' WHERE 
@@ -269,6 +275,7 @@ class collectionHelper extends Database {
 				foreach ($query[$val] as $key => $value){
 					logFile($value);
 					$sql = $this->query($value);
+					logFile($sql);
 					if (!$sql) $failed = true;
 					usleep(50);
 					$lastID = $this->insert_id();
@@ -331,6 +338,7 @@ class collectionHelper extends Database {
 				foreach ($query[$val] as $key => $value){
 					logFile($value);
 					$sql = $this->query($value);
+					logFile($sql);
 					if (!$sql) $failed = true;
 					
 					$j++;
@@ -376,6 +384,7 @@ class collectionHelper extends Database {
 				foreach ($query[$val] as $key => $value){
 					logFile($value);
 					$sql = $this->query($value);
+					logFile($sql);
 					if (!$sql) $failed = true;
 					usleep(50);
 					$lastID = $this->insert_id();
@@ -531,7 +540,7 @@ class collectionHelper extends Database {
 				foreach ($data as $val){
 					logFile('excecute query =>'.serialize($val));
 					$sql = $this->query($val);
-					
+					logFile($sql);
 					if (!$sql) $failed = false;
 					$count++;
 					if ($count==100){
@@ -627,7 +636,7 @@ class collectionHelper extends Database {
 					$sql[] = "INSERT INTO {$index} ({$imp}) VALUES ({$imps})"; 
 				}
 				*/
-				$sql[] = "INSERT IGNORE INTO {$index} ({$imp}) VALUES ({$imps})"; 
+				$sql[] = "INSERT INTO {$index} ({$imp}) VALUES ({$imps}) ON DUPLICATE KEY UPDATE {$update}"; 
 			}
 			
 			
@@ -661,13 +670,16 @@ class collectionHelper extends Database {
 		foreach ($data as $key=>$val){
 			$tmpfield[] = $key;
 			$tmpvalue[] = "'{$val}'";
+			$tmpUpdate[] = "`$key` = '{$val}'";
 		}
 		
 		$field = implode (',',$tmpfield);
 		$value = implode (',',$tmpvalue);
+		$update = implode(',', $tmpUpdate);
 		
-		$sql = "INSERT IGNORE INTO {$table} ({$field}) VALUES ({$value})";
+		$sql = "INSERT INTO {$table} ({$field}) VALUES ({$value}) ON DUPLICATE KEY UPDATE {$update}";
 		$res = $this->query($sql);
+		logFile($sql);
 		if ($res){
 			
 			$data['lastid'] = $this->insert_id();
