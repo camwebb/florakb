@@ -1,0 +1,51 @@
+{if isset($smarty.session.login.name)}
+<div class="wrapper">
+<div id="nav-box">
+	<div id="menu">
+        <ul>
+    		<li class="{if $page.page=='home'}selected{/if}">
+    			<a href="{$basedomain}">Home</a>
+    		</li>
+    		<li class="{if $page.page=='upload'}selected{/if}">
+    			<a href="{$basedomain}upload">Batch Upload</a>
+			</li>
+            <li class="{if $page.page=='onebyone'}selected{/if}">
+    			<a href="{$basedomain}onebyone/indivContent">One By One</a>
+    		</li>
+            <li class="{if $page.page=='browse'}selected{/if}">
+    			<a href="{$basedomain}browse">Browse</a>
+    		</li>
+
+            {*}<li class="{if $page.page=='contact'}selected{/if}">
+    			<a href="{$basedomain}contact">Contact</a>
+    		</li>{/*}
+
+    	</ul>
+    </div>
+    
+	<div id="search-menu">  
+        <form role="form">
+            <div class="search-box">
+              <input type="text" placeholder="Search" />
+              <button class="btn btn-search" type="button">Search</button>
+            </div>
+        </form>
+    </div>
+    <div class="clear"></div>    
+</div>
+</div>
+{else}
+<div class="wrapper">
+<div id="nav-box">
+	<div id="menu">
+        <ul>
+    		<li class="{if $page.page=='home'}selected{/if}">
+    			<a href="{$basedomain}">Home</a>
+    		</li>
+    	</ul>
+    </div>
+    
+    <div class="clear"></div>    
+</div>
+</div>
+{/if}
