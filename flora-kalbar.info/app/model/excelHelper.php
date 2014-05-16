@@ -186,7 +186,7 @@ class excelHelper extends Database {
 					$t_data = array();
 					$t_dataraw = array();
 					$uniqueKey = array();
-					
+					$tmpupdate = array();
 					
 					foreach ($val as $keys => $v){
 						
@@ -224,6 +224,7 @@ class excelHelper extends Database {
 								$t_field[] = $keyField;
 								$t_data[] = "'$keyData'"; 
 								$t_dataraw[$keyField] = $keyData; 
+								$tmpupdate[] = "`$keyField` = '$keyData'";
 							}
 							
 						}
@@ -233,9 +234,11 @@ class excelHelper extends Database {
 					// generate query
 					$tmpField = implode(',',$t_field); 
 					$tmpData = implode(',',$t_data); 
-					
+					$update = implode(',', $tmpupdate);
+
 					if (!in_array($key,$ignoreTable)){
-						$sql[$defineTable[$key]][] = "INSERT IGNORE INTO {$defineTable[$key]} ({$tmpField}) VALUES ({$tmpData})";
+						$sql[$defineTable[$key]][] = "INSERT INTO {$defineTable[$key]} ({$tmpField}) VALUES ({$tmpData}) ON DUPLICATE KEY UPDATE {$update} , id=LAST_INSERT_ID(id)";
+						// $sql[$defineTable[$key]][] = "REPLACE INTO {$defineTable[$key]} ({$tmpField}) VALUES ({$tmpData}) ";
 						
 						
 					}
@@ -338,7 +341,8 @@ class excelHelper extends Database {
 						$t_data = array();
 						$t_dataraw = array();
 						$uniqueKey = array();
-						
+						$tmpupdate = array();
+
 						$fieldKey = @array_keys($fieldConvert[$a]);
 						foreach ($val as $keys => $v){
 							
@@ -384,6 +388,7 @@ class excelHelper extends Database {
 										$t_field[] = $tmpkeyField;
 										$t_data[] = "'$keyData'"; 
 										$t_dataraw[$tmpkeyField] = $keyData; 
+										$tmpupdate[] = "`{$tmpkeyField}` = '$keyData'";
 									}
 								}else{
 									if (in_array($tmpkeyField, $fieldUnique[$convert])){
@@ -394,6 +399,7 @@ class excelHelper extends Database {
 									$t_field[] = $tmpkeyField;
 									$t_data[] = "'$keyData'"; 
 									$t_dataraw[$tmpkeyField] = $keyData; 
+									$tmpupdate[] = "`{$tmpkeyField}` = '$keyData'";
 								}
 								
 									
@@ -409,13 +415,16 @@ class excelHelper extends Database {
 							$tmpCode = str_shuffle('ABCDEFGHIJ1234567890');
 							$t_data[] = "'$tmpCode'";
 							// $dataKey[$b][] = $tmpCode;
+							$tmpupdate[] = "`collCode` = '$tmpCode'";
 						}	
 
 						// pr($tmpkeyField);
 						// generate query
 						$tmpField = implode(',',$t_field); 
 						$tmpData = implode(',',$t_data); 
-						$sql[$b][] = "INSERT IGNORE INTO {$b} ({$tmpField}) VALUES ({$tmpData})";
+						$update = implode(',', $tmpupdate);
+						$sql[$b][] = "INSERT INTO {$b} ({$tmpField}) VALUES ({$tmpData}) ON DUPLICATE KEY UPDATE {$update} , id=LAST_INSERT_ID(id)";
+						// $sql[$b][] = "REPLACE INTO {$b} ({$tmpField}) VALUES ({$tmpData})";
 						
 						$arrTmp[$b]['data'][] = $t_dataraw;
 						
