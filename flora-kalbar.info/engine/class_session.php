@@ -71,12 +71,15 @@ class Session
 		if (array_key_exists('default', $CONFIG)){
 			$configkey = 'default';
 		}
+
+		$uniqSess = sha1($CONFIG[$configkey]['root_path'].'codekir-v0.1');
+
 		if ($sessName){
-			$_SESSION[$sessName] = $dataSesion;
+			$_SESSION[$uniqSess][$sessName] = $dataSesion;
 		}else{
 			
 			// default session App
-			$uniqSess = sha1($CONFIG[$configkey]['root_path'].'codekir-v0.1');
+			
 			$_SESSION[$uniqSess]['user'] = $dataSesion;
 		}
 		
@@ -97,10 +100,12 @@ class Session
 		
 		$session = false;
 		
+		$uniqSess = sha1($CONFIG[$configkey]['root_path'].'codekir-v0.1');
+
 		if ($sessName){
-			$session[$sessName] = $_SESSION[$sessName];
+			$session[$sessName] = $_SESSION[$uniqSess];
 		}else{
-			$uniqSess = sha1($CONFIG[$configkey]['root_path'].'codekir-v0.1');
+			
 			if (isset($_SESSION[$uniqSess])) $session['ses_user'] = $_SESSION[$uniqSess];
 		}
 		
