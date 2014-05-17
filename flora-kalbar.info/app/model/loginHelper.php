@@ -187,7 +187,7 @@ class loginHelper extends Database {
         $_SESSION['login'] = $dataSession;
 
         // set session, parameternya (data sessi, nama sessinya)
-        $session->set_session($dataSession, 'login');
+        // $session->set_session($dataSession, 'login');
 	}
     
     /**
