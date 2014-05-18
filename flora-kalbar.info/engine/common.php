@@ -299,14 +299,23 @@ function deleteDir($dirPath) {
  * @todo create log file
  * @param string $comment = comment log
  * */
-function logFile($comment, $fileName=false)
+function logFile($comment, $fileName=false, $method=false)
 {
 	
+	/*
+		method false = "a"
+		method (true)1 = w
+	*/
 	$path = LOGS;
 	
 	if (!$fileName) $fileName = 'Log-'.date('d-m-Y').'.txt';
 	
-	$handle = fopen($path.$fileName, "a");
+	if ($method){
+		$handle = fopen($path.$fileName, "w");
+	}else{
+		$handle = fopen($path.$fileName, "a");
+	}
+	
 	fwrite($handle, "{$comment}"."\n");
 	fclose($handle);
 }
@@ -337,7 +346,7 @@ function sftpServices($host="localhost", $user=false, $pass=false, $filename=fal
 		logFile('sftp connected'); 
 	}else{
 		logFile('sftp failed connected');
-		return false;
+		return false; 
 	}
 
 	$sftp = ssh2_sftp($connection);

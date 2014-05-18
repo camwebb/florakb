@@ -251,6 +251,8 @@ class collectionHelper extends Database {
 				}
 				
 				$i++;
+
+				logFile('Store data '.$val.' success', $this->user['username']);
 			}
 			
 			if ($failed){
@@ -320,10 +322,12 @@ class collectionHelper extends Database {
 			
 			if ($failed){
 				// $this->rollback();
+				logFile('Store data individu failed', $this->user['username']);
 				logFile('====ROLLBACK TRANSACTION====');
 				return false;
 			}else{
 				// $this->commit();
+				logFile('Store data individu success', $this->user['username']);
 				logFile('====COMMIT TRANSACTION====');
 				return true;
 			}
@@ -361,6 +365,9 @@ class collectionHelper extends Database {
 				}
 				
 				$i++;
+
+				logFile('Store data '.$val.' success', $this->user['username']);
+				
 			}
 			
 			if ($failed){
@@ -421,6 +428,8 @@ class collectionHelper extends Database {
 				}
 				
 				$i++;
+
+				logFile('Store data '.$val.' success', $this->user['username']);
 			}
 			
 			if ($failed){

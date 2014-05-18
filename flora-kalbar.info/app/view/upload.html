@@ -1,6 +1,6 @@
 <!--<div>
     <div class="errorbox"></div>
-	Upload Zip :
+    Upload Zip :
     <form onsubmit="return validateFormUpload();" id="upload_file" method="POST" action="{$basedomain}upload/zip" enctype="multipart/form-data">
         <label for="username">Username :</label>
         <input name="username" id="username" />
@@ -34,7 +34,7 @@
     </div>
     
     <div class="sidebar-2-right">
-    	<h2 class="title">Upload Excel :</h2> 
+        <h2 class="title">Upload Excel :</h2> 
         <form method="POST" action="{$basedomain}upload/parseExcel" enctype="multipart/form-data" id="uploadExcel">
             <table class="form-tbl">
                 <tr>
@@ -50,69 +50,104 @@
             </table>    
 
         </form>
-        
-    	<div class="progress" style="margin-top: 15px;">
+        <div id="results"></div>
+        <div class="progress" style="margin-top: 15px;">
             {*}<div class="bar"></div >
             <div class="percent">0%</div >{/*}
         </div>
         
         <div id="status"></div>
+
     </div>
     
     <div class="clear"></div>
 </div>
 <script>
 {literal}
-	(function() {
-	   
-    var first_error = '<div class="messages erroren"><a href="#" class="closeMessage"></a><p>';
-    var first_info = '<div class="messages info"><a href="#" class="closeMessage"></a><p>';
-    var first_success = '<div class="messages success"><a href="#" class="closeMessage"></a><p>';
-    var first_warning = '<div class="messages warning"><a href="#" class="closeMessage"></a><p>';
-    var end = '</p></div>';
-		
-	var bar = $('.bar');
-	var percent = $('.percent');
-	var status = $('#status');
-	});   
+    (function() {
+       
+    });
+        var first_error = '<div class="messages erroren"><a href="#" class="closeMessage"></a><p>';
+        var first_info = '<div class="messages info"><a href="#" class="closeMessage"></a><p>';
+        var first_success = '<div class="messages success"><a href="#" class="closeMessage"></a><p>';
+        var first_warning = '<div class="messages warning"><a href="#" class="closeMessage"></a><p>';
+        var end = '</p></div>';
+            
+        var bar = $('.bar');
+        var percent = $('.percent');
+        var status = $('#status');
+    
+    
+
+    
+    $(document).ready(function(){
+        
+        $.post(basedomain+'upload/showUploadProcess', {param:true}, function(data){
+
+            var lastSize = data.size;
+
+            setInterval(function(){
+
+                // if(lastSize){
+                    $.getJSON(basedomain+'upload/showUploadProcess/?ajax=1&lastsize='+lastSize, function(data) {
+                        lastSize = data.size;
+                        $.each(data.data, function(key, value) {
+                                $("#results").append('' + value + '<br/>');
+                        });
+                   
+                    });
+
+                // }
+                
+
+             },3000);
+            
+        },"JSON"); 
+
+
+    })
+     
+    
 
     /*
-	$('#uploadExcel').ajaxForm({
-		beforeSend: function() {
-			status.empty();
-			var percentVal = '0%';
-			bar.width(percentVal)
-			percent.html(percentVal);
-		},
-		uploadProgress: function(event, position, total, percentComplete) {
-			var percentVal = percentComplete + '%';
-			var zip_file = $('#zip_file').val();
-			if (zip_file){
-				bar.width(percentVal)
-				percent.html(percentVal);
-			}
-			
-		},
-		success: function() {
-			var percentVal = '100%';
-			var zip_file = $('#zip_file').val();
-			
-			if (zip_file){
-				bar.width(percentVal)
-				percent.html(percentVal);
-			}
-		},
-		complete: function(xhr) {
-			status.html(first_info + xhr.responseText + end);
-		}
-	}); 
+    $('#uploadExcel').ajaxForm({
+        beforeSend: function() {
+            status.empty();
+            var percentVal = '0%';
+            bar.width(percentVal)
+            percent.html(percentVal);
+        },
+        uploadProgress: function(event, position, total, percentComplete) {
+            var percentVal = percentComplete + '%';
+            var zip_file = $('#zip_file').val();
+            if (zip_file){
+                bar.width(percentVal)
+                percent.html(percentVal);
+            }
+            
+        },
+        success: function() {
+            var percentVal = '100%';
+            var zip_file = $('#zip_file').val();
+            
+            if (zip_file){
+                bar.width(percentVal)
+                percent.html(percentVal);
+            }
+        },
+        complete: function(xhr) {
+            status.html(first_info + xhr.responseText + end);
+        }
+    }); 
+    
     */
-	  
+    
+    
     var uploadXlsFile = {
         dataType:  'json',  
         beforeSubmit: function(data) { 
              
-            $(".progress").html("Please wait ..."); 
+        $(".progress").html("Please wait ..."); 
                  
         },
         success : function(data) {      
@@ -126,6 +161,7 @@
 
 
                 if (data.finish){
+                    
                     setTimeout(function(){
                         window.location.href=basedomain+'zip';
                     },2000);
@@ -137,10 +173,13 @@
                 $(".progress").html(data.msg);
             }
                      
+        }, 
+        complete: function(xhr) {
+            status.html(first_info + xhr.responseText + end);
         }
     };                  
 
     $("#uploadExcel").ajaxForm(uploadXlsFile);
-
+    
 {/literal}
 </script>
