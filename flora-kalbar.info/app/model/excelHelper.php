@@ -290,8 +290,8 @@ class excelHelper extends Database {
 		$fieldUnique = array();
 		
 		// Indiv table identified
-		$fieldFetch[0] = array('locnID','plot','tag','unique_key'); 
-		$fieldConvert[0] = array('tmp_location_key'=>'locnID'); 
+		$fieldFetch[0] = array('locnID','plot','tag','unique_key', 'personID'); 
+		$fieldConvert[0] = array('tmp_location_key'=>'locnID', 'tmp_creator_key'=>'personID'); 
 		$fieldUnique[0] = array('unique_key');
 		
 		// Det table identified

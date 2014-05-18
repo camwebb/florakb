@@ -299,12 +299,12 @@ function deleteDir($dirPath) {
  * @todo create log file
  * @param string $comment = comment log
  * */
-function logFile($comment)
+function logFile($comment, $fileName=false)
 {
 	
 	$path = LOGS;
 	
-	$fileName = 'Log-'.date('d-m-Y').'.txt';
+	if (!$fileName) $fileName = 'Log-'.date('d-m-Y').'.txt';
 	
 	$handle = fopen($path.$fileName, "a");
 	fwrite($handle, "{$comment}"."\n");
