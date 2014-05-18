@@ -27,7 +27,7 @@ class upload extends Controller {
 	public function index(){
 
 		$username = $this->user['login']['username'];
-
+		
 		logFile("", $username, true);
 
 		return $this->loadView('upload');
