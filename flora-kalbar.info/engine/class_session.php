@@ -112,6 +112,28 @@ class Session
 		
 		return $session;
 	}
+    
+    public function delete_session($sessName=false)
+	{
+		global $CONFIG;
+		
+        if(!$sessName)return false;
+        
+		if (array_key_exists('admin', $CONFIG)){
+			$configkey = 'admin';
+		}
+		if (array_key_exists('default', $CONFIG)){
+			$configkey = 'default';
+		}
+		
+		$session = false;
+		
+		$uniqSess = sha1($CONFIG[$configkey]['root_path'].'codekir-v0.1');
+        
+        unset($_SESSION[$uniqSess][$sessName]);
+		
+		return true;
+	}
 	
 	public function get_session_admin()
 	{
