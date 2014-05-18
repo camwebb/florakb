@@ -171,6 +171,8 @@ class excelHelper extends Database {
 		$fieldConvert[4] = array('long'=>'longitude', 'lat'=>'latitude','geomorphology'=>'geomorph','kabupaten'=>'county','unique_key'=>'tmp_unique_key'); 
 		$fieldUnique[4] = array('tmp_unique_key'); 
 		
+		$fieldIgnoreUpdateOnDuplicate = array('name','email'); //,'gen','sp','subtype','ssp','auth');
+
 		$convert = 1;
 		foreach ($newData as $key => $values){
 			
@@ -224,7 +226,8 @@ class excelHelper extends Database {
 								$t_field[] = $keyField;
 								$t_data[] = "'$keyData'"; 
 								$t_dataraw[$keyField] = $keyData; 
-								$tmpupdate[] = "`$keyField` = '$keyData'";
+
+								if (!in_array($keyField, $fieldIgnoreUpdateOnDuplicate))$tmpupdate[] = "`$keyField` = '$keyData'";
 							}
 							
 						}
