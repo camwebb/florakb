@@ -9,6 +9,14 @@
             <td><input class="inputbox" type="text" id="email" name="email" /></td>
         </tr>
         <tr>
+            <td><label for="institutions">Institutions</label></td>
+            <td><input class="inputbox" type="text" id="institutions" name="institutions" /></td>
+        </tr>
+        <tr>
+            <td><label for="project">Project</label></td>
+            <td><input class="inputbox" type="text" id="project" name="project" /></td>
+        </tr>
+        <tr>
             <td><label for="twitter">Twitter</label></td>
             <td><input class="inputbox" type="text" id="twitter" name="twitter" /></td>
         </tr>
@@ -52,10 +60,9 @@ $().ready(function() {
 			website: {
                 url: true
 			},
-            short_namecode: {
+            username: {
                 required: true,
-                minlength: 3,
-                maxlength: 3
+                minlength: 3
             }
 		},
 		messages: {
@@ -71,10 +78,9 @@ $().ready(function() {
 			website: {
 				url: " Please enter a valid url"
 			},
-            short_namecode: {
-                required: " Please enter a shortname",
-                minlength: " Your short namecode must be 3 characters long",
-                maxlength: " Your short namecode must be 3 characters long"
+            username: {
+                required: " Please enter a username",
+                minlength: " Your short namecode must be 3 characters long"
             }
 		}
     });

@@ -14,4 +14,33 @@
         {include file='formImage.html'}
     </div>
     <div class="clear"></div>
+    <br />
+    
+    <div class="sidebar-2-right">
+        {if isset($image_sess)}
+        {if $image_sess}
+        <table class="browse">
+            <thead>
+                <tr>
+                    <th>Filename</th>
+                    <th>Plantpart</th>
+                    <th>Notes</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach $image_sess as $imageData}
+                <tr>
+                    <td>{$imageData.filename}</td>
+                    <td>{$imageData.plantpart}</td>
+                    <td>{$imageData.notes}</td>
+                    <td><img src="{$basedomain}/public_assets/img/100px/{$imageData.md5sum}.100px.jpg" /></td>
+                </tr>
+                {/foreach}
+            </tbody>
+        </table>
+        {/if}
+        {/if}
+    </div>
+    <div class="clear"></div>
 </div>

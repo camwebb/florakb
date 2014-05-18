@@ -712,7 +712,13 @@ class collectionHelper extends Database {
 		
 	}
 	
-	function startTransaction()
+	/**
+     * @todo start sql transaction
+     * 
+     * @return boolean true/false
+     * 
+     * */
+    function startTransaction()
 	{
 		$startTransaction = $this->begin();
 		if (!$startTransaction) return false;
@@ -720,6 +726,12 @@ class collectionHelper extends Database {
 		return true;
 	}
 	
+    /**
+     * @todo rollback sql transaction
+     * 
+     * @return boolean true/false
+     * 
+     * */
 	function rollbackTransaction()
 	{
 		$this->rollback();
@@ -727,6 +739,12 @@ class collectionHelper extends Database {
 		return true;
 	}
 	
+    /**
+     * @todo commit sql transaction
+     * 
+     * @return boolean true/false
+     * 
+     * */
 	function commitTransaction()
 	{
 		$this->commit();

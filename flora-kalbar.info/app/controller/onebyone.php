@@ -46,16 +46,23 @@ class onebyone extends Controller {
      * 
      * */
 	public function index(){
-		return $this->loadView('onebyone');
+		return $this->loadView('formContentIndiv');
 	}
     
     /**
      * @todo show view for individu and location form
      * */
     public function indivContent(){
-        if(isset($_SESSION['onebyone'])){
-            unset($_SESSION['onebyone']);
+        $session = new Session;
+        
+        $sess_user = $session->get_session();
+        $sess_data = $sess_user['ses_user'];
+        
+        if(isset($sess_data['onebyone'])){
+            $session->delete_session('onebyone');
+            $session->delete_session('image_sess');
         }
+        
         $msg = $this->msg->display('all', false);
         $this->view->assign('msg', $msg);
         
@@ -94,6 +101,10 @@ class onebyone extends Controller {
     public function imageContent(){
         $msg = $this->msg->display('all', false);
         $this->view->assign('msg', $msg);
+        
+        $session = new Session;
+        $image_sess = $session->get_session();
+        $this->view->assign('image_sess', $image_sess['ses_user']['image_sess']);
         
         //get plantpart enum
         $plantpart_enum = $this->insertonebyone->get_enum('img','plantpart');
@@ -139,18 +150,23 @@ class onebyone extends Controller {
         $data = $_POST;
         
         //get data user from session
-        $session = $_SESSION['login'];
-        $personID = $session['id'];
+        $session = new Session;
+        $login = $session->get_session();
+        $userData = $login['ses_user'];
+        
+        $personID = $userData['login']['id'];
         $data['personID'] = $personID;
         
         $insertData = $this->insertonebyone->insertTransaction('indiv',$data);
-        $_SESSION['onebyone']['indivID'] = $insertData['lastid'];
+        $sess_onebyone = array('indivID' => $insertData['lastid']);
+        $session->set_session($sess_onebyone,'onebyone');
         
         if($insertData){
             $this->msg->add('s', 'Update Individu Success');
         }else{
             $this->msg->add('e', 'Update Individu Failed');
         }
+        
         header('Location: ../onebyone/detContent');
     }
     
@@ -161,7 +177,11 @@ class onebyone extends Controller {
         $data = $_POST;
         
         //get data user from session
-        $indivID = $_SESSION['onebyone']['indivID'];
+        $session = new Session;
+        $login = $session->get_session();
+        $userData = $login['ses_user'];
+        
+        $indivID = $userData['onebyone']['indivID'];
         
         $data['indivID'] = $indivID;
         $data['det_date'] = date("Y-m-d");
@@ -217,11 +237,13 @@ class onebyone extends Controller {
             $personID = $validateEmail['personID'];
             $username = $validateEmail['short_namecode'];*/
             
-            $login = $_SESSION['login'];
-        
-            $username = $login['username'];
-            $personID = $login['id'];
-            $indivID = $_SESSION['onebyone']['indivID'];
+            $session = new Session;
+            $login = $session->get_session();
+            $userData = $login['ses_user'];
+            
+            $username = $userData['login']['username'];
+            $personID = $userData['login']['id'];
+            $indivID = $userData['onebyone']['indivID'];
         
             $tmp_name = $uploaded_file['full_name'];
             $entry = $uploaded_file['real_name'];
@@ -313,7 +335,20 @@ class onebyone extends Controller {
                     
                     if($insertData){
                         $this->msg->add('s', 'Update image success');
-                        //unset($_SESSION['onebyone']);
+                        $session = new Session;
+                        
+                        $dataSession = array();
+                        
+                        $sess_image = $session->get_session();
+                        $sess_user = $sess_image['ses_user'];
+                        if(isset($sess_user['image_sess'])){
+                            foreach ($sess_user['image_sess'] as $data_before){
+                                array_push($dataSession,$data_before);
+                            }
+                        }
+                        array_push($dataSession, $data);
+                        $session->set_session($dataSession,'image_sess');
+                        //$session->delete_session('onebyone');
                     }else{
                         $this->msg->add('e', 'Update image failed');
                     }

@@ -159,7 +159,7 @@ class insertonebyone extends Database {
      * 
      * */
     function list_person(){
-        $sql = "SELECT id, name, email FROM person";
+        $sql = "SELECT * FROM person";
 		$res = $this->fetch($sql,1);
         return $res;
     }
@@ -171,7 +171,7 @@ class insertonebyone extends Database {
      * 
      * */
     function list_taxon(){
-        $sql = "SELECT id, fam, gen, sp FROM taxon";
+        $sql = "SELECT * FROM taxon";
 		$res = $this->fetch($sql,1);
         return $res;
     }
@@ -195,6 +195,46 @@ class insertonebyone extends Database {
         }
         return $enum;
     }
+    
+    /**
+     * @todo start sql transaction
+     * 
+     * @return boolean true/false
+     * 
+     * */
+    function startTransaction()
+	{
+		$startTransaction = $this->begin();
+		if (!$startTransaction) return false;
+		logFile('====TRANSACTION READY====');
+		return true;
+	}
+	
+    /**
+     * @todo rollback sql transaction
+     * 
+     * @return boolean true/false
+     * 
+     * */
+	function rollbackTransaction()
+	{
+		$this->rollback();
+		logFile('====ROLLBACK TRANSACTION====');
+		return true;
+	}
+	
+    /**
+     * @todo commit sql transaction
+     * 
+     * @return boolean true/false
+     * 
+     * */
+	function commitTransaction()
+	{
+		$this->commit();
+		logFile('====COMMIT TRANSACTION====');
+		return true;
+	}
 }
 
 ?>
