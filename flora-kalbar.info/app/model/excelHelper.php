@@ -28,7 +28,7 @@ class excelHelper extends Database {
 
 	var $configkey = "default";
 	
-	function excel($file=false)
+	function loadexcel($file=false)
 	{
 		error_reporting(E_ALL ^ E_NOTICE);
 		
@@ -72,7 +72,7 @@ class excelHelper extends Database {
 			$startColData = $startCol;
 			
 			// parameternya adalah name dari input type file
-			$excel = $this->excel($formName);
+			$excel = $this->loadexcel($formName);
 			
 			if ($excel){
 			

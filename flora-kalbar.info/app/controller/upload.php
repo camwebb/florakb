@@ -29,6 +29,7 @@ class upload extends Controller {
 		$username = $this->user['login']['username'];
 		
 		logFile("", $username, true);
+		logFile("Begin upload", $username);
 
 		return $this->loadView('upload');
 
