@@ -311,17 +311,25 @@ function logFile($comment)
 	fclose($handle);
 }
 
-function sftpServices($host="localhost", $user=false, $pass=false, $filename=false)
+function sftpServices($host="localhost", $user=false, $pass=false, $filename=false, $singleAccount=true)
 {
 
-	global $CONFIG;
+	global $CONFIG, $sftpConfig;
 
-	$portDefine = 22;
-	$folderTmp = $user."/upload_files/";
+	// if using single account to upload zip file 
+	if ($singleAccount){
+		$user = $sftpConfig['user'];
+		$pass = $sftpConfig['pass'];
+	}
+
+	$portDefine = $sftpConfig['port'];
+
+	$folderTmp = $user."/".$CONFIG['default']['zip_foldername']."/";
 
 	if (!$user && !$pass && !$filename) return false;
 
 	$connection = ssh2_connect($host, $portDefine);
+
 
 	logFile("connect=".$connection." user=".$user." pass=".$pass);
 	
