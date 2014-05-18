@@ -48,8 +48,8 @@ function zipExtract()
                 
                 if(dataNotExist.length != 0){
                     $(".errorbox").append(first_warning +
-                        'The following file(s) is not associated with any data <br /><table id="data">' +
-                        '<tr><td>Filename</td><td>Directory</td><td>Mimetype</td></tr></table>' +
+                        'The following file(s) is not associated with any data <br /><table style="margin-top:20px;" class="browse" id="data">' +
+                        '<tr><th>Filename</th><th>Directory</th><th>Mimetype</th></tr></table>' +
                         end
                     );
                     
