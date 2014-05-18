@@ -111,7 +111,7 @@ class excelHelper extends Database {
 				}
 			}
 			
-			logFile('parse data excel success');
+			logFile('parse data excel success, data= '. serialize($data));
 			// clean data, if empty pass
 			if ($data){
 				foreach ($data as $key=>$val){
