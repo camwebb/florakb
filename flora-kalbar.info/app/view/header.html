@@ -6,16 +6,16 @@
         <p>Records of Plants of Kalimantan Barat</p>
     </div>
     
-    {if isset($smarty.session.login.name)}
+    {if $user.login.name}
     
     
     <div id="login"> 
-        <a id="welcome" href="#" class="btn welcome">Welcome, {$smarty.session.login.name}</a> 
+        <a id="welcome" href="#" class="btn welcome">Welcome, {$user.login.name}</a> 
         
         <div id="box-user">
         <ul>
             <li style="border-bottom: 1px dotted #0095a2;border-top: 1px dotted #0095a2;"><a href="{$basedomain}user/editProfile">Edit Profile</a></li>
-            <li><a href="{$basedomain}login/doLogout">Logout</a></li>
+            <li><a href="{$basedomain}logout.php">Logout</a></li>
         </ul>
     </div>
         

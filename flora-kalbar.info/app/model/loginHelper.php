@@ -169,6 +169,9 @@ class loginHelper extends Database {
      */
 	function setSession($data=false, $password=false)
 	{
+
+        $session = new Session;
+
         if($data==false && $password==false) return false;
 		// store session data
         $dataSession = array(
@@ -181,7 +184,10 @@ class loginHelper extends Database {
                 'website' => $data[0]['person']['website'],
                 'phone' => $data[0]['person']['phone']
             );
-        $_SESSION['login'] = $dataSession;
+        // $_SESSION['login'] = $dataSession;
+
+        // set session, parameternya (data sessi, nama sessinya)
+        $session->set_session($dataSession, 'login');
 	}
     
     /**

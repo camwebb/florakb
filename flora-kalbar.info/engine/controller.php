@@ -29,7 +29,7 @@ class Controller extends Application{
 		if ($this->configkey=='admin')$this->view->assign('admin',$this->isAdminOnline());
 		
 		// $this->inject();
-		// vd($this->isAdminOnline());
+		// pr($this->isUserOnline());
 		// exit;
 		if (file_exists($filePath)){
 			

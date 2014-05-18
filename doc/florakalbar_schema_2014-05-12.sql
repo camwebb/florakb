@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.12
+-- version 4.0.10deb1
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: May 12, 2014 at 06:39 AM
--- Server version: 5.6.16
--- PHP Version: 5.5.11
+-- Host: localhost
+-- Generation Time: May 17, 2014 at 04:44 PM
+-- Server version: 5.5.37-0ubuntu0.14.04.1
+-- PHP Version: 5.5.9-1ubuntu4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `coll` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `collCode` (`collCode`),
   KEY `indivID` (`indivID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=47 ;
 
 -- --------------------------------------------------------
 
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `collector` (
   UNIQUE KEY `coll_order` (`collID`,`order`),
   UNIQUE KEY `coll_person` (`collID`,`personID`),
   KEY `personID` (`personID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=46 ;
 
 -- --------------------------------------------------------
 
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `det` (
   KEY `indivID` (`indivID`),
   KEY `personID` (`personID`),
   KEY `taxonID` (`taxonID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=55 ;
 
 -- --------------------------------------------------------
 
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `img` (
   UNIQUE KEY `unique_file_person` (`personID`,`filename`),
   KEY `indivID` (`indivID`),
   KEY `personID` (`personID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=62 ;
 
 -- --------------------------------------------------------
 
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `indiv` (
   PRIMARY KEY (`id`),
   KEY `locnID` (`locnID`),
   KEY `personID` (`personID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=98 ;
 
 -- --------------------------------------------------------
 
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `locn` (
   `country` varchar(100) NOT NULL DEFAULT 'Indonesia',
   `notes` varchar(500) DEFAULT NULL COMMENT 'Other notes about place',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=96 ;
 
 -- --------------------------------------------------------
 
@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS `obs` (
   PRIMARY KEY (`id`),
   KEY `personID` (`personID`),
   KEY `indivID` (`indivID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=46 ;
 
 -- --------------------------------------------------------
 
@@ -178,11 +178,13 @@ CREATE TABLE IF NOT EXISTS `person` (
   `twitter` varchar(50) DEFAULT NULL,
   `website` varchar(200) DEFAULT NULL,
   `phone` int(20) DEFAULT NULL,
+  `short_namecode` varchar(20) DEFAULT NULL,
+  `institutions` varchar(100) DEFAULT NULL,
+  `project` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
-  UNIQUE KEY `email` (`email`),
-  UNIQUE KEY `twitter` (`twitter`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=76 ;
 
 -- --------------------------------------------------------
 
@@ -203,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `taxon` (
   `notes` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `genSppSub` (`gen`,`sp`,`subtype`,`ssp`,`auth`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=151 ;
 
 --
 -- Constraints for dumped tables
