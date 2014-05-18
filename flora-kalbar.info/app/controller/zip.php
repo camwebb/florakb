@@ -37,9 +37,7 @@ class zip extends Controller {
      * 
      * */
 	public function index(){
-
 		return $this->loadView('zip');
-
 	}
     
     /**
@@ -62,11 +60,13 @@ class zip extends Controller {
         $path_file = $CONFIG['default']['upload_path'];
         
         //get data user from session
-        $session = $_SESSION['login'];
+        $session = new Session;
+        $sess_user = $session->get_session();
+        $sess_data = $sess_user['ses_user'];
         
-        $username = $session['username'];
-        $personID = $session['id'];
-        $password = $session['password'];
+        $username = $sess_data['login']['username'];
+        $personID = $sess_data['login']['id'];
+        $password = $sess_data['login']['password'];
         
         if (empty($username) || empty($personID) || empty($password)){
             $status = "error";
