@@ -104,7 +104,9 @@ class onebyone extends Controller {
         
         $session = new Session;
         $image_sess = $session->get_session();
-        $this->view->assign('image_sess', $image_sess['ses_user']['image_sess']);
+        if(isset($image_sess['ses_user']['image_sess'])){
+            $this->view->assign('image_sess', $image_sess['ses_user']['image_sess']);
+        }
         
         //get plantpart enum
         $plantpart_enum = $this->insertonebyone->get_enum('img','plantpart');
