@@ -19,7 +19,7 @@
 </div> -->
 <style>
 
-.progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
+.progress { position:relative; width:400px; border: 0px solid #ddd; padding: 1px; border-radius: 3px; }
 .bar { background-color: #B4F5B4; width:0%; height:20px; border-radius: 3px; }
 .percent { position:absolute; display:inline-block; top:3px; left:48%; }
 </style>
@@ -34,16 +34,26 @@
     </div>
     
     <div class="sidebar-2-right">
-    	<h2 class="title">Upload Excel :</h2>
+    	<h2 class="title">Upload Excel :</h2> 
         <form method="POST" action="{$basedomain}upload/parseExcel" enctype="multipart/form-data" id="uploadExcel">
-            <label for="zip_file"></label>
-            <input name="tes" id="zip_file" type="file" />
-            <input class="btn" type="submit" value="Submit" />
+            <table class="form-tbl">
+                <tr>
+                    <td>
+                        <label for="zip_file">Browse Excel File : <br /></label>
+                    </td>
+                    <td><input name="excelfile" id="zip_file" type="file" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input class="btn" id="box_button" type="submit" value="Submit" /></td>
+                </tr>
+            </table>    
+
         </form>
         
     	<div class="progress" style="margin-top: 15px;">
-            <div class="bar"></div >
-            <div class="percent">0%</div >
+            {*}<div class="bar"></div >
+            <div class="percent">0%</div >{/*}
         </div>
         
         <div id="status"></div>
@@ -64,7 +74,9 @@
 	var bar = $('.bar');
 	var percent = $('.percent');
 	var status = $('#status');
-	
+	});   
+
+    /*
 	$('#uploadExcel').ajaxForm({
 		beforeSend: function() {
 			status.empty();
@@ -94,7 +106,41 @@
 			status.html(first_info + xhr.responseText + end);
 		}
 	}); 
+    */
+	  
+    var uploadXlsFile = {
+        dataType:  'json',  
+        beforeSubmit: function(data) { 
+             
+            $(".progress").html("Please wait ..."); 
+                 
+        },
+        success : function(data) {      
+            $(".progress").html('');
+            if(data.status){
+                         
+                     
+                var htmlThanks ="";
+                htmlThanks = "<p class='postSucces'>"+data.msg+"</p>";
+                $(".progress").html(htmlThanks);
 
-	})();       
+
+                if (data.finish){
+                    setTimeout(function(){
+                        window.location.href=basedomain+'zip';
+                    },2000);
+                }
+                
+
+            }else{
+
+                $(".progress").html(data.msg);
+            }
+                     
+        }
+    };                  
+
+    $("#uploadExcel").ajaxForm(uploadXlsFile);
+
 {/literal}
 </script>

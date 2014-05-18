@@ -54,7 +54,7 @@ class upload extends Controller {
 			
 			$startTime = microtime(true);
 			/* parse data excel */
-			
+			logFile('load excel begin', 'ovan');
 			logFile('load excel begin');
 			$parseExcel = $this->excelHelper->fetchExcel($formName, $numberOfSheet,$startRowData,$startColData);
 			
@@ -83,6 +83,7 @@ class upload extends Controller {
 					$emptyTmptable = $this->collectionHelper->truncateData(false,true);
 					
 					if ($emptyTmptable){
+						
 						logFile('empty tmp table before insert');
 						sleep(1);
 						$referenceQuery = $this->collectionHelper->tmp_data($newData);
@@ -90,7 +91,7 @@ class upload extends Controller {
 					}
 					// pr($newData);
 					
-					
+					logFile('parse data begin', 'ovan');
 					$insertData = false;
 					// $referenceQuery = true;
 					if ($referenceQuery){
@@ -151,11 +152,14 @@ class upload extends Controller {
 					
 					if ($insertData){
 						logFile('Insert xls success');
-						echo 'Insert success  ('. execTime($startTime,$endTime).')';	
+
+						print json_encode(array('status'=>true, 'finish'=>true, 'msg'=>'Insert success  ('. execTime($startTime,$endTime).')'));
+						// echo 'Insert success  ('. execTime($startTime,$endTime).')';	
 						exit;
 					}else{
 						logFile('Insert xls failed');
-						echo 'Insert data failed';	
+						// echo 'Insert data failed';	
+						print json_encode(array('status'=>false, 'msg'=>'Insert data failed'));
 						exit;
 					} 
 					
@@ -164,7 +168,8 @@ class upload extends Controller {
 			}
 		}else{
 			logFile('File xls empty');
-			echo "File is empty";
+			// echo "File is empty";
+			print json_encode(array('status'=>true, 'msg'=>'File is empty'));
 		}
 		
 		

@@ -2,6 +2,16 @@
 class collectionHelper extends Database {
 
 	/* generate reference query */
+
+	var $user = null;
+	function __construct()
+	{
+
+		$session = new Session;
+		$getSessi = $session->get_session();
+		$this->user = $getSessi['ses_user']['login'];
+	}
+
 	function insertReference($newData=array(),$priority=array())
 	{
 		if (empty($newData)) return false;
@@ -211,6 +221,12 @@ class collectionHelper extends Database {
 								det = '{$unique[$val][$j]}' ";
 						// pr($updateTaxon);
 						$res = $this->query($updateTaxon,1);
+
+						$updateCreate = "UPDATE tmp_plant SET tmp_creator_key = '{$this->user['id']}' WHERE 
+								det = '{$unique[$val][$j]}' ";
+						// pr($updateTaxon);
+						$res = $this->query($updateCreate,1);
+
 					}
 					
 					if ($defineTable[$i] == 'person'){
