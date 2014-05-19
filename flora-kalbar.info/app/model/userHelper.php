@@ -29,9 +29,13 @@ class userHelper extends Database {
             $dataPhone = "'".$data['phone']."'";
         }
         
-        $sql = "UPDATE `person` SET `name` = '".$data['name']."', `email` = '".$data['email']."', `twitter` = $dataTwitter, `website` = $dataWeb, `phone` = $dataPhone WHERE `id` = '".$_SESSION['login']['id']."' ";
+        $session = new Session;
+        $ses_user = $session->get_session();
+        $user = $ses_user['ses_user'];                
+             
+        $sql = "UPDATE `person` SET `name` = '".$data['name']."', `email` = '".$data['email']."', `twitter` = $dataTwitter, `website` = $dataWeb, `phone` = $dataPhone WHERE `id` = '".$user['login']['id']."' ";
         $res = $this->query($sql,0);
-        $sql2 = "UPDATE `florakb_person` SET `username` = '".$data['username']."' WHERE `id` = '".$_SESSION['login']['id']."' ";
+        $sql2 = "UPDATE `florakb_person` SET `username` = '".$data['username']."' WHERE `id` = '".$user['login']['id']."' ";
         $res2 = $this->query($sql2,1);
         if($res && $res2){return true;}
     }
@@ -43,7 +47,11 @@ class userHelper extends Database {
 		$salt = $CONFIG['default']['salt'];
 		$password = sha1($data['newPassword'].$salt);
         
-        $sql = "UPDATE `florakb_person` SET `password` = '".$password."', `salt` = '".$salt."' WHERE `id` = '".$_SESSION['login']['id']."' ";
+        $session = new Session;
+        $ses_user = $session->get_session();
+        $user = $ses_user['ses_user'];
+        
+        $sql = "UPDATE `florakb_person` SET `password` = '".$password."', `salt` = '".$salt."' WHERE `id` = '".$user['login']['id']."' ";
         $res = $this->query($sql,1);
         if($res){return true;}
     }

@@ -5,7 +5,7 @@
     {else}
     
     <div class="btn-back">
-        <a href="#"><span>Back</span></a>
+        <a href="#" onClick="history.back();return false;"><span>Back</span></a>
     </div>
     <div class="clear"></div>
     <br />
@@ -13,12 +13,20 @@
     <table class="browse indiv">
         {foreach $indiv as $dataIndiv}
         <tr>
-            <th style="-moz-border-radius: 6px 0 0 0;-webkit-border-radius: 6px 0 0 0;border-radius: 6px 0 0 0">Creator</th>
-            <td>{$dataIndiv['name']}</td>
+            <th style="-moz-border-radius: 6px 0 0 0;-webkit-border-radius: 6px 0 0 0;border-radius: 6px 0 0 0;width:100px;">Creator</th>
+            <td><p>{$dataIndiv['name']}</p></td>
         </tr>
         <tr>
             <th>Location</th>
             <td>{$dataIndiv['province']}</td>
+        </tr>
+        <tr>
+            <th>Plot</th>
+            <td>{$dataIndiv['plot']}</td>
+        </tr>
+        <tr>
+            <th>Tag</th>
+            <td>{$dataIndiv['tag']}</td>
         </tr>
         {/foreach}
         
@@ -30,10 +38,10 @@
                     
                     <table class="det">
                         <tr>
-                            <td><b>#{$myId+1}</b></td>
-                            <td><b>Det Creator</b></td>
-                            <td>:</td>
-                            <td>{$dataDet['name']}</td>
+                            <td class="detNumber"><b>#{$myId+1}</b></td>
+                            <td class="detHeader"><b>Det Creator</b></td>
+                            <td class="detColon">:</td>
+                            <td class="detContent">{$dataDet['name']}</td>
                         </tr>
                         <tr>
                             <td></td>
@@ -74,9 +82,9 @@
     {/if}
     
     {foreach $indiv as $dataIndiv}
-        {if $dataIndiv['name'] eq $smarty.session.login.name}
+        {if $dataIndiv['name'] eq $user.login.name}
             <br />
-            <a href="#" class="btn" style="float: right;">Edit</a>
+            <a href="{$basedomain}browse/editIndiv/?id={$smarty.get.id}" id="editIndiv" class="btn" style="float: right;">Edit</a>
             <div class="clear"></div>
         {/if}
     {/foreach}
