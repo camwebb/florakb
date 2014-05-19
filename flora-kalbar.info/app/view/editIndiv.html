@@ -1,0 +1,142 @@
+<div class="content">
+{$msg}
+    {if $noData eq 'empty'}
+        <i>No data available</i>
+    {else}
+    
+    <div class="btn-back">
+        <a href="#" onClick="history.back();return false;"><span>Back</span></a>
+    </div>
+    <div class="clear"></div>
+    <br />
+    
+    <h2 class="title">Edit Individu</h2>
+    <form id="formEditIndiv" method="POST" action="{$basedomain}browse/doEditIndiv/?id={$smarty.get.id}">
+        <table class="browse indiv">
+            {foreach $indiv as $dataIndiv}
+            <tr>
+                <th style="-moz-border-radius: 6px 0 0 0;-webkit-border-radius: 6px 0 0 0;border-radius: 6px 0 0 0;width: 100px;">Creator</th>
+                <td>{$dataIndiv['name']}</td>
+            </tr>
+            <tr>
+                <th>Location</th>
+                <td>
+                    <select class="inputbox" name="locnID" id="locnID">
+                        {foreach from=$locn item=location}
+                            <option id="{$location.id}" value="{$location.id}">{$location.locality}</option>
+                        {/foreach}
+                    </select>
+                </td>
+                <literal>
+                <script type="text/javascript">
+                
+                    $().ready(function() {
+                        var a =$('.test').val();
+                        var b= "{$dataIndiv['locality']}";
+                        
+                        $("select option").each(function(){
+                          if ($(this).text() == b)
+                            $(this).attr("selected","selected");
+                        });
+                    });
+                
+                </script>
+                </literal>
+            </tr>
+            <tr>
+                <th>Plot</th>
+                <td><input class="inputbox" type="text" name="plot" value="{$dataIndiv['plot']}"/></td>
+            </tr>
+            <tr>
+                <th style="-moz-border-radius: 0 0 0 6px;-webkit-border-radius: 0 0 0 6px;border-radius: 0 0 0 6px;">Tag</th>
+                <td><input class="inputbox" type="text" name="tag" value="{$dataIndiv['tag']}"/></td>
+            </tr>
+        </table>
+        <br />
+        <input class="btn" style="float: right;" type="submit" value="Submit" />
+        <div class="clear"></div>
+    </form>
+    <br />
+    
+    <h2 class="title">Determinants</h2>
+    <table class="browse indiv">
+        {/foreach}
+        <tr>
+            <th style="-moz-border-radius: 6px 0 0 6px;-webkit-border-radius: 6px 0 0 6px;border-radius: 6px 0 0 6px;width: 100px;">Dets</th>
+            <td>
+                {*foreach $det as $key=>$dataDet*}
+                {foreach from=$det key=myId item=dataDet}
+                    
+                    <table id="editDet" class="det">
+                        <tr>
+                            <td class="detNumber"><b>#{$myId+1}</b></td>
+                            <td class="detHeader"><b>Det Creator</b></td>
+                            <td class="detColon">:</td>
+                            <td class="detContent">{$dataDet['name']}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Date</b></td>
+                            <td>:</td>
+                            <td>{$dataDet['det_date']}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Species</b></td>
+                            <td>:</td>
+                            <td><i>{$dataDet['sp']}</i></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Confid</b></td>
+                            <td>:</td>
+                            <td><i>{$dataDet['confid']}</i></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Using</b></td>
+                            <td>:</td>
+                            <td><i>{$dataDet['using']}</i></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Notes</b></td>
+                            <td>:</td>
+                            <td><i>{$dataDet['notes']}</i></td>
+                            <td><a href="#testOnebyone-modal" class="btn" id="locationPopup">Add</a></td>
+                        </tr>
+                        {/foreach}
+                    </table>
+                    
+                
+            </td>            
+        </tr>
+    </table>
+    {/if}
+</div>
+
+<script type="text/javascript">
+$().ready(function() {
+    
+    $("#formEditIndiv").validate({
+        rules: {
+			plot: {
+                required: true
+			},
+            tag: {
+                required: true,
+                number: true
+            }
+		},
+		messages: {
+			plot: {
+                required: " Please enter plot"
+			},
+            tag: {
+                required: " Please enter tag",
+                number: "Please enter number"
+            }
+		}
+    });
+});
+</script>

@@ -22,6 +22,7 @@ body{
 }
 
 a{text-decoration: none;}
+p{margin:0 !important;}
 
 h2.title{
     font-family: 'Collaborate-Regular',Helvetica,Arial,sans-serif;
@@ -43,13 +44,22 @@ input[type="file"]#zip_file{
 .clear{clear: both;}
 
 .search-box input{
-    width: 200px;
     border: 1px solid #00adbb;
     border-right: none;
     padding: 5px;
 }
 
 .search-box button{
+    border-radius: 0px 3px 3px 0px;
+    -moz-border-radius: 0px 3px 3px 0px;
+    -webkit-border-radius: 0px 3px 3px 0px;
+    padding: 6px;
+    background-color: #00adbb;
+    margin: -3px;
+    color: #FFFFFF;
+}
+
+.btn-search{
     border-radius: 0px 3px 3px 0px;
     -moz-border-radius: 0px 3px 3px 0px;
     -webkit-border-radius: 0px 3px 3px 0px;
@@ -76,6 +86,10 @@ input.btn, button.btn{
 
 .btn:hover{
     background-color: #0095a2;
+}
+
+.btn-pagination{
+    padding: 5px 10px !important;
 }
 
 .inputbox,.textareabox{
@@ -493,7 +507,11 @@ table.indiv th:first-child {
         -webkit-border-radius: 0;
         border-radius: 0;
 }
+table.det{width: 100%;}
 table.det td {border:none;}
+table.det td.detNumber, table.det td.detColon{width: 1%;}
+table.det td.detHeader{width: 15%;}
+table.det td.detContent{width: 70%;}
 
 #search{
     float: right;
@@ -552,6 +570,61 @@ table.det td {border:none;}
     width: 68%;
     float: right;
     margin-left: 10px;
+}
+
+div.btn-back {
+    float:right;
+}
+
+div.btn-back a {
+    background: #65B5BB;
+    border: solid #0095a2;
+    border-width: 1px 1px 1px 0;
+    -moz-border-radius: 0 5px 5px 0;
+    -webkit-border-radius: 0 5px 5px 0;
+    border-radius: 0 5px 5px 0;
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+    margin-left: 20px;
+    margin-right: 2px;
+    padding: 0 7px 0 3px;
+    position: relative;
+    text-decoration: none;
+}
+
+div.btn-back a:before {
+    background: #65B5BB;
+    border: solid #0095a2;
+    border-width: 0 0 1px 1px;
+    border-radius: 2px 0 2px 2px;
+    content: '';
+    display: block;
+    height: 21px;
+    left: -11px;
+    position: absolute;
+    top: 3px;
+    -moz-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    width: 21px;
+}
+
+div.btn-back a:hover, a:focus {
+    border-color: #0095a2;
+    background: #0095a2;
+}
+
+div.btn-back a:hover:before, a:focus:before {
+    border-color: #0095a2;
+    background: #0095a2;
+}
+
+div.btn-back a span {
+    color: #fff;
+    font-weight: bold;
+    position: relative;
 }
 
 footer{

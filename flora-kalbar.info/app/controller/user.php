@@ -15,7 +15,7 @@ class user extends Controller {
 		$this->loadmodule();
 		$this->view = $this->setSmarty();
 		$this->view->assign('basedomain',$basedomain);
-        $this->msg = new Messages();
+        $this->msg = new Messages();                
     }
 	
 	function loadmodule()
@@ -33,12 +33,15 @@ class user extends Controller {
     function editProfile(){
         $msg = $this->msg->display('all', false);
         $this->view->assign('msg', $msg);
+        $ses_user = $this->isUserOnline();
+        $this->view->assign('user', $ses_user);                
         return $this->loadView('editProfile');
     }
     
     function checkPassword(){
         $data = $_POST['password'];
-        $checkPassword = $this->loginHelper->CheckPassword($_SESSION['login'],$data);
+        $ses_user = $this->isUserOnline();
+        $checkPassword = $this->loginHelper->CheckPassword($ses_user['login'],$data);
         if($checkPassword){
             $return = true;
         }else{
@@ -64,12 +67,14 @@ class user extends Controller {
         $data = $_POST;
         $editProfile = $this->userHelper->editProfile($data);
         
-        $getUserData = $this->userHelper->getUserData('id',$_SESSION['login']['id']);
-        $getUserappData = $this->userHelper->getUserappData('id',$_SESSION['login']['id']);
+        $ses_user = $this->isUserOnline();
+        $getUserData = $this->userHelper->getUserData('id',$ses_user['login']['id']);
+        $getUserappData = $this->userHelper->getUserappData('id',$ses_user['login']['id']);
         
         $data = array();
         $data[] = array('person'=>$getUserData,'person_app'=>$getUserappData);
-        $startSession = $this->loginHelper->setSession($data);
+        
+        $startSession = $this->loginHelper->setSession($data,'login');
         
         if($editProfile){
             $this->msg->add('s', 'Update Success');

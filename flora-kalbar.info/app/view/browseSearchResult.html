@@ -1,0 +1,45 @@
+<div class="content">
+    <div class="btn-back">
+        <a href="#" onClick="history.back();return false;"><span>Back</span></a>
+    </div>
+    <div class="clear"></div>
+    <br />
+    
+    <h2 class="title">Search Data</h2>
+    
+    {if $noData eq 'empty'}
+        <i>No result found</i>
+    {else}
+    <i>{$noData} data found</i>
+    <div id="search">  
+        <form role="form" action="{$basedomain}browse/search/" method="GET">
+            <div class="search-box">
+              <input type="text" placeholder="Search" name="search" />
+              <input class="btn-search" type="submit" value="Search" />
+              
+            </div>
+        </form>
+    </div>
+    <div class="clear"></div> 
+    
+    <table class="browse">
+        <thead>
+            <tr>
+                <th>Species</th>
+                <th>Genus</th>
+                <th>Family</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            {foreach $data as $dataTaxon}
+            <tr>
+                <td><i><a href="{$basedomain}browse/indiv/?id={$dataTaxon['id']}">{$dataTaxon['sp']}</a></i></td>
+                <td>{$dataTaxon['gen']}</td>
+                <td>{$dataTaxon['fam']}</td>
+            </tr>
+            {/foreach}
+        </tbody>
+    </table>
+    {/if}
+</div>
