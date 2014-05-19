@@ -7,21 +7,29 @@ class upload extends Controller {
 	
 	var $models = FALSE;
 	var $view;
+	var $user;
 	public function __construct()
 	{
         global $basedomain;
 		$this->loadmodule();
         $this->view = $this->setSmarty();
         $this->view->assign('basedomain',$basedomain);
+        $this->user = $this->isUserOnline();
 	}
 	public function loadmodule()
 	{
 		
 		$this->collectionHelper = $this->loadModel('collectionHelper');
         $this->excelHelper = $this->loadModel('excelHelper');
+        $this->userHelper = $this->loadModel('userHelper');
 	}
 	
 	public function index(){
+
+		$username = $this->user['login']['username'];
+		
+		logFile("", $username, true);
+		logFile("Begin upload", $username);
 
 		return $this->loadView('upload');
 
@@ -41,7 +49,10 @@ class upload extends Controller {
 		
 		global $EXCEL;
 		
+		$username = $this->user['login']['username'];
 		
+		logFile(serialize($_FILES));
+
 		if ($_FILES){
 			
 			$numberOfSheet = 5;
@@ -54,12 +65,17 @@ class upload extends Controller {
 			
 			$startTime = microtime(true);
 			/* parse data excel */
-			logFile('load excel begin', 'ovan');
+			
 			logFile('load excel begin');
+
+			// empty log file
+			
+
 			$parseExcel = $this->excelHelper->fetchExcel($formName, $numberOfSheet,$startRowData,$startColData);
 			
 			
 			if ($parseExcel){
+				logFile('Extract File ', $username);
 				foreach ($parseExcel as $key => $val){
 					
 					$field = implode(',',$val['field_name']);
@@ -91,7 +107,7 @@ class upload extends Controller {
 					}
 					// pr($newData);
 					
-					logFile('parse data begin', 'ovan');
+					logFile('Preparing database ', $username);
 					$insertData = false;
 					// $referenceQuery = true;
 					if ($referenceQuery){
@@ -100,6 +116,7 @@ class upload extends Controller {
 						
 						$getRef = $this->collectionHelper->getRefData($newData);
 						$referenceQuery = $this->excelHelper->referenceData($getRef);
+						
 						$insertRef = $this->collectionHelper->storeRefData($referenceQuery);
 						
 						$getMaster = $this->collectionHelper->getMasterData();
@@ -123,6 +140,9 @@ class upload extends Controller {
 						$insertImage = $this->collectionHelper->storeSingleData($imgQuery,'img');
 						// pr($imgQuery);
 						if ($insertImage){
+
+							$this->logUploadUser($_FILES[$formName]['name']);
+							sleep(1);
 							$this->collectionHelper->commitTransaction();
 							$insertData = true;
 						}else{
@@ -155,6 +175,7 @@ class upload extends Controller {
 
 						print json_encode(array('status'=>true, 'finish'=>true, 'msg'=>'Insert success  ('. execTime($startTime,$endTime).')'));
 						// echo 'Insert success  ('. execTime($startTime,$endTime).')';	
+						
 						exit;
 					}else{
 						logFile('Insert xls failed');
@@ -176,11 +197,61 @@ class upload extends Controller {
 		exit;
 	}
 	
+
+	function showUploadProcess()
+	{
+		
+		global $CONFIG;
+
+		$dataArr['file'] = "PHPTail";
+		$dataArr['path'] = LIBS.'phptail/';
+
+		require './'.LIBS.'phptail/PHPTail.php';
+		// $phpTail = $this->load($dataArr);
+
+		$fileName = $CONFIG['default']['root_path']."/logs/".$this->user['login']['username'];
+		
+		
+		$phpTail = new PHPTail($fileName);
+		// pr($phpTail);
+		if(isset($_GET['ajax']))  {
+
+		        echo $phpTail->getNewLines($_GET['lastsize']);
+		        die();
+		}else{
+			
+			echo json_encode(array('size'=> filesize($fileName)));
+		}
+		
+		// echo $phpTail->getNewLines();
+		// $phpTail->ada();
+		// $phpTail->generateTemplate();
+
+		exit;
+	}
+
 	function truncate()
 	{
-		$this->collectionHelper->truncateData(true,true);
+		$this->collectionHelper->truncateData(false,true);
 	}
 	
+	function logUploadUser($file)
+	{
+
+		global $CONFIG;
+		$fileName = $CONFIG['default']['root_path']."/logs/".$this->user['login']['username'];
+		$data = json_encode(array('data'=>file_get_contents($fileName)));
+		
+		$storeLog = $this->userHelper->storeUserUploadLog($data, $file);
+		return true;
+	}
+
+	function checkPhp()
+	{
+		phpinfo();
+		exit;
+	}
+
 }
 
 ?>

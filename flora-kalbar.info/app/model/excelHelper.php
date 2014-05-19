@@ -28,7 +28,7 @@ class excelHelper extends Database {
 
 	var $configkey = "default";
 	
-	function excel($file=false)
+	function loadexcel($file=false)
 	{
 		error_reporting(E_ALL ^ E_NOTICE);
 		
@@ -72,7 +72,7 @@ class excelHelper extends Database {
 			$startColData = $startCol;
 			
 			// parameternya adalah name dari input type file
-			$excel = $this->excel($formName);
+			$excel = $this->loadexcel($formName);
 			
 			if ($excel){
 			
@@ -111,7 +111,7 @@ class excelHelper extends Database {
 				}
 			}
 			
-			logFile('parse data excel success');
+			logFile('parse data excel success, data= '. serialize($data));
 			// clean data, if empty pass
 			if ($data){
 				foreach ($data as $key=>$val){
@@ -171,6 +171,8 @@ class excelHelper extends Database {
 		$fieldConvert[4] = array('long'=>'longitude', 'lat'=>'latitude','geomorphology'=>'geomorph','kabupaten'=>'county','unique_key'=>'tmp_unique_key'); 
 		$fieldUnique[4] = array('tmp_unique_key'); 
 		
+		$fieldIgnoreUpdateOnDuplicate = array('name','email'); //,'gen','sp','subtype','ssp','auth');
+
 		$convert = 1;
 		foreach ($newData as $key => $values){
 			
@@ -224,7 +226,8 @@ class excelHelper extends Database {
 								$t_field[] = $keyField;
 								$t_data[] = "'$keyData'"; 
 								$t_dataraw[$keyField] = $keyData; 
-								$tmpupdate[] = "`$keyField` = '$keyData'";
+
+								if (!in_array($keyField, $fieldIgnoreUpdateOnDuplicate))$tmpupdate[] = "`$keyField` = '$keyData'";
 							}
 							
 						}

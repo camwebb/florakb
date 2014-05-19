@@ -1,6 +1,13 @@
 <?php
 class userHelper extends Database {
 	
+    function __construct()
+    {
+        $session = new Session;
+        $getSessi = $session->get_session();
+        $this->user = $getSessi['ses_user']['login'];
+    }
+
     function editProfile($data=false){
         if($data==false) return false;
         
@@ -67,6 +74,19 @@ class userHelper extends Database {
         $res = $this->fetch($sql,0,1);  
         if(empty($res)){return false;}
         return $res; 
+    }
+
+    function storeUserUploadLog($data=null, $filename=null)
+    {
+
+        $userid = $this->user['id'];
+        $date = date('Y-m-d H:i:s');
+        $sql = "INSERT INTO `florakb_upload_log` (userid, filename, `desc`, upload_date) 
+                VALUES ({$userid}, '{$filename}', '{$data}', '{$date}')";
+        // pr($sql);
+        $res = $this->query($sql,1);  
+        if ($res) return true;
+        return false;
     }
 }
 ?>
