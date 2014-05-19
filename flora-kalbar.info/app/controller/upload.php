@@ -51,7 +51,8 @@ class upload extends Controller {
 		
 		$username = $this->user['login']['username'];
 		
-		
+		logFile(serialize($_FILES));
+
 		if ($_FILES){
 			
 			$numberOfSheet = 5;
