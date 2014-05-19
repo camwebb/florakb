@@ -329,6 +329,7 @@ function sftpServices($host="localhost", $user=false, $pass=false, $filename=fal
 	if ($singleAccount){
 		$user = $sftpConfig['user'];
 		$pass = $sftpConfig['pass'];
+		$host = $sftpConfig['host'];
 	}
 
 	$portDefine = $sftpConfig['port'];

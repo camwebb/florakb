@@ -246,7 +246,11 @@ class upload extends Controller {
 		return true;
 	}
 
-	
+	function checkPhp()
+	{
+		phpinfo();
+		exit;
+	}
 
 }
 
