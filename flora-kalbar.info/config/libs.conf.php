@@ -5,7 +5,7 @@
 $EXCEL[0]['startrow'] = 2;
 $EXCEL[0]['startcolumn'] = 1;
 $EXCEL[0]['startindex'] = 0;
-$EXCEL[0]['filetype'] = array('application/ms-excel', 'application/vnd.ms-excel');
+$EXCEL[0]['filetype'] = array('application/ms-excel', 'application/vnd.ms-excel','application/octet-stream');
 
 /* SMARTY CONFIG */
 
