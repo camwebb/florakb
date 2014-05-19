@@ -337,6 +337,7 @@ function sftpServices($host="localhost", $user=false, $pass=false, $filename=fal
 
 	if (!$user && !$pass && !$filename) return false;
 
+	logFile("begin connection ssh2");
 	$connection = ssh2_connect($host, $portDefine);
 
 
