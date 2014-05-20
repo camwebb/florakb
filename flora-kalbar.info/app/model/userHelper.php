@@ -33,7 +33,7 @@ class userHelper extends Database {
         $ses_user = $session->get_session();
         $user = $ses_user['ses_user'];                
              
-        $sql = "UPDATE `person` SET `name` = '".$data['name']."', `email` = '".$data['email']."', `twitter` = $dataTwitter, `website` = $dataWeb, `phone` = $dataPhone WHERE `id` = '".$user['login']['id']."' ";
+        $sql = "UPDATE `person` SET `name` = '".$data['name']."', `email` = '".$data['email']."', `project` = '".$data['project']."', `institutions` = '".$data['institutions']."', `twitter` = $dataTwitter, `website` = $dataWeb, `phone` = $dataPhone WHERE `id` = '".$user['login']['id']."' ";
         $res = $this->query($sql,0);
         $sql2 = "UPDATE `florakb_person` SET `username` = '".$data['username']."' WHERE `id` = '".$user['login']['id']."' ";
         $res2 = $this->query($sql2,1);
