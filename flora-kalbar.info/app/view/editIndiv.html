@@ -26,16 +26,16 @@
                             <option id="{$location.id}" value="{$location.id}">{$location.locality}</option>
                         {/foreach}
                     </select>
+                    <a href="#locationPopup" class="btn" id="locationPopup">Add</a>
                 </td>
                 <literal>
                 <script type="text/javascript">
                 
                     $().ready(function() {
-                        var a =$('.test').val();
-                        var b= "{$dataIndiv['locality']}";
+                        var localtity= "{$dataIndiv['locality']}";
                         
                         $("select option").each(function(){
-                          if ($(this).text() == b)
+                          if ($(this).text() == localtity)
                             $(this).attr("selected","selected");
                         });
                     });
@@ -64,10 +64,9 @@
         <tr>
             <th style="-moz-border-radius: 6px 0 0 6px;-webkit-border-radius: 6px 0 0 6px;border-radius: 6px 0 0 6px;width: 100px;">Dets</th>
             <td>
-                {*foreach $det as $key=>$dataDet*}
-                {foreach from=$det key=myId item=dataDet}
-                    
+                   
                     <table id="editDet" class="det">
+                        {foreach from=$det key=myId item=dataDet}
                         <tr>
                             <td class="detNumber"><b>#{$myId+1}</b></td>
                             <td class="detHeader"><b>Det Creator</b></td>
@@ -90,29 +89,114 @@
                             <td></td>
                             <td><b>Confid</b></td>
                             <td>:</td>
-                            <td><i>{$dataDet['confid']}</i></td>
+                            <td>{$dataDet['confid']}</td>
                         </tr>
                         <tr>
                             <td></td>
                             <td><b>Using</b></td>
                             <td>:</td>
-                            <td><i>{$dataDet['using']}</i></td>
+                            <td>{$dataDet['using']}</td>
                         </tr>
                         <tr>
                             <td></td>
                             <td><b>Notes</b></td>
                             <td>:</td>
-                            <td><i>{$dataDet['notes']}</i></td>
-                            <td><a href="#testOnebyone-modal" class="btn" id="locationPopup">Add</a></td>
+                            <td>{$dataDet['notes']}</td>
                         </tr>
                         {/foreach}
                     </table>
                     
-                
+                    <div id="tableAddDet" style="display: none;">
+                    <h2 class="title">Add Determinant</h2>
+                    <form id="formDet" method="POST" action="{$basedomain}browse/addDet/?id={$smarty.get.id}">
+                    <table id="addDet" class="det">
+                        <tr>
+                            <td class="detNumber"></td>
+                            <td class="detHeader"></td>
+                            <td class="detColon"></td>
+                            <td class="detContent"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Taxon</b></td>
+                            <td>:</td>
+                            <td>
+                                <select class="inputbox" name="taxonID" id="taxonID">
+                                    {foreach from=$taxon item=itemTaxon}
+                                        <option value="{$itemTaxon.id}">{$itemTaxon.sp}, {$itemTaxon.gen}, {$itemTaxon.fam}</option>
+                                    {/foreach}
+                                </select>
+                                <a href="#taxon-modal" class="btn" id="taxonPopup">Add</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Confid</b></td>
+                            <td>:</td>
+                            <td>
+                                <select class="inputbox" name="confid" id="confid">
+                                    {foreach from=$confid_enum item=enum}confid
+                                        <option value="{$enum}">{$enum}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Using</b></td>
+                            <td>:</td>
+                            <td><input class="inputbox" type="text" id="using" name="using" /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Notes</b></td>
+                            <td>:</td>
+                            <td><textarea class="textareabox" id="notes" name="notes"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input class="btn" type="submit" value="Submit" /></td>
+                        </tr>
+                    </table>
+                    </form>
+                    </div>
             </td>            
         </tr>
     </table>
+    <br />
+    <a href="#addDeterminant" class="btn" id="addDet" style="float: right;">Add Determinant</a>
+    <div class="clear"></div>
     {/if}
+</div>
+
+<!--START MODAL-->
+<div id="modal-location" class="modal-background">
+    <div class="modal-overlay"></div>
+    <div class="modal-dialog dialogStep">
+        <button type="button" class="closebtn close"></button>
+        <div class="modal-content">
+            <div class="modal-body bodyStep">
+              <h2 class="title">Insert Location</h2>
+                {include file='formLocation_editIndiv.html'}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--START MODAL TAXON-->
+<div id="modal-taxon" class="modal-background">
+    <div class="modal-overlay"></div>
+    <div class="modal-dialog dialogStep">
+        <button type="button" class="closebtn close"></button>
+        <div class="modal-content">
+            <div class="modal-body bodyStep">
+              <h2 class="title">Insert Taxon</h2>
+                {include file='formTaxon_addDet.html'}
+            </div>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -137,6 +221,45 @@ $().ready(function() {
                 number: "Please enter number"
             }
 		}
+    });
+    
+    $("#formDet").validate({
+        rules: {
+			confid: {
+                required: true
+			},
+            using: {
+                required: true
+            }
+		},
+		messages: {
+			confid: {
+                required: " Please enter confid"
+			},
+            using: {
+                required: " Please enter using"
+            }
+		}
+    });
+    
+    $('a#locationPopup').click(function(){
+       $('div#modal-location').fadeToggle("linear");
+       $('div.modal-overlay').show();
+    });
+    $('.close,.modal-overlay').click(function(){
+       $('div#modal-location').fadeOut(); 
+    });
+    
+    $('a#addDet').click(function(){
+       $('div#tableAddDet').fadeToggle("linear");
+    });
+    
+    $('a#taxonPopup').click(function(){
+       $('div#modal-taxon').fadeToggle("linear");
+       $('div.modal-overlay').show();
+    });
+    $('.close,.modal-overlay').click(function(){
+       $('div#modal-taxon').fadeOut(); 
     });
 });
 </script>

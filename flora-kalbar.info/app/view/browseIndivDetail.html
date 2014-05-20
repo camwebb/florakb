@@ -18,7 +18,7 @@
         </tr>
         <tr>
             <th>Location</th>
-            <td>{$dataIndiv['province']}</td>
+            <td>{$dataIndiv.locality}</td>
         </tr>
         <tr>
             <th>Plot</th>
@@ -51,9 +51,9 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td><b>Species</b></td>
+                            <td><b>Taxon</b></td>
                             <td>:</td>
-                            <td><i>{$dataDet['sp']}</i></td>
+                            <td><i>{$dataDet.sp}, {$dataDet.gen}, {$dataDet.fam}</i></td>
                         </tr>
                         <tr>
                             <td></td>

@@ -131,9 +131,21 @@ class browse extends Controller {
         else{
             $this->view->assign('noData','data existed');
         }
-        
+        //Get list location
         $listlocn = $this->insertonebyone->list_locn();
         $this->view->assign('locn', $listlocn);
+        
+        //get list person
+        $listPerson = $this->insertonebyone->list_person();
+        $this->view->assign('person', $listPerson);
+        
+        //get list taxon
+        $listTaxon = $this->insertonebyone->list_taxon();
+        $this->view->assign('taxon', $listTaxon);
+        
+        //get list enum confid
+        $confid_enum = $this->insertonebyone->get_enum('det','confid');
+        $this->view->assign('confid_enum', $confid_enum);
         
         $msg = $this->msg->display('all', false);
         $this->view->assign('msg', $msg);
@@ -168,6 +180,58 @@ class browse extends Controller {
         }
         
         header('Location: ../../browse/editIndiv/?id='.$idIndiv);
+    }
+    
+    /**
+     * @todo insert location from edit Indiv
+     * */
+    public function insertLocation(){
+        $data = $_POST;
+        $insertData = $this->insertonebyone->insertTransaction('locn',$data);
+        
+        if($insertData){
+            $this->msg->add('s', 'Location Success Added');
+        }else{
+            $this->msg->add('e', 'Location Failed Added');
+        }
+        header('Location: ../../browse/editIndiv/?id='.$_GET['id']);
+    }
+    
+    /**
+     * @todo insert individu from posted data
+     * */
+    public function addDet(){
+        $data = $_POST;
+        $ses_user = $this->isUserOnline(); 
+        $personID = $ses_user['login']['id'];
+        
+        $data['personID'] = $personID;       
+        $data['indivID'] = $_GET['id'];
+        $data['det_date'] = date("Y-m-d");
+        
+        $insertData = $this->insertonebyone->insertTransaction('det',$data);
+        
+        if($insertData){
+            $this->msg->add('s', 'Determinant Success Added');
+        }else{
+            $this->msg->add('e', 'Determinant Failed Added');
+        }
+        header('Location: ../../browse/editIndiv/?id='.$data['indivID']);
+    }
+    
+    /**
+     * @todo insert taxon from posted data
+     * */
+    public function insertTaxon(){
+        $data = $_POST;
+        $insertData = $this->insertonebyone->insertTransaction('taxon',$data);
+        
+        if($insertData){
+            $this->msg->add('s', 'Taxon Success Added');
+        }else{
+            $this->msg->add('e', 'Taxon Failed Added');
+        }
+        header('Location: ../../browse/editIndiv/?id='.$_GET['id']);
     }
     
     /**

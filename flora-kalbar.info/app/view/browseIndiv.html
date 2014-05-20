@@ -37,7 +37,7 @@
             {foreach $data as $dataIndiv}
             <tr>
                 <td><i><a href="{$basedomain}browse/indivDetail/?id={$dataIndiv['indiv']['indivID']}">{$dataIndiv['indiv']['indivID']}</a></i></td>
-                <td>{$dataIndiv['indiv']['province']}</td>
+                <td>{$dataIndiv.indiv.locality}</td>
                 <td>{$dataIndiv['indiv']['name']}</td>
                 <td>
                     {foreach $dataIndiv['img'] as $img}
