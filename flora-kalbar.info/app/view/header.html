@@ -9,12 +9,12 @@
     {if $user.login.name}
     
     
-    <div id="login"> 
+    <div id="login" class="loginwelcome"> 
         <a id="welcome" href="#" class="btn welcome">Welcome, {$user.login.name}</a> 
         
         <div id="box-user">
         <ul>
-            <li style="border-bottom: 1px dotted #0095a2;border-top: 1px dotted #0095a2;"><a href="{$basedomain}user/editProfile">Edit Profile</a></li>
+            <li style="border-bottom: 1px dotted #0095a2;border-top: 1px dotted #0095a2;"><a href="{$basedomain}user/editProfile">Setting</a></li>
             <li><a href="{$basedomain}logout.php">Logout</a></li>
         </ul>
     </div>
@@ -29,7 +29,7 @@
         $(document).ready(function () {
             $('a.welcome').click(function(){
                 $('a#welcome').toggleClass('drop');
-                $('#box-user').slideToggle();
+                $('#box-user').toggle();
             });
         });
     {/literal}
