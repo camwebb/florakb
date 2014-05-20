@@ -325,19 +325,32 @@ function sftpServices($host="localhost", $user=false, $pass=false, $filename=fal
 
 	global $CONFIG, $sftpConfig;
 
-	// if using single account to upload zip file 
+	if (!$user && !$pass && !$filename) return false;
+	$folderTmp = $user."/".$CONFIG['default']['zip_foldername']."/";
+	$pathFile = $CONFIG['default']['upload_path_temporary'].$folderTmp.$filename;
+
 	if ($singleAccount){
 		$user = $sftpConfig['user'];
 		$pass = $sftpConfig['pass'];
 		$host = $sftpConfig['host'];
 	}
 
+
+	if ($sftpConfig['mode']=='1'){
+
+		$shellExec = "cd ".$CONFIG['default']['upload_path']." && sftp ".$user."@".$host.":".$pathFile.$filename;
+		exec($shellExec);
+
+		return true;
+		exit;
+	}
+
+	// if using single account to upload zip file 
+	
+
 	$portDefine = $sftpConfig['port'];
 
-	$folderTmp = $user."/".$CONFIG['default']['zip_foldername']."/";
-
-	if (!$user && !$pass && !$filename) return false;
-
+	
 	logFile("begin connection ssh2");
 	$connection = ssh2_connect($host, $portDefine);
 
@@ -352,8 +365,6 @@ function sftpServices($host="localhost", $user=false, $pass=false, $filename=fal
 	}
 
 	$sftp = ssh2_sftp($connection);
-
-	$pathFile = $CONFIG['default']['upload_path_temporary'].$folderTmp.$filename;
 
 	if (ssh2_scp_recv($connection, $pathFile, $CONFIG['default']['upload_path'].$filename)){
 
