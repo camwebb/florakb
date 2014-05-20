@@ -22,8 +22,8 @@
               </form>
             </div>
             <div class="modal-footer"> 
-                Not a member? <a href="#" class="signup">Sign up now!</a><br />
-                <a href="#">Forgotten password?</a>
+                <!--Not a member? <a href="#" class="signup">Sign up now!</a><br />
+                <a href="#">Forgotten password?</a>-->
             </div>
         </div>
     </div>
@@ -43,13 +43,13 @@
             <div class="modal-body">
             <form action="" method="POST" id="formSignup">
                 <div class="form-group" id="nameGroup">
-                  <input type="text" id="signup-name" class="input-modal" name="name" placeholder="Name" required aria-required="true"/>
+                  <input type="text" id="signup-name" class="input-modal" name="name" placeholder="Name (Required)" required aria-required="true"/>
                 </div>
                 <div class="form-group" id="emailGroup">
-                  <input type="email" id="signup-email" class="input-modal" name="email" placeholder="Email" required aria-required="true"/>
+                  <input type="email" id="signup-email" class="input-modal" name="email" placeholder="Email (Required)" required aria-required="true"/>
                 </div>
                 <div class="form-group" id="usernameGroup">
-                  <input type="text" id="signup-username" class="input-modal" name="username" placeholder="Username" required aria-required="true"/>
+                  <input type="text" id="signup-username" class="input-modal" name="username" placeholder="Username (Required)" pattern="[a-zA-Z0-9_]+" required aria-required="true"/>
                 </div>
                 <div class="form-group" id="twitterGroup">
                   <label for='signup-twitter' id="usernameValue" style="padding-top: 10px; color: #555; position: absolute; top: 250px; left: 20px; display: none;">@</label>
@@ -72,10 +72,10 @@
                   <input type="text" id="signup-phone" class="input-modal" name="phone" placeholder="Phone"/>
                 </div>
                 <div class="form-group">
-                  <input type="password" id="signup-password" class="input-modal" name="password" placeholder="Password" required aria-required="true"/>                  
+                  <input type="password" id="signup-password" class="input-modal" name="password" placeholder="Password (Required)" required aria-required="true"/>                  
                 </div>
                 <div class="form-group">
-                  <input type="password" id="signup-re_password" class="input-modal" name="rePassword" placeholder="Retype Password" required aria-required="true" oninput="check(this)"/>
+                  <input type="password" id="signup-re_password" class="input-modal" name="rePassword" placeholder="Retype Password (Required)" required aria-required="true" oninput="check(this)"/>
                   
                   <script language='javascript' type='text/javascript'>
                     {literal}
@@ -97,8 +97,8 @@
               </form>
             </div>
             <div class="modal-footer"> 
-                Already a member? <a href="#" class="signup">Login now!</a><br />
-                <a href="#">Forgotten password?</a>
+                <!--Already a member? <a href="#" class="signup">Login now!</a><br />
+                <a href="#">Forgotten password?</a>-->
             </div>
         </div>
     </div>

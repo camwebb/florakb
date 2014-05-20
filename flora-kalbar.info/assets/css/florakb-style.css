@@ -548,20 +548,21 @@ table.det td.detContent{width: 70%;}
             border: none;    
             padding: 15px 15px 15px 30px;
 }
-.sidebar-2-left ul li:last-child,.sidebar-2-left ul.step li:last-child{
+.sidebar-2-left ul li:last-child,.sidebar-2-left ul.step li:last-child, .sidebar-2-left ul a:last-child{
             -moz-border-radius: 0 0 4px 4px;
             -webkit-border-radius: 0 0 4px 4px;
             border-radius: 0 0 4px 4px;
             border: none;          
 }
 .sidebar-2-left ul li a, .sidebar-2-left ul.step li p{
-                width: 100%;
+                width: 203px;
                 height: 100%;
                 display: block;
                 padding: 15px 15px 15px 30px;
                 color: #333333;
                 margin: 0;
 }
+.sidebar-2-left ul li a:focus{background-color: #E4E5E6;}
 .sidebar-2-left ul li.selected{background-color: #00adbb;} 
 .sidebar-2-left ul li.selected a, .sidebar-2-left ul.step li.selected p{color: #FFFFFF;}
 .sidebar-2-left ul li a:hover{color: #00adbb;}

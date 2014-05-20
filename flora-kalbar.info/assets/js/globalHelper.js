@@ -88,7 +88,7 @@ $().ready(function() {
     */
     $.validator.addMethod("alphanumeric", function(value, element) {
         return this.optional(element) || /^[A-Za-z\d_]+$/.test(value);
-    }, "Must contain only letters, numbers, or dashes.");
+    }, "Must contain only letters, numbers, or underscore.");
     
     /**
     * checking password
