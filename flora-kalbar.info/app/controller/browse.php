@@ -101,6 +101,10 @@ class browse extends Controller {
         else{
             $this->view->assign('noData','data existed');
         }
+        
+        $msg = $this->msg->display('all', false);
+        $this->view->assign('msg', $msg);
+        
         $this->view->assign('indiv',$indivDetail);
         $this->view->assign('det',$indivDeterminant);
         $ses_user = $this->isUserOnline();
@@ -197,6 +201,17 @@ class browse extends Controller {
         header('Location: ../../browse/editIndiv/?id='.$_GET['id']);
     }
     
+    public function addDetView(){
+        //get list taxon
+        $listTaxon = $this->insertonebyone->list_taxon();
+        $this->view->assign('taxon', $listTaxon);
+        
+        //get list enum confid
+        $confid_enum = $this->insertonebyone->get_enum('det','confid');
+        $this->view->assign('confid_enum', $confid_enum);
+        return $this->loadView('addDetView');
+    }
+    
     /**
      * @todo insert individu from posted data
      * */
@@ -216,7 +231,13 @@ class browse extends Controller {
         }else{
             $this->msg->add('e', 'Determinant Failed Added');
         }
-        header('Location: ../../browse/editIndiv/?id='.$data['indivID']);
+        
+        if($_GET['action']=='addOnly'){
+            header('Location: ../../browse/indivDetail/?id='.$data['indivID']);
+        }
+        else{
+            header('Location: ../../browse/editIndiv/?id='.$data['indivID']);
+        }
     }
     
     /**

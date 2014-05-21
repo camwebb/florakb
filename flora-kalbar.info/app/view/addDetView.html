@@ -1,0 +1,115 @@
+<div class="content">
+    <div class="btn-back">
+        <a href="#" onClick="history.back();return false;"><span>Back</span></a>
+    </div>
+    <div class="clear"></div>
+    <br />
+    <h2 class="title">Add Determinant</h2>
+    <form id="formDet" method="POST" action="{$basedomain}browse/addDet/?id={$smarty.get.id}&&action=addOnly">
+        <table id="addDet" class="det">
+            <tr>
+                <td class="detNumber"></td>
+                <td class="detHeader"></td>
+                <td class="detColon"></td>
+                <td class="detContent"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><b>Taxon</b></td>
+                <td>:</td>
+                <td>
+                    <select class="inputbox" name="taxonID" id="taxonID">
+                        <option value="" selected="1">Choose a taxonomy</option>
+                        {foreach from=$taxon item=itemTaxon}
+                            <option value="{$itemTaxon.id}">{$itemTaxon.sp}, {$itemTaxon.gen}, {$itemTaxon.fam}</option>
+                        {/foreach}
+                    </select>
+                    <a href="#taxon-modal" class="btn" id="taxonPopup">Add</a>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><b>Confidence of determination</b></td>
+                <td>:</td>
+                <td>
+                    <select class="inputbox" name="confid" id="confid">
+                        <option value="" selected="1">Choose a level of confidence</option>
+                        {foreach from=$confid_enum item=enum}confid
+                            <option value="{$enum}">{$enum}</option>
+                        {/foreach}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><b>Resources used</b></td>
+                <td>:</td>
+                <td><input class="inputbox" type="text" id="using" name="using" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><b>Notes</b></td>
+                <td>:</td>
+                <td><textarea class="textareabox" id="notes" name="notes"></textarea></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input class="btn" type="submit" value="Submit" /></td>
+            </tr>
+        </table>
+        </form>
+</div>
+
+<!--START MODAL TAXON-->
+<div id="modal-taxon" class="modal-background">
+    <div class="modal-overlay"></div>
+    <div class="modal-dialog dialogStep">
+        <button type="button" class="closebtn close"></button>
+        <div class="modal-content">
+            <div class="modal-body bodyStep">
+              <h2 class="title">Insert Taxon</h2>
+                {include file='formTaxon_addDet.html'}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$().ready(function() {
+        
+    $("#formDet").validate({
+        rules: {
+			confid: {
+                required: true
+			},
+            using: {
+                required: true
+            },
+            taxonID: {
+                required: true
+            }
+		},
+		messages: {
+			confid: {
+                required: " Please choose a level"
+			},
+            using: {
+                required: " Please enter a resource"
+            },
+            taxonID: {
+                required: " Please choose a taxonomy"
+            }
+		}
+    });
+    
+    $('a#taxonPopup').click(function(){
+       $('div#modal-taxon').fadeToggle("linear");
+       $('div.modal-overlay').show();
+    });
+    $('.close,.modal-overlay').click(function(){
+       $('div#modal-taxon').fadeOut(); 
+    });
+});
+</script>

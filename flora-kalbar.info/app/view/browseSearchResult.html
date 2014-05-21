@@ -28,15 +28,17 @@
                 <th>Species</th>
                 <th>Genus</th>
                 <th>Family</th>
+                <th style="width: 4%;">Action</th>
             </tr>
         </thead>
         <tbody>
             
             {foreach $data as $dataTaxon}
             <tr>
-                <td><i><a href="{$basedomain}browse/indiv/?id={$dataTaxon['id']}">{$dataTaxon['sp']}</a></i></td>
+                <td><i>{$dataTaxon['sp']}</i></td>
                 <td>{$dataTaxon['gen']}</td>
                 <td>{$dataTaxon['fam']}</td>
+                <td><a href="{$basedomain}browse/indiv/?id={$dataTaxon['taxon']['id']}" class="btn">Detail</a></td>
             </tr>
             {/foreach}
         </tbody>
