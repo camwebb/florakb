@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.10deb1
+-- version 2.11.9.4
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: May 17, 2014 at 04:44 PM
--- Server version: 5.5.37-0ubuntu0.14.04.1
--- PHP Version: 5.5.9-1ubuntu4
+-- Host: mysql.flora-kalbar.info
+-- Waktu pembuatan: 21. Mei 2014 jam 05:07
+-- Versi Server: 5.1.56
+-- Versi PHP: 5.2.17
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -23,7 +22,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `coll`
+-- Struktur dari tabel `coll`
 --
 
 CREATE TABLE IF NOT EXISTS `coll` (
@@ -38,12 +37,12 @@ CREATE TABLE IF NOT EXISTS `coll` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `collCode` (`collCode`),
   KEY `indivID` (`indivID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=47 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=273 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `collector`
+-- Struktur dari tabel `collector`
 --
 
 CREATE TABLE IF NOT EXISTS `collector` (
@@ -55,12 +54,12 @@ CREATE TABLE IF NOT EXISTS `collector` (
   UNIQUE KEY `coll_order` (`collID`,`order`),
   UNIQUE KEY `coll_person` (`collID`,`personID`),
   KEY `personID` (`personID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=46 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=272 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `det`
+-- Struktur dari tabel `det`
 --
 
 CREATE TABLE IF NOT EXISTS `det` (
@@ -70,18 +69,18 @@ CREATE TABLE IF NOT EXISTS `det` (
   `det_date` date NOT NULL,
   `taxonID` int(11) NOT NULL,
   `confid` enum('high','medium','low') NOT NULL,
-  `using` varchar(1000) DEFAULT NULL,
+  `using` varchar(1000) NOT NULL,
   `notes` varchar(1500) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `indivID` (`indivID`),
   KEY `personID` (`personID`),
   KEY `taxonID` (`taxonID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=55 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=277 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `img`
+-- Struktur dari tabel `img`
 --
 
 CREATE TABLE IF NOT EXISTS `img` (
@@ -98,12 +97,12 @@ CREATE TABLE IF NOT EXISTS `img` (
   UNIQUE KEY `unique_file_person` (`personID`,`filename`),
   KEY `indivID` (`indivID`),
   KEY `personID` (`personID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=62 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=304 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `indiv`
+-- Struktur dari tabel `indiv`
 --
 
 CREATE TABLE IF NOT EXISTS `indiv` (
@@ -111,23 +110,22 @@ CREATE TABLE IF NOT EXISTS `indiv` (
   `locnID` int(11) NOT NULL,
   `plot` varchar(100) DEFAULT NULL COMMENT 'The unique code for the sample plot (if any)',
   `tag` int(11) DEFAULT NULL COMMENT 'The plant/tree number within the sample plot',
-  `personID` int(11) NOT NULL COMMENT 'original record creator',
+  `personID` int(11) NOT NULL COMMENT 'The creator for this indiv record',
   PRIMARY KEY (`id`),
-  KEY `locnID` (`locnID`),
-  KEY `personID` (`personID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=98 ;
+  KEY `locnID` (`locnID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=292 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `locn`
+-- Struktur dari tabel `locn`
 --
 
 CREATE TABLE IF NOT EXISTS `locn` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `longitude` float(9,5) DEFAULT NULL COMMENT 'Longitude in decimal degrees, Datum WGS84',
-  `latitude` float(8,5) DEFAULT NULL COMMENT 'Latitude in decimal degrees, Datum WGS84',
-  `elev` int(11) DEFAULT NULL COMMENT 'Elevation ASL (m)',
+  `longitude` float(9,5) NOT NULL COMMENT 'Longitude in decimal degrees, Datum WGS84',
+  `latitude` float(8,5) NOT NULL COMMENT 'Latitude in decimal degrees, Datum WGS84',
+  `elev` int(11) NOT NULL COMMENT 'Elevation ASL (m)',
   `geomorph` varchar(200) DEFAULT NULL,
   `locality` varchar(300) NOT NULL COMMENT 'Descriptive name of place',
   `county` varchar(300) DEFAULT NULL COMMENT 'Kabupaten',
@@ -136,12 +134,12 @@ CREATE TABLE IF NOT EXISTS `locn` (
   `country` varchar(100) NOT NULL DEFAULT 'Indonesia',
   `notes` varchar(500) DEFAULT NULL COMMENT 'Other notes about place',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=96 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=297 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `obs`
+-- Struktur dari tabel `obs`
 --
 
 CREATE TABLE IF NOT EXISTS `obs` (
@@ -163,12 +161,12 @@ CREATE TABLE IF NOT EXISTS `obs` (
   PRIMARY KEY (`id`),
   KEY `personID` (`personID`),
   KEY `indivID` (`indivID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=46 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=272 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `person`
+-- Struktur dari tabel `person`
 --
 
 CREATE TABLE IF NOT EXISTS `person` (
@@ -177,27 +175,27 @@ CREATE TABLE IF NOT EXISTS `person` (
   `email` varchar(200) NOT NULL,
   `twitter` varchar(50) DEFAULT NULL,
   `website` varchar(200) DEFAULT NULL,
-  `phone` int(20) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
   `short_namecode` varchar(20) DEFAULT NULL,
   `institutions` varchar(100) DEFAULT NULL,
   `project` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=76 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=196 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `taxon`
+-- Struktur dari tabel `taxon`
 --
 
 CREATE TABLE IF NOT EXISTS `taxon` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `rank` enum('family','genus','species','subspecies') NOT NULL,
+  `rank` enum('family','genus','species','subspecies') DEFAULT NULL,
   `morphotype` varchar(100) DEFAULT NULL,
   `fam` varchar(100) DEFAULT NULL,
-  `gen` varchar(100) NOT NULL,
+  `gen` varchar(100) DEFAULT NULL,
   `sp` varchar(100) DEFAULT NULL,
   `subtype` enum('var','ssp','forma') DEFAULT NULL,
   `ssp` varchar(100) DEFAULT NULL,
@@ -205,27 +203,27 @@ CREATE TABLE IF NOT EXISTS `taxon` (
   `notes` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `genSppSub` (`gen`,`sp`,`subtype`,`ssp`,`auth`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=151 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=333 ;
 
 --
--- Constraints for dumped tables
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Constraints for table `coll`
+-- Ketidakleluasaan untuk tabel `coll`
 --
 ALTER TABLE `coll`
   ADD CONSTRAINT `coll_ibfk_1` FOREIGN KEY (`indivID`) REFERENCES `indiv` (`id`);
 
 --
--- Constraints for table `collector`
+-- Ketidakleluasaan untuk tabel `collector`
 --
 ALTER TABLE `collector`
   ADD CONSTRAINT `collector_ibfk_1` FOREIGN KEY (`collID`) REFERENCES `coll` (`id`),
   ADD CONSTRAINT `collector_ibfk_2` FOREIGN KEY (`personID`) REFERENCES `person` (`id`);
 
 --
--- Constraints for table `det`
+-- Ketidakleluasaan untuk tabel `det`
 --
 ALTER TABLE `det`
   ADD CONSTRAINT `det_ibfk_1` FOREIGN KEY (`indivID`) REFERENCES `indiv` (`id`),
@@ -233,25 +231,21 @@ ALTER TABLE `det`
   ADD CONSTRAINT `det_ibfk_6` FOREIGN KEY (`taxonID`) REFERENCES `taxon` (`id`);
 
 --
--- Constraints for table `img`
+-- Ketidakleluasaan untuk tabel `img`
 --
 ALTER TABLE `img`
   ADD CONSTRAINT `img_ibfk_1` FOREIGN KEY (`indivID`) REFERENCES `indiv` (`id`),
   ADD CONSTRAINT `img_ibfk_2` FOREIGN KEY (`personID`) REFERENCES `person` (`id`);
 
 --
--- Constraints for table `indiv`
+-- Ketidakleluasaan untuk tabel `indiv`
 --
 ALTER TABLE `indiv`
   ADD CONSTRAINT `indiv_ibfk_4` FOREIGN KEY (`locnID`) REFERENCES `locn` (`id`);
 
 --
--- Constraints for table `obs`
+-- Ketidakleluasaan untuk tabel `obs`
 --
 ALTER TABLE `obs`
   ADD CONSTRAINT `obs_ibfk_1` FOREIGN KEY (`indivID`) REFERENCES `indiv` (`id`),
   ADD CONSTRAINT `obs_ibfk_2` FOREIGN KEY (`personID`) REFERENCES `person` (`id`);
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
