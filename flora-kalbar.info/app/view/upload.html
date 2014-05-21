@@ -175,6 +175,7 @@
                      
         }, 
         complete: function(xhr) {
+            $(".progress").html('');
             status.html(first_info + xhr.responseText + end);
         }
     };                  
