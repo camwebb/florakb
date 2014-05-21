@@ -105,6 +105,13 @@ $().ready(function() {
                     }).responseText;
         return check;
     }," Invalid password or incorrect password");
+    
+    /**
+    * checking decimal input
+    */
+    $.validator.addMethod('Decimal', function(value, element) {
+        return this.optional(element) || /^\d+(\.\d{0,3})?$/.test(value); 
+    }, "Please enter a correct number, only dot permitted");
                 
 });
 
