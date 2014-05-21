@@ -109,6 +109,7 @@ class zip extends Controller {
         //move zip file to tmp folder
         
         $copy_zip = sftpServices($CONFIG['default']['hostname'], $username, $password, $name);
+        logFile($copy_zip);
         
         if(!$copy_zip){
             $status = "error";
