@@ -46,6 +46,7 @@ class onebyone extends Controller {
      * 
      * */
 	public function index(){
+        $this->view->assign('msg', '');        	   
 		return $this->loadView('formContentIndiv');
 	}
     
@@ -249,7 +250,8 @@ class onebyone extends Controller {
             $indivID = $userData['onebyone']['indivID'];
         
             $tmp_name = $uploaded_file['full_name'];
-            $entry = $uploaded_file['real_name'];
+            $entry = str_replace(array('\'', '"'), '', $uploaded_file['real_name']);
+            //$entry = $uploaded_file['real_name'];
             $image_name_encrypt = md5($entry);
             
             //check filename

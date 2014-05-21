@@ -22,8 +22,11 @@ class insertonebyone extends Database {
 		
 		foreach ($data as $key=>$val){
             if(!empty($val)){
+                
+                $sanitize = str_replace(array('\'', '"'), '', $val);
+                
                 $tmpfield[] = "`$key`";
-                $tmpvalue[] = "'{$val}'";
+                $tmpvalue[] = "'{$sanitize}'";
             }
 		}
 		
@@ -147,7 +150,7 @@ class insertonebyone extends Database {
      * 
      * */
     function list_locn(){
-        $sql = "SELECT id, locality FROM locn";
+        $sql = "SELECT id, locality FROM locn ORDER BY locality";
 		$res = $this->fetch($sql,1);
         return $res;
     }
@@ -171,7 +174,7 @@ class insertonebyone extends Database {
      * 
      * */
     function list_taxon(){
-        $sql = "SELECT * FROM taxon";
+        $sql = "SELECT * FROM taxon ORDER BY fam, gen, sp, morphotype";
 		$res = $this->fetch($sql,1);
         return $res;
     }

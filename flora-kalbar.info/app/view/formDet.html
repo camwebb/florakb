@@ -25,7 +25,16 @@
                 <select class="inputbox" name="taxonID" id="taxonID">
                     <option value="" selected="1">Choose a taxonomy</option>
                     {foreach from=$taxon item=itemTaxon}
-                        <option value="{$itemTaxon.id}">{if $itemTaxon.fam}({$itemTaxon.fam}){/if} {$itemTaxon.gen} {$itemTaxon.sp}</option>
+                        <option value="{$itemTaxon.id}">
+                        {if $itemTaxon.gen}
+                            {if $itemTaxon.fam}
+                                ({$itemTaxon.fam})
+                            {/if}
+                            {$itemTaxon.gen} {$itemTaxon.sp}
+                        {else}
+                            {$itemTaxon.morphotype}
+                        {/if}
+                        </option>
                     {/foreach}
                 </select>
             </td>
