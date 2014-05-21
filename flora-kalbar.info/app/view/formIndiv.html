@@ -12,6 +12,7 @@
             <td><label for="">Location</label></td>
             <td>
                 <select class="inputbox" name="locnID" id="locnID">
+                    <option value="">Choose Location</option>
                     {foreach from=$locn item=location}
                         <option value="{$location.id}">{$location.locality}</option>
                     {/foreach}
@@ -32,13 +33,19 @@ $().ready(function() {
         rules: {
             tag: {
                 number: true
+            },
+            locnID: {
+                required: true
             }
 		},
 		messages: {
             tag: {
-                number: "Please enter number"
+                number: " Please enter number"
+            },
+            locnID: {
+                required: " Please choose location"
             }
-		}
+		},
     });
 });
 </script>

@@ -239,6 +239,7 @@ class onebyone extends Controller {
             $personID = $validateEmail['personID'];
             $username = $validateEmail['short_namecode'];*/
             
+            
             $session = new Session;
             $login = $session->get_session();
             $userData = $login['ses_user'];
@@ -251,12 +252,13 @@ class onebyone extends Controller {
             $entry = $uploaded_file['real_name'];
             $image_name_encrypt = md5($entry);
             
-            //$dataExist = $this->imagezip->dataExist($personID, $entry);
+            //check filename
+            $dataExist = $this->imagezip->dataExist($personID, $entry);            
             
             $path_entry = $CONFIG['default']['upload_path'];
             $src_tmp = $path_entry."/".$tmp_name;
             
-            //if($dataExist){
+            if(!$dataExist){
                 $path_data = 'public_assets/';
                 //$path_user = $path_data.$username;
                 $path_img = $path_data.'/img';
@@ -356,9 +358,9 @@ class onebyone extends Controller {
                     }
                 } // end if copy
                 
-            //}else{
-            //    $this->msg->add('e', 'Image data is not exist in database');
-            //}
+            }else{
+                $this->msg->add('e', 'Image exist');
+            }
             unlink($src_tmp);
         }else{
             $this->msg->add('e', $uploaded_file['message']);

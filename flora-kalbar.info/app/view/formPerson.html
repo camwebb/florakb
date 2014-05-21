@@ -62,7 +62,8 @@ $().ready(function() {
 			},
             username: {
                 required: true,
-                minlength: 3
+                minlength: 3,
+                checkUsernameExist: true
             }
 		},
 		messages: {
@@ -80,7 +81,8 @@ $().ready(function() {
 			},
             username: {
                 required: " Please enter a username",
-                minlength: " Your short namecode must be 3 characters long"
+                minlength: " Your username should be more than 3 characters",
+                checkUsernameExist: " Username already exist"
             }
 		}
     });
