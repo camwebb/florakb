@@ -37,6 +37,7 @@ class zip extends Controller {
      * 
      * */
 	public function index(){
+        $this->log('surf','zip page');
 		return $this->loadView('zip');
 	}
     
