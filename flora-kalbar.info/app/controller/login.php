@@ -86,8 +86,8 @@ class login extends Controller {
         $data = $_POST;
         
         //query data
-        $getUserData = $this->userHelper->getUserData('email',$data['email']);
-        $getUserappData = $this->userHelper->getUserappData('id',$getUserData['id']);
+        $getUserappData = $this->userHelper->getUserappData('username',$data['username']);
+        $getUserData = $this->userHelper->getUserData('id',$getUserappData['id']);
         
         $pwd = $data['password'];
         
