@@ -335,10 +335,12 @@ function sftpServices($host="localhost", $user=false, $pass=false, $filename=fal
 		$host = $sftpConfig['host'];
 	}
 
-
+	logFile(serialize($sftpConfig));
+	
 	if ($sftpConfig['mode']=='1'){
 
 		$shellExec = "cd ".$CONFIG['default']['upload_path']." && sftp ".$user."@".$host.":".$pathFile.$filename;
+		logFile($shellExec);
 		exec($shellExec);
 
 		return true;
