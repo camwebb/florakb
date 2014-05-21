@@ -28,53 +28,14 @@
 <script type="text/javascript">
 $().ready(function() {
     
-    $("#formLocation").validate({
-        rules: {
-			locality: {
-                required: true
-			},
-            province: {
-                required: true
-            },
-            island: {
-                required: true
-            },
-            country: {
-                required: true
-            }
-		},
-		messages: {
-			locality: {
-                required: " Please enter locality"
-			},
-            province: {
-                required: " Please enter province"
-            },
-            island: {
-                required: " Please enter island"
-            },
-            country: {
-                required: " Please enter country"
-            }
-		}
-    });
-    
     $("#formIndiv").validate({
         rules: {
-			plot: {
-                required: true
-			},
             tag: {
-                required: true,
                 number: true
             }
 		},
 		messages: {
-			plot: {
-                required: " Please enter plot/set code"
-			},
             tag: {
-                required: " Please enter tag or serial number",
                 number: "Please enter number"
             }
 		}

@@ -52,9 +52,18 @@ $().ready(function() {
     
     $("#formLocation").validate({
         rules: {
+            longitude: {
+                required: true
+            },
+            latitude: {
+                required: true
+            },
 			locality: {
                 required: true
 			},
+            elevation: {
+                required: true
+            },
             province: {
                 required: true
             },
@@ -66,9 +75,18 @@ $().ready(function() {
             }
 		},
 		messages: {
+            longitude: {
+                required: " Please enter longitude"
+            },
+            latitude: {
+                required: " Please enter latitude"
+            },
 			locality: {
                 required: " Please enter locality"
 			},
+            elevation: {
+                required: " Please enter elevation"
+            },
             province: {
                 required: " Please enter province"
             },

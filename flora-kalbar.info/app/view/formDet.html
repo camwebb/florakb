@@ -4,7 +4,7 @@
             <td><label for="">Confidence of determination</label></td>
             <td>
                 <select class="inputbox" name="confid" id="confid">
-                  <option value="" selected="1">Choose a level of confidence</option>
+                    <option value="" selected="1">Choose a level of confidence</option>
                     {foreach from=$confid_enum item=enum}confid
                         <option value="{$enum}">{$enum}</option>
                     {/foreach}
@@ -23,6 +23,7 @@
             <td><label for="">Taxon</label></td>
             <td>
                 <select class="inputbox" name="taxonID" id="taxonID">
+                    <option value="" selected="1">Choose a taxonomy</option>
                     {foreach from=$taxon item=itemTaxon}
                         <option value="{$itemTaxon.id}">{$itemTaxon.sp}, {$itemTaxon.gen}, {$itemTaxon.fam}</option>
                     {/foreach}
@@ -57,14 +58,20 @@ $().ready(function() {
 			},
             using: {
                 required: true
+            },
+            taxonID: {
+                required: true
             }
 		},
 		messages: {
 			confid: {
-                required: " Please enter confid"
+                required: " Please choose a level"
 			},
             using: {
-                required: " Please enter using"
+                required: " Please enter a resource"
+            },
+            taxonID: {
+                required: " Please choose a taxonomy"
             }
 		}
     });

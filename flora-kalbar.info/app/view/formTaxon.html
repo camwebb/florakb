@@ -51,15 +51,25 @@ $().ready(function() {
                 required: true
 			},
             gen: {
-                required: true
+                required: function(element) {
+                    return (!$("#morphotype").hasClass('valid'));
+                }
+            },
+            sp: {
+                required: function(element) {
+                    return (!$("#morphotype").hasClass('valid'));
+                }
             }
 		},
 		messages: {
 			rank: {
                 required: " Please enter rank"
 			},
-            gen: {
-                required: " Please enter genus"
+            gen: {                            
+                required: " Please enter a genus or morphotype"
+            },
+            sp: {
+                required: " Please enter a species or morphotype"
             }
 		}
     });
