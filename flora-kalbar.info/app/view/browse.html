@@ -39,7 +39,10 @@
                 <td>{$dataTaxon['taxon']['fam']}</td>
                 <td>
                     {foreach $dataTaxon['img'] as $img}
+                     {if $img['md5sum']}
                      <a class="gallery{$dataTaxon['taxon']['id']}" href="{$basedomain}public_assets/img/500px/{$img['md5sum']}.500px.jpg"><img src="{$basedomain}public_assets/img/100px/{$img['md5sum']}.100px.jpg" /></a>
+                     {else}<i>No image available</i>
+                     {/if}
                      {foreachelse}<i>No image available</i>
                     {/foreach}
                 </td>
