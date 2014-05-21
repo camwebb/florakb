@@ -500,7 +500,7 @@ table.browse td {
         border-top: 1px solid #ccc;
 }
 table.browse td, table.browse th {
-        padding: 10px;
+        padding: 15px 10px;
         border-left: 1px solid #ccc;
         text-align: left;
 }
@@ -510,7 +510,7 @@ table.indiv th:first-child {
         border-radius: 0;
 }
 table.det{width: 100%;}
-table.det td {border:none;}
+table.det td {border:none;padding:2px;}
 table.det td.detNumber, table.det td.detColon{width: 1%;}
 table.det td.detHeader{width: 15%;}
 table.det td.detContent{width: 70%;}

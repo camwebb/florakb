@@ -10,7 +10,7 @@
     <div class="clear"></div>
     <br />
     
-    <h2 class="title">Edit Individual plant</h2>
+    <h2 class="title">Edit Individu</h2>
     <form id="formEditIndiv" method="POST" action="{$basedomain}browse/doEditIndiv/?id={$smarty.get.id}">
         <table class="browse indiv">
             {foreach $indiv as $dataIndiv}
@@ -58,7 +58,7 @@
     </form>
     <br />
     
-    <h2 class="title">Identifications</h2>
+    <h2 class="title">Determinants</h2>
     <table class="browse indiv">
         {/foreach}
         <tr>
@@ -87,13 +87,13 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td><b>Confidence of identification</b></td>
+                            <td><b>Confid</b></td>
                             <td>:</td>
                             <td>{$dataDet['confid']}</td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td><b>Using what resource?</b></td>
+                            <td><b>Using</b></td>
                             <td>:</td>
                             <td>{$dataDet['using']}</td>
                         </tr>
@@ -107,7 +107,7 @@
                     </table>
                     
                     <div id="tableAddDet" style="display: none;">
-                    <h2 class="title">Add Identification</h2>
+                    <h2 class="title">Add Determinant</h2>
                     <form id="formDet" method="POST" action="{$basedomain}browse/addDet/?id={$smarty.get.id}">
                     <table id="addDet" class="det">
                         <tr>
@@ -122,6 +122,7 @@
                             <td>:</td>
                             <td>
                                 <select class="inputbox" name="taxonID" id="taxonID">
+                                    <option value="" selected="1">Choose a taxonomy</option>
                                     {foreach from=$taxon item=itemTaxon}
                                         <option value="{$itemTaxon.id}">{$itemTaxon.sp}, {$itemTaxon.gen}, {$itemTaxon.fam}</option>
                                     {/foreach}
@@ -131,10 +132,11 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td><b>Confid</b></td>
+                            <td><b>Confidence of determination</b></td>
                             <td>:</td>
                             <td>
                                 <select class="inputbox" name="confid" id="confid">
+                                    <option value="" selected="1">Choose a level of confidence</option>
                                     {foreach from=$confid_enum item=enum}confid
                                         <option value="{$enum}">{$enum}</option>
                                     {/foreach}
@@ -143,7 +145,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td><b>Using</b></td>
+                            <td><b>Resources used</b></td>
                             <td>:</td>
                             <td><input class="inputbox" type="text" id="using" name="using" /></td>
                         </tr>
@@ -166,7 +168,7 @@
         </tr>
     </table>
     <br />
-    <a href="#addDeterminant" class="btn" id="addDet" style="float: right;">Add Identification</a>
+    <a href="#addDeterminant" class="btn" id="addDet" style="float: right;">Add Determinant</a>
     <div class="clear"></div>
     {/if}
 </div>
@@ -204,20 +206,12 @@ $().ready(function() {
     
     $("#formEditIndiv").validate({
         rules: {
-			plot: {
-                required: true
-			},
-            tag: {
-                required: true,
+			tag: {
                 number: true
             }
 		},
 		messages: {
-			plot: {
-                required: " Please enter plot"
-			},
-            tag: {
-                required: " Please enter tag",
+			tag: {
                 number: "Please enter number"
             }
 		}
@@ -230,14 +224,20 @@ $().ready(function() {
 			},
             using: {
                 required: true
+            },
+            taxonID: {
+                required: true
             }
 		},
 		messages: {
 			confid: {
-                required: " Please enter confid"
+                required: " Please choose a level"
 			},
             using: {
-                required: " Please enter using"
+                required: " Please enter a resource"
+            },
+            taxonID: {
+                required: " Please choose a taxonomy"
             }
 		}
     });
