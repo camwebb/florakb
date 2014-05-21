@@ -325,6 +325,8 @@ function sftpServices($host="localhost", $user=false, $pass=false, $filename=fal
 
 	global $CONFIG, $sftpConfig;
 
+	logFile('host ='.$host.'user='.$user.'pass='.$pass.'filename='.$filename.'single='.$singleAccount);
+	
 	if (!$user && !$pass && !$filename) return false;
 	$folderTmp = $user."/".$CONFIG['default']['zip_foldername']."/";
 	$pathFile = $CONFIG['default']['upload_path_temporary'].$folderTmp.$filename;
@@ -336,7 +338,7 @@ function sftpServices($host="localhost", $user=false, $pass=false, $filename=fal
 	}
 
 	logFile(serialize($sftpConfig));
-	
+
 	if ($sftpConfig['mode']=='1'){
 
 		$shellExec = "cd ".$CONFIG['default']['upload_path']." && sftp ".$user."@".$host.":".$pathFile.$filename;
