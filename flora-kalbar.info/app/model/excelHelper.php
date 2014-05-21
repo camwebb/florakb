@@ -404,6 +404,15 @@ class excelHelper extends Database {
 										$t_data[] = "'$keyData'"; 
 										$t_dataraw[$tmpkeyField] = $keyData; 
 										$tmpupdate[] = "`{$tmpkeyField}` = '$keyData'";
+
+										logFile('data field :'.$tmpkeyField.'='.$keyData);
+										if (in_array($tmpkeyField, $fieldNotNull)){
+											if ($keyData==""){
+												echo "$b not complete";
+											exit;
+											} 
+										}
+
 									}
 								}else{
 									if (in_array($tmpkeyField, $fieldUnique[$convert])){
@@ -424,7 +433,7 @@ class excelHelper extends Database {
 										exit;
 										} 
 									}
-									
+
 								}
 								
 									
@@ -441,6 +450,14 @@ class excelHelper extends Database {
 							$t_data[] = "'$tmpCode'";
 							// $dataKey[$b][] = $tmpCode;
 							$tmpupdate[] = "`collCode` = '$tmpCode'";
+
+							logFile('data field :'.$tmpkeyField.'='.$keyData);
+							if (in_array($tmpkeyField, $fieldNotNull)){
+								if ($keyData==""){
+									echo "$b not complete";
+								exit;
+								} 
+							}
 						}	
 
 						// pr($tmpkeyField);
