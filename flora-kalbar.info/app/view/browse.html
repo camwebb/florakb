@@ -27,14 +27,13 @@
                 <th>Genus</th>
                 <th>Family</th>
                 <th>Images</th>
-                <th style="width: 4%;">Action</th>
             </tr>
         </thead>
         <tbody>
             
             {foreach $data as $dataTaxon}
             <tr>
-                <td><i>{$dataTaxon['taxon']['sp']}</i></td>
+                <td><i><a href="{$basedomain}browse/indiv/?id={$dataTaxon['taxon']['id']}">{$dataTaxon['taxon']['sp']}</a></i></td>
                 <td>{$dataTaxon['taxon']['gen']}</td>
                 <td>{$dataTaxon['taxon']['fam']}</td>
                 <td>
@@ -43,7 +42,6 @@
                      {foreachelse}<i>No image available</i>
                     {/foreach}
                 </td>
-                <td><a href="{$basedomain}browse/indiv/?id={$dataTaxon['taxon']['id']}" class="btn">Detail</a></td>
             </tr>
             <script type="text/javascript">
             var a = "{$dataTaxon['taxon']['id']}";

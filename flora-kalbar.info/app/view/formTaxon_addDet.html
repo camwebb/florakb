@@ -1,6 +1,10 @@
 <form id="formTaxon" method="POST" action="{$basedomain}browse/insertTaxon/?id={$smarty.get.id}">
     <table class="form-tbl">
         <tr>
+            <td><label for="rank">Rank</label></td>
+            <td><input class="inputbox" type="text" id="rank" name="rank" /></td>
+        </tr>
+        <tr>
             <td><label for="morphotype">Morphotype</label></td>
             <td><input class="inputbox" type="text" id="morphotype" name="morphotype" /></td>
         </tr>
@@ -43,23 +47,19 @@ $().ready(function() {
     
     $("#formTaxon").validate({
         rules: {
+			rank: {
+                required: true
+			},
             gen: {
-                required: function(element) {
-                    return (!$("#morphotype").hasClass('valid'));
-                }
-            },
-            sp: {
-                required: function(element) {
-                    return (!$("#morphotype").hasClass('valid'));
-                }
+                required: true
             }
 		},
 		messages: {
-            gen: {                            
-                required: " Please enter genus and species or enter a morphotype"
-            },
-            sp: {
-                required: " Please enter genus and species or enter a morphotype"
+			rank: {
+                required: " Please enter rank"
+			},
+            gen: {
+                required: " Please enter genus"
             }
 		}
     });

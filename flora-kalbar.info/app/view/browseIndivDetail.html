@@ -1,5 +1,5 @@
 <div class="content">
-    {$msg}
+    
     {if $noData eq 'empty'}
         <i>No data available</i>
     {else}
@@ -18,55 +18,7 @@
         </tr>
         <tr>
             <th>Location</th>
-            <td>
-                <table class="det">
-                    <tr>
-                        <td style="width: 4%;">Longitude</td>
-                        <td>:</td>
-                        <td style="width: 92%;">{$dataIndiv.longitude}</td>
-                    </tr>
-                    <tr>
-                        <td>Latidude</td>
-                        <td>:</td>
-                        <td>{$dataIndiv.latitude}</td>
-                    </tr>
-                    <tr>
-                        <td>Elevation</td>
-                        <td>:</td>
-                        <td>{$dataIndiv.elev}</td>
-                    </tr>
-                    <tr>
-                        <td>Geomorph</td>
-                        <td>:</td>
-                        <td>{$dataIndiv.geomorph}</td>
-                    </tr>
-                    <tr>
-                        <td>Locality</td>
-                        <td>:</td>
-                        <td>{$dataIndiv.locality}</td>
-                    </tr>
-                    <tr>
-                        <td>County</td>
-                        <td>:</td>
-                        <td>{$dataIndiv.county}</td>
-                    </tr>
-                    <tr>
-                        <td>Province</td>
-                        <td>:</td>
-                        <td>{$dataIndiv.province}</td>
-                    </tr>
-                    <tr>
-                        <td>Island</td>
-                        <td>:</td>
-                        <td>{$dataIndiv.island}</td>
-                    </tr>
-                    <tr>
-                        <td>Country</td>
-                        <td>:</td>
-                        <td>{$dataIndiv.country}</td>
-                    </tr>
-                </table>
-            </td>
+            <td>{$dataIndiv.locality}</td>
         </tr>
         <tr>
             <th>Plot</th>
@@ -130,13 +82,9 @@
     {/if}
     
     {foreach $indiv as $dataIndiv}
-        {if $user.login && $dataIndiv['name'] eq $user.login.name}
+        {if $dataIndiv['name'] eq $user.login.name}
             <br />
             <a href="{$basedomain}browse/editIndiv/?id={$smarty.get.id}" id="editIndiv" class="btn" style="float: right;">Edit</a>
-            <div class="clear"></div>
-        {elseif $user.login}
-            <br />
-            <a href="{$basedomain}browse/addDetView/?id={$smarty.get.id}" id="addIndiv" class="btn" style="float: right;">Add</a>
             <div class="clear"></div>
         {/if}
     {/foreach}

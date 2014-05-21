@@ -9,8 +9,8 @@
             <td><input class="inputbox" type="text" id="latitude" name="latitude" /></td>
         </tr>
         <tr>
-            <td><label for="elev">Elevation ASL (m)</label></td>
-            <td><input class="inputbox" type="text" id="elev" name="elev" /></td>
+            <td><label for="elevation">Elevation ASL (m)</label></td>
+            <td><input class="inputbox" type="text" id="elevation" name="elev" /></td>
         </tr>
         <tr>
             <td><label for="geomorph">Geomorph</label></td>
@@ -52,18 +52,9 @@ $().ready(function() {
     
     $("#formLocation").validate({
         rules: {
-            longitude: {
-                required: true
-            },
-            latitude: {
-                required: true
-            },
 			locality: {
                 required: true
 			},
-            elev: {
-                required: true
-            },
             province: {
                 required: true
             },
@@ -75,18 +66,9 @@ $().ready(function() {
             }
 		},
 		messages: {
-            longitude: {
-                required: " Please enter longitude"
-            },
-            latitude: {
-                required: " Please enter latitude"
-            },
 			locality: {
                 required: " Please enter locality"
 			},
-            elev: {
-                required: " Please enter elevation"
-            },
             province: {
                 required: " Please enter province"
             },
