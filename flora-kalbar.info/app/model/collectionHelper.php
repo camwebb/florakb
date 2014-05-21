@@ -208,7 +208,7 @@ class collectionHelper extends Database {
 					if (!$sql) $failed = true;
 					// usleep(50);
 					$lastID = $this->insert_id();
-					logFile($update);
+					
 					$update = "UPDATE {$tmpTable[$i]} SET tmp_unique_key = '{$lastID}' WHERE 
 								unique_key = '{$unique[$val][$j]}' LIMIT 1";
 					// pr($update);
@@ -217,6 +217,8 @@ class collectionHelper extends Database {
 					
 					// pr($tmpTable[$i]);
 					if ($defineTable[$i] == 'taxon'){
+
+						if (!$lastID) echo "Taxon not complete"; exit;
 						$updateTaxon = "UPDATE tmp_plant SET tmp_taxon_key = '{$lastID}' WHERE 
 								det = '{$unique[$val][$j]}' ";
 						// pr($updateTaxon);
@@ -230,6 +232,7 @@ class collectionHelper extends Database {
 					}
 					
 					if ($defineTable[$i] == 'person'){
+						if (!$lastID) echo "Person not complete"; exit;
 						$updatePerson = "UPDATE tmp_plant SET tmp_person_key = '{$lastID}' WHERE 
 								obs_by = '{$unique[$val][$j]}' ";
 						// pr($updatePerson);
@@ -241,6 +244,7 @@ class collectionHelper extends Database {
 					}
 					
 					if ($defineTable[$i] == 'locn'){
+						if (!$lastID) echo "Location not complete"; exit;
 						$updateLocn = "UPDATE tmp_plant SET tmp_location_key = '{$lastID}' WHERE 
 								locn = '{$unique[$val][$j]}' ";
 						// pr($updateLocn);
