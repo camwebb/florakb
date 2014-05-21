@@ -77,9 +77,32 @@
             <td>{$dataIndiv['tag']}</td>
         </tr>
         {/foreach}
-        
+    </table>
+    <br />
+    
+    <table class="browse indiv">
         <tr>
-            <th>Dets</th>
+            <th style="-moz-border-radius: 6px 0 0 0;-webkit-border-radius: 6px 0 0 0;border-radius: 6px 0 0 0;width:100px;">Images</th>
+            <td>
+                {foreach $img as $dataImg}
+                {if $dataImg.md5sum}
+                    <a class="gallery" href="{$basedomain}public_assets/img/500px/{$dataImg.md5sum}.500px.jpg"><img src="{$basedomain}public_assets/img/100px/{$dataImg.md5sum}.100px.jpg" /></a>
+                {/if}
+                
+                {foreachelse}<i>No image available</i>
+                {/foreach}
+            </td>
+        </tr>
+    </table>
+    
+    <script type="text/javascript">
+        $('a.gallery').colorbox({ opacity:0.5 , rel:'groupIndiv' });
+    </script>
+    
+    <br />
+    <table class="browse indiv">    
+        <tr>
+            <th style="-moz-border-radius: 6px 0 0 0;-webkit-border-radius: 6px 0 0 0;border-radius: 6px 0 0 0;width:100px;">Determinant</th>
             <td>
                 {*foreach $det as $key=>$dataDet*}
                 {foreach from=$det key=myId item=dataDet}
@@ -95,7 +118,7 @@
                             <td></td>
                             <td><b>Date</b></td>
                             <td>:</td>
-                            <td>{$dataDet['det_date']}</td>
+                            <td>{$dataDet.det_date}</td>
                         </tr>
                         <tr>
                             <td></td>
@@ -107,7 +130,7 @@
                             <td></td>
                             <td><b>Confid</b></td>
                             <td>:</td>
-                            <td><i>{$dataDet['confid']}</i></td>
+                            <td><i>{$dataDet.confid}</i></td>
                         </tr>
                         <tr>
                             <td></td>

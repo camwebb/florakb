@@ -106,8 +106,13 @@ class browseHelper extends Database {
      * @todo retrieve all images from indiv data
      * @param $data = id indiv
      */
-    function showImgIndiv($data){
-        $sql = "SELECT * FROM `img` WHERE indivID='$data' LIMIT 0,5";
+    function showImgIndiv($data,$limit,$limitVal){
+        if($limit==TRUE){
+            $sql = "SELECT * FROM `img` WHERE indivID='$data' LIMIT $limitVal";
+        }
+        elseif($limit==FALSE){
+            $sql = "SELECT * FROM `img` WHERE indivID='$data'";
+        }
         $res = $this->fetch($sql,1);
         return $res;
     }

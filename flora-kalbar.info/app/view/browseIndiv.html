@@ -41,8 +41,9 @@
                 <td>{$dataIndiv['indiv']['name']}</td>
                 <td>
                     {foreach $dataIndiv['img'] as $img}
+                    {if $img['md5sum']}
                      <a class="gallery{$dataIndiv['indiv']['indivID']}" href="{$basedomain}public_assets/img/500px/{$img['md5sum']}.500px.jpg"><img src="{$basedomain}public_assets/img/100px/{$img['md5sum']}.100px.jpg" /></a>
-                     
+                     {/if}
                      {foreachelse}<i>No image available</i>
                         
                     {/foreach}

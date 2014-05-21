@@ -67,7 +67,7 @@ class browse extends Controller {
         $listAll = array();
         for($i=0;$i<count($getIndiv['result']);$i++){
             //Get indiv's 'images
-            $img = $this->browseHelper->showImgIndiv($getIndiv['result'][$i]['indivID']);
+            $img = $this->browseHelper->showImgIndiv($getIndiv['result'][$i]['indivID'],true,'0,5');
             $listAll[]= array('indiv'=>$getIndiv['result'][$i],'img'=>$img);
         }
         
@@ -94,6 +94,8 @@ class browse extends Controller {
         $indivDetail = $this->browseHelper->detailIndiv($indivID);
         //get determinant from selected indiv
         $indivDeterminant = $this->browseHelper->dataDetIndiv($indivID);
+        //get all images from indiv selected
+        $indivImages = $this->browseHelper->showImgIndiv($indivID,false,'s');
         
         if(empty($indivDetail)){
             $this->view->assign('noData','empty');
@@ -107,6 +109,7 @@ class browse extends Controller {
         
         $this->view->assign('indiv',$indivDetail);
         $this->view->assign('det',$indivDeterminant);
+        $this->view->assign('img',$indivImages);
         $ses_user = $this->isUserOnline();
         $this->view->assign('user', $ses_user); 
         return $this->loadView('browseIndivDetail');
