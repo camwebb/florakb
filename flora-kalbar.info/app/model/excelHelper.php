@@ -228,7 +228,6 @@ class excelHelper extends Database {
 								$t_data[] = "'$keyData'"; 
 								$t_dataraw[$keyField] = $keyData; 
 
-								$dataNotNull = false;
 								// if unique data field is empty do nothing
 								logFile('data field :'.$keyField.'='.$keyData);
 								if (in_array($keyField, $fieldNotNull)){
@@ -252,6 +251,7 @@ class excelHelper extends Database {
 
 					if (!in_array($key,$ignoreTable)){
 						$sql[$defineTable[$key]][] = "INSERT INTO {$defineTable[$key]} ({$tmpField}) VALUES ({$tmpData}) ON DUPLICATE KEY UPDATE {$update} , id=LAST_INSERT_ID(id)";
+						
 						// $sql[$defineTable[$key]][] = "REPLACE INTO {$defineTable[$key]} ({$tmpField}) VALUES ({$tmpData}) ";
 						
 						
@@ -274,6 +274,7 @@ class excelHelper extends Database {
 		$returnArr['rawdata'] = $arrTmp;
 		
 		// logFile(serialize($returnArr));
+		logFile(serialize($sql));
 		logFile('referenceData ready');
 		
 		return $returnArr;
@@ -335,7 +336,7 @@ class excelHelper extends Database {
 		$fieldConvert[5] = array('tmp_person_key'=>'personID','tmp_coll_key'=>'collID'); 
 		$fieldUnique[5] = array('unique_key');
 		
-		
+		$fieldNotNull = array('personID','indivID','taxonID'); //,'gen','sp','subtype','ssp','auth');
 		
 		$convert = $startconvert;
 		$dataKey = array();
@@ -414,6 +415,16 @@ class excelHelper extends Database {
 									$t_data[] = "'$keyData'"; 
 									$t_dataraw[$tmpkeyField] = $keyData; 
 									$tmpupdate[] = "`{$tmpkeyField}` = '$keyData'";
+
+									// if unique data field is empty do nothing
+									logFile('data field :'.$tmpkeyField.'='.$keyData);
+									if (in_array($tmpkeyField, $fieldNotNull)){
+										if ($keyData==""){
+											echo "$tmpkeyField not complete";
+										exit;
+										} 
+									}
+									
 								}
 								
 									
@@ -457,7 +468,7 @@ class excelHelper extends Database {
 		$returnArr['uniqkey'] = $dataKey;
 		$returnArr['rawdata'] = $arrTmp;
 		// pr($returnArr);
-		// logFile(serialize($returnArr));
+		logFile(serialize($sql));
 		logFile('parseMasterData success');
 		
 		return $returnArr;
