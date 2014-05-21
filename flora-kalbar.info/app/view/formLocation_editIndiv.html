@@ -53,16 +53,19 @@ $().ready(function() {
     $("#formLocation").validate({
         rules: {
             longitude: {
-                required: true
+                required: true,
+                Decimal: true
             },
             latitude: {
-                required: true
+                required: true,
+                Decimal: true
             },
 			locality: {
                 required: true
 			},
             elev: {
-                required: true
+                required: true,
+                number: true
             },
             province: {
                 required: true

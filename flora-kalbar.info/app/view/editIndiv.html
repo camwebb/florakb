@@ -22,6 +22,7 @@
                 <th>Location</th>
                 <td>
                     <select class="inputbox" name="locnID" id="locnID">
+                        <option value="">Choose Location</option>
                         {foreach from=$locn item=location}
                             <option id="{$location.id}" value="{$location.id}">{$location.locality}</option>
                         {/foreach}
@@ -108,7 +109,7 @@
                     
                     <div id="tableAddDet" style="display: none;">
                     <h2 class="title">Add Determinant</h2>
-                    <form id="formDet" method="POST" action="{$basedomain}browse/addDet/?id={$smarty.get.id}">
+                    <form id="formDet" method="POST" action="{$basedomain}browse/addDet/?id={$smarty.get.id}&&action=addDet">
                     <table id="addDet" class="det">
                         <tr>
                             <td class="detNumber"></td>
@@ -124,7 +125,16 @@
                                 <select class="inputbox" name="taxonID" id="taxonID">
                                     <option value="" selected="1">Choose a taxonomy</option>
                                     {foreach from=$taxon item=itemTaxon}
-                                        <option value="{$itemTaxon.id}">{$itemTaxon.sp}, {$itemTaxon.gen}, {$itemTaxon.fam}</option>
+                                        <option value="{$itemTaxon.id}">
+                                        {if $itemTaxon.gen}
+                                            {if $itemTaxon.fam}
+                                                ({$itemTaxon.fam})
+                                            {/if}
+                                            {$itemTaxon.gen} {$itemTaxon.sp}
+                                        {else}
+                                            {$itemTaxon.morphotype}
+                                        {/if}
+                                        </option>
                                     {/foreach}
                                 </select>
                                 <a href="#taxon-modal" class="btn" id="taxonPopup">Add</a>
@@ -206,13 +216,19 @@ $().ready(function() {
     
     $("#formEditIndiv").validate({
         rules: {
-			tag: {
+            tag: {
                 number: true
+            },
+            locnID: {
+                required: true
             }
 		},
 		messages: {
-			tag: {
-                number: "Please enter number"
+            tag: {
+                number: " Please enter number"
+            },
+            locnID: {
+                required: " Please choose location"
             }
 		}
     });
