@@ -173,8 +173,8 @@ class upload extends Controller {
 					if ($insertData){
 						logFile('Insert xls success');
 
-						// print json_encode(array('status'=>true, 'finish'=>true, 'msg'=>'Insert success  ('. execTime($startTime,$endTime).')'));
-						echo 'Insert success  ('. execTime($startTime,$endTime).')';	
+						print json_encode(array('status'=>true, 'finish'=>true, 'msg'=>'Insert success  ('. execTime($startTime,$endTime).')'));
+						// echo 'Insert success  ('. execTime($startTime,$endTime).')';	
 						
 						exit;
 					}else{

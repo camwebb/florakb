@@ -152,6 +152,8 @@
         },
         success : function(data) {      
             $(".progress").html('');
+
+            console.log(data);
             if(data.status){
                          
                      
@@ -175,6 +177,7 @@
                      
         }, 
         complete: function(xhr) {
+            
             $(".progress").html('');
             status.html(first_info + xhr.responseText + end);
         }
