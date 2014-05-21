@@ -232,7 +232,7 @@ class excelHelper extends Database {
 								// if unique data field is empty do nothing
 								logFile('data field :'.$keyField.'='.$keyData);
 								if (in_array($keyField, $fieldNotNull)){
-									if ($keyData!=""){
+									if ($keyData==""){
 										echo "$keyField not complete";
 									exit;
 									} 
