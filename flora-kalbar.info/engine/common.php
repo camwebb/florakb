@@ -346,7 +346,7 @@ function sftpServices($host="localhost", $user=false, $pass=false, $filename=fal
 
 	if ($sftpConfig['mode']=='1'){
 
-		$shellExec = "cd ".$CONFIG['default']['upload_path']." && sftp ".$user."@".$host.":".$pathFile.$filename;
+		$shellExec = "cd ".$CONFIG['default']['upload_path']." && sftp ".$user."@".$host.":".$pathFile;
 		logFile($shellExec);
 		exec($shellExec);
 
