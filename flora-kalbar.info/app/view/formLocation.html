@@ -51,9 +51,9 @@
 $().ready(function() {
     
     $("#formLocation").validate({
-        /*submitHandler: function(){
-            do_ajax("#formLocation", "onebyone/insertLocation");
-        },*/
+        submitHandler: function(form){
+            do_ajax(form);
+        },
         rules: {
             longitude: {
                 required: true,

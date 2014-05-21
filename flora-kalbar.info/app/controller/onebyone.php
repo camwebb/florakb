@@ -138,12 +138,22 @@ class onebyone extends Controller {
         $data = $_POST;
         $insertData = $this->insertonebyone->insertTransaction('locn',$data);
         
+        /*
+        //manual submission form
         if($insertData){
             $this->msg->add('s', 'Update Location Success');
         }else{
             $this->msg->add('e', 'Update Location Failed');
         }
-        header('Location: ../onebyone/indivContent');
+        header('Location: ../onebyone/indivContent');*/
+        
+        //ajax form
+        if($insertData){
+            echo 'success';
+        }else{
+            echo 'error';
+        }            
+        exit;
     }
     
     /**
