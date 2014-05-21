@@ -52,7 +52,7 @@ $().ready(function() {
     
     $("#formLocation").validate({
         submitHandler: function(form){
-            do_ajax(form);
+            do_ajax(form,"formLocation");
         },
         rules: {
             longitude: {

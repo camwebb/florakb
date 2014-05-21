@@ -147,9 +147,11 @@ class onebyone extends Controller {
         }
         header('Location: ../onebyone/indivContent');*/
         
+        $data['id'] = $insertData['lastid'];
+        
         //ajax form
         if($insertData){
-            echo 'success';
+            echo json_encode($data);
         }else{
             echo 'error';
         }            
