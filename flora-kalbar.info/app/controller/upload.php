@@ -26,10 +26,13 @@ class upload extends Controller {
 	
 	public function index(){
 
+
+		
+
 		$username = $this->user['login']['username'];
 		
-		logFile("", $username, true);
-		logFile("Begin upload", $username);
+		$this->log('surf','upload excel');
+		// logFile("Begin upload", $username);
 
 		return $this->loadView('upload');
 
@@ -75,7 +78,7 @@ class upload extends Controller {
 			
 			
 			if ($parseExcel){
-				logFile('Extract File ', $username);
+				// logFile('Extract File ', $username);
 				foreach ($parseExcel as $key => $val){
 					
 					$field = implode(',',$val['field_name']);
@@ -101,13 +104,16 @@ class upload extends Controller {
 					if ($emptyTmptable){
 						
 						logFile('empty tmp table before insert');
+
 						sleep(1);
 						$referenceQuery = $this->collectionHelper->tmp_data($newData);
+
+						logFile('store data from xls to tmp table');
 
 					}
 					// pr($newData);
 					
-					logFile('Preparing database ', $username);
+					// logFile('Preparing database ', $username);
 					$insertData = false;
 					// $referenceQuery = true;
 					if ($referenceQuery){
@@ -141,10 +147,11 @@ class upload extends Controller {
 						// pr($imgQuery);
 						if ($insertImage){
 
-							$this->logUploadUser($_FILES[$formName]['name']);
-							sleep(1);
+							// $this->logUploadUser($_FILES[$formName]['name']);
+							// sleep(1);
 							$this->collectionHelper->commitTransaction();
 							$insertData = true;
+
 						}else{
 							$this->collectionHelper->rollbackTransaction();
 						}
@@ -171,16 +178,17 @@ class upload extends Controller {
 					$endTime = microtime(true);
 					
 					if ($insertData){
+						sleep(1);
 						logFile('Insert xls success');
-
+						$this->log('upload','success upload xls');
 						print json_encode(array('status'=>true, 'finish'=>true, 'msg'=>'Insert success  ('. execTime($startTime,$endTime).')'));
 						// echo 'Insert success  ('. execTime($startTime,$endTime).')';	
 						
 						exit;
 					}else{
 						logFile('Insert xls failed');
-						echo 'Insert data failed';	
-						// print json_encode(array('status'=>false, 'msg'=>'Insert data failed'));
+						// echo 'Insert data failed';	
+						print json_encode(array('status'=>false, 'msg'=>'Insert data failed'));
 						exit;
 					} 
 					
@@ -189,8 +197,8 @@ class upload extends Controller {
 			}
 		}else{
 			logFile('File xls empty');
-			echo "File is empty";
-			// print json_encode(array('status'=>true, 'msg'=>'File is empty'));
+			// echo "File is empty";
+			print json_encode(array('status'=>true, 'msg'=>'File is empty'));
 		}
 		
 		

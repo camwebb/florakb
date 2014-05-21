@@ -35,6 +35,7 @@
     
     <div class="sidebar-2-right">
         <h2 class="title">Upload Excel :</h2>
+        <div id="status"></div>
         <a style="float: right;" class="btn" target="_blank" href="{$basedomain}template/spreadsheet.xls">Download Template</a>
         <form method="POST" action="{$basedomain}upload/parseExcel" enctype="multipart/form-data" id="uploadExcel">
             <table class="form-tbl">
@@ -57,7 +58,7 @@
             <div class="percent">0%</div >{/*}
         </div>
         
-        <div id="status"></div>
+        
 
     </div>
     
@@ -151,19 +152,17 @@
         $(".progress").html("Please wait ..."); 
                  
         },
-        success : function(data) {      
+        success : function(data) {}, 
+        complete: function(xhr) {
+            
             $(".progress").html('');
 
-            console.log(data);
-            if(data.status){
-                         
-                     
-                var htmlThanks ="";
-                htmlThanks = "<p class='postSucces'>"+data.msg+"</p>";
-                $(".progress").html(htmlThanks);
+            var resultExtract = JSON.parse(xhr.responseText);
+            if(resultExtract.status){
+                
+                status.html(first_success + resultExtract.msg + end);
 
-
-                if (data.finish){
+                if (resultExtract.finish){
                     
                     setTimeout(function(){
                         window.location.href=basedomain+'zip';
@@ -173,14 +172,11 @@
 
             }else{
 
-                $(".progress").html(data.msg);
+                status.html(first_error + resultExtract.msg + end);
             }
-                     
-        }, 
-        complete: function(xhr) {
-            
-            $(".progress").html('');
-            status.html(first_info + xhr.responseText + end);
+
+            // $(".progress").html('');
+            // status.html(first_info + xhr.responseText + end);
         }
     };                  
 

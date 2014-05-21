@@ -26,8 +26,16 @@ Scenario :
 
 class excelHelper extends Database {
 
-	var $configkey = "default";
 	
+	var $configkey = "default";
+	var $log;
+
+	function __construct()
+	{
+		$this->log = $GLOBALS['CODEKIR']['LOGS'];
+		// $this->log->logActivity('upload','load excel success');
+	}
+
 	function loadexcel($file=false)
 	{
 		error_reporting(E_ALL ^ E_NOTICE);
@@ -52,6 +60,7 @@ class excelHelper extends Database {
 			require_once ($excelEngine);
 			
 			$excel = new Spreadsheet_Excel_Reader($filename);
+
 			logFile('load excel success');
 		}else{
 			logFile('excel lib not found');
@@ -232,7 +241,7 @@ class excelHelper extends Database {
 								logFile('data field :'.$keyField.'='.$keyData);
 								if (in_array($keyField, $fieldNotNull)){
 									if ($keyData==""){
-										echo "$keyField not complete";
+										echo json_encode(array('status'=>false, 'msg'=>"Error ! $keyField data not complete"));
 									exit;
 									} 
 								}
@@ -408,7 +417,7 @@ class excelHelper extends Database {
 										logFile('data field :'.$tmpkeyField.'='.$keyData);
 										if (in_array($tmpkeyField, $fieldNotNull)){
 											if ($keyData==""){
-												echo "$b not complete";
+												echo json_encode(array('status'=>false, 'msg'=>"Error ! $b data not complete"));
 											exit;
 											} 
 										}
@@ -429,7 +438,7 @@ class excelHelper extends Database {
 									logFile('data field :'.$tmpkeyField.'='.$keyData);
 									if (in_array($tmpkeyField, $fieldNotNull)){
 										if ($keyData==""){
-											echo "$tmpkeyField not complete";
+											echo json_encode(array('status'=>false, 'msg'=> "Error ! $tmpkeyField data not complete"));
 										exit;
 										} 
 									}
@@ -454,7 +463,7 @@ class excelHelper extends Database {
 							logFile('data field :'.$tmpkeyField.'='.$keyData);
 							if (in_array($tmpkeyField, $fieldNotNull)){
 								if ($keyData==""){
-									echo "$b not complete";
+									echo json_encode(array('status'=>false, 'msg'=> "Error ! $b data not complete"));
 								exit;
 								} 
 							}

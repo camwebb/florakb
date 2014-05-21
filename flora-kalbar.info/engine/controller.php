@@ -10,7 +10,8 @@ class Controller extends Application{
 		parent::__construct();
 		
 		$this->loadModel('helper_model');
-		
+		$GLOBALS['CODEKIR']['LOGS'] = new helper_model;
+
 	}
 	
 	
@@ -241,6 +242,14 @@ class Controller extends Application{
 		$helper = $this->GETDB->getSidebar($table,$content, $type, $start, $limit);
 		if ($helper) return $helper;
 		return false;
+	}
+
+	function log($action='surf',$comment)
+	{
+		$getHelper = new helper_model;
+
+		$getHelper->logActivity($action,$comment);
+
 	}
 	
 }
