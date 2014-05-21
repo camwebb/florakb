@@ -1,10 +1,6 @@
 <form id="formTaxon" method="POST" action="{$basedomain}onebyone/insertTaxon">
     <table class="form-tbl">
         <tr>
-            <td><label for="rank">Rank</label></td>
-            <td><input class="inputbox" type="text" id="rank" name="rank" /></td>
-        </tr>
-        <tr>
             <td><label for="morphotype">Morphotype</label></td>
             <td><input class="inputbox" type="text" id="morphotype" name="morphotype" /></td>
         </tr>
@@ -47,9 +43,6 @@ $().ready(function() {
     
     $("#formTaxon").validate({
         rules: {
-			rank: {
-                required: true
-			},
             gen: {
                 required: function(element) {
                     return (!$("#morphotype").hasClass('valid'));
@@ -62,14 +55,11 @@ $().ready(function() {
             }
 		},
 		messages: {
-			rank: {
-                required: " Please enter rank"
-			},
             gen: {                            
-                required: " Please enter a genus or morphotype"
+                required: " Please enter genus and species or enter a morphotype"
             },
             sp: {
-                required: " Please enter a species or morphotype"
+                required: " Please enter genus and species or enter a morphotype"
             }
 		}
     });
