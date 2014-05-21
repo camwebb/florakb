@@ -150,7 +150,7 @@ class insertonebyone extends Database {
      * 
      * */
     function list_locn(){
-        $sql = "SELECT id, locality FROM locn ORDER BY locality";
+        $sql = "SELECT id, locality FROM locn GROUP BY locality ORDER BY locality";
 		$res = $this->fetch($sql,1);
         return $res;
     }
@@ -168,13 +168,13 @@ class insertonebyone extends Database {
     }
     
     /**
-     * @todo get list person
+     * @todo get list taxon
      * 
      * @return sql result
      * 
      * */
     function list_taxon(){
-        $sql = "SELECT * FROM taxon ORDER BY fam, gen, sp, morphotype";
+        $sql = "SELECT * FROM taxon GROUP BY fam, gen, sp, morphotype ORDER BY fam, gen, sp, morphotype";
 		$res = $this->fetch($sql,1);
         return $res;
     }

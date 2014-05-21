@@ -14,7 +14,9 @@
                 <select class="inputbox" name="locnID" id="locnID">
                     <option value="">Choose Location</option>
                     {foreach from=$locn item=location}
+                        {if $location.locality}
                         <option value="{$location.id}">{$location.locality}</option>
+                        {/if}
                     {/foreach}
                 </select>
             </td>
