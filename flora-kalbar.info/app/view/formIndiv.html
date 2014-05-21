@@ -1,11 +1,11 @@
 <form id="formIndiv" method="POST" action="{$basedomain}onebyone/insertIndiv">
     <table class="form-tbl">
         <tr>
-            <td><label for="">Plot</label></td>
+            <td><label for="">Plot/Set</label></td>
             <td><input class="inputbox" type="text" id="plot" name="plot" /></td>
         </tr>
         <tr>
-            <td><label for="">Tag</label></td>
+            <td><label for="">Tag/Serial number</label></td>
             <td><input class="inputbox" type="text" id="tag" name="tag" /></td>
         </tr>
         <tr>
@@ -71,10 +71,10 @@ $().ready(function() {
 		},
 		messages: {
 			plot: {
-                required: " Please enter plot"
+                required: " Please enter plot/set code"
 			},
             tag: {
-                required: " Please enter tag",
+                required: " Please enter tag or serial number",
                 number: "Please enter number"
             }
 		}

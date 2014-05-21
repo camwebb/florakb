@@ -10,7 +10,7 @@
     <div class="clear"></div>
     <br />
     
-    <h2 class="title">Edit Individu</h2>
+    <h2 class="title">Edit Individual plant</h2>
     <form id="formEditIndiv" method="POST" action="{$basedomain}browse/doEditIndiv/?id={$smarty.get.id}">
         <table class="browse indiv">
             {foreach $indiv as $dataIndiv}
@@ -58,7 +58,7 @@
     </form>
     <br />
     
-    <h2 class="title">Determinants</h2>
+    <h2 class="title">Identifications</h2>
     <table class="browse indiv">
         {/foreach}
         <tr>
@@ -87,13 +87,13 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td><b>Confid</b></td>
+                            <td><b>Confidence of identification</b></td>
                             <td>:</td>
                             <td>{$dataDet['confid']}</td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td><b>Using</b></td>
+                            <td><b>Using what resource?</b></td>
                             <td>:</td>
                             <td>{$dataDet['using']}</td>
                         </tr>
@@ -107,7 +107,7 @@
                     </table>
                     
                     <div id="tableAddDet" style="display: none;">
-                    <h2 class="title">Add Determinant</h2>
+                    <h2 class="title">Add Identification</h2>
                     <form id="formDet" method="POST" action="{$basedomain}browse/addDet/?id={$smarty.get.id}">
                     <table id="addDet" class="det">
                         <tr>
@@ -166,7 +166,7 @@
         </tr>
     </table>
     <br />
-    <a href="#addDeterminant" class="btn" id="addDet" style="float: right;">Add Determinant</a>
+    <a href="#addDeterminant" class="btn" id="addDet" style="float: right;">Add Identification</a>
     <div class="clear"></div>
     {/if}
 </div>

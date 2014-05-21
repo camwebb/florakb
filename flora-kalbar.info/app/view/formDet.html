@@ -1,9 +1,10 @@
 <form id="formDet" method="POST" action="{$basedomain}onebyone/insertDet">
     <table class="form-tbl">
         <tr>
-            <td><label for="">Conf id</label></td>
+            <td><label for="">Confidence of determination</label></td>
             <td>
                 <select class="inputbox" name="confid" id="confid">
+                  <option value="" selected="1">Choose a level of confidence</option>
                     {foreach from=$confid_enum item=enum}confid
                         <option value="{$enum}">{$enum}</option>
                     {/foreach}
@@ -11,7 +12,7 @@
             </td>
         </tr>
         <tr>
-            <td><label for="">Using</label></td>
+            <td><label for="">Using what resource?</label></td>
             <td><input class="inputbox" type="text" id="using" name="using" /></td>
         </tr>
         <tr>

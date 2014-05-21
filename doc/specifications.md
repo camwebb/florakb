@@ -22,10 +22,9 @@
 
 ### User page:
 
- 1. Zip files and name as... Upload with filezilla
- 2. Enter filename: [......] and [SUBMIT]
-    * get back report of image processing
- 3. Submit XLS file
+ 1. Submit XLS file
+ 2. Zip files and name as... Upload with filezilla
+ 3. Enter filename: [......] and [SUBMIT]
     * get back report of image processing
 
 ### Backend image processing:
