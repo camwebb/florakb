@@ -124,3 +124,18 @@ function hasExtension(inputID, exts) {
     var fileName = document.getElementById(inputID).value;
     return (new RegExp('(' + exts.join('|').replace(/\./g, '\\.') + ')$')).test(fileName);
 }
+
+function do_ajax(formID, link){
+    $(formID).submit(function(event) {
+        event.preventDefault();
+        
+        var result = $.ajax({
+            url: baseUrl+link,
+            type: "POST",
+            async: false,
+            data: $(this).serialize(),
+            success: function(output) {}
+        }).responseText;
+        console.log(result);
+    });
+}
