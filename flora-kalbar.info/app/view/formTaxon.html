@@ -42,6 +42,9 @@
 $().ready(function() {
     
     $("#formTaxon").validate({
+        submitHandler: function(form){
+            do_ajax(form,"formTaxon","#modal-taxon", "Taxon");
+        },
         rules: {
             gen: {
                 required: function(element) {

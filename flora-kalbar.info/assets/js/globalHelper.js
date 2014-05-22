@@ -125,7 +125,7 @@ function hasExtension(inputID, exts) {
     return (new RegExp('(' + exts.join('|').replace(/\./g, '\\.') + ')$')).test(fileName);
 }
 
-function do_ajax(form, formID){
+function do_ajax(form, formID, modalID, msgFormat){
     var first_error = '<div class="messages erroren"><a href="#" class="closeMessage"></a><p>';
     var first_info = '<div class="messages info"><a href="#" class="closeMessage"></a><p>';
     var first_success = '<div class="messages success"><a href="#" class="closeMessage"></a><p>';
@@ -133,23 +133,44 @@ function do_ajax(form, formID){
     var end = '</p></div>';
     var msg = ".msg";
     
-    console.log(form);
     $(form).ajaxSubmit(function(output){
         var data = JSON.parse(output);
         console.log(data);
-        $(".message").html('');
-        if(data != 'error'){
-            $(msg).html(first_success + 'Update Location Success' + end);
-            $("#modal-location").fadeOut();
+        $(".messages").remove();
+        
+        $(modalID).fadeOut();
+        if(data.status == 'success'){
+            $(msg).html(first_success + 'Update ' + msgFormat + ' Success' + end);
             
             if(formID == 'formLocation'){
                 $("#locnID").find('option').removeAttr('selected');
+                $("#locnID").removeClass('error');
                 $("#locnID").append('<option value="'+ data.id +'" selected>'+ data.locality +'</option>');
             }
             
+            if(formID == 'formPerson'){
+                $("#personID").find('option').removeAttr('selected');
+                $("#personID").removeClass('error');
+                $("#personID").append('<option value="'+ data.id +'" selected>'+ data.name + ', ' + data.email +'</option>');
+            }
+            
+            if(formID == 'formTaxon'){
+                $("#taxonID").find('option').removeAttr('selected');
+                $("#taxonID").removeClass('error');
+                
+                if(data.gen != ''){
+                    if(data.fam){
+                        $("#taxonID").append('<option value="'+ data.id +'" selected>'+ '(' + data.fam + ')' + data.gen + data.sp +'</option>');
+                    }else{
+                        $("#taxonID").append('<option value="'+ data.id +'" selected>'+ data.gen + data.sp +'</option>');
+                    }
+                }else{
+                    $("#taxonID").append('<option value="'+ data.id +'" selected>'+ data.morphotype +'</option>');
+                }
+            }
+            
         }else{
-            $("#modal-location").fadeOut();
-            $(msg).html(first_error + 'Update Location Failed' + end);
+            $(msg).html(first_error + 'Update ' + msgFormat + ' Failed' + end);
         }
     });
 }

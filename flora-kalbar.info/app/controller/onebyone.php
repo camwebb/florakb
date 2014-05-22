@@ -123,12 +123,25 @@ class onebyone extends Controller {
         $data = $_POST;
         $insertData = $this->insertonebyone->insertTransaction('person',$data);
         
-        if($insertData){
+        //manual submission form
+        /*if($insertData){
             $this->msg->add('s', 'Update Person Success');
         }else{
             $this->msg->add('e', 'Update Person Failed');
         }
-        header('Location: ../onebyone/detContent');
+        header('Location: ../onebyone/detContent');*/
+        
+        $data['id'] = $insertData['lastid'];
+        
+        //ajax form
+        if($insertData){
+            $data['status'] = 'success';
+            echo json_encode($data);
+        }else{
+            $data['status'] = 'error';
+            echo json_encode($data);
+        }
+        exit;
     }
     
     /**
@@ -151,10 +164,12 @@ class onebyone extends Controller {
         
         //ajax form
         if($insertData){
+            $data['status'] = 'success';
             echo json_encode($data);
         }else{
-            echo 'error';
-        }            
+            $data['status'] = 'error';
+            echo json_encode($data);
+        }
         exit;
     }
     
@@ -218,12 +233,25 @@ class onebyone extends Controller {
         $data = $_POST;
         $insertData = $this->insertonebyone->insertTransaction('taxon',$data);
         
-        if($insertData){
+        //manual submission form
+        /*if($insertData){
             $this->msg->add('s', 'Update Taxon Success');
         }else{
             $this->msg->add('e', 'Update Taxon Failed');
         }
-        header('Location: ../onebyone/detContent');
+        header('Location: ../onebyone/detContent');*/
+        
+        $data['id'] = $insertData['lastid'];
+        
+        //ajax form
+        if($insertData){
+            $data['status'] = 'success';
+            echo json_encode($data);
+        }else{
+            $data['status'] = 'error';
+            echo json_encode($data);
+        }
+        exit;
     }
     
     /**

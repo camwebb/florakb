@@ -43,6 +43,9 @@
 $().ready(function() {
     
     $("#formPerson").validate({
+        submitHandler: function(form){
+            do_ajax(form,"formPerson","#modal-person", "Person");
+        },
         rules: {
 			name: {
                 required: true,
