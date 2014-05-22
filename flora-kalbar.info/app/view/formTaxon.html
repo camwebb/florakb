@@ -18,7 +18,14 @@
         </tr>
         <tr>
             <td><label for="subtype">Subtype</label></td>
-            <td><input class="inputbox" type="text" id="subtype" name="subtype" /></td>
+            <td>
+                <select class="inputbox" name="subtype" id="subtype">
+                    <option value="" selected="1">Choose a subtype</option>
+                    {foreach from=$subtype_enum item=enum}confid
+                        <option value="{$enum}">{$enum}</option>
+                    {/foreach}
+                </select>
+            </td>
         </tr>
         <tr>
             <td><label for="ssp">Sub Species</label></td>

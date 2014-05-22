@@ -93,6 +93,10 @@ class onebyone extends Controller {
         $confid_enum = $this->insertonebyone->get_enum('det','confid');
         $this->view->assign('confid_enum', $confid_enum);
         
+        //get list enum subtype
+        $subtype_enum = $this->insertonebyone->get_enum('taxon','subtype');
+        $this->view->assign('subtype_enum', $subtype_enum);
+        
         return $this->loadView('formContentDet');
     }
     
