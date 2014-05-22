@@ -53,7 +53,7 @@ class loginHelper extends Database {
             $dataPhone = "'".$data['phone']."'";
         }
         
-		$sql = "INSERT INTO person (name, email, twitter, website, phone) VALUES ({$data['name']}','{$data['email']}',$dataTwitter,$dataWeb,$dataPhone)";
+		$sql = "INSERT INTO person (name, email, twitter, website, phone) VALUES ('{$data['name']}','{$data['email']}',$dataTwitter,$dataWeb,$dataPhone)";
 		$res = $this->query($sql,0);
         
         $getID = "SELECT id from person WHERE email= '".$data['email']."' ";
