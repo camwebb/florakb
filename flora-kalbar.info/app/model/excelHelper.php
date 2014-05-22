@@ -237,6 +237,7 @@ class excelHelper extends Database {
 								$t_data[] = "'$keyData'"; 
 								$t_dataraw[$keyField] = $keyData; 
 
+
 								// if unique data field is empty do nothing
 								logFile('data field :'.$keyField.'='.$keyData);
 								if (in_array($keyField, $fieldNotNull)){
@@ -253,6 +254,17 @@ class excelHelper extends Database {
 						
 					}
 					
+					if ($defineTable[$key]=='person'){
+						$t_field[] = 'institutions';
+						$t_field[] = 'project';
+						$t_data[] = "'comunity kalbar'"; 
+						$t_data[] = "'Peer Project USAID-Harvard-UG-Surya Flora kalbar'"; 
+
+						$tmpupdate[] = "`institutions` = 'comunity kalbar'";
+						$tmpupdate[] = "`project` = 'Peer Project USAID-Harvard-UG-Surya Flora kalbar'";
+					}
+						
+
 					// generate query
 					$tmpField = implode(',',$t_field); 
 					$tmpData = implode(',',$t_data); 
@@ -500,7 +512,7 @@ class excelHelper extends Database {
 		return $returnArr;
 	}
 	
-	// validate field input from coll_conf.php
+	// validate field input and clean data from coll_conf.php
 	function validateField($defineTable=false, $keyField=false, $v=false)
 	{
 		global $C_SPEC;
@@ -509,7 +521,7 @@ class excelHelper extends Database {
 		if (!$defineTable && !$keyField && !$v) return false;
 		
 		$libsDefine = $C_SPEC[$defineTable][$keyField];
-		$cleanData = addslashes($v);
+		$cleanData = htmlentities($v, ENT_QUOTES);
 		if ($libsDefine){
 			list ($type, $length) = explode(',',$libsDefine);
 			
