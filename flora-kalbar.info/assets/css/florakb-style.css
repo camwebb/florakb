@@ -241,12 +241,15 @@ nav #nav-box #menu ul{
             padding: 0px;
             width: 100%;
 }
-nav #nav-box #menu li{
+nav #nav-box #menu ul li{
             float: left;
             text-align: center;
     
 }
-nav #nav-box #menu li a{
+nav #nav-box #menu ul li:hover > ul {
+		display: block;
+	}
+nav #nav-box #menu ul li a{
             padding: 0 15px;
             margin-right: 5px;
             color: #FFFFFF;
@@ -261,6 +264,30 @@ nav #nav-box #menu li a{
             -o-transition: background 350ms ease-in-out;
             transition: background 350ms ease-in-out;
 }
+
+nav #nav-box #menu ul ul {
+    display: none;
+	background: #303030; 
+    border-radius: 0px; 
+    padding: 0;
+	position: absolute; 
+    margin:0;
+    width: 145px;
+}
+	nav #nav-box #menu ul ul li {
+		float: none; 
+		border-top: 1px solid #00adbb;
+		border-bottom: 1px solid #00adbb;
+		position: relative;
+        margin:0;
+	}
+		nav #nav-box #menu ul ul li a {
+			color: #fff;
+            margin:0;
+		}	
+			nav #nav-box #menu ul ul li a:hover {
+				background: #4b545f;
+			}
 
 nav #nav-box #menu li.selected a{
             color: #00adbb;

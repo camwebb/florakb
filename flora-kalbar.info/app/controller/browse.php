@@ -26,8 +26,11 @@ class browse extends Controller {
         
     }
     
-    function data(){
-        
+    /**
+     * @todo show all taxon
+     * 
+     */
+    function dataTaxon(){
         $listAll = array();
         
         //Get all data taxon
@@ -49,21 +52,79 @@ class browse extends Controller {
         $this->view->assign('pageno',$taxon['pageno']);
         $this->view->assign('lastpage',$taxon['lastpage']);
         $this->view->assign('data',$listAll);
-        return $this->loadView('browse');
+        return $this->loadView('browseTaxon');
     }
     
     /**
-     * @todo show all indiv from selected taxon
+     * @todo show all location
+     * 
+     */
+    function dataLocation(){
+        $listAll = array();
+        
+        //Get all data location
+        $location = $this->browseHelper->dataLocation(false,'','');
+        
+        if(empty($location)){
+            $this->view->assign('noData','empty');
+        }
+        else{
+            $this->view->assign('noData','data existed');
+        }
+        
+        $this->view->assign('pageno',$location['pageno']);
+        $this->view->assign('lastpage',$location['lastpage']);
+        $this->view->assign('result',$location['result']);
+        return $this->loadView('browseLocation');
+    }
+    
+    /**
+     * @todo show all person
+     * 
+     */
+    function dataPerson(){
+        $listAll = array();
+        
+        //Get all data person
+        $person = $this->browseHelper->dataPerson(false,'','');
+        
+        if(empty($person)){
+            $this->view->assign('noData','empty');
+        }
+        else{
+            $this->view->assign('noData','data existed');
+        }
+        
+        $this->view->assign('pageno',$person['pageno']);
+        $this->view->assign('lastpage',$person['lastpage']);
+        $this->view->assign('result',$person['result']);
+        return $this->loadView('browsePerson');
+    }
+    
+    /**
+     * @todo show all indiv from selected taxon/location/person
      * 
      */
     function indiv(){
-        $taxonID = $_GET['id'];
-        //get taxon name
-        $taxonName = $this->browseHelper->dataTaxon(true,'id',$taxonID);
+        $id = $_GET['id'];
+        $action = $_GET['action'];
         
-        //get data indiv
-        $getIndiv = $this->browseHelper->dataIndiv($taxonID);
-        
+        if($action=='indivTaxon'){
+            //get taxon name
+            $title = $this->browseHelper->dataTaxon(true,'id',$id);
+            //get data indiv
+            $getIndiv = $this->browseHelper->dataIndiv($action,'taxonID',$id);
+        }
+        if($action=='indivLocn'){
+            $title='';
+            //get data indiv
+            $getIndiv = $this->browseHelper->dataIndiv($action,'locnID',$id);
+        }
+        if($action=='indivPerson'){
+            $title='';
+            //get data indiv
+            $getIndiv = $this->browseHelper->dataIndiv($action,'personID',$id);
+        }
         $listAll = array();
         for($i=0;$i<count($getIndiv['result']);$i++){
             //Get indiv's 'images
@@ -79,7 +140,7 @@ class browse extends Controller {
         }
         $this->view->assign('pageno',$getIndiv['pageno']);
         $this->view->assign('lastpage',$getIndiv['lastpage']);        
-        $this->view->assign('taxonName',$taxonName);
+        $this->view->assign('title',$title);
         $this->view->assign('data',$listAll);
         return $this->loadView('browseIndiv');
     }

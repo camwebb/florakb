@@ -5,8 +5,11 @@
     <div class="clear"></div>
     <br />
     
-    {foreach $taxonName as $title}
-        <h2 class="title">{$title['sp']}</h2>
+    {foreach $title as $dataTitle}
+        {if $dataTitle eq ''}
+            
+        {else}<h2 class="title">{$dataTitle['sp']}</h2>
+        {/if}
     {/foreach}
     
     {if $noData eq 'empty'}
@@ -61,22 +64,25 @@
     {/if}
     
     <br />
+    {if $noData eq 'empty'}
+    {else}
     <div align="center">
         {if $pageno eq '1'}
             <button class="btn btn-pagination">FIRST</button> <button class="btn">PREV</button>
         {else}
-            <a href='{$basedomain}browse/indiv/?id={$smarty.get.id}&&pageno=1' class="btn btn-pagination">FIRST</a>
+            <a href='{$basedomain}browse/indiv/?id={$smarty.get.id}&&action={$smarty.get.action}&&pageno=1' class="btn btn-pagination">FIRST</a>
             {$prevpage = $pageno-1}
-            <a href='{$basedomain}browse/indiv/?id={$smarty.get.id}&&pageno={$prevpage}' class="btn btn-pagination">PREV</a>
+            <a href='{$basedomain}browse/indiv/?id={$smarty.get.id}&&action={$smarty.get.action}&&pageno={$prevpage}' class="btn btn-pagination">PREV</a>
         {/if}
         Page {$pageno} of {$lastpage}
         {if $pageno eq $lastpage}
             <button class="btn btn-pagination">NEXT</button> <button class="btn btn-pagination">LAST</button>
         {else}
             {$nextpage = $pageno+1}
-            <a href='{$basedomain}browse/indiv/?id={$smarty.get.id}&&pageno={$nextpage}' class="btn btn-pagination">NEXT</a>
-            <a href='{$basedomain}browse/indiv/?id={$smarty.get.id}&&pageno={$lastpage}' class="btn btn-pagination">LAST</a>
+            <a href='{$basedomain}browse/indiv/?id={$smarty.get.id}&&action={$smarty.get.action}&&pageno={$nextpage}' class="btn btn-pagination">NEXT</a>
+            <a href='{$basedomain}browse/indiv/?id={$smarty.get.id}&&action={$smarty.get.action}&&pageno={$lastpage}' class="btn btn-pagination">LAST</a>
         {/if}
+    {/if}
     </div>
     
 </div>

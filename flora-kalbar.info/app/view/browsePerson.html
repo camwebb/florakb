@@ -1,0 +1,75 @@
+<div class="content">    
+    <h2 class="title">Browse Data Person</h2>
+    
+    {if $noData eq 'empty'}
+        <div class="btn-back">
+            <a href="#" onClick="history.back();return false;"><span>Back</span></a>
+        </div>
+        <div class="clear"></div>
+        <br />
+        <i>No data available</i>
+    {else}
+    <div id="search">  
+        <form role="form" action="{$basedomain}browse/search/" method="GET">
+            <div class="search-box">
+              <input type="text" placeholder="Search" name="search" />
+              <input class="btn-search" type="submit" value="Search" />
+              
+            </div>
+        </form>
+    </div>
+    <div class="clear"></div> 
+    
+    <table class="browse">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Twitter</th>
+                <th>Website</th>
+                <th>Phone</th>
+                <th>Institution</th>
+                <th>Project</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            {foreach $result as $dataPerson}
+            <tr>
+                <td>{$dataPerson.name}</td>
+                <td>{$dataPerson.email}</td>
+                <td>{$dataPerson.twitter}</td>
+                <td>{$dataPerson.website}</td>
+                <td>{$dataPerson.phone}</td>
+                <td>{$dataPerson.institutions}</td>
+                <td>{$dataPerson.project}</td>
+                <td><a href="{$basedomain}browse/indiv/?id={$dataPerson.id}&&action=indivPerson" class="btn">Detail</a></td>
+            </tr>
+            {/foreach}
+        </tbody>
+    </table>
+    {/if}
+    
+    <br />
+    {if $noData eq 'empty'}
+    {else}
+    <div align="center">
+        {if $pageno eq '1'}
+            <button class="btn btn-pagination">FIRST</button> <button class="btn">PREV</button>
+        {else}
+            <a href='{$basedomain}browse/dataPerson/?pageno=1' class="btn btn-pagination">FIRST</a>
+            {$prevpage = $pageno-1}
+            <a href='{$basedomain}browse/dataPerson/?pageno={$prevpage}' class="btn btn-pagination">PREV</a>
+        {/if}
+        Page {$pageno} of {$lastpage}
+        {if $pageno eq $lastpage}
+            <button class="btn btn-pagination">NEXT</button> <button class="btn btn-pagination">LAST</button>
+        {else}
+            {$nextpage = $pageno+1}
+            <a href='{$basedomain}browse/dataPerson/?pageno={$nextpage}' class="btn btn-pagination">NEXT</a>
+            <a href='{$basedomain}browse/dataPerson/?pageno={$lastpage}' class="btn btn-pagination">LAST</a>
+        {/if}
+    {/if}
+    </div>
+</div>

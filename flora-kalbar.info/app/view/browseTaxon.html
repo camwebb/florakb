@@ -1,5 +1,5 @@
 <div class="content">    
-    <h2 class="title">Browse Data</h2>
+    <h2 class="title">Browse Data Taxon</h2>
     
     {if $noData eq 'empty'}
         <div class="btn-back">
@@ -46,7 +46,7 @@
                      {foreachelse}<i>No image available</i>
                     {/foreach}
                 </td>
-                <td><a href="{$basedomain}browse/indiv/?id={$dataTaxon['taxon']['id']}" class="btn">Detail</a></td>
+                <td><a href="{$basedomain}browse/indiv/?id={$dataTaxon['taxon']['id']}&&action=indivTaxon" class="btn">Detail</a></td>
             </tr>
             <script type="text/javascript">
             var a = "{$dataTaxon['taxon']['id']}";
@@ -60,21 +60,26 @@
     {/if}
     
     <br />
+    
+    {if $noData eq 'empty'}
+    {else}
+    
     <div align="center">
         {if $pageno eq '1'}
             <button class="btn btn-pagination">FIRST</button> <button class="btn">PREV</button>
         {else}
-            <a href='{$basedomain}browse/data/?pageno=1' class="btn btn-pagination">FIRST</a>
+            <a href='{$basedomain}browse/dataTaxon/?pageno=1' class="btn btn-pagination">FIRST</a>
             {$prevpage = $pageno-1}
-            <a href='{$basedomain}browse/data/?pageno={$prevpage}' class="btn btn-pagination">PREV</a>
+            <a href='{$basedomain}browse/dataTaxon/?pageno={$prevpage}' class="btn btn-pagination">PREV</a>
         {/if}
         Page {$pageno} of {$lastpage}
         {if $pageno eq $lastpage}
             <button class="btn btn-pagination">NEXT</button> <button class="btn btn-pagination">LAST</button>
         {else}
             {$nextpage = $pageno+1}
-            <a href='{$basedomain}browse/data/?pageno={$nextpage}' class="btn btn-pagination">NEXT</a>
-            <a href='{$basedomain}browse/data/?pageno={$lastpage}' class="btn btn-pagination">LAST</a>
+            <a href='{$basedomain}browse/dataTaxon/?pageno={$nextpage}' class="btn btn-pagination">NEXT</a>
+            <a href='{$basedomain}browse/dataTaxon/?pageno={$lastpage}' class="btn btn-pagination">LAST</a>
         {/if}
+    {/if}
     </div>
 </div>

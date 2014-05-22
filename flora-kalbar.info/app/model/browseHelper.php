@@ -42,8 +42,9 @@ class browseHelper extends Database {
                 $return['result'] = $resLimit;
                 $return['pageno'] = $pageno;
                 $return['lastpage'] = $lastpage;
+                return $return;
             }
-            return $return;
+            else{return false;}
         }
     }
     
@@ -65,15 +66,36 @@ class browseHelper extends Database {
      * @param $data=id taxon
      * @return 
      */
-    function dataIndiv($data){
-        $sql = "SELECT * 
-                FROM `det` INNER JOIN `indiv` ON 
-                    det.taxonID='$data' AND det.indivID=indiv.id
-                INNER JOIN `person` ON
-                    indiv.personID=person.id
-                INNER JOIN `locn` ON
-                    locn.id=indiv.locnID
-                GROUP BY det.indivID";
+    function dataIndiv($action,$field,$value){
+        if($action=='indivTaxon'){
+            $sql = "SELECT * 
+                    FROM `det` INNER JOIN `indiv` ON 
+                        det.$field='$value' AND det.indivID=indiv.id
+                    INNER JOIN `person` ON
+                        indiv.personID=person.id
+                    INNER JOIN `locn` ON
+                        locn.id=indiv.locnID
+                    GROUP BY det.indivID";
+        }
+        
+        if($action=='indivLocn'){
+            $sql = "SELECT indiv.id as indivID, indiv.locnID, indiv.plot, indiv.tag, indiv.personID, locn.*, person.*
+                    FROM `indiv` INNER JOIN `locn` ON 
+                        $value=indiv.locnID
+                    INNER JOIN `person` ON
+                        indiv.personID=person.id
+                    GROUP BY indiv.id";
+        }
+        
+        if($action=='indivPerson'){
+            $sql = "SELECT indiv.id as indivID, indiv.locnID, indiv.plot, indiv.tag, indiv.personID, locn.*, person.*
+                    FROM `indiv` INNER JOIN `locn` ON 
+                        $value=indiv.personID
+                    INNER JOIN `person` ON
+                        $value=person.id
+                    GROUP BY indiv.id";
+        }
+        
         $res = $this->fetch($sql,1);
         
         //PAGINATION
@@ -98,8 +120,101 @@ class browseHelper extends Database {
                 $return['result'] = $resLimit;
                 $return['pageno'] = $pageno;
                 $return['lastpage'] = $lastpage;
+                return $return;
             }
-            return $return;
+            else{return false;}
+    }
+    
+    /**
+     * @todo retrieve all data from table Location
+     * 
+     * @param $condition = true/false
+     * @param $field = field name
+     * @param $value = value
+     * @return id, rank, morphotype, fam, gen, sp, subtype, ssp, auth, notes
+     */
+    function dataLocation($condition,$field,$value){
+        if($condition==true){
+            $sql = "SELECT * FROM `locn` WHERE $field='$value'";
+            $res = $this->fetch($sql,1);
+            return $res;
+        }
+        elseif($condition==false){
+            $sql = "SELECT * FROM `locn`";
+            $res = $this->fetch($sql,1);
+            
+            //PAGINATION
+            if (isset($_GET['pageno'])) {
+               $pageno = $_GET['pageno'];
+            } else {
+               $pageno = 1;
+            } // if
+            $rows_per_page = 10;
+            $lastpage      = ceil(count($res)/$rows_per_page);
+            $pageno = (int)$pageno;
+            if ($pageno > $lastpage) {
+               $pageno = $lastpage;
+            } // if
+            if ($pageno < 1) {
+               $pageno = 1;
+            } // if
+            $limit = 'LIMIT ' .($pageno - 1) * $rows_per_page .',' .$rows_per_page;
+            $sqlLimit = $sql.' '.$limit;
+            $resLimit = $this->fetch($sqlLimit,1);
+            if($resLimit){
+                $return['result'] = $resLimit;
+                $return['pageno'] = $pageno;
+                $return['lastpage'] = $lastpage;
+                return $return;
+            }
+            else{return false;}
+        }
+    }
+    
+    /**
+     * @todo retrieve all data from table person
+     * 
+     * @param $condition = true/false
+     * @param $field = field name
+     * @param $value = value
+     * @return id, rank, morphotype, fam, gen, sp, subtype, ssp, auth, notes
+     */
+    function dataPerson($condition,$field,$value){
+        if($condition==true){
+            $sql = "SELECT * FROM `person` WHERE $field='$value'";
+            $res = $this->fetch($sql,1);
+            return $res;
+        }
+        elseif($condition==false){
+            $sql = "SELECT * FROM `person`";
+            $res = $this->fetch($sql,1);
+            
+            //PAGINATION
+            if (isset($_GET['pageno'])) {
+               $pageno = $_GET['pageno'];
+            } else {
+               $pageno = 1;
+            } // if
+            $rows_per_page = 10;
+            $lastpage      = ceil(count($res)/$rows_per_page);
+            $pageno = (int)$pageno;
+            if ($pageno > $lastpage) {
+               $pageno = $lastpage;
+            } // if
+            if ($pageno < 1) {
+               $pageno = 1;
+            } // if
+            $limit = 'LIMIT ' .($pageno - 1) * $rows_per_page .',' .$rows_per_page;
+            $sqlLimit = $sql.' '.$limit;
+            $resLimit = $this->fetch($sqlLimit,1);
+            if($resLimit){
+                $return['result'] = $resLimit;
+                $return['pageno'] = $pageno;
+                $return['lastpage'] = $lastpage;
+                return $return;
+            }
+            else{return false;}
+        }
     }
     
     /**
