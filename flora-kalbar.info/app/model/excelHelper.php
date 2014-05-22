@@ -121,6 +121,9 @@ class excelHelper extends Database {
 					}
 					
 				}
+			}else{
+				echo json_encode(array('status'=>false, 'msg'=>"Error ! File not allowed"));
+				exit;
 			}
 			
 			logFile('parse data excel success, data= '. serialize($data));
@@ -142,6 +145,11 @@ class excelHelper extends Database {
 				
 				}
 				logFile('clean data');
+			}else{
+
+				echo json_encode(array('status'=>false, 'msg'=>"Error ! no data"));
+				exit;
+			
 			}
 			
 			return $newData;
