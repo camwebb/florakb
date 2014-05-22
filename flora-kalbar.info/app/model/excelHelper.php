@@ -192,8 +192,8 @@ class excelHelper extends Database {
 		$fieldUnique[4] = array('tmp_unique_key'); 
 		
 		$fieldIgnoreUpdateOnDuplicate = array('name','email'); //,'gen','sp','subtype','ssp','auth');
-		$fieldNotNull = array('personID','indivID','taxonID'); //,'gen','sp','subtype','ssp','auth');
-
+		$fieldNotNull = array('personID','indivID','taxonID','subtype'); //,'gen','sp','subtype','ssp','auth');
+		$fieldIgnoreEnum = array('subtype');
 		$convert = 1;
 		foreach ($newData as $key => $values){
 			
@@ -244,11 +244,13 @@ class excelHelper extends Database {
 								if ($keyData) $uniqueKey = $keyData;
 								
 							}else{
+
+								
 								$t_field[] = $keyField;
 								$t_data[] = "'$keyData'"; 
 								$t_dataraw[$keyField] = $keyData; 
-
-
+								
+								
 								// if unique data field is empty do nothing
 								logFile('data field :'.$keyField.'='.$keyData);
 								if (in_array($keyField, $fieldNotNull)){
@@ -257,6 +259,9 @@ class excelHelper extends Database {
 									exit;
 									} 
 								}
+
+								
+
 								// if unique key dont update
 								if (!in_array($keyField, $fieldIgnoreUpdateOnDuplicate))$tmpupdate[] = "`$keyField` = '$keyData'";
 							}
@@ -275,6 +280,8 @@ class excelHelper extends Database {
 						$tmpupdate[] = "`project` = 'Peer Project USAID-Harvard-UG-Surya Flora kalbar'";
 					}
 						
+
+
 
 					// generate query
 					$tmpField = implode(',',$t_field); 
