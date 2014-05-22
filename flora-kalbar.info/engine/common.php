@@ -241,7 +241,7 @@ function s_linux_unzip($file, $path_extract){
 
     //extract and delete zip file             
     shell_exec("unzip -jo $file  -d $path_extract");
-    unlink($file);
+    //unlink($file);
     return true;
 }
 
@@ -320,7 +320,7 @@ function logFile($comment, $fileName=false, $method=false)
 	fclose($handle);
 }
 
-function sftpServices($host="localhost", $user=false, $pass=false, $filename=false, $singleAccount=true)
+function sftpServices($host="localhost", $user=false, $pass=false, $filename=false, $singleAccount=false)
 {
 
 	global $CONFIG, $sftpConfig;
@@ -375,6 +375,7 @@ function sftpServices($host="localhost", $user=false, $pass=false, $filename=fal
 
 	$sftp = ssh2_sftp($connection);
 
+	
 	if (ssh2_scp_recv($connection, $pathFile, $CONFIG['default']['upload_path'].$filename)){
 
 		logFile('sftp move file to tmp');
@@ -383,7 +384,9 @@ function sftpServices($host="localhost", $user=false, $pass=false, $filename=fal
 		return false;
 	}
 
-	unlink($pathFile);
+	// ssh2_scp_recv($connection, $pathFile, $CONFIG['default']['upload_path'].$filename);
+	logFile('source='.$pathFile.' target='.$CONFIG['default']['upload_path'].$filename);
+	// unlink($pathFile);
 	logFile('delete current file');
 
 	return true;

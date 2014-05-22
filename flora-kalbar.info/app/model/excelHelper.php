@@ -151,7 +151,7 @@ class excelHelper extends Database {
 				exit;
 			
 			}
-			
+			// pr($newData);
 			return $newData;
 			
 		
@@ -375,7 +375,7 @@ class excelHelper extends Database {
 		$fieldConvert[5] = array('tmp_person_key'=>'personID','tmp_coll_key'=>'collID'); 
 		$fieldUnique[5] = array('unique_key');
 		
-		$fieldNotNull = array('personID','indivID','taxonID'); //,'gen','sp','subtype','ssp','auth');
+		$fieldNotNull = array('personID','indivID','taxonID','locnID'); //,'gen','sp','subtype','ssp','auth');
 		
 		$convert = $startconvert;
 		$dataKey = array();
@@ -460,7 +460,23 @@ class excelHelper extends Database {
 									}
 									
 									$t_field[] = $tmpkeyField;
-									$t_data[] = "'$keyData'"; 
+									
+									if (in_array($tmpkeyField, array('dbh','height'))){
+										if ($tmpkeyField=='dbh'){
+											if ($keyData !='')$t_data[] = "'$keyData'"; 
+											else $t_data[] = "0.0"; 
+										}
+										
+										if ($tmpkeyField=='height'){
+											if ($keyData !='')$t_data[] = "'$keyData'"; 
+											else $t_data[] = "0.00"; 
+										}
+									}else{
+										$t_data[] = "'$keyData'"; 
+									}
+
+									
+
 									$t_dataraw[$tmpkeyField] = $keyData; 
 									$tmpupdate[] = "`{$tmpkeyField}` = '$keyData'";
 
