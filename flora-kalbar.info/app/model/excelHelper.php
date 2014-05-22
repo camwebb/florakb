@@ -29,11 +29,14 @@ class excelHelper extends Database {
 	
 	var $configkey = "default";
 	var $log;
+	var $locale;
 
 	function __construct()
 	{
+		global $LOCALE;
 		$this->log = $GLOBALS['CODEKIR']['LOGS'];
 		// $this->log->logActivity('upload','load excel success');
+		$this->locale = $LOCALE;
 	}
 
 	function loadexcel($file=false)
@@ -242,7 +245,7 @@ class excelHelper extends Database {
 								logFile('data field :'.$keyField.'='.$keyData);
 								if (in_array($keyField, $fieldNotNull)){
 									if ($keyData==""){
-										echo json_encode(array('status'=>false, 'msg'=>"Error ! $keyField data not complete"));
+										echo json_encode(array('status'=>false, 'msg'=>"Error ! $keyField {$this->locale['default']['upload_xls_error']}"));
 									exit;
 									} 
 								}
@@ -429,7 +432,7 @@ class excelHelper extends Database {
 										logFile('data field :'.$tmpkeyField.'='.$keyData);
 										if (in_array($tmpkeyField, $fieldNotNull)){
 											if ($keyData==""){
-												echo json_encode(array('status'=>false, 'msg'=>"Error ! $b data not complete"));
+												echo json_encode(array('status'=>false, 'msg'=>"Error ! $b {$this->locale['default']['upload_xls_error']}"));
 											exit;
 											} 
 										}
@@ -450,7 +453,7 @@ class excelHelper extends Database {
 									logFile('data field :'.$tmpkeyField.'='.$keyData);
 									if (in_array($tmpkeyField, $fieldNotNull)){
 										if ($keyData==""){
-											echo json_encode(array('status'=>false, 'msg'=> "Error ! $tmpkeyField data not complete"));
+											echo json_encode(array('status'=>false, 'msg'=> "Error ! $tmpkeyField {$this->locale['default']['upload_xls_error']}"));
 										exit;
 										} 
 									}
@@ -475,7 +478,7 @@ class excelHelper extends Database {
 							logFile('data field :'.$tmpkeyField.'='.$keyData);
 							if (in_array($tmpkeyField, $fieldNotNull)){
 								if ($keyData==""){
-									echo json_encode(array('status'=>false, 'msg'=> "Error ! $b data not complete"));
+									echo json_encode(array('status'=>false, 'msg'=> "Error ! $b {$this->locale['default']['upload_xls_error']}"));
 								exit;
 								} 
 							}
