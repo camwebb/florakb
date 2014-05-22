@@ -84,15 +84,23 @@ class upload extends Controller {
 					$field = implode(',',$val['field_name']);
 					
 					$data = array();
-					foreach ($val['data'] as $keys => $value){
+
+					if ($val['data']){
+
+						foreach ($val['data'] as $keys => $value){
 						
-						foreach ($value as $k => $v){
-							$data[$val['field_name'][$k]] = $v;
+							foreach ($value as $k => $v){
+								$data[$val['field_name'][$k]] = $v;
+							}
+							
+							$newData[$val['sheet']]['data'][] = $data; 
+							
 						}
-						
-						$newData[$val['sheet']]['data'][] = $data; 
-						
+					}else{
+						print json_encode(array('status'=>false, 'msg'=>'Data not available'));
+						exit;
 					}
+					
 					
 				}
 				
