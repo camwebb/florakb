@@ -156,6 +156,9 @@ class upload extends Controller {
 							$this->collectionHelper->rollbackTransaction();
 						}
 						
+					}else{
+						print json_encode(array('status'=>false, 'msg'=>'Load data failed'));
+						exit;
 					}
 					
 					// exit;
@@ -193,7 +196,13 @@ class upload extends Controller {
 					} 
 					
 					
+				}else{
+					print json_encode(array('status'=>false, 'msg'=>'No data available'));
+					exit;
 				}
+			}else{
+				print json_encode(array('status'=>false, 'msg'=>'Extract failed'));
+				exit;
 			}
 		}else{
 			logFile('File xls empty');
