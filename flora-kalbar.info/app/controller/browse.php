@@ -323,10 +323,10 @@ class browse extends Controller {
      * @todo search from table taxon
      * 
      */
-    function search(){
+    function searchTaxon(){
         $data=$_GET['search'];
         
-        $search=$this->browseHelper->searchTaxon($data);
+        $search=$this->browseHelper->search('taxon',$data);
         
         if(empty($search)){
             $this->view->assign('noData','empty');
@@ -336,7 +336,47 @@ class browse extends Controller {
             $this->view->assign('noData',$totalSearch);
         }
         $this->view->assign('data',$search);
-        return $this->loadView('browseSearchResult');       
+        return $this->loadView('browseSearchTaxon');       
+    }
+    
+    /**
+     * @todo search from table taxon
+     * 
+     */
+    function searchLocn(){
+        $data=$_GET['search'];
+        
+        $search=$this->browseHelper->search('locn',$data);
+        
+        if(empty($search)){
+            $this->view->assign('noData','empty');
+        }
+        else{
+            $totalSearch = count($search);
+            $this->view->assign('noData',$totalSearch);
+        }
+        $this->view->assign('data',$search);
+        return $this->loadView('browseSearchLocn');       
+    }
+    
+    /**
+     * @todo search from table taxon
+     * 
+     */
+    function searchPerson(){
+        $data=$_GET['search'];
+        
+        $search=$this->browseHelper->search('person',$data);
+        
+        if(empty($search)){
+            $this->view->assign('noData','empty');
+        }
+        else{
+            $totalSearch = count($search);
+            $this->view->assign('noData',$totalSearch);
+        }
+        $this->view->assign('data',$search);
+        return $this->loadView('browseSearchPerson');       
     }
 	
 }

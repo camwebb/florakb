@@ -10,7 +10,7 @@
         <i>No data available</i>
     {else}
     <div id="search">  
-        <form role="form" action="{$basedomain}browse/search/" method="GET">
+        <form role="form" action="{$basedomain}browse/searchPerson/" method="GET">
             <div class="search-box">
               <input type="text" placeholder="Search" name="search" />
               <input class="btn-search" type="submit" value="Search" />
@@ -23,6 +23,7 @@
     <table class="browse">
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Twitter</th>
@@ -37,10 +38,11 @@
             
             {foreach $result as $dataPerson}
             <tr>
+                <td>{$dataPerson.id}</td>
                 <td>{$dataPerson.name}</td>
                 <td>{$dataPerson.email}</td>
-                <td>{$dataPerson.twitter}</td>
-                <td>{$dataPerson.website}</td>
+                <td><a href="http://twitter.com/{$dataPerson.twitter}">{$dataPerson.twitter}</a></td>
+                <td><a href="{$dataPerson.website}">{$dataPerson.website}</a></td>
                 <td>{$dataPerson.phone}</td>
                 <td>{$dataPerson.institutions}</td>
                 <td>{$dataPerson.project}</td>

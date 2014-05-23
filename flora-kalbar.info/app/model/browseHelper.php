@@ -275,8 +275,16 @@ class browseHelper extends Database {
      * @todo search from table taxon
      * 
      */
-    function searchTaxon($data){
-        $sql = "SELECT * FROM `taxon` WHERE `fam` LIKE '%$data%' OR `gen` LIKE '%$data%' OR `sp` LIKE '%$data%'";
+    function search($table,$data){
+        if($table=='taxon'){
+            $sql = "SELECT * FROM `$table` WHERE `fam` LIKE '%$data%' OR `gen` LIKE '%$data%' OR `sp` LIKE '%$data%'";
+        }
+        elseif($table=='locn'){
+            $sql = "SELECT * FROM `$table` WHERE `longitude` LIKE '%$data%' OR `latitude` LIKE '%$data%' OR `elev` LIKE '%$data%' OR `geomorph` LIKE '%$data%' OR `locality` LIKE '%$data%' OR `county` LIKE '%$data%' OR `province` LIKE '%$data%' OR `island` LIKE '%$data%' OR `country` LIKE '%$data%'";
+        }
+        elseif($table=='person'){
+            $sql = "SELECT * FROM `$table` WHERE `name` LIKE '%$data%' OR `email` LIKE '%$data%' OR `twitter` LIKE '%$data%' OR `website` LIKE '%$data%' OR `phone` LIKE '%$data%' OR `institutions` LIKE '%$data%' OR `project` LIKE '%$data%'";
+        }
         $res = $this->fetch($sql,1);
         return $res;
     }

@@ -10,7 +10,7 @@
         <i>No data available</i>
     {else}
     <div id="search">  
-        <form role="form" action="{$basedomain}browse/search/" method="GET">
+        <form role="form" action="{$basedomain}browse/searchTaxon/" method="GET">
             <div class="search-box">
               <input type="text" placeholder="Search" name="search" />
               <input class="btn-search" type="submit" value="Search" />
@@ -23,9 +23,10 @@
     <table class="browse">
         <thead>
             <tr>
-                <th>Species</th>
-                <th>Genus</th>
+                <th>Morphotype</th>
                 <th>Family</th>
+                <th>Genus</th>
+                <th>Species</th>
                 <th>Images</th>
                 <th style="width: 4%;">Action</th>
             </tr>
@@ -34,9 +35,10 @@
             
             {foreach $data as $dataTaxon}
             <tr>
-                <td><i>{$dataTaxon['taxon']['sp']}</i></td>
-                <td>{$dataTaxon['taxon']['gen']}</td>
-                <td>{$dataTaxon['taxon']['fam']}</td>
+                <td>{$dataTaxon.taxon.morphotype}</td>
+                <td>{$dataTaxon.taxon.fam}</td>
+                <td>{$dataTaxon.taxon.gen}</td>
+                <td>{$dataTaxon.taxon.sp}</td>
                 <td>
                     {foreach $dataTaxon['img'] as $img}
                      {if $img['md5sum']}

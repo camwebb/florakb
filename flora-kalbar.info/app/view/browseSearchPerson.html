@@ -12,7 +12,7 @@
     {else}
     <i>{$noData} data found</i>
     <div id="search">  
-        <form role="form" action="{$basedomain}browse/search/" method="GET">
+        <form role="form" action="{$basedomain}browse/searchPerson/" method="GET">
             <div class="search-box">
               <input type="text" placeholder="Search" name="search" />
               <input class="btn-search" type="submit" value="Search" />
@@ -25,20 +25,28 @@
     <table class="browse">
         <thead>
             <tr>
-                <th>Species</th>
-                <th>Genus</th>
-                <th>Family</th>
-                <th style="width: 4%;">Action</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Twitter</th>
+                <th>Website</th>
+                <th>Phone</th>
+                <th>Institution</th>
+                <th>Project</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             
-            {foreach $data as $dataTaxon}
+            {foreach $data as $dataPerson}
             <tr>
-                <td><i>{$dataTaxon['sp']}</i></td>
-                <td>{$dataTaxon['gen']}</td>
-                <td>{$dataTaxon['fam']}</td>
-                <td><a href="{$basedomain}browse/indiv/?id={$dataTaxon['taxon']['id']}" class="btn">Detail</a></td>
+                <td>{$dataPerson.name}</td>
+                <td>{$dataPerson.email}</td>
+                <td>{$dataPerson.twitter}</td>
+                <td>{$dataPerson.website}</td>
+                <td>{$dataPerson.phone}</td>
+                <td>{$dataPerson.institutions}</td>
+                <td>{$dataPerson.project}</td>
+                <td><a href="{$basedomain}browse/indiv/?id={$dataPerson.id}&&action=indivPerson" class="btn">Detail</a></td>
             </tr>
             {/foreach}
         </tbody>
