@@ -112,6 +112,22 @@ $().ready(function() {
     $.validator.addMethod('Decimal', function(value, element) {
         return this.optional(element) || /^\d+(\.\d{0,3})?$/.test(value); 
     }, "Please enter a correct number, only dot permitted");
+    
+    
+    // taxon auto complete
+    $('#autoTaxon').autocomplete({
+        source: JSON.parse($.ajax({
+                    url: baseUrl+"onebyone/autoTaxon",
+                    type: "GET",
+                    async: false,
+                    success: function(output) {}
+                }).responseText),
+        select: function (event, ui) {
+            $(this).val(ui.item.label);
+            $('#taxonID').val(ui.item.id);
+            return false;
+        }
+    });
                 
 });
 

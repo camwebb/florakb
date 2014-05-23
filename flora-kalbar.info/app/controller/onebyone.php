@@ -548,6 +548,24 @@ class onebyone extends Controller {
             }
         }
     }
+    
+    function autoTaxon(){
+        $taxons = $this->insertonebyone->list_taxon();
+        
+        $auto = array();
+        
+        foreach($taxons as $taxon){
+            if($taxon['gen']){
+                if($taxon['fam']){
+                    $auto[] = array('id' => $taxon['id'], 'label' => $taxon['fam'].' '.$taxon['gen'].' '.$taxon['sp']);
+                }
+            }elseif($taxon['morphotype']){
+                $auto[] = array('id' => $taxon['id'], 'label' => $taxon['morphotype']);
+            }
+        }
+        echo json_encode($auto);
+        exit;
+    }
 }
 
 ?>

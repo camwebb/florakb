@@ -103,7 +103,7 @@ class Session
 		$uniqSess = sha1($CONFIG[$configkey]['root_path'].'codekir-v0.1');
 
 		if ($sessName){
-			$session[$sessName] = $_SESSION[$uniqSess];
+			$session[$sessName] = @$_SESSION[$uniqSess];
 		}else{
 			
 			if (isset($_SESSION[$uniqSess])) $session['ses_user'] = $_SESSION[$uniqSess];

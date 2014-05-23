@@ -22,7 +22,7 @@
         <tr>
             <td><label for="">Taxon</label></td>
             <td>
-                <select class="inputbox" name="taxonID" id="taxonID">
+                <!--<select class="inputbox" name="taxonID" id="taxonID">
                     <option value="" selected="1">Choose a taxonomy</option>
                     {foreach from=$taxon item=itemTaxon}
                         <option value="{$itemTaxon.id}">
@@ -36,7 +36,9 @@
                         {/if}
                         </option>
                     {/foreach}
-                </select>
+                </select>-->
+                <input class="inputbox" type="text" id="autoTaxon" />
+                <input class="inputbox" type="hidden" id="taxonID" name="taxonID" />
             </td>
             <td><a href="#taxon-modal" class="btn" id="taxonPopup">Add</a></td>
         </tr>
