@@ -273,6 +273,7 @@ class onebyone extends Controller {
         
         //if uploaded
         if($uploaded_file['status'] != '0'){
+            logFile('Upload Success');
             //validate email and get short_namecode
             /*$validateEmail = $this->validateEmail($data['email']);
             if($validateEmail['status'] != 'success'){
@@ -305,6 +306,9 @@ class onebyone extends Controller {
             $src_tmp = $path_entry."/".$tmp_name;
             
             if(!$dataExist){
+                
+                logFile('Prepare to cropping image');
+                
                 $path_data = 'public_assets/';
                 //$path_user = $path_data.$username;
                 $path_img = $path_data.'/img';
@@ -319,10 +323,12 @@ class onebyone extends Controller {
                 
                 copy($path_entry."/".$tmp_name, $path_img_1000px.'/'.$image_name_encrypt.'.1000px.jpg');
                 if(!@ copy($path_entry."/".$tmp_name, $path_img_1000px.'/'.$image_name_encrypt.'.1000px.jpg')){
+                    logFile('Copy file failed');
                     $status = "error";
                     $msg= error_get_last();
                 }
                 else{
+                    logFile('Copy file success');
                     $dest_1000px = $CONFIG['default']['root_path'].'/'.$path_img_1000px.'/'.$image_name_encrypt.'.1000px.jpg';
                     $dest_500px = $CONFIG['default']['root_path'].'/'.$path_img_500px.'/'.$image_name_encrypt.'.500px.jpg';
                     $dest_100px = $CONFIG['default']['root_path'].'/'.$path_img_100px.'/'.$image_name_encrypt.'.100px.jpg';
@@ -342,6 +348,7 @@ class onebyone extends Controller {
                         unset($config);
                     }
                     
+                    logFile('Cropping to 1000px image');
                     //Set cropping for y or x axis, depending on image orientation
                     if ($fileinfo[0] > $fileinfo[1]) {
                         $config['width'] = $fileinfo[1];
@@ -359,16 +366,22 @@ class onebyone extends Controller {
                     $this->cropToSquare($src_tmp, $dest_500px, $config);
                     unset($config);
                     
+                    logFile('Cropping to square image');
+                    
                     //set new config
                     $config['width'] = 500;
                     $config['height'] = 500;
                     $this->resize_pic($dest_500px, $dest_500px, $config);
                     unset($config);
                     
+                    logFile('Cropping to 500px image');
+                    
                     $config['width'] = 100;
                     $config['height'] = 100;
                     $this->resize_pic($dest_500px, $dest_100px, $config);
                     unset($config);
+                    
+                    logFile('Cropping to 100px image');
                     
                     //add file information to array
                     /*$fileToInsert = array('filename' => $entry,'md5sum' => $image_name_encrypt, 'directory' => '', 'mimetype' => $fileinfo['mime']);
@@ -384,6 +397,7 @@ class onebyone extends Controller {
                     $insertData = $this->insertonebyone->insertTransaction('img',$data);
                     
                     if($insertData){
+                        logFile('Insert Data Success');
                         $this->msg->add('s', 'Update image success');
                         $session = new Session;
                         
@@ -392,6 +406,7 @@ class onebyone extends Controller {
                         $sess_image = $session->get_session();
                         $sess_user = $sess_image['ses_user'];
                         if(isset($sess_user['image_sess'])){
+                            logFile('Fetch image session');
                             foreach ($sess_user['image_sess'] as $data_before){
                                 array_push($dataSession,$data_before);
                             }
@@ -400,15 +415,18 @@ class onebyone extends Controller {
                         $session->set_session($dataSession,'image_sess');
                         //$session->delete_session('onebyone');
                     }else{
+                        logFile('Insert Data Failed');
                         $this->msg->add('e', 'Update image failed');
                     }
                 } // end if copy
                 
             }else{
+                logFile('File Image exist');
                 $this->msg->add('e', 'Image exist');
             }
             unlink($src_tmp);
         }else{
+            logFile('Upload Image Failed');
             $this->msg->add('e', $uploaded_file['message']);
         }
         header('Location: ../onebyone/imageContent');
