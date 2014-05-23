@@ -332,10 +332,12 @@ class browse extends Controller {
             $this->view->assign('noData','empty');
         }
         else{
-            $totalSearch = count($search);
+            $totalSearch = count($search['countdata']);
             $this->view->assign('noData',$totalSearch);
         }
-        $this->view->assign('data',$search);
+        $this->view->assign('pageno',$search['pageno']);
+        $this->view->assign('lastpage',$search['lastpage']);
+        $this->view->assign('data',$search['result']);
         return $this->loadView('browseSearchTaxon');       
     }
     
@@ -352,10 +354,12 @@ class browse extends Controller {
             $this->view->assign('noData','empty');
         }
         else{
-            $totalSearch = count($search);
+            $totalSearch = count($search['countdata']);
             $this->view->assign('noData',$totalSearch);
         }
-        $this->view->assign('data',$search);
+        $this->view->assign('pageno',$search['pageno']);
+        $this->view->assign('lastpage',$search['lastpage']);
+        $this->view->assign('data',$search['result']);
         return $this->loadView('browseSearchLocn');       
     }
     
@@ -372,10 +376,12 @@ class browse extends Controller {
             $this->view->assign('noData','empty');
         }
         else{
-            $totalSearch = count($search);
+            $totalSearch = count($search['countdata']);
             $this->view->assign('noData',$totalSearch);
         }
-        $this->view->assign('data',$search);
+        $this->view->assign('pageno',$search['pageno']);
+        $this->view->assign('lastpage',$search['lastpage']);
+        $this->view->assign('data',$search['result']);
         return $this->loadView('browseSearchPerson');       
     }
 	

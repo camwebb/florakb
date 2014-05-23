@@ -36,14 +36,36 @@
             
             {foreach $data as $dataTaxon}
             <tr>
-                <td>{$dataTaxon.taxon.morphotype}</td>
-                <td>{$dataTaxon.taxon.fam}</td>
-                <td>{$dataTaxon.taxon.gen}</td>
-                <td>{$dataTaxon.taxon.sp}</td>
-                <td><a href="{$basedomain}browse/indiv/?id={$dataTaxon['taxon']['id']}" class="btn">Detail</a></td>
+                <td>{$dataTaxon.morphotype}</td>
+                <td>{$dataTaxon.fam}</td>
+                <td>{$dataTaxon.gen}</td>
+                <td>{$dataTaxon.sp}</td>
+                <td><a href="{$basedomain}browse/indiv/?id={$dataTaxon.id}" class="btn">Detail</a></td>
             </tr>
             {/foreach}
         </tbody>
     </table>
     {/if}
+    
+    <br />
+    {if $noData eq 'empty'}
+    {else}
+    <div align="center">
+        {if $pageno eq '1'}
+            <button class="btn btn-pagination">FIRST</button> <button class="btn">PREV</button>
+        {else}
+            <a href='{$basedomain}browse/searchTaxon/?search={$smarty.get.search}&&pageno=1' class="btn btn-pagination">FIRST</a>
+            {$prevpage = $pageno-1}
+            <a href='{$basedomain}browse/searchTaxon/?search={$smarty.get.search}&&pageno={$prevpage}' class="btn btn-pagination">PREV</a>
+        {/if}
+        Page {$pageno} of {$lastpage}
+        {if $pageno eq $lastpage}
+            <button class="btn btn-pagination">NEXT</button> <button class="btn btn-pagination">LAST</button>
+        {else}
+            {$nextpage = $pageno+1}
+            <a href='{$basedomain}browse/searchTaxon/?search={$smarty.get.search}&&pageno={$nextpage}' class="btn btn-pagination">NEXT</a>
+            <a href='{$basedomain}browse/searchTaxon/?search={$smarty.get.search}&&pageno={$lastpage}' class="btn btn-pagination">LAST</a>
+        {/if}
+    {/if}
+    </div>
 </div>

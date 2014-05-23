@@ -277,7 +277,7 @@ class browseHelper extends Database {
      */
     function search($table,$data){
         if($table=='taxon'){
-            $sql = "SELECT * FROM `$table` WHERE `fam` LIKE '%$data%' OR `gen` LIKE '%$data%' OR `sp` LIKE '%$data%'";
+            $sql = "SELECT * FROM `$table` WHERE `fam` LIKE '%$data%' OR `gen` LIKE '%$data%' OR `sp` LIKE '%$data%' OR `morphotype` LIKE '%$data%'";
         }
         elseif($table=='locn'){
             $sql = "SELECT * FROM `$table` WHERE `longitude` LIKE '%$data%' OR `latitude` LIKE '%$data%' OR `elev` LIKE '%$data%' OR `geomorph` LIKE '%$data%' OR `locality` LIKE '%$data%' OR `county` LIKE '%$data%' OR `province` LIKE '%$data%' OR `island` LIKE '%$data%' OR `country` LIKE '%$data%'";
@@ -286,7 +286,33 @@ class browseHelper extends Database {
             $sql = "SELECT * FROM `$table` WHERE `name` LIKE '%$data%' OR `email` LIKE '%$data%' OR `twitter` LIKE '%$data%' OR `website` LIKE '%$data%' OR `phone` LIKE '%$data%' OR `institutions` LIKE '%$data%' OR `project` LIKE '%$data%'";
         }
         $res = $this->fetch($sql,1);
-        return $res;
+        
+        //PAGINATION
+            if (isset($_GET['pageno'])) {
+               $pageno = $_GET['pageno'];
+            } else {
+               $pageno = 1;
+            } // if
+            $rows_per_page = 10;
+            $lastpage      = ceil(count($res)/$rows_per_page);
+            $pageno = (int)$pageno;
+            if ($pageno > $lastpage) {
+               $pageno = $lastpage;
+            } // if
+            if ($pageno < 1) {
+               $pageno = 1;
+            } // if
+            $limit = 'LIMIT ' .($pageno - 1) * $rows_per_page .',' .$rows_per_page;
+            $sqlLimit = $sql.' '.$limit;
+            $resLimit = $this->fetch($sqlLimit,1);
+            if($resLimit){
+                $return['result'] = $resLimit;
+                $return['pageno'] = $pageno;
+                $return['lastpage'] = $lastpage;
+                $return['countdata'] = $res;
+                return $return;
+            }
+            else{return false;}                
     }
 	
 }
