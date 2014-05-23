@@ -25,10 +25,8 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Email</th>
                 <th>Twitter</th>
                 <th>Website</th>
-                <th>Phone</th>
                 <th>Institution</th>
                 <th>Project</th>
                 <th>Action</th>
@@ -40,10 +38,8 @@
             <tr>
                 <td>{$dataPerson.id}</td>
                 <td>{$dataPerson.name}</td>
-                <td>{$dataPerson.email}</td>
                 <td><a href="http://twitter.com/{$dataPerson.twitter}">{$dataPerson.twitter}</a></td>
                 <td><a href="{$dataPerson.website}">{$dataPerson.website}</a></td>
-                <td>{$dataPerson.phone}</td>
                 <td>{$dataPerson.institutions}</td>
                 <td>{$dataPerson.project}</td>
                 <td><a href="{$basedomain}browse/indiv/?id={$dataPerson.id}&&action=indivPerson" class="btn">Detail</a></td>

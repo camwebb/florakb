@@ -140,12 +140,15 @@ class loginHelper extends Database {
      */
     function checkTwitter($data)
     {
-        $sql = "SELECT COUNT(`id`) AS total FROM `person` WHERE `twitter` = '".$data."' ";
-        $res = $this->fetch($sql,0);
-        
-        if ($res['total'] > 0){
-            logFile('Twitter EXIST/');
-            return false;
+        if($data==''){return true;}
+        else{
+            $sql = "SELECT COUNT(`id`) AS total FROM `person` WHERE `twitter` = '".$data."' ";
+            $res = $this->fetch($sql,0);
+            
+            if ($res['total'] > 0){
+                logFile('Twitter EXIST/');
+                return false;
+            }
         }
         return true;
     }

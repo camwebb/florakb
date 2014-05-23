@@ -26,10 +26,8 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Email</th>
                 <th>Twitter</th>
                 <th>Website</th>
-                <th>Phone</th>
                 <th>Institution</th>
                 <th>Project</th>
                 <th>Action</th>
@@ -40,10 +38,8 @@
             {foreach $data as $dataPerson}
             <tr>
                 <td>{$dataPerson.name}</td>
-                <td>{$dataPerson.email}</td>
                 <td>{$dataPerson.twitter}</td>
                 <td>{$dataPerson.website}</td>
-                <td>{$dataPerson.phone}</td>
                 <td>{$dataPerson.institutions}</td>
                 <td>{$dataPerson.project}</td>
                 <td><a href="{$basedomain}browse/indiv/?id={$dataPerson.id}&&action=indivPerson" class="btn">Detail</a></td>
