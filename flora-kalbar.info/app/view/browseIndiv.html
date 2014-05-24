@@ -35,13 +35,14 @@
                 <th>Location</th>
                 <th>Creator</th>
                 <th>Images</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             
             {foreach $data as $dataIndiv}
             <tr>
-                <td><i><a href="{$basedomain}browse/indivDetail/?id={$dataIndiv['indiv']['indivID']}">{$dataIndiv['indiv']['indivID']}</a></i></td>
+                <td>{$dataIndiv['indiv']['indivID']}</td>
                 <td>{$dataIndiv.indiv.locality}</td>
                 <td>{$dataIndiv['indiv']['name']}</td>
                 <td>
@@ -53,6 +54,7 @@
                         
                     {/foreach}
                 </td>
+                <td><a href="{$basedomain}browse/indivDetail/?id={$dataIndiv['indiv']['indivID']}" class="btn">Detail</a></td>
             </tr>
             <script type="text/javascript">
             var a = "{$dataIndiv['indiv']['indivID']}";

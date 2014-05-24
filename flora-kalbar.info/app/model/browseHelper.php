@@ -70,7 +70,7 @@ class browseHelper extends Database {
         if($action=='indivTaxon'){
             $sql = "SELECT * 
                     FROM `det` INNER JOIN `indiv` ON 
-                        det.$field='$value' AND det.indivID=indiv.id
+                        det.$field='$value' AND det.indivID=indiv.id AND indiv.n_status='0'
                     INNER JOIN `person` ON
                         indiv.personID=person.id
                     INNER JOIN `locn` ON
@@ -81,7 +81,7 @@ class browseHelper extends Database {
         if($action=='indivLocn'){
             $sql = "SELECT indiv.id as indivID, indiv.locnID, indiv.plot, indiv.tag, indiv.personID, locn.*, person.*
                     FROM `indiv` INNER JOIN `locn` ON 
-                        $value=indiv.locnID
+                        $value=indiv.locnID AND indiv.n_status='0'
                     INNER JOIN `person` ON
                         indiv.personID=person.id
                     GROUP BY indiv.id";
@@ -90,7 +90,7 @@ class browseHelper extends Database {
         if($action=='indivPerson'){
             $sql = "SELECT indiv.id as indivID, indiv.locnID, indiv.plot, indiv.tag, indiv.personID, locn.*, person.*
                     FROM `indiv` INNER JOIN `locn` ON 
-                        $value=indiv.personID
+                        $value=indiv.personID AND indiv.n_status='0'
                     INNER JOIN `person` ON
                         $value=person.id
                     GROUP BY indiv.id";
@@ -239,7 +239,7 @@ class browseHelper extends Database {
     function detailIndiv($data){
         $sql = "SELECT * 
                 FROM `indiv` INNER JOIN `locn` ON 
-                    indiv.id='$data' AND locn.id=indiv.locnID
+                    indiv.id='$data' AND locn.id=indiv.locnID AND indiv.n_status='0'
                 INNER JOIN `person` ON
                     person.id=indiv.personID";
         $res = $this->fetch($sql,1);
@@ -251,11 +251,23 @@ class browseHelper extends Database {
      * @param $data = id indiv
      */
     function dataDetIndiv($data){
-        $sql = "SELECT * 
+        $sql = "SELECT det.id as detID, det.*, taxon.*,person.* 
                 FROM `det` INNER JOIN `taxon` ON 
-                    indivID='$data' AND taxon.id=det.taxonID
+                    indivID='$data' AND taxon.id=det.taxonID AND det.n_status='0'
                 INNER JOIN `person` ON
                     person.id=det.personID";
+        $res = $this->fetch($sql,1);
+        return $res;
+    }
+    
+    /**
+     * @todo retrieve all obs from indiv selected
+     * @param $data = id indiv
+     */
+    function dataObsIndiv($data){
+        $sql = "SELECT obs.id as obsID, obs.*, person.* 
+                FROM `obs` INNER JOIN `person` ON 
+                    indivID='$data' AND person.id=obs.personID AND obs.n_status='0'";
         $res = $this->fetch($sql,1);
         return $res;
     }
@@ -269,6 +281,28 @@ class browseHelper extends Database {
         $sql = "UPDATE `indiv` SET `locnID` = '".$data['locnID']."', `plot` = '".$data['plot']."', `tag` = '".$data['tag']."' WHERE `id` = $id;";
         $res = $this->query($sql,0);
         if($res){return true;}
+    }
+    
+    /**
+     * @todo update n_status indiv,obs,det,img,coll data selected into 1
+     * @param $id = id indiv
+     */
+    function deleteIndiv($condition,$table,$field,$data){
+        if($condition ==''){ 
+            $sql = "UPDATE `$table` SET `n_status` = '1' WHERE `$field`='".$data['indivID']."';";
+            $res = $this->query($sql,0);
+        }
+        elseif($condition == 'AND'){
+            $sql = "UPDATE `$table` SET `n_status` = '1' WHERE `$field`='".$data['indivID']."' AND `id` = '".$data['id']."';";
+            $res = $this->query($sql,0);
+        }
+        if($res){
+            logFile('====Update table '.$table.' id='.$data['indivID'].'n_status = 1====');
+            return true;    
+        }
+        else{
+            logFile('====Failed table '.$table.' id='.$data['indivID'].'n_status = 1====');
+            return false;}
     }
     
     /**

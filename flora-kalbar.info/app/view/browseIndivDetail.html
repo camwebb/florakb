@@ -80,6 +80,106 @@
     </table>
     <br />
     
+    <table class="browse indiv">    
+        <tr>
+            <th style="-moz-border-radius: 6px 0 0 0;-webkit-border-radius: 6px 0 0 0;border-radius: 6px 0 0 0;width:100px;">Observations</th>
+            <td>
+                {foreach $indiv as $dataIndiv}
+                {foreach from=$obs key=myId item=dataObs}
+                    
+                    <table class="det">
+                        <tr>
+                            <td class="detNumber"><b>#{$myId+1}</b></td>
+                            <td class="detHeader"><b>Creator</b></td>
+                            <td class="detColon">:</td>
+                            <td class="detContent">{$dataObs.name}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Date</b></td>
+                            <td>:</td>
+                            <td>{$dataObs.date}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Microhab</b></td>
+                            <td>:</td>
+                            <td>{$dataObs.microhab}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Habit</b></td>
+                            <td>:</td>
+                            <td><i>{$dataObs.habit}</i></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>dbh</b></td>
+                            <td>:</td>
+                            <td><i>{$dataObs.dbh}</i></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Height</b></td>
+                            <td>:</td>
+                            <td><i>{$dataObs.height}</i></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>bud</b></td>
+                            <td>:</td>
+                            <td><i>{$dataObs.bud}</i></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Flower</b></td>
+                            <td>:</td>
+                            <td><i>{$dataObs.flower}</i></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Fruit</b></td>
+                            <td>:</td>
+                            <td><i>{$dataObs.fruit}</i></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Localname</b></td>
+                            <td>:</td>
+                            <td><i>{$dataObs.localname}</i></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Notes</b></td>
+                            <td>:</td>
+                            <td>{$dataObs.notes}</td>
+                            <td>
+                                
+                                    {if $user.login && $dataObs.personID eq $user.login.id}
+                                <a href="{$basedomain}browse/deleteObs/?id={$dataObs.obsID}&&indivID={$dataObs.indivID}" id="deleteObs" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
+                                    {/if}
+                                    {if $user.login && $dataIndiv.id eq $user.login.id}
+                                <a href="{$basedomain}browse/deleteObs/?id={$dataObs.obsID}&&indivID={$dataObs.indivID}" id="deleteObs" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
+                                    {/if}
+                                
+                            </td>
+                        </tr>
+                    </table>
+                    {foreachelse}<i>No observation available</i>
+                {/foreach}
+                {/foreach}
+            </td>
+        </tr>
+    </table>
+    {foreach $indiv as $dataIndiv}
+        {if $user.login}
+            <br />
+            <a href="{$basedomain}browse/addDetView/?id={$smarty.get.id}" id="addIndiv" class="btn" style="float: right;">Add Observations</a>
+            <div class="clear"></div>
+        {/if}
+    {/foreach}
+    <br />
+    
     <table class="browse indiv">
         <tr>
             <th style="-moz-border-radius: 6px 0 0 0;-webkit-border-radius: 6px 0 0 0;border-radius: 6px 0 0 0;width:100px;">Images</th>
@@ -104,15 +204,15 @@
         <tr>
             <th style="-moz-border-radius: 6px 0 0 0;-webkit-border-radius: 6px 0 0 0;border-radius: 6px 0 0 0;width:100px;">Determinant</th>
             <td>
-                {*foreach $det as $key=>$dataDet*}
+                {foreach $indiv as $dataIndiv}
                 {foreach from=$det key=myId item=dataDet}
                     
                     <table class="det">
                         <tr>
                             <td class="detNumber"><b>#{$myId+1}</b></td>
-                            <td class="detHeader"><b>Det Creator</b></td>
+                            <td class="detHeader"><b>Creator</b></td>
                             <td class="detColon">:</td>
-                            <td class="detContent">{$dataDet['name']}</td>
+                            <td class="detContent">{$dataDet.name}</td>
                         </tr>
                         <tr>
                             <td></td>
@@ -136,16 +236,27 @@
                             <td></td>
                             <td><b>Using</b></td>
                             <td>:</td>
-                            <td><i>{$dataDet['using']}</i></td>
+                            <td><i>{$dataDet.using}</i></td>
                         </tr>
                         <tr>
                             <td></td>
                             <td><b>Notes</b></td>
                             <td>:</td>
-                            <td><i>{$dataDet['notes']}</i></td>
+                            <td><i>{$dataDet.notes}</i></td>
+                            <td>
+                                
+                                    {if $user.login && $dataDet.personID eq $user.login.id}
+                                <a href="{$basedomain}browse/deleteDet/?id={$dataDet.detID}&&indivID={$dataDet.indivID}" id="deleteDet" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
+                                    {/if}
+                                    {if $user.login && $dataIndiv.id eq $user.login.id}
+                                <a href="{$basedomain}browse/deleteDet/?id={$dataDet.detID}&&indivID={$dataDet.indivID}" id="deleteDet" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
+                                    {/if}
+                                
+                            </td>
                         </tr>
                     </table>
-                    
+                    {foreachelse}<i>No daterminant available</i>
+                {/foreach}
                 {/foreach}
             </td>
         </tr>
@@ -155,11 +266,12 @@
     {foreach $indiv as $dataIndiv}
         {if $user.login && $dataIndiv['name'] eq $user.login.name}
             <br />
-            <a href="{$basedomain}browse/editIndiv/?id={$smarty.get.id}" id="editIndiv" class="btn" style="float: right;">Edit</a>
+            <a href="{$basedomain}browse/deleteIndiv/?id={$smarty.get.id}" id="deleteIndiv" class="btn" style="float: right; margin-left: 10px;;">Delete Individu</a>
+            <a href="{$basedomain}browse/editIndiv/?id={$smarty.get.id}" id="editIndiv" class="btn" style="float: right;">Edit Individu</a>
             <div class="clear"></div>
         {elseif $user.login}
             <br />
-            <a href="{$basedomain}browse/addDetView/?id={$smarty.get.id}" id="addIndiv" class="btn" style="float: right;">Add</a>
+            <a href="{$basedomain}browse/addDetView/?id={$smarty.get.id}" id="addIndiv" class="btn" style="float: right;">Add Determinant</a>
             <div class="clear"></div>
         {/if}
     {/foreach}
