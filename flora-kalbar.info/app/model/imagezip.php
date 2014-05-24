@@ -63,6 +63,22 @@ class imagezip extends Database {
         return false;
         
     }
+    
+    /**
+     * @todo check data image in database (exist or not)
+     * 
+     * @param $personID = id of a user
+     * @param $filename = filename ori of image file
+     * @return boolean true false
+     * 
+     * */
+    function imageExist($filename){
+        $sql = "SELECT id FROM img WHERE filename = '$filename'";
+		$res = $this->fetch($sql,0);
+        if($res) return true;
+        return false;
+        
+    }
 }
 
 ?>
