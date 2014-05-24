@@ -274,6 +274,9 @@ class onebyone extends Controller {
         //if uploaded
         if($uploaded_file['status'] != '0'){
             logFile('Upload Success');
+            
+            if (extension_loaded('gd') && function_exists('gd_info')) {
+            logFile('GD2 is installed. Checking image data.');
             //validate email and get short_namecode
             /*$validateEmail = $this->validateEmail($data['email']);
             if($validateEmail['status'] != 'success'){
@@ -425,6 +428,10 @@ class onebyone extends Controller {
                 $this->msg->add('e', 'Image exist');
             }
             unlink($src_tmp);
+            }else{
+                logFile('GD2 is not installed');
+                $this->msg->add('e', 'System Error. Please contact our developer team');
+            }
         }else{
             logFile('Upload Image Failed');
             $this->msg->add('e', $uploaded_file['message']);
