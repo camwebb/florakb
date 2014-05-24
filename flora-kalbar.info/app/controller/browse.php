@@ -156,7 +156,10 @@ class browse extends Controller {
         //get determinant from selected indiv
         $indivDeterminant = $this->browseHelper->dataDetIndiv($indivID);
         //get all images from indiv selected
-        $indivImages = $this->browseHelper->showImgIndiv($indivID,false,'s');
+        $indivImages = $this->browseHelper->showImgIndiv($indivID,false,'');
+        //get all observations from indiv selected
+        $indivObs = $this->browseHelper->dataObsIndiv($indivID);
+        //pr($indivObs);exit;
         
         if(empty($indivDetail)){
             $this->view->assign('noData','empty');
@@ -171,6 +174,7 @@ class browse extends Controller {
         $this->view->assign('indiv',$indivDetail);
         $this->view->assign('det',$indivDeterminant);
         $this->view->assign('img',$indivImages);
+        $this->view->assign('obs',$indivObs);
         $ses_user = $this->isUserOnline();
         $this->view->assign('user', $ses_user); 
         return $this->loadView('browseIndivDetail');
@@ -248,6 +252,68 @@ class browse extends Controller {
         }
         
         header('Location: ../../browse/editIndiv/?id='.$idIndiv);
+    }
+    
+    /**
+     * @todo update all indiv selected n_status into '1'
+     * 
+     */
+    function deleteIndiv(){
+        $idIndiv = $_GET['id'];
+        $data['indivID'] = $idIndiv;
+        $deleteIndiv = $this->browseHelper->deleteIndiv('','indiv','id',$data);
+        $deleteColl = $this->browseHelper->deleteIndiv('','coll','indivID',$data);
+        $deleteObs = $this->browseHelper->deleteIndiv('','obs','indivID',$data);
+        $deleteImg = $this->browseHelper->deleteIndiv('','img','indivID',$data);
+        $deleteDet = $this->browseHelper->deleteIndiv('','det','indivID',$data);
+        
+        if($deleteIndiv && $deleteColl && $deleteObs && $deleteImg && $deleteDet){
+            $this->msg->add('s', 'Delete Individu Success');
+        }else{
+            $this->msg->add('e', 'Delete Individu Failed');
+        }
+        
+        header('Location: ../../browse/indivDetail/?id='.$idIndiv);
+    }
+    
+    /**
+     * @todo update all det selected n_status into '1'
+     * 
+     */
+    function deleteDet(){
+        $idIndiv = $_GET['indivID'];
+        $idDet = $_GET['id'];
+        $data['indivID'] = $idIndiv;
+        $data['id'] = $idDet;
+        $deleteDet = $this->browseHelper->deleteIndiv('AND','det','indivID',$data);
+        
+        if($deleteDet){
+            $this->msg->add('s', 'Delete Determinant Success');
+        }else{
+            $this->msg->add('e', 'Delete Determinant Failed');
+        }
+        
+        header('Location: ../../browse/indivDetail/?id='.$idIndiv);
+    }
+    
+    /**
+     * @todo update all det selected n_status into '1'
+     * 
+     */
+    function deleteObs(){
+        $idIndiv = $_GET['indivID'];
+        $idObs = $_GET['id'];
+        $data['indivID'] = $idIndiv;
+        $data['id'] = $idObs;
+        $deleteDet = $this->browseHelper->deleteIndiv('AND','obs','indivID',$data);
+        
+        if($deleteDet){
+            $this->msg->add('s', 'Delete Observation Success');
+        }else{
+            $this->msg->add('e', 'Delete Observation Failed');
+        }
+        
+        header('Location: ../../browse/indivDetail/?id='.$idIndiv);
     }
     
     /**
