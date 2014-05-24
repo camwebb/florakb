@@ -109,7 +109,7 @@ class zip extends Controller {
         
         //move zip file to tmp folder
         
-        $copy_zip = sftpServices($CONFIG['default']['hostname'], $username, $password, $name);
+        /*$copy_zip = sftpServices($CONFIG['default']['hostname'], $username, $password, $name);
         logFile($copy_zip);
         
         if(!$copy_zip){
@@ -117,7 +117,7 @@ class zip extends Controller {
             $msg = "Error while fetching zip file";
             echo json_encode(array('status' => $status, 'message' => $msg));
             exit;
-        }
+        }*/
         
         if(!empty($name)){
             
@@ -257,11 +257,19 @@ class zip extends Controller {
                     }
                 }
                 
-                //send dataNotExist information to user   
+                $count_dataNotExist = count($dataNotExist);
+                
+                if($list = $dataNotExist){
+                    $status = 'warning';
+                    $msg = 'File extracted. No image match the data.';
+                    $data['dataNotExist'] = $dataNotExist;
+                }else{
+                    //send dataNotExist information to user   
 
-                $status = 'success';
-                $msg = 'File extracted';
-                $data['dataNotExist'] = $dataNotExist;
+                    $status = 'success';
+                    $msg = 'File extracted';
+                    $data['dataNotExist'] = $dataNotExist;
+                }
                 
                 deleteDir($path_extract);
             }else{

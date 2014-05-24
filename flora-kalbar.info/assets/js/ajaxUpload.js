@@ -32,13 +32,16 @@ function zipExtract()
                 
             var resultExtract = JSON.parse(extract_file);
 
-            if(resultExtract.status != 'error'){
+            if(resultExtract.status == 'success'){
                 $('#extract_zip').resetForm();
                 $(".errorbox").html('');
                 $(".message").html(first_success + resultExtract.message + end);
-            }else{
+            }else if(resultExtract.status == 'error'){
                 $(".message").html('');
                 $(".errorbox").html(first_error + resultExtract.message + end);
+            }else if(resultExtract.status == 'warning'){
+                $(".message").html('');
+                $(".errorbox").html(first_warning + resultExtract.message + end);
             }
             
             if(resultExtract.data){
