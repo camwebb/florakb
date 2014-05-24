@@ -155,10 +155,7 @@
                             <td>{$dataObs.notes}</td>
                             <td>
                                 
-                                    {if $user.login && $dataObs.personID eq $user.login.id}
-                                <a href="{$basedomain}browse/deleteObs/?id={$dataObs.obsID}&&indivID={$dataObs.indivID}" id="deleteObs" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
-                                    {/if}
-                                    {if $user.login && $dataIndiv.id eq $user.login.id}
+                                    {if $user.login && $dataObs.personID eq $user.login.id || $dataIndiv.id eq $user.login.id}
                                 <a href="{$basedomain}browse/deleteObs/?id={$dataObs.obsID}&&indivID={$dataObs.indivID}" id="deleteObs" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
                                     {/if}
                                 
@@ -172,9 +169,9 @@
         </tr>
     </table>
     {foreach $indiv as $dataIndiv}
-        {if $user.login}
+        {if $user.login && $dataIndiv.name != $user.login.name}
             <br />
-            <a href="{$basedomain}browse/addDetView/?id={$smarty.get.id}" id="addIndiv" class="btn" style="float: right;">Add Observations</a>
+            <a href="{$basedomain}browse/addObsView/?id={$smarty.get.id}" id="addIndiv" class="btn" style="float: right;">Add Observations</a>
             <div class="clear"></div>
         {/if}
     {/foreach}
@@ -245,10 +242,7 @@
                             <td><i>{$dataDet.notes}</i></td>
                             <td>
                                 
-                                    {if $user.login && $dataDet.personID eq $user.login.id}
-                                <a href="{$basedomain}browse/deleteDet/?id={$dataDet.detID}&&indivID={$dataDet.indivID}" id="deleteDet" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
-                                    {/if}
-                                    {if $user.login && $dataIndiv.id eq $user.login.id}
+                                    {if $user.login && $dataDet.personID eq $user.login.id || $dataIndiv.id eq $user.login.id}
                                 <a href="{$basedomain}browse/deleteDet/?id={$dataDet.detID}&&indivID={$dataDet.indivID}" id="deleteDet" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
                                     {/if}
                                 

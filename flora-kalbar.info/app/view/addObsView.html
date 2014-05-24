@@ -1,0 +1,173 @@
+<div class="content">
+    <div class="btn-back">
+        <a href="#" onClick="history.back();return false;"><span>Back</span></a>
+    </div>
+    <div class="clear"></div>
+    <br />
+    <h2 class="title">Add Observation</h2>
+    <form id="formObs" method="POST" action="{$basedomain}browse/addObs/?id={$smarty.get.id}&&action=addOnly">
+        <table id="addObs" class="det">
+            <tr>
+                <td class="detNumber"></td>
+                <td class="detHeader"></td>
+                <td class="detColon"></td>
+                <td class="detContent"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><b>Microhab</b></td>
+                <td>:</td>
+                <td><input class="inputbox" type="text" id="microhab" name="microhab" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><b>Habit</b></td>
+                <td>:</td>
+                <td>
+                    <select class="inputbox" name="habit" id="habit">
+                        <option value="" selected="1">Choose Habit</option>
+                        {foreach from=$habit_enum item=enum}
+                            <option value="{$enum}">{$enum}</option>
+                        {/foreach}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><b>Dbh</b></td>
+                <td>:</td>
+                <td><input class="inputbox" type="text" id="dbh" name="dbh" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><b>Height</b></td>
+                <td>:</td>
+                <td><input class="inputbox" type="text" id="height" name="height" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><b>Bud</b></td>
+                <td>:</td>
+                <td>
+                    <input style="padding:5px;margin-right:5px;" type="radio" name="bud" value="yes" />Yes
+                    <input style="padding:5px;margin-right:5px;margin-left: 20px;" type="radio" name="bud" value="no" />No
+                    <label for="bud" class="error"></label>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><b>Flower</b></td>
+                <td>:</td>
+                <td>
+                    <input style="margin-right:5px;" type="radio" name="flower" value="yes" />Yes
+                    <input style="margin-right:5px;margin-left: 20px;" type="radio" name="flower" value="no" />No
+                    <label for="flower" class="error"></label>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><b>Fruit</b></td>
+                <td>:</td>
+                <td>
+                    <input style="margin-right:5px;" type="radio" name="fruit" value="yes" />Yes
+                    <input style="margin-right:5px;margin-left: 20px;" type="radio" name="fruit" value="no" />No
+                    <label for="fruit" class="error"></label>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><b>Localname</b></td>
+                <td>:</td>
+                <td><input class="inputbox" type="text" id="localname" name="localname" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><b>Notes</b></td>
+                <td>:</td>
+                <td><textarea class="textareabox" id="notes" name="notes"></textarea></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><b>char_lf_insert_alt</b></td>
+                <td>:</td>
+                <td><input class="inputbox" type="text" id="char_lf_insert_alt" name="char_lf_insert_alt" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><b>char_lf_insert_opp</b></td>
+                <td>:</td>
+                <td><input class="inputbox" type="text" id="char_lf_insert_opp" name="char_lf_insert_opp" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input class="btn" type="submit" value="Submit" /></td>
+            </tr>
+        </table>
+        </form>
+</div>
+
+<!--START MODAL TAXON-->
+<div id="modal-taxon" class="modal-background">
+    <div class="modal-overlay"></div>
+    <div class="modal-dialog dialogStep">
+        <button type="button" class="closebtn close"></button>
+        <div class="modal-content">
+            <div class="modal-body bodyStep">
+              <h2 class="title">Insert Taxon</h2>
+                {include file='formTaxon_addDet.html'}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$().ready(function() {
+        
+    $("#formObs").validate({
+        rules: {
+			habit: {
+                required: true
+			},
+            dbh: {
+                Decimal: true
+            },
+            height: {
+                Decimal: true
+            },
+            bud: {
+                required: true
+            },
+            flower: {
+                required: true
+            },
+            fruit: {
+                required: true
+            }
+		},
+		messages: {
+            habit: {
+                required: "  Please choose habit"
+			},
+            bud: {
+                required: "&nbsp;&nbsp;&nbsp;&nbsp;Please select the options"
+            },
+            flower: {
+                required: "&nbsp;&nbsp;&nbsp;&nbsp;Please select the options"
+            },
+            fruit: {
+                required: "&nbsp;&nbsp;&nbsp;&nbsp;Please select the options"
+            }
+		}
+    });
+    
+    $('a#taxonPopup').click(function(){
+       $('div#modal-taxon').fadeToggle("linear");
+       $('div.modal-overlay').show();
+    });
+    $('.close,.modal-overlay').click(function(){
+       $('div#modal-taxon').fadeOut(); 
+    });
+});
+</script>

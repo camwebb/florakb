@@ -18,21 +18,8 @@
                 <td><b>Taxon</b></td>
                 <td>:</td>
                 <td>
-                    <select class="inputbox" name="taxonID" id="taxonID">
-                        <option value="" selected="1">Choose a taxonomy</option>
-                        {foreach from=$taxon item=itemTaxon}
-                            <option value="{$itemTaxon.id}">
-                            {if $itemTaxon.gen}
-                                {if $itemTaxon.fam}
-                                    ({$itemTaxon.fam})
-                                {/if}
-                                {$itemTaxon.gen} {$itemTaxon.sp}
-                            {else}
-                                {$itemTaxon.morphotype}
-                            {/if}
-                            </option>
-                        {/foreach}
-                    </select>
+                    <input class="inputbox" type="text" id="autoTaxon" />
+                    <input class="inputbox" type="hidden" id="taxonID" name="taxonID" value=""/>
                     <a href="#taxon-modal" class="btn" id="taxonPopup">Add</a>
                 </td>
             </tr>
@@ -57,6 +44,20 @@
             </tr>
             <tr>
                 <td></td>
+                <td><b>Determinant creator</b></td>
+                <td>:</td>
+                <td>
+                    <select class="inputbox" name="personID" id="personID">
+                        <option value="">Choose a person</option>
+                        {foreach from=$person item=itemPerson}
+                            <option value="{$itemPerson.id}">{$itemPerson.name}, {$itemPerson.email}</option>
+                        {/foreach}
+                    </select>
+                    <a href="#person-modal" class="btn" id="personPopup">Add</a>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
                 <td><b>Notes</b></td>
                 <td>:</td>
                 <td><textarea class="textareabox" id="notes" name="notes"></textarea></td>
@@ -71,6 +72,20 @@
         </form>
 </div>
 
+<!--START MODAL PERSON-->
+<div id="modal-person" class="modal-background">
+    <div class="modal-overlay"></div>
+    <div class="modal-dialog dialogStep">
+        <button type="button" class="closebtn close"></button>
+        <div class="modal-content">
+            <div class="modal-body bodyStep">
+              <h2 class="title">Insert Person</h2>
+                {include file='formPerson.html'}
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--START MODAL TAXON-->
 <div id="modal-taxon" class="modal-background">
     <div class="modal-overlay"></div>
@@ -79,7 +94,7 @@
         <div class="modal-content">
             <div class="modal-body bodyStep">
               <h2 class="title">Insert Taxon</h2>
-                {include file='formTaxon_addDet.html'}
+                {include file='formTaxon.html'}
             </div>
         </div>
     </div>
@@ -111,6 +126,21 @@ $().ready(function() {
                 required: " Please choose a taxonomy"
             }
 		}
+    });
+    
+    $("#autoTaxon").rules("add", {
+        required:true,
+        messages: {
+            required : " Please choose a taxonomy"
+        }
+    });
+    
+    $('a#personPopup').click(function(){
+       $('div#modal-person').fadeToggle("linear");
+       $('div.modal-overlay').show();
+    });
+    $('.close,.modal-overlay').click(function(){
+       $('div#modal-person').fadeOut(); 
     });
     
     $('a#taxonPopup').click(function(){

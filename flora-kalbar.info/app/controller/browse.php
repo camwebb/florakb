@@ -159,7 +159,6 @@ class browse extends Controller {
         $indivImages = $this->browseHelper->showImgIndiv($indivID,false,'');
         //get all observations from indiv selected
         $indivObs = $this->browseHelper->dataObsIndiv($indivID);
-        //pr($indivObs);exit;
         
         if(empty($indivDetail)){
             $this->view->assign('noData','empty');
@@ -196,6 +195,8 @@ class browse extends Controller {
         $indivDetail = $this->browseHelper->detailIndiv($indivID);
         //get determinant from selected indiv
         $indivDeterminant = $this->browseHelper->dataDetIndiv($indivID);
+        //get all observations from indiv selected
+        $indivObs = $this->browseHelper->dataObsIndiv($indivID);
         
         if(empty($indivDetail)){
             $this->view->assign('noData','empty');
@@ -219,9 +220,14 @@ class browse extends Controller {
         $confid_enum = $this->insertonebyone->get_enum('det','confid');
         $this->view->assign('confid_enum', $confid_enum);
         
+        //get list enum habit
+        $habit_enum = $this->insertonebyone->get_enum('obs','habit');
+        $this->view->assign('habit_enum', $habit_enum);
+        
         $msg = $this->msg->display('all', false);
         $this->view->assign('msg', $msg);
         
+        $this->view->assign('obs',$indivObs);
         $this->view->assign('indiv',$indivDetail);
         $this->view->assign('det',$indivDeterminant);
         return $this->loadView('editIndiv');
@@ -332,6 +338,10 @@ class browse extends Controller {
     }
     
     public function addDetView(){
+        //get list person
+        $listPerson = $this->insertonebyone->list_person();
+        $this->view->assign('person', $listPerson);
+        
         //get list taxon
         $listTaxon = $this->insertonebyone->list_taxon();
         $this->view->assign('taxon', $listTaxon);
@@ -342,15 +352,32 @@ class browse extends Controller {
         return $this->loadView('addDetView');
     }
     
+    public function addObsView(){
+        //get list person
+        $listPerson = $this->insertonebyone->list_person();
+        $this->view->assign('person', $listPerson);
+        
+        //get list taxon
+        $listTaxon = $this->insertonebyone->list_taxon();
+        $this->view->assign('taxon', $listTaxon);
+        
+        //get list enum confid
+        $habit_enum = $this->insertonebyone->get_enum('obs','habit');
+        $this->view->assign('habit_enum', $habit_enum);
+        
+        //get list enum subtype
+        $subtype_enum = $this->insertonebyone->get_enum('taxon','subtype');
+        $this->view->assign('subtype_enum', $subtype_enum);
+        
+        return $this->loadView('addObsView');
+    }
+    
     /**
-     * @todo insert individu from posted data
+     * @todo insert determinant from posted data
      * */
     public function addDet(){
         $data = $_POST;
-        $ses_user = $this->isUserOnline(); 
-        $personID = $ses_user['login']['id'];
         
-        $data['personID'] = $personID;       
         $data['indivID'] = $_GET['id'];
         $data['det_date'] = date("Y-m-d");
         
@@ -360,6 +387,33 @@ class browse extends Controller {
             $this->msg->add('s', 'Determinant Success Added');
         }else{
             $this->msg->add('e', 'Determinant Failed Added');
+        }
+        
+        if($_GET['action']=='addOnly'){
+            header('Location: ../../browse/indivDetail/?id='.$data['indivID']);
+        }
+        else{
+            header('Location: ../../browse/editIndiv/?id='.$data['indivID']);
+        }
+    }
+    
+    /**
+     * @todo insert observation from posted data
+     * */
+    public function addObs(){
+        $data = $_POST;
+        $ses_user = $this->isUserOnline(); 
+        $personID = $ses_user['login']['id'];
+        
+        $data['personID'] = $personID;       
+        $data['indivID'] = $_GET['id'];
+        
+        $insertData = $this->insertonebyone->insertTransaction('obs',$data);
+        
+        if($insertData){
+            $this->msg->add('s', 'Observation Success Added');
+        }else{
+            $this->msg->add('e', 'Observation Failed Added');
         }
         
         if($_GET['action']=='addOnly'){
