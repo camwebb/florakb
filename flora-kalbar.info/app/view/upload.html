@@ -150,7 +150,8 @@
         beforeSubmit: function(data) { 
              
         // $(".progress").html("Please wait ..."); 
-        status.html(first_info + 'Please Wait ...' + end);     
+        // status.html(first_info + 'Please Wait ...' + end);     
+        $('#status').html(first_info + 'Please Wait ...' + end); 
         },
         success : function(data) {}, 
         complete: function(xhr) {
@@ -160,7 +161,7 @@
             var resultExtract = JSON.parse(xhr.responseText);
             if(resultExtract.status){
                 
-                status.html(first_success + resultExtract.msg + end);
+                $('#status').html(first_success + resultExtract.msg + end);
 
                 if (resultExtract.finish){
                     
@@ -172,7 +173,7 @@
 
             }else{
 
-                status.html(first_error + resultExtract.msg + end);
+                $('#status').html(first_error + resultExtract.msg + end);
             }
 
             // $(".progress").html('');
