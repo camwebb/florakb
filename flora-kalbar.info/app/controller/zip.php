@@ -184,7 +184,8 @@ class zip extends Controller {
                             if($mime){
                                 
                                 //check file exist here
-                                $dataExist = $this->imagezip->dataExist($personID, $entry);
+                                //$dataExist = $this->imagezip->dataExist($entry);
+                                $dataExist = $this->imagezip->imageExist($entry);
                                 
                                 //add file information to array
                                 $fileToInsert = array('filename' => $entry,'md5sum' => $image_name_encrypt, 'directory' => $folder, 'mimetype' => $fileinfo['mime']);
