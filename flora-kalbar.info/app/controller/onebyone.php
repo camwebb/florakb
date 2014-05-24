@@ -86,8 +86,8 @@ class onebyone extends Controller {
         $this->view->assign('person', $listPerson);
         
         //get list taxon
-        $listTaxon = $this->insertonebyone->list_taxon();
-        $this->view->assign('taxon', $listTaxon);
+        /*$listTaxon = $this->insertonebyone->list_taxon();
+        $this->view->assign('taxon', $listTaxon);*/
         
         //get list enum confid
         $confid_enum = $this->insertonebyone->get_enum('det','confid');
@@ -98,6 +98,32 @@ class onebyone extends Controller {
         $this->view->assign('subtype_enum', $subtype_enum);
         
         return $this->loadView('formContentDet');
+    }
+    
+    /**
+     * @todo show view for determinant, taxon, and person form
+     * */
+    public function obsContent(){
+        $msg = $this->msg->display('all', false);
+        $this->view->assign('msg', $msg);
+        
+        //get list person
+        $listPerson = $this->insertonebyone->list_person();
+        $this->view->assign('person', $listPerson);
+        
+        //get list taxon
+        $listTaxon = $this->insertonebyone->list_taxon();
+        $this->view->assign('taxon', $listTaxon);
+        
+        //get list enum confid
+        $habit_enum = $this->insertonebyone->get_enum('obs','habit');
+        $this->view->assign('habit_enum', $habit_enum);
+        
+        //get list enum subtype
+        $subtype_enum = $this->insertonebyone->get_enum('taxon','subtype');
+        $this->view->assign('subtype_enum', $subtype_enum);
+        
+        return $this->loadView('formContentObs');
     }
     
     /**
@@ -197,11 +223,11 @@ class onebyone extends Controller {
         
         if($insertData){
             $this->msg->add('s', 'Update Individu Success');
+            header('Location: ../onebyone/detContent');
         }else{
             $this->msg->add('e', 'Update Individu Failed');
+            header('Location: ../onebyone/indivContent');
         }
-        
-        header('Location: ../onebyone/detContent');
     }
     
     /**
@@ -224,10 +250,40 @@ class onebyone extends Controller {
         
         if($insertData){
             $this->msg->add('s', 'Update Determinant Success');
+            header('Location: ../onebyone/obsContent');
         }else{
             $this->msg->add('e', 'Update Determinant Failed');
+            header('Location: ../onebyone/detContent');
         }
-        header('Location: ../onebyone/imageContent');
+    }
+    
+    /**
+     * @todo insert observation from posted data
+     * */
+    public function insertObs(){
+        $data = $_POST;
+        
+        //get data user from session
+        $session = new Session;
+        $login = $session->get_session();
+        $userData = $login['ses_user'];
+        
+        $personID = $userData['login']['id'];
+        $indivID = $userData['onebyone']['indivID'];
+        
+        $data['indivID'] = $indivID;
+        $data['date'] = date("Y-m-d");
+        $data['personID'] = $personID;
+        
+        $insertData = $this->insertonebyone->insertTransaction('obs',$data);
+        
+        if($insertData){
+            $this->msg->add('s', 'Update Observation Success');
+            header('Location: ../onebyone/imageContent');
+        }else{
+            $this->msg->add('e', 'Update Observation Failed');
+            header('Location: ../onebyone/obsContent');
+        }
     }
     
     /**
@@ -575,7 +631,8 @@ class onebyone extends Controller {
     }
     
     function autoTaxon(){
-        $taxons = $this->insertonebyone->list_taxon();
+        $like = $_POST['autoTaxon'];
+        $taxons = $this->insertonebyone->list_autoTaxon($like);
         
         $auto = array();
         

@@ -5,7 +5,7 @@
             <td>
                 <select class="inputbox" name="confid" id="confid">
                     <option value="" selected="1">Choose a level of confidence</option>
-                    {foreach from=$confid_enum item=enum}confid
+                    {foreach from=$confid_enum item=enum}
                         <option value="{$enum}">{$enum}</option>
                     {/foreach}
                 </select>
@@ -22,23 +22,8 @@
         <tr>
             <td><label for="">Taxon</label></td>
             <td>
-                <!--<select class="inputbox" name="taxonID" id="taxonID">
-                    <option value="" selected="1">Choose a taxonomy</option>
-                    {foreach from=$taxon item=itemTaxon}
-                        <option value="{$itemTaxon.id}">
-                        {if $itemTaxon.gen}
-                            {if $itemTaxon.fam}
-                                ({$itemTaxon.fam})
-                            {/if}
-                            {$itemTaxon.gen} {$itemTaxon.sp}
-                        {else}
-                            {$itemTaxon.morphotype}
-                        {/if}
-                        </option>
-                    {/foreach}
-                </select>-->
                 <input class="inputbox" type="text" id="autoTaxon" />
-                <input class="inputbox" type="hidden" id="taxonID" name="taxonID" />
+                <input class="inputbox" type="hidden" id="taxonID" name="taxonID" value=""/>
             </td>
             <td><a href="#taxon-modal" class="btn" id="taxonPopup">Add</a></td>
         </tr>
@@ -92,6 +77,12 @@ $().ready(function() {
                 required: " Please choose a person"
             }
 		}
+    });
+    $("#autoTaxon").rules("add", {
+        required:true,
+        messages: {
+            required : " Please choose a taxonomy"
+        }
     });
 });
 </script>

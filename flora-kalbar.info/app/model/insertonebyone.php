@@ -180,6 +180,19 @@ class insertonebyone extends Database {
     }
     
     /**
+     * @todo get list for auto taxon
+     * 
+     * @return sql result
+     * 
+     * */
+    function list_autoTaxon($like){
+        $sql = "SELECT * FROM taxon WHERE (fam LIKE '%$like%' OR gen LIKE 
+'%$like%' OR sp LIKE '%$like%' OR morphotype LIKE '%$like%') GROUP BY fam, gen, sp, morphotype ORDER BY fam, gen, sp, morphotype";
+		$res = $this->fetch($sql,1);
+        return $res;
+    }
+    
+    /**
      * @todo get enum of confid field in table det
      * @param $table = table name
      * @param $field = field name
