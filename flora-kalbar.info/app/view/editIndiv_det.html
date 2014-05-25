@@ -71,9 +71,23 @@
                 <td><b>Taxon</b></td>
                 <td>:</td>
                 <td>
-                    <input class="inputbox" type="text" id="autoTaxon" />
-                    <input class="inputbox" type="hidden" id="taxonID" name="taxonID" value=""/>
-                    <a href="#taxon-modal" class="btn" id="taxonPopup">Add</a>
+                <!--<input class="inputbox" type="text" id="autoTaxon" />
+                <input class="inputbox" type="hidden" id="taxonID" name="taxonID" value=""/>-->
+                <select class="inputbox" name="taxonID" id="taxonID">
+                    <option value="" selected="1">Choose a taxonomy</option>
+                    {foreach from=$taxon item=itemTaxon}
+                        <option value="{$itemTaxon.id}">
+                        {if $itemTaxon.gen}
+                            {if $itemTaxon.fam}
+                                ({$itemTaxon.fam})
+                            {/if}
+                            {$itemTaxon.gen} {$itemTaxon.sp}
+                        {else}
+                            {$itemTaxon.morphotype}
+                        {/if}
+                        </option>
+                    {/foreach}
+                </select>
                 </td>
             </tr>
             <tr>

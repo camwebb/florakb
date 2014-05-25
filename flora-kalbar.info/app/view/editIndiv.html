@@ -33,10 +33,9 @@
                 <script type="text/javascript">
                 
                     $().ready(function() {
-                        var localtity= "{$dataIndiv['locality']}";
-                        
+                        var localtity= "{$dataIndiv.locnID}";
                         $("select option").each(function(){
-                          if ($(this).text() == localtity)
+                          if ($(this).val() == localtity)
                             $(this).attr("selected","selected");
                         });
                     });

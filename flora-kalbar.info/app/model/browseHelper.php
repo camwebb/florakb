@@ -133,6 +133,14 @@ class browseHelper extends Database {
         return true;
     }
     
+    //ntar dirapiin -,-
+    
+    function deleteImgIndiv($data){
+        $sql="DELETE FROM `img` WHERE indivID='$data'";
+        $res = $this->query($sql,0);
+        return true;
+    }
+    
     /**
      * @todo retrieve all data from table Location
      * 

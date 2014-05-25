@@ -276,11 +276,11 @@ class browse extends Controller {
      */
     function deleteIndiv(){
         $idIndiv = $_GET['id'];
-        $data['indivID'] = $idIndiv;
+        $data['indivID'] = $idIndiv;        
         $deleteIndiv = $this->browseHelper->deleteIndiv('','indiv','id',$data);
         $deleteColl = $this->browseHelper->deleteIndiv('','coll','indivID',$data);
         $deleteObs = $this->browseHelper->deleteIndiv('','obs','indivID',$data);
-        $deleteImg = $this->browseHelper->deleteIndiv('','img','indivID',$data);
+        $deleteImg = $this->browseHelper->deleteImgIndiv($idIndiv);
         $deleteDet = $this->browseHelper->deleteIndiv('','det','indivID',$data);
         
         if($deleteIndiv && $deleteColl && $deleteObs && $deleteImg && $deleteDet){
@@ -434,7 +434,8 @@ class browse extends Controller {
         $ses_user = $this->isUserOnline(); 
         $personID = $ses_user['login']['id'];
         
-        $data['personID'] = $personID;       
+        $data['personID'] = $personID;  
+        $data['date'] = date("Y-m-d");     
         $data['indivID'] = $_GET['id'];
         
         $insertData = $this->insertonebyone->insertTransaction('obs',$data);

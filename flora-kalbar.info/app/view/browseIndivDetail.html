@@ -1,6 +1,10 @@
 <div class="content">
     {$msg}
     {if $noData eq 'empty'}
+        <div class="btn-back">
+            <a href="#" onClick="history.back();return false;"><span>Back</span></a>
+        </div>
+        <div class="clear"></div>
         <i>No data available</i>
     {else}
     
@@ -153,7 +157,7 @@
                             <td>:</td>
                             <td>{$dataObs.notes}</td>
                             <td>
-                                {if $user.login && $dataObs.personID eq $user.login.id}
+                                {if $user.login && $dataObs.personID == $user.login.id && $dataIndiv.name != $user.login.name}
                                     <a href="{$basedomain}browse/deleteObs/?id={$dataObs.obsID}&&indivID={$dataObs.indivID}" id="deleteObsOwner" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
                                 {/if}
                             </td>
@@ -238,7 +242,7 @@
                             <td>:</td>
                             <td><i>{$dataDet.notes}</i></td>
                             <td>
-                                {if $user.login && $dataDet.personID eq $user.login.id}
+                                {if $user.login && $dataDet.personID != $user.login.id && $dataIndiv.name != $user.login.name}
                                     <a href="{$basedomain}browse/deleteDet/?id={$dataDet.detID}&&indivID={$dataDet.indivID}" id="deleteDetOwner" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
                                 {/if}
                             </td>
