@@ -593,7 +593,7 @@ table.det td.detContent{width: 70%;}
 }
 .sidebar-2-left ul li a:focus{background-color: #E4E5E6;}
 .sidebar-2-left ul li.selected{background-color: #00adbb;} 
-.sidebar-2-left ul li.selected a, .sidebar-2-left ul.step li.selected p{color: #FFFFFF;}
+.sidebar-2-left ul li.selected a, .sidebar-2-left ul.step li.selected p, .sidebar-2-left ul li.selected a:hover{color: #FFFFFF;}
 .sidebar-2-left ul li a:hover{color: #00adbb;}
 
 .sidebar-2-right{

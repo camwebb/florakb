@@ -1,0 +1,71 @@
+<h2 class="title">Images</h2>
+
+<table class="browse indiv">
+    <tr>
+        <th style="-moz-border-radius: 6px 0 0 0;-webkit-border-radius: 6px 0 0 0;border-radius: 6px 0 0 0;width:100px;">Images</th>
+        <td>
+            
+            {foreach $img as $dataImg}
+            {if $dataImg.md5sum}
+                <form id="formImg" method="POST" action="{$basedomain}browse/deleteImg/?indivID={$smarty.get.id}&&action=addDet">
+                <input type="checkbox" name="idImg[]" value="{$dataImg.id}" />
+                <a class="gallery" href="{$basedomain}public_assets/img/500px/{$dataImg.md5sum}.500px.jpg"><img src="{$basedomain}public_assets/img/100px/{$dataImg.md5sum}.100px.jpg" /></a>
+                <br />
+                <input style="float: right;" type="submit" id="deleteImgBtn" class="btn" value="Delete Image" />
+                <div class="clear"></div>
+            {/if}
+            {foreachelse}<i>No image available</i>
+            {/foreach}
+            
+            </form>
+        </td>
+    </tr>
+</table>
+<br />
+
+<div id="tableAddImage" style="display: none;">
+<h2 class="title">Add Image</h2>
+<form id="formImage" method="POST" action="{$basedomain}browse/addImg/?id={$smarty.get.id}" enctype="multipart/form-data">
+    <table class="form-tbl">
+        <tr>
+            <td><label for="filename">File Image</label></td>
+            <td><input class="inputbox" type="file" id="filename" name="filename" /></td>
+        </tr>
+        <tr>
+            <td><label for="plantpart">Plantpart</label></td>
+            <td>
+                <select class="inputbox" name="plantpart" id="plantpart">
+                    {foreach from=$plantpart_enum item=enum}
+                        <option value="{$enum}">{$enum}</option>
+                    {/foreach}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="notes">Notes</label></td>
+            <td><textarea class="textareabox" id="notes" name="notes"></textarea></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input class="btn" type="submit" value="Submit" /></td>
+        </tr>
+    </table>
+</form>
+</div>
+<br />
+
+<a href="#addImg" class="btn" id="addImg" style="float: right;">Add Image</a>
+<div class="clear"></div>
+
+<script type="text/javascript">
+    $('a.gallery').colorbox({ opacity:0.5 , rel:'groupIndiv' });
+    $('a#addImg').click(function(){
+       $('div#tableAddImage').fadeToggle("linear");
+    });
+    $(document).on('click','#deleteImgBtn', function(){
+            var msg = confirm('Are you sure to delete ?');
+            if (!msg) return false;    
+        });
+</script>
+
+<br />

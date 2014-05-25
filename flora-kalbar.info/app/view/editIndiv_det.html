@@ -1,12 +1,65 @@
-<div class="content">
-    <div class="btn-back">
-        <a href="#" onClick="history.back();return false;"><span>Back</span></a>
-    </div>
-    <div class="clear"></div>
+<h2 class="title">Determinants</h2>
+    <table class="browse indiv">
+        <tr>
+            <th style="-moz-border-radius: 6px 0 0 6px;-webkit-border-radius: 6px 0 0 6px;border-radius: 6px 0 0 6px;width: 100px;">Dets</th>
+            <td>
+                   
+                    <table id="editDet" class="det">
+                        {foreach $indiv as $dataIndiv}
+                        {foreach from=$det key=myId item=dataDet}
+                        <tr>
+                            <td class="detNumber"><b>#{$myId+1}</b></td>
+                            <td class="detHeader"><b>Creator</b></td>
+                            <td class="detColon">:</td>
+                            <td class="detContent">{$dataDet['name']}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Date</b></td>
+                            <td>:</td>
+                            <td>{$dataDet['det_date']}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Species</b></td>
+                            <td>:</td>
+                            <td><i>{$dataDet['sp']}</i></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Confid</b></td>
+                            <td>:</td>
+                            <td>{$dataDet['confid']}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Using</b></td>
+                            <td>:</td>
+                            <td>{$dataDet['using']}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Notes</b></td>
+                            <td>:</td>
+                            <td>{$dataDet['notes']}</td>
+                            <td>
+                                {if $user.login && $dataDet.personID eq $user.login.id || $dataIndiv.id eq $user.login.id}
+                                    <a href="{$basedomain}browse/deleteDet/?id={$dataDet.detID}&&indivID={$dataDet.indivID}" id="deleteDet" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
+                                {/if}
+                            </td>
+                        </tr>
+                        {foreachelse}<i>No determinant available</i>
+                        {/foreach}
+                        {/foreach}
+                    </table>
+            </td>            
+        </tr>
+    </table>
     <br />
-    <h2 class="title">Add Determinant</h2>
-    <form id="formDet" method="POST" action="{$basedomain}browse/addDet/?id={$smarty.get.id}&&action=addDet">
-        <table id="addDet" class="det">
+    <div id="tableAddDet" style="display: none;">
+        <h2 class="title">Add Determinant</h2>
+        <form id="formDet" method="POST" action="{$basedomain}browse/addDet/?id={$smarty.get.id}&&action=addDet">
+        <table id="addDet" class="form-tbl">
             <tr>
                 <td class="detNumber"></td>
                 <td class="detHeader"></td>
@@ -70,39 +123,21 @@
             </tr>
         </table>
         </form>
-</div>
-
-<!--START MODAL PERSON-->
-<div id="modal-person" class="modal-background">
-    <div class="modal-overlay"></div>
-    <div class="modal-dialog dialogStep">
-        <button type="button" class="closebtn close"></button>
-        <div class="modal-content">
-            <div class="modal-body bodyStep">
-              <h2 class="title">Insert Person</h2>
-                {include file='formPerson.html'}
-            </div>
         </div>
-    </div>
-</div>
-
-<!--START MODAL TAXON-->
-<div id="modal-taxon" class="modal-background">
-    <div class="modal-overlay"></div>
-    <div class="modal-dialog dialogStep">
-        <button type="button" class="closebtn close"></button>
-        <div class="modal-content">
-            <div class="modal-body bodyStep">
-              <h2 class="title">Insert Taxon</h2>
-                {include file='formTaxon.html'}
-            </div>
-        </div>
-    </div>
-</div>
-
+            <br/>
+    <a href="#addDeterminant" class="btn" id="addDet" style="float: right;">Add Determinant</a>
+    <div class="clear"></div>
+    
 <script type="text/javascript">
-$().ready(function() {
-        
+    $(document).on('click','#deleteDet', function(){
+            var msg = confirm('Are you sure to delete ?');
+            if (!msg) return false;    
+        });
+    
+    $('a#addDet').click(function(){
+       $('div#tableAddDet').fadeToggle("linear");
+    });
+    
     $("#formDet").validate({
         rules: {
 			confid: {
@@ -112,6 +147,9 @@ $().ready(function() {
                 required: true
             },
             taxonID: {
+                required: true
+            },
+            personID: {
                 required: true
             }
 		},
@@ -124,6 +162,9 @@ $().ready(function() {
             },
             taxonID: {
                 required: " Please choose a taxonomy"
+            },
+            taxonID: {
+                required: " Please choose a person"
             }
 		}
     });
@@ -150,5 +191,4 @@ $().ready(function() {
     $('.close,.modal-overlay').click(function(){
        $('div#modal-taxon').fadeOut(); 
     });
-});
 </script>

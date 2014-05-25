@@ -125,6 +125,14 @@ class browseHelper extends Database {
             else{return false;}
     }
     
+    function deleteImg($data){
+        foreach ($data['id'] as $id){
+            $sql="DELETE FROM `img` WHERE `id`='$id' AND indivID='".$data['indivID']."'";
+            $res = $this->query($sql,0);
+        }
+        return true;
+    }
+    
     /**
      * @todo retrieve all data from table Location
      * 

@@ -19,6 +19,8 @@ class browse extends Controller {
 	{
         $this->insertonebyone = $this->loadModel('insertonebyone');
         $this->browseHelper = $this->loadModel('browseHelper');
+        //used for update image data and validate email input in insertImage function
+        $this->imagezip = $this->loadModel('imagezip');
 	}
 	
 	function index(){
@@ -197,6 +199,8 @@ class browse extends Controller {
         $indivDeterminant = $this->browseHelper->dataDetIndiv($indivID);
         //get all observations from indiv selected
         $indivObs = $this->browseHelper->dataObsIndiv($indivID);
+        //get all images from indiv selected
+        $indivImages = $this->browseHelper->showImgIndiv($indivID,false,'');
         
         if(empty($indivDetail)){
             $this->view->assign('noData','empty');
@@ -224,10 +228,16 @@ class browse extends Controller {
         $habit_enum = $this->insertonebyone->get_enum('obs','habit');
         $this->view->assign('habit_enum', $habit_enum);
         
+        //get plantpart enum
+        $plantpart_enum = $this->insertonebyone->get_enum('img','plantpart');
+        $this->view->assign('plantpart_enum', $plantpart_enum);
+        
         $msg = $this->msg->display('all', false);
         $this->view->assign('msg', $msg);
         
+        $this->view->assign('user', $ses_user); 
         $this->view->assign('obs',$indivObs);
+        $this->view->assign('img',$indivImages);
         $this->view->assign('indiv',$indivDetail);
         $this->view->assign('det',$indivDeterminant);
         return $this->loadView('editIndiv');
@@ -323,6 +333,25 @@ class browse extends Controller {
     }
     
     /**
+     * @todo delete all img selected
+     * 
+     */
+    function deleteImg(){
+        $idIndiv = $_GET['indivID'];
+        $data['indivID'] = $idIndiv;
+        $data['id'] = $_POST['idImg'];
+        $deleteImg = $this->browseHelper->deleteImg($data);
+        
+        if($deleteImg){
+            $this->msg->add('s', 'Delete Image Success');
+        }else{
+            $this->msg->add('e', 'Delete Image Failed');
+        }
+        
+        header('Location: ../../browse/indivDetail/?id='.$idIndiv);
+    }
+    
+    /**
      * @todo insert location from edit Indiv
      * */
     public function insertLocation(){
@@ -393,7 +422,7 @@ class browse extends Controller {
             header('Location: ../../browse/indivDetail/?id='.$data['indivID']);
         }
         else{
-            header('Location: ../../browse/editIndiv/?id='.$data['indivID']);
+            header('Location: ../../browse/indivDetail/?id='.$data['indivID']);
         }
     }
     
@@ -420,9 +449,244 @@ class browse extends Controller {
             header('Location: ../../browse/indivDetail/?id='.$data['indivID']);
         }
         else{
-            header('Location: ../../browse/editIndiv/?id='.$data['indivID']);
+            header('Location: ../../browse/indivDetail/?id='.$data['indivID']);
         }
     }
+    
+    public function addImg(){
+        global $CONFIG;
+        $data = $_POST;
+        //pr($data);exit;
+        
+        $name = 'filename';
+        $path = '';
+        
+        $uploaded_file = uploadFile($name, $path, 'image');
+        
+        //if uploaded
+        if($uploaded_file['status'] != '0'){
+            logFile('Upload Success');
+            
+            if (extension_loaded('gd') && function_exists('gd_info')) {
+            logFile('GD2 is installed. Checking image data.');
+            //validate email and get short_namecode
+            /*$validateEmail = $this->validateEmail($data['email']);
+            if($validateEmail['status'] != 'success'){
+                $this->msg->add('e', 'Email validation Failed');
+                header('Location: ../onebyone/image');
+                exit;
+            }
+            
+            $personID = $validateEmail['personID'];
+            $username = $validateEmail['short_namecode'];*/
+            $ses_user = $this->isUserOnline(); 
+            $username = $ses_user['login']['username'];
+            $personID = $ses_user['login']['id'];
+            $indivID = $_GET['id'];
+        
+            $tmp_name = $uploaded_file['full_name'];
+            $entry = str_replace(array('\'', '"'), '', $uploaded_file['real_name']);
+            //$entry = $uploaded_file['real_name'];
+            $image_name_encrypt = md5($entry);
+            
+            //check filename
+            $dataExist = $this->imagezip->dataExist($personID, $entry);            
+            
+            $path_entry = $CONFIG['default']['upload_path'];
+            $src_tmp = $path_entry."/".$tmp_name;
+            
+            if(!$dataExist){
+                
+                logFile('Prepare to cropping image');
+                
+                $path_data = 'public_assets/';
+                //$path_user = $path_data.$username;
+                $path_img = $path_data.'/img';
+                $path_img_1000px = $path_img.'/1000px';
+                $path_img_500px = $path_img.'/500px';
+                $path_img_100px = $path_img.'/100px';
+                
+                $fileinfo = getimagesize($path_entry.'/'.$tmp_name);
+                
+                $toCreate = array($path_img, $path_img_1000px, $path_img_500px, $path_img_100px);
+                createFolder($toCreate, 0755);
+                
+                copy($path_entry."/".$tmp_name, $path_img_1000px.'/'.$image_name_encrypt.'.1000px.jpg');
+                if(!@ copy($path_entry."/".$tmp_name, $path_img_1000px.'/'.$image_name_encrypt.'.1000px.jpg')){
+                    logFile('Copy file failed');
+                    $status = "error";
+                    $msg= error_get_last();
+                }
+                else{
+                    logFile('Copy file success');
+                    $dest_1000px = $CONFIG['default']['root_path'].'/'.$path_img_1000px.'/'.$image_name_encrypt.'.1000px.jpg';
+                    $dest_500px = $CONFIG['default']['root_path'].'/'.$path_img_500px.'/'.$image_name_encrypt.'.500px.jpg';
+                    $dest_100px = $CONFIG['default']['root_path'].'/'.$path_img_100px.'/'.$image_name_encrypt.'.100px.jpg';
+                    
+                    if ($fileinfo[0] >= 1000 || $fileinfo[1] >= 1000 ) {
+                        if ($fileinfo[0] > $fileinfo[1]) {
+                            $percentage = (1000/$fileinfo[0]);
+                            $config['width'] = $percentage*$fileinfo[0];
+                            $config['height'] = $percentage*$fileinfo[1];
+                        }else{
+                            $percentage = (1000/$fileinfo[1]);
+                            $config['width'] = $percentage*$fileinfo[0];
+                            $config['height'] = $percentage*$fileinfo[1];
+                        }
+                        
+                        $this->resize_pic($src_tmp, $dest_1000px, $config);
+                        unset($config);
+                    }
+                    
+                    logFile('Cropping to 1000px image');
+                    //Set cropping for y or x axis, depending on image orientation
+                    if ($fileinfo[0] > $fileinfo[1]) {
+                        $config['width'] = $fileinfo[1];
+                        $config['height'] = $fileinfo[1];
+                        $config['x_axis'] = (($fileinfo[0] / 2) - ($config['width'] / 2));
+                        $config['y_axis'] = 0;
+                    }
+                    else {
+                        $config['width'] = $fileinfo[0];
+                        $config['height'] = $fileinfo[0];
+                        $config['x_axis'] = 0;
+                        $config['y_axis'] = (($fileinfo[1] / 2) - ($config['height'] / 2));
+                    }
+
+                    $this->cropToSquare($src_tmp, $dest_500px, $config);
+                    unset($config);
+                    
+                    logFile('Cropping to square image');
+                    
+                    //set new config
+                    $config['width'] = 500;
+                    $config['height'] = 500;
+                    $this->resize_pic($dest_500px, $dest_500px, $config);
+                    unset($config);
+                    
+                    logFile('Cropping to 500px image');
+                    
+                    $config['width'] = 100;
+                    $config['height'] = 100;
+                    $this->resize_pic($dest_500px, $dest_100px, $config);
+                    unset($config);
+                    
+                    logFile('Cropping to 100px image');
+                    
+                    //add file information to array
+                    /*$fileToInsert = array('filename' => $entry,'md5sum' => $image_name_encrypt, 'directory' => '', 'mimetype' => $fileinfo['mime']);
+                    
+                    $insertImage = $this->imagezip->updateImage($personID, $fileToInsert);*/
+                    
+                    $data['filename'] = $entry;
+                    $data['md5sum'] = $image_name_encrypt;
+                    $data['mimetype'] = $fileinfo['mime'];
+                    $data['indivID'] = $indivID;
+                    $data['personID'] = $personID;
+                    
+                    $insertData = $this->insertonebyone->insertTransaction('img',$data);
+                    
+                    if($insertData){
+                        logFile('Insert Data Success');
+                        $this->msg->add('s', 'Update image success');
+                        $session = new Session;
+                        
+                        $dataSession = array();
+                        
+                        $sess_image = $session->get_session();
+                        $sess_user = $sess_image['ses_user'];
+                        if(isset($sess_user['image_sess'])){
+                            logFile('Fetch image session');
+                            foreach ($sess_user['image_sess'] as $data_before){
+                                array_push($dataSession,$data_before);
+                            }
+                        }
+                        array_push($dataSession, $data);
+                        $session->set_session($dataSession,'image_sess');
+                        //$session->delete_session('onebyone');
+                    }else{
+                        logFile('Insert Data Failed');
+                        $this->msg->add('e', 'Update image failed');
+                    }
+                } // end if copy
+                
+            }else{
+                logFile('File Image exist');
+                $this->msg->add('e', 'Image exist');
+            }
+            unlink($src_tmp);
+            }else{
+                logFile('GD2 is not installed');
+                $this->msg->add('e', 'System Error. Please contact our developer team');
+            }
+        }else{
+            logFile('Upload Image Failed');
+            $this->msg->add('e', $uploaded_file['message']);
+        }
+        header('Location: ../../browse/indivDetail/?id='.$indivID);
+    }
+    
+    /**
+     * @todo resize image
+     * 
+     * @param string $src = full image path with file name
+     * @param string $dest = path destination for new image
+     * @param array $config = array contain configuration to crop image
+     * 
+     * @param int $config['width']
+     * @param int $config['height']
+     * 
+     * @return bool Returns TRUE on success, FALSE on failure
+     * 
+     * */
+    function resize_pic($src, $dest, $config){
+        list($current_width, $current_height) = getimagesize($src);
+        $canvas = imagecreatetruecolor($config['width'], $config['height']);
+        $current_image = imagecreatefromjpeg($src);
+        
+        // Resize
+        if (!@ imagecopyresized($canvas, $current_image, 0, 0, 0, 0, $config['width'], $config['height'], $current_width, $current_height)){
+            return false;
+        }else{
+            // Output
+            if (!@ imagejpeg($canvas, $dest, 100)){
+                return false;
+            }else{
+                return true;
+            }
+        }
+    }
+    
+    /**
+     * @todo crop image to square from center
+     * 
+     * @param string $src = full image path with file name
+     * @param string $dest = path destination for new image
+     * @param array $config = array contain configuration to crop image
+     * 
+     * @param int $config['width']
+     * @param int $config['height']
+     * @param int $config['x_axis']
+     * @param int $config['y_axis']
+     * 
+     * @return bool Returns TRUE on success, FALSE on failure
+     * 
+     * */
+    function cropToSquare($src, $dest, $config){
+        list($current_width, $current_height) = getimagesize($src);
+        $canvas = imagecreatetruecolor($config['width'], $config['height']);
+        $current_image = imagecreatefromjpeg($src);
+        if (!@ imagecopy($canvas, $current_image, 0, 0, $config['x_axis'], $config['y_axis'], $current_width, $current_height)){
+            return false;
+        }else{
+            if (!@ imagejpeg($canvas, $dest, 100)){
+                return false;
+            }else{
+                return true;
+            }
+        }
+    }
+    
     
     /**
      * @todo insert taxon from posted data

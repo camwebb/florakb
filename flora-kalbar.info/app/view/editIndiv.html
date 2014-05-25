@@ -52,6 +52,7 @@
                 <th style="-moz-border-radius: 0 0 0 6px;-webkit-border-radius: 0 0 0 6px;border-radius: 0 0 0 6px;">Tag</th>
                 <td><input class="inputbox" type="text" name="tag" value="{$dataIndiv['tag']}"/></td>
             </tr>
+             {/foreach}
         </table>
         <br />
         <input class="btn" style="float: right;" type="submit" value="Submit" />
@@ -59,318 +60,37 @@
     </form>
     <br />
     
-    <h2 class="title">Observations</h2>
-    <table class="browse indiv">    
-        <tr>
-            <th style="-moz-border-radius: 6px 0 0 0;-webkit-border-radius: 6px 0 0 0;border-radius: 6px 0 0 0;width:100px;">Observations</th>
-            <td>
-                {foreach from=$obs key=myId item=dataObs}
-                    
-                    <table class="det">
-                        <tr>
-                            <td class="detNumber"><b>#{$myId+1}</b></td>
-                            <td class="detHeader"><b>Creator</b></td>
-                            <td class="detColon">:</td>
-                            <td class="detContent">{$dataObs.name}</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Date</b></td>
-                            <td>:</td>
-                            <td>{$dataObs.date}</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Microhab</b></td>
-                            <td>:</td>
-                            <td>{$dataObs.microhab}</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Habit</b></td>
-                            <td>:</td>
-                            <td><i>{$dataObs.habit}</i></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>dbh</b></td>
-                            <td>:</td>
-                            <td><i>{$dataObs.dbh}</i></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Height</b></td>
-                            <td>:</td>
-                            <td><i>{$dataObs.height}</i></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>bud</b></td>
-                            <td>:</td>
-                            <td><i>{$dataObs.bud}</i></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Flower</b></td>
-                            <td>:</td>
-                            <td><i>{$dataObs.flower}</i></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Fruit</b></td>
-                            <td>:</td>
-                            <td><i>{$dataObs.fruit}</i></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Localname</b></td>
-                            <td>:</td>
-                            <td><i>{$dataObs.localname}</i></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Notes</b></td>
-                            <td>:</td>
-                            <td>{$dataObs.notes}</td>
-                        </tr>
-                    </table>
-                    {foreachelse}<i>No observation available</i>
-                {/foreach}
-                <div id="tableAddObs" style="display: none;">
-                    <h2 class="title">Add Observation</h2>
-                    <form id="formObs" method="POST" action="{$basedomain}browse/addObs/?id={$smarty.get.id}&&action=addObs">
-                    <table id="addObs" class="det">
-                        <tr>
-                            <td class="detNumber"></td>
-                            <td class="detHeader"></td>
-                            <td class="detColon"></td>
-                            <td class="detContent"></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Microhab</b></td>
-                            <td>:</td>
-                            <td><input class="inputbox" type="text" id="microhab" name="microhab" /></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Habit</b></td>
-                            <td>:</td>
-                            <td>
-                                <select class="inputbox" name="habit" id="habit">
-                                    <option value="" selected="1">Choose Habit</option>
-                                    {foreach from=$habit_enum item=enum}
-                                        <option value="{$enum}">{$enum}</option>
-                                    {/foreach}
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Dbh</b></td>
-                            <td>:</td>
-                            <td><input class="inputbox" type="text" id="dbh" name="dbh" /></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Height</b></td>
-                            <td>:</td>
-                            <td><input class="inputbox" type="text" id="height" name="height" /></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Bud</b></td>
-                            <td>:</td>
-                            <td>
-                                <input style="padding:5px;margin-right:5px;" type="radio" name="bud" value="yes" />Yes
-                                <input style="padding:5px;margin-right:5px;margin-left: 20px;" type="radio" name="bud" value="no" />No
-                                <label for="bud" class="error"></label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Flower</b></td>
-                            <td>:</td>
-                            <td>
-                                <input style="margin-right:5px;" type="radio" name="flower" value="yes" />Yes
-                                <input style="margin-right:5px;margin-left: 20px;" type="radio" name="flower" value="no" />No
-                                <label for="flower" class="error"></label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Fruit</b></td>
-                            <td>:</td>
-                            <td>
-                                <input style="margin-right:5px;" type="radio" name="fruit" value="yes" />Yes
-                                <input style="margin-right:5px;margin-left: 20px;" type="radio" name="fruit" value="no" />No
-                                <label for="fruit" class="error"></label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Localname</b></td>
-                            <td>:</td>
-                            <td><input class="inputbox" type="text" id="localname" name="localname" /></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Notes</b></td>
-                            <td>:</td>
-                            <td><textarea class="textareabox" id="notes" name="notes"></textarea></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>char_lf_insert_alt</b></td>
-                            <td>:</td>
-                            <td><input class="inputbox" type="text" id="char_lf_insert_alt" name="char_lf_insert_alt" /></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>char_lf_insert_opp</b></td>
-                            <td>:</td>
-                            <td><input class="inputbox" type="text" id="char_lf_insert_opp" name="char_lf_insert_opp" /></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><input class="btn" type="submit" value="Submit" /></td>
-                        </tr>
-                    </table>
-                    </form>
-                    </div>
-            </td>
-        </tr>
-    </table>
-    <br />
-    <a href="#addObservation" class="btn" id="addObs" style="float: right;">Add Observation</a>
-    <div class="clear"></div>
     
-    <h2 class="title">Determinants</h2>
-    <table class="browse indiv">
-        {/foreach}
-        <tr>
-            <th style="-moz-border-radius: 6px 0 0 6px;-webkit-border-radius: 6px 0 0 6px;border-radius: 6px 0 0 6px;width: 100px;">Dets</th>
-            <td>
-                   
-                    <table id="editDet" class="det">
-                        {foreach from=$det key=myId item=dataDet}
-                        <tr>
-                            <td class="detNumber"><b>#{$myId+1}</b></td>
-                            <td class="detHeader"><b>Det Creator</b></td>
-                            <td class="detColon">:</td>
-                            <td class="detContent">{$dataDet['name']}</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Date</b></td>
-                            <td>:</td>
-                            <td>{$dataDet['det_date']}</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Species</b></td>
-                            <td>:</td>
-                            <td><i>{$dataDet['sp']}</i></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Confid</b></td>
-                            <td>:</td>
-                            <td>{$dataDet['confid']}</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Using</b></td>
-                            <td>:</td>
-                            <td>{$dataDet['using']}</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Notes</b></td>
-                            <td>:</td>
-                            <td>{$dataDet['notes']}</td>
-                        </tr>
-                        {foreachelse}<i>No determinant available</i>
-                        {/foreach}
-                    </table>
-                    
-                    <div id="tableAddDet" style="display: none;">
-                    <h2 class="title">Add Determinant</h2>
-                    <form id="formDet" method="POST" action="{$basedomain}browse/addDet/?id={$smarty.get.id}&&action=addDet">
-                    <table id="addDet" class="det">
-                        <tr>
-                            <td class="detNumber"></td>
-                            <td class="detHeader"></td>
-                            <td class="detColon"></td>
-                            <td class="detContent"></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Taxon</b></td>
-                            <td>:</td>
-                            <td>
-                                <input class="inputbox" type="text" id="autoTaxon" />
-                                <input class="inputbox" type="hidden" id="taxonID" name="taxonID" value=""/>
-                                <a href="#taxon-modal" class="btn" id="taxonPopup">Add</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Confidence of determination</b></td>
-                            <td>:</td>
-                            <td>
-                                <select class="inputbox" name="confid" id="confid">
-                                    <option value="" selected="1">Choose a level of confidence</option>
-                                    {foreach from=$confid_enum item=enum}confid
-                                        <option value="{$enum}">{$enum}</option>
-                                    {/foreach}
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Resources used</b></td>
-                            <td>:</td>
-                            <td><input class="inputbox" type="text" id="using" name="using" /></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Determinant creator</b></td>
-                            <td>:</td>
-                            <td>
-                                <select class="inputbox" name="personID" id="personID">
-                                    <option value="">Choose a person</option>
-                                    {foreach from=$person item=itemPerson}
-                                        <option value="{$itemPerson.id}">{$itemPerson.name}, {$itemPerson.email}</option>
-                                    {/foreach}
-                                </select>
-                                <a href="#person-modal" class="btn" id="personPopup">Add</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Notes</b></td>
-                            <td>:</td>
-                            <td><textarea class="textareabox" id="notes" name="notes"></textarea></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><input class="btn" type="submit" value="Submit" /></td>
-                        </tr>
-                    </table>
-                    </form>
-                    </div>
-            </td>            
-        </tr>
-    </table>
-    <br />
-    <a href="#addDeterminant" class="btn" id="addDet" style="float: right;">Add Determinant</a>
-    <div class="clear"></div>
+    <div class="sidebar-2-left">
+        <ul class="step">
+            <li>Edit Individu Attribut</li>
+            <li><a href="#" id="obsBtn">Edit Observation</a></li>
+            <li><a href="#" id="imgBtn">Edit Images</a></li>
+            <li><a href="#" id="detBtn">Edit Determinant</a></li>
+        </ul>
+    </div>
+    
+    <div class="sidebar-2-right">
+
+<!-- Observation table-->
+    <div id="editIndiv_obs">
+        {include file='editIndiv_obs.html'}
+    </div>
+    
+<!-- Images table-->
+    <div id="editIndiv_img">
+        {include file='editIndiv_img.html'}
+    </div> 
+
+<!-- Determinants table-->
+    <div id="editIndiv_det">
+        {include file='editIndiv_det.html'}
+    </div>     
+    
+    
     {/if}
+    </div>
+    <div class="clear"></div>
 </div>
 
 <!--START MODAL LOCATION-->
@@ -437,75 +157,6 @@ $().ready(function() {
 		}
     });
     
-    $("#formObs").validate({
-        rules: {
-			habit: {
-                required: true
-			},
-            dbh: {
-                Decimal: true
-            },
-            height: {
-                Decimal: true
-            },
-            bud: {
-                required: true
-            },
-            flower: {
-                required: true
-            },
-            fruit: {
-                required: true
-            }
-		},
-		messages: {
-            habit: {
-                required: "  Please choose habit"
-			},
-            bud: {
-                required: "&nbsp;&nbsp;&nbsp;&nbsp;Please select the options"
-            },
-            flower: {
-                required: "&nbsp;&nbsp;&nbsp;&nbsp;Please select the options"
-            },
-            fruit: {
-                required: "&nbsp;&nbsp;&nbsp;&nbsp;Please select the options"
-            }
-		}
-    });
-    
-    $("#formDet").validate({
-        rules: {
-			confid: {
-                required: true
-			},
-            using: {
-                required: true
-            },
-            taxonID: {
-                required: true
-            }
-		},
-		messages: {
-			confid: {
-                required: " Please choose a level"
-			},
-            using: {
-                required: " Please enter a resource"
-            },
-            taxonID: {
-                required: " Please choose a taxonomy"
-            }
-		}
-    });
-    
-    $("#autoTaxon").rules("add", {
-        required:true,
-        messages: {
-            required : " Please choose a taxonomy"
-        }
-    });
-    
     $('a#locationPopup').click(function(){
        $('div#modal-location').fadeToggle("linear");
        $('div.modal-overlay').show();
@@ -514,28 +165,19 @@ $().ready(function() {
        $('div#modal-location').fadeOut(); 
     });
     
-    $('a#addDet').click(function(){
-       $('div#tableAddDet').fadeToggle("linear");
+    $('#editIndiv_img,#editIndiv_det').hide();
+    $('#obsBtn').click(function(){
+        $('#editIndiv_img,#editIndiv_det').hide();
+        $('#editIndiv_obs').show();
+    });
+    $('#imgBtn').click(function(){
+        $('#editIndiv_obs,#editIndiv_det').hide();
+        $('#editIndiv_img').show();
+    });
+    $('#detBtn').click(function(){
+        $('#editIndiv_img,#editIndiv_obs').hide();
+        $('#editIndiv_det').show();
     });
     
-    $('a#addObs').click(function(){
-       $('div#tableAddObs').fadeToggle("linear");
-    });
-    
-    $('a#personPopup').click(function(){
-       $('div#modal-person').fadeToggle("linear");
-       $('div.modal-overlay').show();
-    });
-    $('.close,.modal-overlay').click(function(){
-       $('div#modal-person').fadeOut(); 
-    });
-    
-    $('a#taxonPopup').click(function(){
-       $('div#modal-taxon').fadeToggle("linear");
-       $('div.modal-overlay').show();
-    });
-    $('.close,.modal-overlay').click(function(){
-       $('div#modal-taxon').fadeOut(); 
-    });
 });
 </script>

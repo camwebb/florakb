@@ -1,0 +1,245 @@
+<h2 class="title">Observations</h2>
+    <table class="browse indiv">    
+        <tr>
+            <th style="-moz-border-radius: 6px 0 0 0;-webkit-border-radius: 6px 0 0 0;border-radius: 6px 0 0 0;width:100px;">Observations</th>
+            <td>
+                {foreach $indiv as $dataIndiv}
+                {foreach from=$obs key=myId item=dataObs}
+                    
+                    <table class="det">
+                        <tr>
+                            <td class="detNumber"><b>#{$myId+1}</b></td>
+                            <td class="detHeader"><b>Creator</b></td>
+                            <td class="detColon">:</td>
+                            <td class="detContent">{$dataObs.name}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Date</b></td>
+                            <td>:</td>
+                            <td>{$dataObs.date}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Microhab</b></td>
+                            <td>:</td>
+                            <td>{$dataObs.microhab}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Habit</b></td>
+                            <td>:</td>
+                            <td><i>{$dataObs.habit}</i></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>dbh</b></td>
+                            <td>:</td>
+                            <td><i>{$dataObs.dbh}</i></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Height</b></td>
+                            <td>:</td>
+                            <td><i>{$dataObs.height}</i></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>bud</b></td>
+                            <td>:</td>
+                            <td><i>{$dataObs.bud}</i></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Flower</b></td>
+                            <td>:</td>
+                            <td><i>{$dataObs.flower}</i></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Fruit</b></td>
+                            <td>:</td>
+                            <td><i>{$dataObs.fruit}</i></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Localname</b></td>
+                            <td>:</td>
+                            <td><i>{$dataObs.localname}</i></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Notes</b></td>
+                            <td>:</td>
+                            <td>{$dataObs.notes}</td>
+                            <td>
+                                {if $user.login && $dataObs.personID eq $user.login.id || $dataIndiv.id eq $user.login.id}
+                                    <a href="{$basedomain}browse/deleteObs/?id={$dataObs.obsID}&&indivID={$dataObs.indivID}" id="deleteObs" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
+                                {/if}
+                            </td>
+                        </tr>
+                    </table>
+                    {foreachelse}<i>No observation available</i>
+                {/foreach}
+                {/foreach}
+            </td>
+        </tr>
+    </table>
+    <br />
+    
+    <div id="tableAddObs" style="display: none;">
+                    <h2 class="title">Add Observation</h2>
+                    <form id="formObs" method="POST" action="{$basedomain}browse/addObs/?id={$smarty.get.id}&&action=addObs">
+                    <table id="addObs" class="form-tbl">
+                        <tr>
+                            <td class="detNumber"></td>
+                            <td class="detHeader"></td>
+                            <td class="detColon"></td>
+                            <td class="detContent"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Microhab</b></td>
+                            <td>:</td>
+                            <td><input class="inputbox" type="text" id="microhab" name="microhab" /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Habit</b></td>
+                            <td>:</td>
+                            <td>
+                                <select class="inputbox" name="habit" id="habit">
+                                    <option value="" selected="1">Choose Habit</option>
+                                    {foreach from=$habit_enum item=enum}
+                                        <option value="{$enum}">{$enum}</option>
+                                    {/foreach}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Dbh</b></td>
+                            <td>:</td>
+                            <td><input class="inputbox" type="text" id="dbh" name="dbh" /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Height</b></td>
+                            <td>:</td>
+                            <td><input class="inputbox" type="text" id="height" name="height" /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Bud</b></td>
+                            <td>:</td>
+                            <td>
+                                <input style="padding:5px;margin-right:5px;" type="radio" name="bud" value="yes" />Yes
+                                <input style="padding:5px;margin-right:5px;margin-left: 20px;" type="radio" name="bud" value="no" />No
+                                <label for="bud" class="error"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Flower</b></td>
+                            <td>:</td>
+                            <td>
+                                <input style="margin-right:5px;" type="radio" name="flower" value="yes" />Yes
+                                <input style="margin-right:5px;margin-left: 20px;" type="radio" name="flower" value="no" />No
+                                <label for="flower" class="error"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Fruit</b></td>
+                            <td>:</td>
+                            <td>
+                                <input style="margin-right:5px;" type="radio" name="fruit" value="yes" />Yes
+                                <input style="margin-right:5px;margin-left: 20px;" type="radio" name="fruit" value="no" />No
+                                <label for="fruit" class="error"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Localname</b></td>
+                            <td>:</td>
+                            <td><input class="inputbox" type="text" id="localname" name="localname" /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>Notes</b></td>
+                            <td>:</td>
+                            <td><textarea class="textareabox" id="notes" name="notes"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>char_lf_insert_alt</b></td>
+                            <td>:</td>
+                            <td><input class="inputbox" type="text" id="char_lf_insert_alt" name="char_lf_insert_alt" /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>char_lf_insert_opp</b></td>
+                            <td>:</td>
+                            <td><input class="inputbox" type="text" id="char_lf_insert_opp" name="char_lf_insert_opp" /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input class="btn" type="submit" value="Submit" /></td>
+                        </tr>
+                    </table>
+                    </form>
+                    </div>
+    <br />
+    <a href="#addObservation" class="btn" id="addObs" style="float: right;">Add Observation</a>
+    <div class="clear"></div>
+    <br />
+    
+<script type="text/javascript">
+    $(document).on('click','#deleteObs', function(){
+            var msg = confirm('Are you sure to delete ?');
+            if (!msg) return false;    
+        });
+
+    $('a#addObs').click(function(){
+       $('div#tableAddObs').fadeToggle("linear");
+    });
+    
+    $("#formObs").validate({
+        rules: {
+			habit: {
+                required: true
+			},
+            dbh: {
+                Decimal: true
+            },
+            height: {
+                Decimal: true
+            },
+            bud: {
+                required: true
+            },
+            flower: {
+                required: true
+            },
+            fruit: {
+                required: true
+            }
+		},
+		messages: {
+            habit: {
+                required: "  Please choose habit"
+			},
+            bud: {
+                required: "&nbsp;&nbsp;&nbsp;&nbsp;Please select the options"
+            },
+            flower: {
+                required: "&nbsp;&nbsp;&nbsp;&nbsp;Please select the options"
+            },
+            fruit: {
+                required: "&nbsp;&nbsp;&nbsp;&nbsp;Please select the options"
+            }
+		}
+    });
+</script>

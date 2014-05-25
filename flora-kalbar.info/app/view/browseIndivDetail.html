@@ -86,7 +86,6 @@
             <td>
                 {foreach $indiv as $dataIndiv}
                 {foreach from=$obs key=myId item=dataObs}
-                    
                     <table class="det">
                         <tr>
                             <td class="detNumber"><b>#{$myId+1}</b></td>
@@ -154,12 +153,11 @@
                             <td>:</td>
                             <td>{$dataObs.notes}</td>
                             <td>
-                                
-                                    {if $user.login && $dataObs.personID eq $user.login.id || $dataIndiv.id eq $user.login.id}
-                                <a href="{$basedomain}browse/deleteObs/?id={$dataObs.obsID}&&indivID={$dataObs.indivID}" id="deleteObs" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
-                                    {/if}
-                                
+                                {if $user.login && $dataObs.personID eq $user.login.id}
+                                    <a href="{$basedomain}browse/deleteObs/?id={$dataObs.obsID}&&indivID={$dataObs.indivID}" id="deleteObsOwner" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
+                                {/if}
                             </td>
+                            
                         </tr>
                     </table>
                     {foreachelse}<i>No observation available</i>
@@ -203,7 +201,6 @@
             <td>
                 {foreach $indiv as $dataIndiv}
                 {foreach from=$det key=myId item=dataDet}
-                    
                     <table class="det">
                         <tr>
                             <td class="detNumber"><b>#{$myId+1}</b></td>
@@ -241,15 +238,13 @@
                             <td>:</td>
                             <td><i>{$dataDet.notes}</i></td>
                             <td>
-                                
-                                    {if $user.login && $dataDet.personID eq $user.login.id || $dataIndiv.id eq $user.login.id}
-                                <a href="{$basedomain}browse/deleteDet/?id={$dataDet.detID}&&indivID={$dataDet.indivID}" id="deleteDet" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
-                                    {/if}
-                                
+                                {if $user.login && $dataDet.personID eq $user.login.id}
+                                    <a href="{$basedomain}browse/deleteDet/?id={$dataDet.detID}&&indivID={$dataDet.indivID}" id="deleteDetOwner" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
+                                {/if}
                             </td>
                         </tr>
                     </table>
-                    {foreachelse}<i>No daterminant available</i>
+                    {foreachelse}<i>No determinant available</i>
                 {/foreach}
                 {/foreach}
             </td>
@@ -270,3 +265,20 @@
         {/if}
     {/foreach}
 </div>
+
+{literal}
+    <script>
+        $(document).on('click','#deleteIndiv', function(){
+            var msg = confirm('Are you sure to delete ?');
+            if (!msg) return false;    
+        });
+        $(document).on('click','#deleteObsOwner', function(){
+            var msg = confirm('Are you sure to delete ?');
+            if (!msg) return false;    
+        });
+        $(document).on('click','#deleteDetOwner', function(){
+            var msg = confirm('Are you sure to delete ?');
+            if (!msg) return false;    
+        });
+    </script>
+{/literal}
