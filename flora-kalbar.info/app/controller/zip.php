@@ -109,7 +109,7 @@ class zip extends Controller {
         
         //move zip file to tmp folder
         
-        /*$copy_zip = sftpServices($CONFIG['default']['hostname'], $username, $password, $name);
+        $copy_zip = sftpServices($CONFIG['default']['hostname'], $username, $password, $name);
         logFile($copy_zip);
         
         if(!$copy_zip){
@@ -117,7 +117,7 @@ class zip extends Controller {
             $msg = "Error while fetching zip file";
             echo json_encode(array('status' => $status, 'message' => $msg));
             exit;
-        }*/
+        }
         
         if(!empty($name)){
             
@@ -166,7 +166,7 @@ class zip extends Controller {
                     $folder = substr($path_entry,$len);
                     
                     if(preg_match('#\.(jpg|jpeg|JPG|JPEG)$#i', $entry)){
-                        $image_name_encrypt = md5($entry);
+                        $image_name_encrypt = md5(str_shuffle($CONFIG['default']['salt'].$entry));
                         $fileinfo = getimagesize($path_entry.'/'.$entry);
                         if(!$fileinfo) {
                             $status = "error";

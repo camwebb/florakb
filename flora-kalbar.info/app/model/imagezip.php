@@ -16,8 +16,26 @@ class imagezip extends Database {
      * @return result sql
      * 
      * */
-	function updateImage($personID, $data){
+	function updateImagePerson($personID, $data){
         $sql = "UPDATE img SET md5sum = '$data[md5sum]', directory = '$data[directory]', mimetype = '$data[mimetype]' WHERE filename = '$data[filename]' AND personID = '$personID'";
+		$res = $this->query($sql,0);
+        return $res;
+	}
+    
+    /**
+     * @todo insert image data to database
+     * 
+     * @param $personID = id of a user
+     * @param $data['filename'] = filename ori of image file
+     * @param $data['mimetype'] = mimetype of image file
+     * @param $data['directory'] = directory of image file in zip folder
+     * @param $data['md5sum'] = md5sum of image filename
+     * 
+     * @return result sql
+     * 
+     * */
+	function updateImage($personID, $data){
+        $sql = "UPDATE img SET md5sum = '$data[md5sum]', directory = '$data[directory]', mimetype = '$data[mimetype]' WHERE filename = '$data[filename]'";
 		$res = $this->query($sql,0);
         return $res;
 	}

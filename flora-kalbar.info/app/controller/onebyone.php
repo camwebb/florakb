@@ -356,7 +356,7 @@ class onebyone extends Controller {
             $tmp_name = $uploaded_file['full_name'];
             $entry = str_replace(array('\'', '"'), '', $uploaded_file['real_name']);
             //$entry = $uploaded_file['real_name'];
-            $image_name_encrypt = md5($entry);
+            $image_name_encrypt = md5(str_shuffle($CONFIG['default']['salt'].$entry));
             
             //check filename
             $dataExist = $this->imagezip->dataExist($personID, $entry);            
