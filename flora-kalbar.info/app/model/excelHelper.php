@@ -440,7 +440,23 @@ class excelHelper extends Database {
 										
 									}else{
 										$t_field[] = $tmpkeyField;
-										$t_data[] = "'$keyData'"; 
+
+										if (in_array($tmpkeyField, array('plot','tag'))){
+											if ($tmpkeyField=='plot'){
+												if ($keyData !='')$t_data[] = "'$keyData'"; 
+												else $t_data[] = "0"; 
+											}
+											
+											if ($tmpkeyField=='tag'){
+												if ($keyData !='')$t_data[] = "'$keyData'"; 
+												else $t_data[] = "0"; 
+											}
+										}else{
+											$t_data[] = "'$keyData'"; 
+										}
+
+
+										
 										$t_dataraw[$tmpkeyField] = $keyData; 
 										$tmpupdate[] = "`{$tmpkeyField}` = '$keyData'";
 
