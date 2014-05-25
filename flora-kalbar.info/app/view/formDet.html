@@ -22,8 +22,15 @@
         <tr>
             <td><label for="">Taxon</label></td>
             <td>
-                <input class="inputbox" type="text" id="autoTaxon" />
-                <input class="inputbox" type="hidden" id="taxonID" name="taxonID" value=""/>
+                <!--<input class="inputbox" type="text" id="autoTaxon" />
+                <input class="inputbox" type="hidden" id="taxonID" name="taxonID" value=""/>-->
+                <select class="inputbox" name="taxonID" id="taxonID">
+                    <option value="" selected="1">Choose a taxonomy</option>
+                    {foreach from=$taxon item=itemTaxon}
+                        <option value="{$itemTaxon.id}">{$itemTaxon.sp}, {$itemTaxon.gen}, {$itemTaxon.fam}</option>
+                    {/foreach}
+                </select>
+
             </td>
             <td><a href="#taxon-modal" class="btn" id="taxonPopup">Add</a></td>
         </tr>
@@ -37,7 +44,7 @@
                     {/foreach}
                 </select>
             </td>
-            <td><a href="#person-modal" class="btn" id="personPopup">Add</a></td>
+            <!--<td><a href="#person-modal" class="btn" id="personPopup">Add</a></td>-->
         </tr>
         <tr>
             <td></td>
@@ -78,11 +85,11 @@ $().ready(function() {
             }
 		}
     });
-    $("#autoTaxon").rules("add", {
+    /*$("#autoTaxon").rules("add", {
         required:true,
         messages: {
             required : " Please choose a taxonomy"
         }
-    });
+    });*/
 });
 </script>

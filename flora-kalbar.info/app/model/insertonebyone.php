@@ -185,9 +185,21 @@ class insertonebyone extends Database {
      * @return sql result
      * 
      * */
-    function list_autoTaxon($like){
+    /*function list_autoTaxon($like){
         $sql = "SELECT * FROM taxon WHERE (fam LIKE '%$like%' OR gen LIKE 
 '%$like%' OR sp LIKE '%$like%' OR morphotype LIKE '%$like%') GROUP BY fam, gen, sp, morphotype ORDER BY fam, gen, sp, morphotype";
+		$res = $this->fetch($sql,1);
+        return $res;
+    }*/
+    
+    /**
+     * @todo get list for auto taxon from plantlist table
+     * 
+     * @return sql result
+     * 
+     * */
+    function list_autoTaxon($like){
+        $sql = "SELECT * FROM (SELECT *, CONCAT('(',family,')',' ',genus,' ',species) as taxonName FROM plantlist) base WHERE taxonName LIKE '%$like%';";
 		$res = $this->fetch($sql,1);
         return $res;
     }

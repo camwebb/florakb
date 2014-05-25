@@ -115,9 +115,9 @@ $().ready(function() {
     
     
     // taxon auto complete
-    $('#autoTaxon').on('keyup', function(e) {
+    /*$('#autoTaxon').on('keyup', function(e) {
         var value = $(this).val();
-        if(value.length % 3 == 0){
+        if(value.length % 5 == 0){
         //if(value.length == 3){
             $(this).autocomplete({
                 source: JSON.parse($.ajax({
@@ -142,7 +142,8 @@ $().ready(function() {
                 }
             });
         }
-    });
+    });*/
+    //end auto complete
                 
 });
 
@@ -191,18 +192,18 @@ function do_ajax(form, formID, modalID, msgFormat){
                 
                 if(data.gen != ''){
                     if(data.fam){
-                        //$("#taxonID").append('<option value="'+ data.id +'" selected>'+ '(' + data.fam + ')' + data.gen + data.sp +'</option>');
-                        $("#taxonID").val(data.id);
-                        $("#autoTaxon").val('(' + data.fam + ')' + data.gen + data.sp);
+                        $("#taxonID").append('<option value="'+ data.id +'" selected>'+ '(' + data.fam + ')' + data.gen + data.sp +'</option>');
+                        /*$("#taxonID").val(data.id);
+                        $("#autoTaxon").val('(' + data.fam + ')' + data.gen + data.sp);*/
                     }else{
-                        //$("#taxonID").append('<option value="'+ data.id +'" selected>'+ data.gen + data.sp +'</option>');
-                        $("#taxonID").val(data.id);
-                        $("#autoTaxon").val(data.gen + data.sp);
+                        $("#taxonID").append('<option value="'+ data.id +'" selected>'+ data.gen + data.sp +'</option>');
+                        /*$("#taxonID").val(data.id);
+                        $("#autoTaxon").val(data.gen + data.sp);*/
                     }
                 }else{
-                    //$("#taxonID").append('<option value="'+ data.id +'" selected>'+ data.morphotype +'</option>');
-                    $("#taxonID").val(data.id);
-                    $("#autoTaxon").val(data.morphotype);
+                    $("#taxonID").append('<option value="'+ data.id +'" selected>'+ data.morphotype +'</option>');
+                    /*$("#taxonID").val(data.id);
+                    $("#autoTaxon").val(data.morphotype);*/
                 }
             }
             

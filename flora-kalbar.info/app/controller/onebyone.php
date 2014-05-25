@@ -47,7 +47,7 @@ class onebyone extends Controller {
      * */
 	public function index(){
         $this->view->assign('msg', '');        	   
-		return $this->loadView('formContentIndiv');
+		header('Location: ../onebyone/indivContent');
 	}
     
     /**
@@ -86,8 +86,8 @@ class onebyone extends Controller {
         $this->view->assign('person', $listPerson);
         
         //get list taxon
-        /*$listTaxon = $this->insertonebyone->list_taxon();
-        $this->view->assign('taxon', $listTaxon);*/
+        $listTaxon = $this->insertonebyone->list_taxon();
+        $this->view->assign('taxon', $listTaxon);
         
         //get list enum confid
         $confid_enum = $this->insertonebyone->get_enum('det','confid');
@@ -630,7 +630,7 @@ class onebyone extends Controller {
         }
     }
     
-    function autoTaxon(){
+    /*function autoTaxon(){
         $like = $_POST['autoTaxon'];
         $taxons = $this->insertonebyone->list_autoTaxon($like);
         
@@ -639,10 +639,33 @@ class onebyone extends Controller {
         foreach($taxons as $taxon){
             if($taxon['gen']){
                 if($taxon['fam']){
-                    $auto[] = array('id' => $taxon['id'], 'label' => $taxon['fam'].' '.$taxon['gen'].' '.$taxon['sp']);
+                    $auto[] = array('id' => $taxon['id'], 'label' => '('.$taxon['family'].' '.$taxon['gen'].' '.$taxon['sp']);
+                }else{
+                    $auto[] = array('id' => $taxon['id'], 'label' => $taxon['gen'].' '.$taxon['sp']);
                 }
             }elseif($taxon['morphotype']){
                 $auto[] = array('id' => $taxon['id'], 'label' => $taxon['morphotype']);
+            }
+        }
+        echo json_encode($auto);
+        exit;
+    }*/
+    
+    /**
+     * @todo get list of taxon from posted data
+     * 
+     * @return array $auto = list taxon
+     * 
+     * */
+    function autoTaxon(){
+        $like = $_POST['autoTaxon'];
+        $taxons = $this->insertonebyone->list_autoTaxon($like);
+        
+        $auto = array();
+        
+        foreach($taxons as $taxon){
+            if($taxon['taxonName']){
+                $auto[] = array('id' => $taxon['kewid'], 'label' => $taxon['taxonName']);
             }
         }
         echo json_encode($auto);
