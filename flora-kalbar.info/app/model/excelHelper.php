@@ -176,7 +176,7 @@ class excelHelper extends Database {
 		$fieldUnique[2] = array('unique_key'); 
 		
 		// Taxon table identified
-		$fieldFetch[1] = array('tmp_unique_key','morphotype','fam','gen','sp','subtype','ssp','auth','notes'); 
+		$fieldFetch[1] = array('tmp_unique_key','morphotype','fam','gen','sp','subtype','ssp','auth','notes','kewid'); 
 		$fieldConvert[1] = array('ssp_auth'=>'auth', 'unique_key'=>'tmp_unique_key'); 
 		$fieldUnique[1] = array('tmp_unique_key'); 
 		
@@ -192,7 +192,7 @@ class excelHelper extends Database {
 		$fieldUnique[4] = array('tmp_unique_key'); 
 		
 		$fieldIgnoreUpdateOnDuplicate = array('name','email'); //,'gen','sp','subtype','ssp','auth');
-		$fieldNotNull = array('personID','indivID','taxonID','subtype'); //,'gen','sp','subtype','ssp','auth');
+		$fieldNotNull = array('personID','indivID','taxonID','subtype','kewid'); //,'gen','sp','subtype','ssp','auth');
 		$fieldIgnoreEnum = array('subtype');
 		$convert = 1;
 		foreach ($newData as $key => $values){
