@@ -35,6 +35,7 @@
                         </option>
                     {/foreach}
                 </select>
+                <a href="#taxon-modal" class="btn" id="taxonPopup">Add</a>
                 </td>
             </tr>
             <tr>
@@ -142,12 +143,12 @@ $().ready(function() {
 		}
     });
     
-    $("#autoTaxon").rules("add", {
+    /*$("#autoTaxon").rules("add", {
         required:true,
         messages: {
             required : " Please choose a taxonomy"
         }
-    });
+    });*/
     
     $('a#personPopup').click(function(){
        $('div#modal-person').fadeToggle("linear");

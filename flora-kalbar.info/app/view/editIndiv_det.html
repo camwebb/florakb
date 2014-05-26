@@ -88,6 +88,7 @@
                         </option>
                     {/foreach}
                 </select>
+                <a href="#taxon-modal" class="btn" id="taxonPopup">Add</a>
                 </td>
             </tr>
             <tr>
@@ -190,19 +191,5 @@
         }
     });
     
-    $('a#personPopup').click(function(){
-       $('div#modal-person').fadeToggle("linear");
-       $('div.modal-overlay').show();
-    });
-    $('.close,.modal-overlay').click(function(){
-       $('div#modal-person').fadeOut(); 
-    });
     
-    $('a#taxonPopup').click(function(){
-       $('div#modal-taxon').fadeToggle("linear");
-       $('div.modal-overlay').show();
-    });
-    $('.close,.modal-overlay').click(function(){
-       $('div#modal-taxon').fadeOut(); 
-    });
 </script>
