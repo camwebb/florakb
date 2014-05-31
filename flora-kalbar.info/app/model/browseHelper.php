@@ -17,7 +17,12 @@ class browseHelper extends Database {
             return $res;
         }
         elseif($condition==false){
-            $sql = "SELECT * FROM `taxon`";
+            /*$sql = "SELECT * 
+                    FROM `taxon` INNER JOIN `det` ON 
+                    taxon.id=det.taxonID INNER JOIN
+                    `indiv` ON det.indivID=indiv.id WHERE
+                    det.n_status='0'";*/
+            $sql="select * from taxon where id in (select det.taxonID from det inner join indiv on indiv.id = det.indivID where indiv.n_status = 0)";
             $res = $this->fetch($sql,1);
             
             //PAGINATION
@@ -37,6 +42,7 @@ class browseHelper extends Database {
             } // if
             $limit = 'LIMIT ' .($pageno - 1) * $rows_per_page .',' .$rows_per_page;
             $sqlLimit = $sql.' '.$limit;
+           // pr($sqlLimit);exit;
             $resLimit = $this->fetch($sqlLimit,1);
             if($resLimit){
                 $return['result'] = $resLimit;
@@ -327,7 +333,11 @@ class browseHelper extends Database {
      */
     function search($table,$data){
         if($table=='taxon'){
-            $sql = "SELECT * FROM `$table` WHERE `fam` LIKE '%$data%' OR `gen` LIKE '%$data%' OR `sp` LIKE '%$data%' OR `morphotype` LIKE '%$data%'";
+            $sql = "SELECT * 
+                    FROM `$table` INNER JOIN `det` ON 
+                    $table.id=det.taxonID AND det.n_status='0' WHERE
+                    $table.fam LIKE '%$data%' OR $table.gen LIKE '%$data%' OR $table.sp LIKE '%$data%' OR $table.morphotype LIKE '%$data%'";
+            //pr($sql);exit;
         }
         elseif($table=='locn'){
             $sql = "SELECT * FROM `$table` WHERE `longitude` LIKE '%$data%' OR `latitude` LIKE '%$data%' OR `elev` LIKE '%$data%' OR `geomorph` LIKE '%$data%' OR `locality` LIKE '%$data%' OR `county` LIKE '%$data%' OR `province` LIKE '%$data%' OR `island` LIKE '%$data%' OR `country` LIKE '%$data%'";
