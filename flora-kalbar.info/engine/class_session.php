@@ -80,7 +80,7 @@ class Session
 			
 			// default session App
 			
-			$_SESSION[$uniqSess]['user'] = $dataSesion;
+			$_SESSION[$uniqSess][$configkey] = $dataSesion;
 		}
 		
 		
@@ -106,7 +106,7 @@ class Session
 			$session[$sessName] = @$_SESSION[$uniqSess];
 		}else{
 			
-			if (isset($_SESSION[$uniqSess])) $session['ses_user'] = $_SESSION[$uniqSess];
+			if (isset($_SESSION[$uniqSess])) $session = $_SESSION[$uniqSess];
 		}
 		
 		

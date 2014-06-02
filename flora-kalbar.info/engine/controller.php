@@ -9,8 +9,11 @@ class Controller extends Application{
 		
 		parent::__construct();
 		
-		$this->loadModel('helper_model');
-		$GLOBALS['CODEKIR']['LOGS'] = new helper_model;
+		if (!$GLOBALS['CODEKIR']['LOGS']){
+			$this->loadModel('helper_model');
+			$GLOBALS['CODEKIR']['LOGS'] = new helper_model;
+		}
+		
 
 	}
 	
@@ -30,26 +33,40 @@ class Controller extends Application{
 		if ($this->configkey=='admin')$this->view->assign('admin',$this->isAdminOnline());
 		
 		// $this->inject();
-		// pr($this->isUserOnline());
+		// pr($this->isAdminOnline());
 		// exit;
 		if (file_exists($filePath)){
 			
 			if ($DATA[$this->configkey]['page']!=='login'){
 				
 				if (array_key_exists('admin',$CONFIG)) {
+
 					if (!$this->isAdminOnline()){
 						redirect($basedomain.$CONFIG[$this->configkey]['login']);
 						exit;
 					}
 				}
 			}
-			if ($DATA[$this->configkey]['page']=='login'){
-				if ($this->isUserOnline()){
-				redirect($CONFIG[$this->configkey]['default_view']);
-				exit;
+
+			if ($this->configkey == 'default'){
+				if ($DATA[$this->configkey]['page']=='login'){
+					if ($this->isUserOnline()){
+					redirect($CONFIG[$this->configkey]['default_view']);
+					exit;
+					}
 				}
 			}
-			
+			// pr($DATA);
+			if ($this->configkey == 'admin'){
+				if ($DATA[$this->configkey]['page']=='login'){
+					if ($this->isAdminOnline()){
+					redirect($CONFIG[$this->configkey]['default_view']);
+					exit;
+					}
+				}
+			}
+
+			// echo 'ada';
 			include $filePath;
 			
 			$createObj = new $this->page();
@@ -99,7 +116,7 @@ class Controller extends Application{
 		$userOnline = $session->get_session();
 		
 		if ($userOnline){
-			return $userOnline['ses_user'];
+			return $userOnline;
 		}else{
 			return false;
 		}
@@ -114,9 +131,9 @@ class Controller extends Application{
 		$uniqSess = sha1($CONFIG['admin']['root_path'].'codekir-v0.1'.$this->configkey);
 		$session = new Session;
 		$userOnline = $session->get_session();
-		
+		// vd($userOnline);exit;
 		if ($userOnline){
-			return $userOnline['ses_admin'];
+			return $userOnline;
 		}else{
 			return false;
 		}
