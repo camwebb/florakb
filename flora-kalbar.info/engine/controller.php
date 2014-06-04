@@ -31,14 +31,15 @@ class Controller extends Application{
 		
 		if ($this->configkey=='default')$this->view->assign('user',$this->isUserOnline());
 		if ($this->configkey=='admin')$this->view->assign('admin',$this->isAdminOnline());
+		if ($this->configkey=='dashboard')$this->view->assign('dashboard',$this->isAdminOnline());
 		
 		// $this->inject();
 		// pr($this->isAdminOnline());
+		
 		// exit;
 		if (file_exists($filePath)){
 			
 			if ($DATA[$this->configkey]['page']!=='login'){
-				
 				if (array_key_exists('admin',$CONFIG)) {
 
 					if (!$this->isAdminOnline()){
@@ -46,6 +47,15 @@ class Controller extends Application{
 						exit;
 					}
 				}
+
+				if (array_key_exists('dashboard',$CONFIG)) {
+					echo '2';
+					if (!$this->isAdminOnline()){
+						redirect($basedomain.$CONFIG[$this->configkey]['login']);
+						exit;
+					}
+				}
+
 			}
 
 			if ($this->configkey == 'default'){
@@ -58,6 +68,15 @@ class Controller extends Application{
 			}
 			// pr($DATA);
 			if ($this->configkey == 'admin'){
+				if ($DATA[$this->configkey]['page']=='login'){
+					if ($this->isAdminOnline()){
+					redirect($CONFIG[$this->configkey]['default_view']);
+					exit;
+					}
+				}
+			}
+
+			if ($this->configkey == 'dashboard'){ echo '1';
 				if ($DATA[$this->configkey]['page']=='login'){
 					if ($this->isAdminOnline()){
 					redirect($CONFIG[$this->configkey]['default_view']);

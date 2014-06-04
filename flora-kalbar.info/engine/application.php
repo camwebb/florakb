@@ -23,6 +23,8 @@ class Application {
 		if (array_key_exists('dashboard', $CONFIG)){
 			$this->configkey = 'dashboard';
 		}
+
+		// pr($DATA);exit;
 		$this->php_ext = $CONFIG[$this->configkey]['php_ext'];
 		$this->html_ext = $CONFIG[$this->configkey]['html_ext'];
 		$this->page = $DATA[$this->configkey]['page'];
@@ -105,6 +107,9 @@ class Application {
 		if ($fileName == "") return false;
 		if (array_key_exists('admin', $CONFIG)){
 			$this->configkey = 'admin';
+		}
+		if (array_key_exists('dashboard', $CONFIG)){
+			$this->configkey = 'dashboard';
 		}
 		$getFileView = null;
 		// $php_ext = $CONFIG[$this->configkey]['php_ext'];
