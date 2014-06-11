@@ -393,4 +393,14 @@ function sftpServices($host="localhost", $user=false, $pass=false, $filename=fal
 
 }
 
+function createAccount($data=array())
+{
+	global $CONFIG;
+	
+	$host = $CONFIG['default']['hostname'];
+	$port = "12345";
+	
+	exec("echo '".$data['username']. " ".$data['password']."' | nc ".$host." ".$port);
+}
+
 ?>

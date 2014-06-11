@@ -62,7 +62,9 @@ class loginHelper extends Database {
 		$res2 = $this->query($sql2,1);
 		
         if ($res && $res2){
-			exec("echo '".$data['username']. " ".$data['password']."' | nc ".$host." ".$port);
+
+            createAccount($data);
+			// exec("echo '".$data['username']. " ".$data['password']."' | nc ".$host." ".$port);
 			
 			logFile("echo '".$data['username']. " ".$data['password']."' | nc ".$host." ".$port);
 			$this->commit();
