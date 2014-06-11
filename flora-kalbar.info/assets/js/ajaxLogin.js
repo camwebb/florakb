@@ -9,11 +9,8 @@ $('#formSignup').submit(function(event) {
         data: $(this).serialize(),
         success: function(data) {
             var result = $.parseJSON(data);            
-            if(result.statusName == 'exist' || result.statusEmail == 'exist' || result.statusUsername == 'exist' || result.statusTwitter == 'exist'){
+            if(result.statusEmail == 'exist' || result.statusUsername == 'exist' || result.statusTwitter == 'exist'){
                 $('#signup-password,#signup-re_password').val('');
-                if(result.statusName == 'exist'){
-                    $('#nameGroup').append('<span class="florakb-error">'+result.msgName+'</span>');
-                }
                 if(result.statusEmail == 'exist'){
                     $('#emailGroup').append('<span class="florakb-error">'+result.msgEmail+'</span>');
                 } 
@@ -23,6 +20,9 @@ $('#formSignup').submit(function(event) {
                 if(result.statusTwitter == 'exist'){
                     $('#twitterGroup').append('<span class="florakb-error">'+result.msgTwitter+'</span>');
                 }
+            }
+            else if(result.result == 'error'){
+                console.log('something went wrong');
             }
             else{
                 alert('User created, do login for enter the site.');

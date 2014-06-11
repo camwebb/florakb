@@ -36,14 +36,11 @@ class login extends Controller {
         
         $data = $_POST;
         
-        $checkName = $this->loginHelper->checkName($data['name']);       
         $checkEmail = $this->loginHelper->checkEmail($data['email']); 
         $checkUsername = $this->loginHelper->checkUsername($data['username']);       
         $checkTwitter = $this->loginHelper->checkTwitter($data['twitter']);
         
-        if($checkName !== true || $checkEmail !== true || $checkUsername !== true || $checkTwitter !== true){
-            $statusName = "";
-            $msgName = "";
+        if($checkEmail !== true || $checkUsername !== true || $checkTwitter !== true){
             $statusEmail = "";
             $msgEmail = "";
             $statusUsername = "";
@@ -51,10 +48,6 @@ class login extends Controller {
             $statusTwitter = "";
             $msgTwitter = "";
             
-            if($checkName !== true){
-                $statusName = "exist";
-                $msgName = "Name already exist";
-            }
             if($checkEmail !== true){
                 $statusEmail = "exist";
                 $msgEmail = "Email already exist";
@@ -67,11 +60,15 @@ class login extends Controller {
                 $statusTwitter = "exist";
                 $msgTwitter = "Twitter already exist";
             }
-                echo json_encode(array('statusName' => $statusName, 'msgName' => $msgName, 'statusEmail' => $statusEmail, 'msgEmail' => $msgEmail, 'statusUsername' => $statusUsername, 'msgUsername' => $msgUsername, 'statusTwitter' => $statusTwitter, 'msgTwitter' => $msgTwitter));
+                echo json_encode(array('statusEmail' => $statusEmail, 'msgEmail' => $msgEmail, 'statusUsername' => $statusUsername, 'msgUsername' => $msgUsername, 'statusTwitter' => $statusTwitter, 'msgTwitter' => $msgTwitter));
                 exit;
         }
+        else{
+            echo json_encode(array('status' => 'error'));
+            exit;
+        }
         
-        if($checkName && $checkEmail && $checkUsername && $checkTwitter){
+        if($checkEmail && $checkUsername && $checkTwitter){
             $signup = $this->loginHelper->createUser($data);
             echo json_encode(array('test' => 'test'));
             exit;
