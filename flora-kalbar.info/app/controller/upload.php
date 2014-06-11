@@ -277,6 +277,13 @@ class upload extends Controller {
 		exit;
 	}
 
+
+	function testMail()
+	{
+
+		sendGlobalMail('ovan89@gmail.com','noreply@flora-kalbar.com','testing send mail');
+		
+	}
 }
 
 ?>
