@@ -62,8 +62,9 @@ class zip extends Controller {
         
         //get data user from session
         $session = new Session;
-        $sess_user = $session->get_session();
-        $sess_data = $sess_user['ses_user'];
+        //$sess_user = $session->get_session();
+        //$sess_data = $sess_user['ses_user'];
+        $sess_data = $session->get_session();
         
         $username = $sess_data['login']['username'];
         $personID = $sess_data['login']['id'];

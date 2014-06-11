@@ -56,8 +56,9 @@ class onebyone extends Controller {
     public function indivContent(){
         $session = new Session;
         
-        $sess_user = $session->get_session();
-        $sess_data = $sess_user['ses_user'];
+        //$sess_user = $session->get_session();
+        //$sess_data = $sess_user['ses_user'];
+        $sess_data = $session->get_session();
         
         if(isset($sess_data['onebyone'])){
             $session->delete_session('onebyone');
@@ -135,8 +136,8 @@ class onebyone extends Controller {
         
         $session = new Session;
         $image_sess = $session->get_session();
-        if(isset($image_sess['ses_user']['image_sess'])){
-            $this->view->assign('image_sess', $image_sess['ses_user']['image_sess']);
+        if(isset($image_sess['image_sess'])){
+            $this->view->assign('image_sess', $image_sess['image_sess']);
         }
         
         //get plantpart enum
@@ -211,8 +212,9 @@ class onebyone extends Controller {
         
         //get data user from session
         $session = new Session;
-        $login = $session->get_session();
-        $userData = $login['ses_user'];
+        //$login = $session->get_session();
+        //$userData = $login['ses_user'];
+        $userData = $session->get_session();
         
         $personID = $userData['login']['id'];
         $data['personID'] = $personID;
@@ -238,8 +240,10 @@ class onebyone extends Controller {
         
         //get data user from session
         $session = new Session;
-        $login = $session->get_session();
-        $userData = $login['ses_user'];
+        //$login = $session->get_session();
+        //$userData = $login['ses_user'];
+        
+        $userData = $session->get_session();
         
         $indivID = $userData['onebyone']['indivID'];
         
@@ -265,8 +269,10 @@ class onebyone extends Controller {
         
         //get data user from session
         $session = new Session;
-        $login = $session->get_session();
-        $userData = $login['ses_user'];
+        //$login = $session->get_session();
+        //$userData = $login['ses_user'];
+        
+        $userData = $session->get_session();
         
         $personID = $userData['login']['id'];
         $indivID = $userData['onebyone']['indivID'];
@@ -346,8 +352,10 @@ class onebyone extends Controller {
             
             
             $session = new Session;
-            $login = $session->get_session();
-            $userData = $login['ses_user'];
+            //$login = $session->get_session();
+            //$userData = $login['ses_user'];
+            
+            $userData = $session->get_session();
             
             $username = $userData['login']['username'];
             $personID = $userData['login']['id'];
@@ -462,8 +470,11 @@ class onebyone extends Controller {
                         
                         $dataSession = array();
                         
-                        $sess_image = $session->get_session();
-                        $sess_user = $sess_image['ses_user'];
+                        //$sess_image = $session->get_session();
+                        //$sess_user = $sess_image['ses_user'];
+                        
+                        $sess_user = $session->get_session();
+                        
                         if(isset($sess_user['image_sess'])){
                             logFile('Fetch image session');
                             foreach ($sess_user['image_sess'] as $data_before){
