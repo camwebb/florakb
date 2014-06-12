@@ -78,7 +78,7 @@ class loginHelper extends Database {
             $msg = "To activate your account please <a href='{$basedomain}login/validate/?ref={$inflatData}'>click here</a>";
             // try to send mail 
             $sendMail = sendGlobalMail($to, $from, $msg,false);
-            logFile($sendMail);
+            logFile('mail send '.$sendMail);
 
             if ($sendMail['result']){
 

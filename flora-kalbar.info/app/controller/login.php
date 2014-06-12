@@ -63,10 +63,10 @@ class login extends Controller {
                 echo json_encode(array('statusEmail' => $statusEmail, 'msgEmail' => $msgEmail, 'statusUsername' => $statusUsername, 'msgUsername' => $msgUsername, 'statusTwitter' => $statusTwitter, 'msgTwitter' => $msgTwitter));
                 exit;
         }
-        else{
-            echo json_encode(array('status' => 'error'));
-            exit;
-        }
+        // else{
+        //     echo json_encode(array('status' => 'error'));
+        //     exit;
+        // }
         
         if($checkEmail && $checkUsername && $checkTwitter){
             $signup = $this->loginHelper->createUser($data);
