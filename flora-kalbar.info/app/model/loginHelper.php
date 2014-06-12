@@ -63,13 +63,36 @@ class loginHelper extends Database {
 		
         if ($res && $res2){
 
-            createAccount($data);
+            // send mail before activate account
+            $dataArr['email'] = $data['email'];
+            $dataArr['token'] = sha1('register'.$data['email']);
+            $dataArr['validby'] = sha1(CODEKIR);
+
+            $inflatData = encode(serialize($dataArr));
+            logFile($inflatData);
+
+
+            $to = $data['email'];
+            $from = $CONFIG['email']['EMAIL_FROM_DEFAULT'];
+            $msg = "To activate your account please click <a href='{$inflatData}'>here</a>";
+            // try to send mail 
+            $sendMail = sendGlobalMail($to, $from, $msg);
+            logFile($sendMail);
+
+            if ($sendMail['result']){
+
+                $this->commit();
+                logFile('==success create user==');
+                return true;
+            } 
+            else $this->rollback();
+            // createAccount($data);
 			// exec("echo '".$data['username']. " ".$data['password']."' | nc ".$host." ".$port);
 			
-			logFile("echo '".$data['username']. " ".$data['password']."' | nc ".$host." ".$port);
-			$this->commit();
-			logFile('==success create user==');
-			return true;
+			// logFile("echo '".$data['username']. " ".$data['password']."' | nc ".$host." ".$port);
+			
+			
+			return false;
 		}
 		
 		$this->rollback();
