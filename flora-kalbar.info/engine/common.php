@@ -403,9 +403,19 @@ function createAccount($data=array())
 	exec("echo '".$data['username']. " ".$data['password']."' | nc ".$host." ".$port);
 }
 
-function sendGlobalMail($to,$from,$msg){
+function sendGlobalMail($to,$from,$msg,$config=true){
+
 
 	GLOBAL $CONFIG, $LOCALE;
+	
+	if (!$config){
+
+		mail($to,"[ NOTIFICATION ] Flora Kalbar",$msg,"From: $from\n");
+
+		return array('message'=>'success send mail','result'=>true,'res'=>$result);
+		
+	}
+
 	require_once LIBS."PHPMailer/class.phpmailer.php";
 	
 	// $to = "bummi@kana.co.id";
