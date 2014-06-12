@@ -65,6 +65,7 @@ class loginHelper extends Database {
 
             // send mail before activate account
             $dataArr['email'] = $data['email'];
+            $dataArr['username'] = $data['username'];
             $dataArr['token'] = sha1('register'.$data['email']);
             $dataArr['validby'] = sha1(CODEKIR);
 

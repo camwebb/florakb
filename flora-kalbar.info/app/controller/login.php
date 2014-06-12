@@ -111,6 +111,49 @@ class login extends Controller {
      */
     function doLogout(){
         $logout = $this->loginHelper->logoutUser(); 
+    }
+
+    function validate()
+    {
+
+        $data = _g('ref');
+
+        if ($data){
+
+            $decode = unserialize(decode($data));
+
+            // check if token is valid
+           
+            $salt = "register";
+            $userMail = $decode['email'];
+            $origToken = sha1($salt.$userMail);
+
+            if ($decode['token']==$origToken){
+                // is valid, then create account and set status to validate
+
+                $sql = "UPDATE florakb_person SET n_status = 1 WHERE username = {$decode['username']} LIMIT 1";
+                $res = $this->query($sql,1);
+                if ($res){
+                    createAccount($data);
+                    logFile('account ftp user '.$decode['email']. ' created');
+
+                }else{
+                    echo 'maaf terjadi kesalahan';
+                    logFile('update n_status user '.$decode['email'].' failed');
+                }
+                
+
+            }else{
+
+                // invalid token
+                echo 'maaf terjadi kesalahan';
+                logFile('token mismatch');
+                exit;
+            }
+
+        }
+
+        exit;
     }           
 }
 
