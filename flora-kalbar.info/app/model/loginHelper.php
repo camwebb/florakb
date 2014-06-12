@@ -24,7 +24,7 @@ class loginHelper extends Database {
 	function createUser($data=false)
 	{
 		if($data==false) return false;
-		global $CONFIG;
+		global $CONFIG, $basedomain;
 		
 		$host = $CONFIG['default']['hostname'];
 		$port = "12345";
@@ -74,9 +74,9 @@ class loginHelper extends Database {
 
             $to = $data['email'];
             $from = $CONFIG['email']['EMAIL_FROM_DEFAULT'];
-            $msg = "To activate your account please click <a href='{$inflatData}'>here</a>";
+            $msg = "To activate your account please <a href='{$basedomain}login/validate/?ref={$inflatData}'>click here</a>";
             // try to send mail 
-            $sendMail = sendGlobalMail($to, $from, $msg);
+            $sendMail = sendGlobalMail($to, $from, $msg,false);
             logFile($sendMail);
 
             if ($sendMail['result']){
