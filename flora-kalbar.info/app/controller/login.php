@@ -137,8 +137,12 @@ class login extends Controller {
                     createAccount($data);
                     logFile('account ftp user '.$decode['email']. ' created');
 
+                    $this->view->assign('validate','Validate account success');
+                    
+
                 }else{
-                    echo 'maaf terjadi kesalahan';
+                    
+                    $this->view->assign('validate','Validate error');
                     logFile('update n_status user '.$decode['email'].' failed');
                 }
                 
@@ -146,14 +150,14 @@ class login extends Controller {
             }else{
 
                 // invalid token
-                echo 'maaf terjadi kesalahan';
+                $this->view->assign('validate','Validate error');
                 logFile('token mismatch');
                 exit;
             }
 
         }
 
-        exit;
+        return $this->loadView('home');
     }           
 }
 
