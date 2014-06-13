@@ -54,7 +54,8 @@ $('#formLogin').submit(function(event){
         success: function(response) {
             var returnedData = JSON.parse(response);
             if(returnedData == 'success'){
-                location.reload();
+                // location.reload();
+                window.location.href=basedomain;
             }
             else{
                 alert('You have entered an invalid username or password');
