@@ -152,7 +152,7 @@ class login extends Controller {
                 // invalid token
                 $this->view->assign('validate','Validate error');
                 logFile('token mismatch');
-                exit;
+                
             }
 
         }
