@@ -117,7 +117,7 @@ class login extends Controller {
     {
 
         $data = _g('ref');
-
+        logFile($data);
         if ($data){
 
             $decode = unserialize(decode($data));
@@ -131,9 +131,10 @@ class login extends Controller {
             if ($decode['token']==$origToken){
                 // is valid, then create account and set status to validate
 
-                $sql = "UPDATE florakb_person SET n_status = 1 WHERE username = {$decode['username']} LIMIT 1";
+                $sql = "UPDATE florakb_person SET n_status = 1 WHERE username = '{$decode['username']}' LIMIT 1";
                 $res = $this->query($sql,1);
                 if ($res){
+                    logFile($sql);
                     createAccount($data);
                     logFile('account ftp user '.$decode['email']. ' created');
 
