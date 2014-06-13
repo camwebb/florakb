@@ -83,7 +83,7 @@ class login extends Controller {
         $data = $_POST;
         
         //query data
-        $getUserappData = $this->userHelper->getUserappData('username',$data['username']);
+        $getUserappData = $this->userHelper->getUserappData('username',$data['username'],1);
         $getUserData = $this->userHelper->getUserData('id',$getUserappData['id']);
         
         $pwd = $data['password'];
