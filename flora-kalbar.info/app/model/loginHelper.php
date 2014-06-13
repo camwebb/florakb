@@ -232,6 +232,16 @@ class loginHelper extends Database {
      * @todo destroy session
      * 
      */
+
+    function updateUserStatus($username=false)
+    {
+        if (!$username) return false;
+        $sql = "UPDATE florakb_person SET n_status = 1 WHERE username = '{$username}' LIMIT 1";
+        $res = $this->query($sql,1);
+        if($res) return true;
+        return false;
+    }
+
     function logoutUser()
     {
         session_destroy();

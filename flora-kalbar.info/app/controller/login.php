@@ -131,10 +131,9 @@ class login extends Controller {
             if ($decode['token']==$origToken){
                 // is valid, then create account and set status to validate
 
-                $sql = "UPDATE florakb_person SET n_status = 1 WHERE username = '{$decode['username']}' LIMIT 1";
-                $res = $this->query($sql,1);
-                if ($res){
-                    logFile($sql);
+                $updateAccount = $this->loginHelper->updateUserStatus($decode['username']);
+
+                if ($updateAccount){
                     createAccount($data);
                     logFile('account ftp user '.$decode['email']. ' created');
 
