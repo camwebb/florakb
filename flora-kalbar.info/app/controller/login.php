@@ -117,11 +117,12 @@ class login extends Controller {
     {
 
         $data = _g('ref');
+       
         logFile($data);
         if ($data){
 
             $decode = unserialize(decode($data));
-
+           
             // check if token is valid
            
             $salt = "register";
@@ -142,7 +143,7 @@ class login extends Controller {
 
                 }else{
                     
-                    $this->view->assign('validate','Validate error');
+                    $this->view->assign('validate','Validate account error');
                     logFile('update n_status user '.$decode['email'].' failed');
                 }
                 
@@ -150,7 +151,7 @@ class login extends Controller {
             }else{
 
                 // invalid token
-                $this->view->assign('validate','Validate error');
+                $this->view->assign('validate','Validate account error');
                 logFile('token mismatch');
                 
             }
