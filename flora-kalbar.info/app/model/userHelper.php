@@ -76,9 +76,12 @@ class userHelper extends Database {
      * @param $data = 
      * @param $field =  field name
      */
-    function getUserappData($field,$data){
+    function getUserappData($field,$data,$n_status=0){
         if($data==false) return false;
-        $sql = "SELECT * FROM `florakb_person` WHERE `$field` = '".$data."' ";
+        $filter = "";
+        if ($n_status) $filter = " AND n_status = {$n_status}";
+
+        $sql = "SELECT * FROM `florakb_person` WHERE `$field` = '".$data."' {$filter}";
         $res = $this->fetch($sql,0,1);  
         if(empty($res)){return false;}
         return $res; 
