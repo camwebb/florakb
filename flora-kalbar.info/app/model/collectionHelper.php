@@ -9,7 +9,7 @@ class collectionHelper extends Database {
 
 		$session = new Session;
 		$getSessi = $session->get_session();
-		$this->user = $getSessi['ses_user']['login'];
+		$this->user = $getSessi['login'];
 	}
 
 	function insertReference($newData=array(),$priority=array())

@@ -15,6 +15,7 @@ class insertonebyone extends Database {
      * */
 	function insertData($table=false, $data=array(), $db2=false)
 	{
+        global $CONFIG, $basedomain;
 		if (!$table and empty($data)) return false;
 
 		$return = array();
@@ -60,7 +61,7 @@ class insertonebyone extends Database {
      * */
     function insertTransaction($table=false, $data=array()){
         
-        global $CONFIG;
+        global $CONFIG, $basedomain;
         
         if (!$table and empty($data)) return false;
         
@@ -69,18 +70,12 @@ class insertonebyone extends Database {
         
 		logFile('====TRANSACTION READY====');
         if($table == 'person'){
-            $dataPerson = array(
-                    'name' => $data['name'],
-                    'email' => $data['email'],
-                    'twitter' => $data['twitter'],
-                    'website' => $data['website'],
-                    'phone' => $data['phone']
-                );
-            $insert = $this->insertData($table,$dataPerson);
-        }else{
-            $insert = $this->insertData($table,$data);
+            $username = $data['username'];
+            unset($data['username']);
         }
-	    
+        
+	    $insert = $this->insertData($table,$data);
+        
 		if ($insert['status'] == 0){
 			$this->rollback();
 			logFile('====ROLLBACK TRANSACTION====');
@@ -98,22 +93,51 @@ class insertonebyone extends Database {
                 $password = sha1($genPass.$salt);
                 
                 //insert password id, password, salt
-                $dataPass = array('id' => $insert['lastid'], 'password' => $password, 'salt' => $salt, 'username' => $data['username']);
+                $dataPass = array('id' => $insert['lastid'], 'password' => $password, 'salt' => $salt, 'username' => $username);
                 $insert_dataPas = $this->insertData('florakb_person',$dataPass,true);
                 
                 if ($insert_dataPas['status'] == 0){
         			$this->rollback();
-        			logFile('====ROLLBACK TRANSACTION====');
+        			logFile('====onebyone: failed insert to florakb_person====');
         			$return['status'] = false;
         		}else{
-                    $this->commit();
-        			logFile('====COMMIT TRANSACTION====');
         			$return['status'] = true;
                     $return['lastid'] = $insert['lastid'];
+                    
+                    /* EMAIL */
+                    // send mail before activate account
+                    $dataArr['email'] = $data['email'];
+                    $dataArr['username'] = $username;
+                    $dataArr['token'] = sha1('register'.$data['email']);
+                    $dataArr['validby'] = sha1(CODEKIR);
+        
+                    $inflatData = encode(serialize($dataArr));
+                    logFile($inflatData);
+        
+        
+                    $to = $data['email'];
+                    $from = $CONFIG['email']['EMAIL_FROM_DEFAULT'];
+                    $msg = "To activate your account please <a href='{$basedomain}login/validate/?ref={$inflatData}'>click here</a>";
+                    // try to send mail 
+                    $sendMail = sendGlobalMail($to, $from, $msg,false);
+                    logFile('mail send '.serialize($sendMail));
+        
+                    if ($sendMail['result']){
+        
+                        $this->commit();
+                        logFile('==onebyone: success create user==');
+                        return true;
+                        exit;
+                    }else{
+                        $this->commit();
+                        logFile('====onebyone: failed sending email====');
+                    }
+                    
+                    /* EMAIL */
         		}
             }else{
                 $this->commit();
-    			logFile('====COMMIT TRANSACTION====');
+    			logFile('====onebyone: failed create user====');
     			$return['status'] = true;
                 $return['lastid'] = $insert['lastid'];
             }

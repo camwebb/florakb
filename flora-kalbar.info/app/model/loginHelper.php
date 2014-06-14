@@ -85,6 +85,7 @@ class loginHelper extends Database {
                 $this->commit();
                 logFile('==success create user==');
                 return true;
+                exit;
             } 
             else $this->rollback();
             // createAccount($data);

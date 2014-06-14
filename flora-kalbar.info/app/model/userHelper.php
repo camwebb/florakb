@@ -5,7 +5,7 @@ class userHelper extends Database {
     {
         $session = new Session;
         $getSessi = $session->get_session();
-        $this->user = $getSessi['ses_user']['login'];
+        $this->user = $getSessi['login'];
     }
 
     function editProfile($data=false){
@@ -31,7 +31,7 @@ class userHelper extends Database {
         
         $session = new Session;
         $ses_user = $session->get_session();
-        $user = $ses_user['ses_user'];                
+        $user = $ses_user;                
              
         $sql = "UPDATE `person` SET `name` = '".$data['name']."', `email` = '".$data['email']."', `project` = '".$data['project']."', `institutions` = '".$data['institutions']."', `twitter` = $dataTwitter, `website` = $dataWeb, `phone` = $dataPhone WHERE `id` = '".$user['login']['id']."' ";
         $res = $this->query($sql,0);
@@ -49,7 +49,7 @@ class userHelper extends Database {
         
         $session = new Session;
         $ses_user = $session->get_session();
-        $user = $ses_user['ses_user'];
+        $user = $ses_user;
         
         $sql = "UPDATE `florakb_person` SET `password` = '".$password."', `salt` = '".$salt."' WHERE `id` = '".$user['login']['id']."' ";
         $res = $this->query($sql,1);
