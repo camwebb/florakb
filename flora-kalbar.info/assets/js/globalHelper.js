@@ -113,6 +113,15 @@ $().ready(function() {
         return this.optional(element) || /^\d+(\.\d{0,3})?$/.test(value); 
     }, "Please enter a correct number, only dot permitted");
     
+    $('#nextGenus').on('click', function(e) {
+        $('#inputGenus').show();
+        $('#nextGenus').hide();
+    });
+    
+     $('#nextSpecies').on('click', function(e) {
+        $('#inputSpecies').show();
+        $('#nextSpecies').hide();
+    });
     
     // taxon auto complete
     /*$('#autoTaxon').on('keyup', function(e) {
@@ -144,6 +153,100 @@ $().ready(function() {
         }
     });*/
     //end auto complete
+    
+    
+    // auto complete family
+    $('#autoFamily').on('keyup', function(e) {
+        var value = $(this).val();
+        if(value.length % 3 == 0){
+        //if(value.length == 3){
+            $(this).autocomplete({
+                source: JSON.parse($.ajax({
+                            url: baseUrl+"onebyone/autoFamily",
+                            type: "POST",
+                            async: false,
+                            data: {'autoFamily' : $(this).val()},
+                            success: function(output) {}
+                        }).responseText),
+                select: function (event, ui) {
+                    $(this).val(ui.item.label);
+                    //$('#taxonID').val(ui.item.id);
+                    return false;
+                },
+                change: function(event, ui) {
+                    if(this.value){
+                        if (!ui.item) {
+                            this.value = '';
+                            alert('Please select one of the options or leave it empty');
+                        }
+                    }
+                }
+            });
+        }
+    });
+    // end auto complete family
+    
+    // auto complete genus
+    $('#autoGenus').on('keyup', function(e) {
+        var value = $(this).val();
+        if(value.length % 3 == 0){
+        //if(value.length == 3){
+            $(this).autocomplete({
+                source: JSON.parse($.ajax({
+                            url: baseUrl+"onebyone/autoGenus",
+                            type: "POST",
+                            async: false,
+                            data: {'autoGenus' : $(this).val(),'family' : $('#autoFamily').val()},
+                            success: function(output) {}
+                        }).responseText),
+                select: function (event, ui) {
+                    $(this).val(ui.item.label);
+                    //$('#taxonID').val(ui.item.id);
+                    return false;
+                },
+                change: function(event, ui) {
+                    if(this.value){
+                        if (!ui.item) {
+                            this.value = '';
+                            alert('Please select one of the options or leave it empty');
+                        }
+                    }
+                }
+            });
+        }
+    });
+    // end auto complete genus
+    
+    // auto complete species
+    $('#autoSpecies').on('keyup', function(e) {
+        var value = $(this).val();
+        if(value.length % 2 == 0){
+        //if(value.length == 3){
+            $(this).autocomplete({
+                source: JSON.parse($.ajax({
+                            url: baseUrl+"onebyone/autoSpecies",
+                            type: "POST",
+                            async: false,
+                            data: {'autoSpecies' : $(this).val(),'family' : $('#autoFamily').val(),'genus' : $('#autoGenus').val()},
+                            success: function(output) {}
+                        }).responseText),
+                select: function (event, ui) {
+                    $(this).val(ui.item.label);
+                    //$('#taxonID').val(ui.item.id);
+                    return false;
+                },
+                change: function(event, ui) {
+                    if(this.value){
+                        if (!ui.item) {
+                            this.value = '';
+                            alert('Please select one of the options or leave it empty');
+                        }
+                    }
+                }
+            });
+        }
+    });
+    // end auto complete species
                 
 });
 

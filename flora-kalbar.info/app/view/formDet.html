@@ -1,7 +1,7 @@
 <form id="formDet" method="POST" action="{$basedomain}onebyone/insertDet">
     <table class="form-tbl">
         <tr>
-            <td><label for="">Confidence of determination</label></td>
+            <td colspan="2"><label for="">Confidence of determination</label></td>
             <td>
                 <select class="inputbox" name="confid" id="confid">
                     <option value="" selected="1">Choose a level of confidence</option>
@@ -12,18 +12,19 @@
             </td>
         </tr>
         <tr>
-            <td><label for="">Using what resource?</label></td>
+            <td colspan="2"><label for="">Using what resource?</label></td>
             <td><input class="inputbox" type="text" id="using" name="using" /></td>
         </tr>
         <tr>
-            <td><label for="notes">Notes</label></td>
+            <td colspan="2"><label for="notes">Notes</label></td>
             <td><textarea class="textareabox" id="notes" name="notes"></textarea></td>
         </tr>
         <tr>
-            <td><label for="">Taxon</label></td>
+            <td><label for="">Taxon :</label></td>
+            <td><label for="">Family</label></td>
             <td>
                 <!--<input class="inputbox" type="text" id="autoTaxon" />
-                <input class="inputbox" type="hidden" id="taxonID" name="taxonID" value=""/>-->
+                <input class="inputbox" type="hidden" id="taxonID" name="taxonID" value=""/>
                 <select class="inputbox" name="taxonID" id="taxonID">
                     <option value="" selected="1">Choose a taxonomy</option>
                     {foreach from=$taxon item=itemTaxon}
@@ -39,13 +40,30 @@
                         </option>
                     {/foreach}
 
-                </select>
-
+                </select>-->
+                
+                <input class="inputbox" type="text" id="autoFamily" name="family" />
+                <a class="btn" id="nextGenus">Next</a>
             </td>
-            <td><a href="#taxon-modal" class="btn" id="taxonPopup">Add</a></td>
+            <td><a href="#taxon-modal" class="btn" id="taxonPopup">New Taxon</a></td>
+        </tr>
+        <tr id="inputGenus" style="display: none;">
+            <td></td>
+            <td><label for="">Genus</label></td>
+            <td>
+                <input class="inputbox" type="text" id="autoGenus" name="genus" />
+                <a class="btn" id="nextSpecies">Next</a>
+            </td>
+        </tr>
+        <tr id="inputSpecies" style="display: none;">
+            <td></td>
+            <td><label for="">Species</label></td>
+            <td>
+                <input class="inputbox" type="text" id="autoSpecies" name="species" />
+            </td>
         </tr>
         <tr>
-            <td><label for="">Person</label></td>
+            <td colspan="2"><label for="">Person</label></td>
             <td>
                 <select class="inputbox" name="personID" id="personID">
                     <option value="">Choose a person</option>
@@ -54,10 +72,10 @@
                     {/foreach}
                 </select>
             </td>
-            <!--<td><a href="#person-modal" class="btn" id="personPopup">Add</a></td>-->
+            <td><a href="#person-modal" class="btn" id="personPopup">New Person</a></td>
         </tr>
         <tr>
-            <td></td>
+            <td colspan="2"></td>
             <td><input class="btn" type="submit" value="Submit" /></td>
         </tr>
     </table>

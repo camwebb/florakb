@@ -682,6 +682,72 @@ class onebyone extends Controller {
         echo json_encode($auto);
         exit;
     }
+    
+    /**
+     * @todo get list of family from plantlist
+     * 
+     * @return array $auto = list family
+     * 
+     * */
+    function autoFamily(){
+        $data = $_POST;
+        $field = 'family';
+        $taxons = $this->insertonebyone->list_autoTaxon($field,$data);
+        
+        $auto = array();
+        
+        foreach($taxons as $taxon){
+            if($taxon[$field]){
+                $auto[] = array('id' => $taxon['kewid'], 'label' => $taxon[$field]);
+            }
+        }
+        echo json_encode($auto);
+        exit;
+    }
+    
+    /**
+     * @todo get list of genus from plantlist
+     * 
+     * @return array $auto = list genus
+     * 
+     * */
+    function autoGenus(){
+        $data = $_POST;
+        $field = 'genus';
+        $taxons = $this->insertonebyone->list_autoTaxon($field,$data);
+        
+        $auto = array();
+        
+        foreach($taxons as $taxon){
+            if($taxon[$field]){
+                $auto[] = array('id' => $taxon['kewid'], 'label' => $taxon[$field]);
+            }
+        }
+        echo json_encode($auto);
+        exit;
+    }
+    
+    /**
+     * @todo get list of species from plantlist
+     * 
+     * @return array $auto = list species
+     * 
+     * */
+    function autoSpecies(){
+        $data = $_POST;
+        $field = 'species';
+        $taxons = $this->insertonebyone->list_autoTaxon($field,$data);
+        
+        $auto = array();
+        
+        foreach($taxons as $taxon){
+            if($taxon[$field]){
+                $auto[] = array('id' => $taxon['kewid'], 'label' => $taxon[$field]);
+            }
+        }
+        echo json_encode($auto);
+        exit;
+    }
 }
 
 ?>

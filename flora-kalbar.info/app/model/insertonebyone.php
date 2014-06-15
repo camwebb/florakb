@@ -222,9 +222,37 @@ class insertonebyone extends Database {
      * @return sql result
      * 
      * */
-    function list_autoTaxon($like){
+    /*function list_autoTaxon($like){
         $sql = "SELECT * FROM (SELECT *, CONCAT('(',family,')',' ',genus,' ',species) as taxonName FROM plantlist) base WHERE taxonName LIKE '%$like%';";
 		$res = $this->fetch($sql,1);
+        return $res;
+    }*/
+    
+    /**
+     * @todo get list apecified field for auto taxon from plantlist table
+     * 
+     * @return sql result
+     * 
+     * */
+    function list_autoTaxon($field,$data){
+        if($field=='family'){
+            $like = $data['autoFamily'];
+            $sql = "SELECT kewid, {$field} FROM plantlist WHERE {$field} LIKE '%$like%' GROUP BY {$field} ORDER BY {$field};";
+    		$res = $this->fetch($sql,1);
+        }elseif($field=='genus'){
+            $family = $data['family'];
+            $like = $data['autoGenus'];
+            $sql = "SELECT kewid, {$field} FROM plantlist WHERE family='{$family}' AND {$field} LIKE '%$like%' GROUP BY {$field} ORDER BY {$field};";
+    		$res = $this->fetch($sql,1);
+        }elseif($field=='species'){
+            $family = $data['family'];
+            $genus = $data['genus'];
+            $like = $data['autoSpecies'];
+            $sql = "SELECT kewid, {$field} FROM plantlist WHERE family='{$family}' AND genus='{$genus}' AND {$field} LIKE '%$like%' GROUP BY {$field} ORDER BY {$field};";
+    		$res = $this->fetch($sql,1);
+        }else{
+            $res = false;
+        }
         return $res;
     }
     
