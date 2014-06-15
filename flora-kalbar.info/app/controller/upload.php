@@ -271,18 +271,34 @@ class upload extends Controller {
 		return true;
 	}
 
-	function checkPhp()
+	
+	function debug()
 	{
-		phpinfo();
+
+		$param = _g('param');
+		if ($param){
+
+			switch ($param) {
+				case '1':
+				{
+					phpinfo();
+				}
+				break;
+				case '2':
+				{
+					sendGlobalMail('ovan89@gmail.com','noreply@flora-kalbar.com','testing send mail');
+				}
+				break;
+				default:
+					echo 'debug mode not specified';
+					break;
+			}
+		}else{
+			echo 'param : <br>1. Php Info</br>2. Send Mail';
+		}
+
 		exit;
-	}
 
-
-	function testMail()
-	{
-
-		sendGlobalMail('ovan89@gmail.com','noreply@flora-kalbar.com','testing send mail');
-		
 	}
 }
 
