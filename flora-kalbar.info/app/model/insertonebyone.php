@@ -68,17 +68,57 @@ class insertonebyone extends Database {
         $startTransaction = $this->begin();
 		if (!$startTransaction) return false;
         
-		logFile('====TRANSACTION READY====');
+		logFile('====one by one: TRANSACTION READY====');
         if($table == 'person'){
             $username = $data['username'];
             unset($data['username']);
         }
+        // if table det
+        if($table == 'det'){
+            
+            $kewid = $data['kewid'];
+            $fam = $data['family'];
+            $gen = $data['genus'];
+            $sp = $data['species'];
+            
+            unset($data['kewid'],$data['family'],$data['genus'],$data['species']);
+            
+            if(empty($data['taxonID'])){
+                if(empty($data['taxonID']) && !empty($data['kewid'])){
+                    $check_exist = $this->data_exist('taxon','kewid',$kewid);
+                    
+                    if($check_exist){
+                        $data['taxonID'] = $check_exist['id'];
+                    }else{
+                        
+                        $dataPlantlist = $this->data_exist('plantlist','kewid',$kewid);
+                        
+                        $insertPlantlist = $this->move_plantlist($dataPlantlist);
+                        
+                        $data['taxonID'] = $insertPlantlist['lastid'];
+                    }
+                }else{
+                    $select = $this->select_plantlist($fam,$gen,$sp);
+                    
+                    $select_exist = $this->data_exist('taxon','kewid',$select['kewid']);
+                    
+                    if($select_exist){
+                        $data['taxonID'] = $select_exist['id'];
+                    }else{
+                        $insertSelected = $this->move_plantlist($select);
+                        
+                        $data['taxonID'] = $insertSelected['lastid'];
+                    }
+                }
+            }
+        }
+        // end if table det
         
 	    $insert = $this->insertData($table,$data);
         
 		if ($insert['status'] == 0){
 			$this->rollback();
-			logFile('====ROLLBACK TRANSACTION====');
+			logFile('====one by one: failed insert data====');
 			$return['status'] = false;
 		}else{
 		  
@@ -129,7 +169,7 @@ class insertonebyone extends Database {
                         return true;
                         exit;
                     }else{
-                        $this->commit();
+                        $this->rollback();
                         logFile('====onebyone: failed sending email====');
                     }
                     
@@ -137,7 +177,7 @@ class insertonebyone extends Database {
         		}
             }else{
                 $this->commit();
-    			logFile('====onebyone: failed create user====');
+    			logFile('====onebyone: success inserting data====');
     			$return['status'] = true;
                 $return['lastid'] = $insert['lastid'];
             }
@@ -145,6 +185,65 @@ class insertonebyone extends Database {
         
         return $return;
 		exit;
+    }
+    
+    /**
+     * @todo insert data from table plantlist into table taxon
+     * 
+     * @param $data = data to insert
+     * 
+     * @return $return['lastid'] = id of inserted data or return false
+     * */
+    function move_plantlist($data){
+        $plantlist['kewid'] = $data['kewid'];
+        $plantlist['fam'] = $data['family'];
+        $plantlist['gen'] = $data['genus'];
+        $plantlist['sp'] = $data['species'];
+        $plantlist['subtype'] = $data['ssptype'];
+        $plantlist['ssp'] = $data['ssp'];
+        $plantlist['auth'] = $data['author'];
+        
+        $insert = $this->insertData('taxon',$plantlist);
+        $this->begin();
+        if($insert['status']){
+            $this->commit();
+            return $insert;
+        }else{
+            $this->rollback();
+            return false;
+        }
+    }
+    
+    /**
+     * @todo check data exist in table by one field specified
+     * 
+     * @param $table = name of table
+     * @param $whereField = field name to be in where clause
+     * @param $value = value of the field specified
+     * 
+     * @return return sql result or return false
+     * */
+    function data_exist($table,$whereField,$value){
+        $sql = "SELECT * FROM {$table} WHERE {$whereField} = '{$value}'";
+		$res = $this->fetch($sql,0);
+        if($res) return $res;
+        return false;
+    }
+    
+    /**
+     * @todo select data in plantlist table where fam, gen, and sp is empty
+     * 
+     * @param $fam = value of family field
+     * @param $gen = value of genus field
+     * @param $sp = value of species field
+     * 
+     * @return return sql result or return false
+     * */
+    function select_plantlist($fam,$gen,$sp){
+        $sql = "SELECT * FROM plantlist WHERE family = '{$fam}' AND genus = '{$gen}' AND species = '{$sp}'";
+		$res = $this->fetch($sql,0);
+        if($res) return $res;
+        return false;
     }
     
     /**
@@ -237,12 +336,12 @@ class insertonebyone extends Database {
     function list_autoTaxon($field,$data){
         if($field=='family'){
             $like = $data['autoFamily'];
-            $sql = "SELECT kewid, {$field} FROM plantlist WHERE {$field} LIKE '%$like%' GROUP BY {$field} ORDER BY {$field};";
+            $sql = "SELECT kewid, {$field} FROM plantlist WHERE {$field} LIKE '%$like%' AND genus='' AND species='' GROUP BY {$field} ORDER BY {$field};";
     		$res = $this->fetch($sql,1);
         }elseif($field=='genus'){
             $family = $data['family'];
             $like = $data['autoGenus'];
-            $sql = "SELECT kewid, {$field} FROM plantlist WHERE family='{$family}' AND {$field} LIKE '%$like%' GROUP BY {$field} ORDER BY {$field};";
+            $sql = "SELECT kewid, {$field} FROM plantlist WHERE family='{$family}' AND {$field} LIKE '%$like%' AND species='' GROUP BY {$field} ORDER BY {$field};";
     		$res = $this->fetch($sql,1);
         }elseif($field=='species'){
             $family = $data['family'];

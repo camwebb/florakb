@@ -118,9 +118,16 @@ $().ready(function() {
         $('#nextGenus').hide();
     });
     
-     $('#nextSpecies').on('click', function(e) {
+    $('#nextSpecies').on('click', function(e) {
         $('#inputSpecies').show();
         $('#nextSpecies').hide();
+    });
+    
+    $('#resetTaxon').on('click', function(e) {
+        $('#inputTaxon').hide();
+        $('#autoCompleteTaxon').show();
+        clear_input('#autoCompleteTaxon');
+        clear_input('#inputTaxon');
     });
     
     // taxon auto complete
@@ -169,8 +176,9 @@ $().ready(function() {
                             success: function(output) {}
                         }).responseText),
                 select: function (event, ui) {
+                    clear_input('#inputTaxon');
                     $(this).val(ui.item.label);
-                    //$('#taxonID').val(ui.item.id);
+                    $('#kewid').val(ui.item.id);
                     return false;
                 },
                 change: function(event, ui) {
@@ -200,8 +208,9 @@ $().ready(function() {
                             success: function(output) {}
                         }).responseText),
                 select: function (event, ui) {
+                    clear_input('#inputTaxon');
                     $(this).val(ui.item.label);
-                    //$('#taxonID').val(ui.item.id);
+                    $('#kewid').val(ui.item.id);
                     return false;
                 },
                 change: function(event, ui) {
@@ -231,8 +240,9 @@ $().ready(function() {
                             success: function(output) {}
                         }).responseText),
                 select: function (event, ui) {
+                    clear_input('#inputTaxon');
                     $(this).val(ui.item.label);
-                    //$('#taxonID').val(ui.item.id);
+                    $('#kewid').val(ui.item.id);
                     return false;
                 },
                 change: function(event, ui) {
@@ -260,6 +270,30 @@ function hasExtension(inputID, exts) {
     return (new RegExp('(' + exts.join('|').replace(/\./g, '\\.') + ')$')).test(fileName);
 }
 
+/*
+clear input by id
+param groupID = id of a group that want to reset
+*/
+function clear_input(groupID){
+    $(groupID).find('input').each(function(){
+        if ((this.type === 'radio') || (this.type === 'checkbox'))
+        {
+            this.checked = false;
+        }
+        else
+        {
+            this.value = '';
+        }
+    });
+}
+
+/*
+sending a form in ajax way
+param form = form
+param formID = id of a form
+param modalID = popup id to open and close the form
+param msgFormat = title of the form, to be include in message (failed or success)
+*/
 function do_ajax(form, formID, modalID, msgFormat){
     var first_error = '<div class="messages erroren"><a href="#" class="closeMessage"></a><p>';
     var first_info = '<div class="messages info"><a href="#" class="closeMessage"></a><p>';
@@ -270,7 +304,7 @@ function do_ajax(form, formID, modalID, msgFormat){
     
     $(form).ajaxSubmit(function(output){
         var data = JSON.parse(output);
-        console.log(data);
+        //console.log(data);
         $(".messages").remove();
         
         $(modalID).fadeOut();
@@ -290,23 +324,23 @@ function do_ajax(form, formID, modalID, msgFormat){
             }
             
             if(formID == 'formTaxon'){
-                $("#taxonID").find('option').removeAttr('selected');
+                //$("#taxonID").find('option').removeAttr('selected');
+                clear_input('#autoCompleteTaxon');
+                $("#autoCompleteTaxon").hide();
+                $("#inputTaxon").show();                                
                 $("#taxonID").removeClass('error');
                 
                 if(data.gen != ''){
                     if(data.fam){
-                        $("#taxonID").append('<option value="'+ data.id +'" selected>'+ '(' + data.fam + ')' + data.gen + data.sp +'</option>');
-                        /*$("#taxonID").val(data.id);
-                        $("#autoTaxon").val('(' + data.fam + ')' + data.gen + data.sp);*/
+                        $("#taxonID").val(data.id);
+                        $("#labelTaxon").val('(' + data.fam + ') ' + data.gen + ' ' + data.sp);
                     }else{
-                        $("#taxonID").append('<option value="'+ data.id +'" selected>'+ data.gen + data.sp +'</option>');
-                        /*$("#taxonID").val(data.id);
-                        $("#autoTaxon").val(data.gen + data.sp);*/
+                        $("#taxonID").val(data.id);
+                        $("#labelTaxon").val(data.gen + ' ' + data.sp);
                     }
                 }else{
-                    $("#taxonID").append('<option value="'+ data.id +'" selected>'+ data.morphotype +'</option>');
-                    /*$("#taxonID").val(data.id);
-                    $("#autoTaxon").val(data.morphotype);*/
+                    $("#taxonID").val(data.id);
+                    $("#labelTaxon").val(data.morphotype);
                 }
             }
             

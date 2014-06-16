@@ -19,49 +19,62 @@
             <td colspan="2"><label for="notes">Notes</label></td>
             <td><textarea class="textareabox" id="notes" name="notes"></textarea></td>
         </tr>
-        <tr>
-            <td><label for="">Taxon :</label></td>
-            <td><label for="">Family</label></td>
-            <td>
-                <!--<input class="inputbox" type="text" id="autoTaxon" />
-                <input class="inputbox" type="hidden" id="taxonID" name="taxonID" value=""/>
-                <select class="inputbox" name="taxonID" id="taxonID">
-                    <option value="" selected="1">Choose a taxonomy</option>
-                    {foreach from=$taxon item=itemTaxon}
-                        <option value="{$itemTaxon.id}">
-                        {if $itemTaxon.gen}
-                            {if $itemTaxon.fam}
-                                ({$itemTaxon.fam})
+        <tbody id="inputTaxon" style="display: none;">
+            <tr>
+                <td colspan="2"><label for="">Taxon :</label></td>
+                <td>
+                    <input type="hidden" id="taxonID" name="taxonID" value=""/>
+                    <input class="inputbox" type="text" id="labelTaxon"  disabled="disabled" />
+                    <a class="btn" id="resetTaxon">Reset</a>
+                </td>
+            </tr>
+        </tbody>
+        <tbody id="autoCompleteTaxon"> <!-- INPUT AUTO COMPLETE TAXON -->
+            <tr id="inputFamily">
+                <td><label for="">Taxon :</label></td>
+                <td><label for="">Family</label></td>
+                <td>
+                    <input class="inputbox" type="hidden" id="kewid" name="kewid" value=""/>
+                    <!--<input class="inputbox" type="text" id="autoTaxon" />
+                    <input class="inputbox" type="hidden" id="taxonID" name="taxonID" value=""/>
+                    <select class="inputbox" name="taxonID" id="taxonID">
+                        <option value="" selected="1">Choose a taxonomy</option>
+                        {foreach from=$taxon item=itemTaxon}
+                            <option value="{$itemTaxon.id}">
+                            {if $itemTaxon.gen}
+                                {if $itemTaxon.fam}
+                                    ({$itemTaxon.fam})
+                                {/if}
+                                {$itemTaxon.gen} {$itemTaxon.sp}
+                            {else}
+                                {$itemTaxon.morphotype}
                             {/if}
-                            {$itemTaxon.gen} {$itemTaxon.sp}
-                        {else}
-                            {$itemTaxon.morphotype}
-                        {/if}
-                        </option>
-                    {/foreach}
-
-                </select>-->
-                
-                <input class="inputbox" type="text" id="autoFamily" name="family" />
-                <a class="btn" id="nextGenus">Next</a>
-            </td>
-            <td><a href="#taxon-modal" class="btn" id="taxonPopup">New Taxon</a></td>
-        </tr>
-        <tr id="inputGenus" style="display: none;">
-            <td></td>
-            <td><label for="">Genus</label></td>
-            <td>
-                <input class="inputbox" type="text" id="autoGenus" name="genus" />
-                <a class="btn" id="nextSpecies">Next</a>
-            </td>
-        </tr>
-        <tr id="inputSpecies" style="display: none;">
-            <td></td>
-            <td><label for="">Species</label></td>
-            <td>
-                <input class="inputbox" type="text" id="autoSpecies" name="species" />
-            </td>
-        </tr>
+                            </option>
+                        {/foreach}
+    
+                    </select>-->
+                    
+                    <input class="inputbox" type="text" id="autoFamily" name="family" />
+                    <a class="btn" id="nextGenus">Next</a>
+                </td>
+                <td><a href="#taxon-modal" class="btn" id="taxonPopup">New Taxon</a></td>
+            </tr>
+            <tr id="inputGenus" style="display: none;">
+                <td></td>
+                <td><label for="">Genus</label></td>
+                <td>
+                    <input class="inputbox" type="text" id="autoGenus" name="genus" />
+                    <a class="btn" id="nextSpecies">Next</a>
+                </td>
+            </tr>
+            <tr id="inputSpecies" style="display: none;">
+                <td></td>
+                <td><label for="">Species</label></td>
+                <td>
+                    <input class="inputbox" type="text" id="autoSpecies" name="species" />
+                </td>
+            </tr>
+        </tbody> <!-- END INPUT AUTO COMPLETE TAXON -->
         <tr>
             <td colspan="2"><label for="">Person</label></td>
             <td>
@@ -91,9 +104,9 @@ $().ready(function() {
             using: {
                 required: true
             },
-            taxonID: {
+            /*taxonID: {
                 required: true
-            },
+            },*/
             personID: {
                 required: true
             }
@@ -105,9 +118,9 @@ $().ready(function() {
             using: {
                 required: " Please enter a resource"
             },
-            taxonID: {
+            /*taxonID: {
                 required: " Please choose a taxonomy"
-            },
+            },*/
             personID: {
                 required: " Please choose a person"
             }

@@ -156,18 +156,26 @@ class onebyone extends Controller {
         
         //manual submission form
         /*if($insertData){
-            $this->msg->add('s', 'Update Person Success');
+            if($insertData['status']){
+                $this->msg->add('s', 'Update Person Success');
+            }else{
+                $this->msg->add('e', 'Update Person Failed');
+            }
         }else{
             $this->msg->add('e', 'Update Person Failed');
         }
         header('Location: ../onebyone/detContent');*/
         
-        $data['id'] = $insertData['lastid'];
-        
         //ajax form
         if($insertData){
-            $data['status'] = 'success';
-            echo json_encode($data);
+            if($insertData['status']){
+                $data['id'] = $insertData['lastid'];
+                $data['status'] = 'success';
+                echo json_encode($data);
+            }else{
+                $data['status'] = 'error';
+                echo json_encode($data);
+            }
         }else{
             $data['status'] = 'error';
             echo json_encode($data);
@@ -185,18 +193,26 @@ class onebyone extends Controller {
         /*
         //manual submission form
         if($insertData){
-            $this->msg->add('s', 'Update Location Success');
+            if($insertData['status']){
+                $this->msg->add('s', 'Update Location Success');
+            }else{
+                $this->msg->add('e', 'Update Location Failed');
+            }
         }else{
             $this->msg->add('e', 'Update Location Failed');
         }
         header('Location: ../onebyone/indivContent');*/
         
-        $data['id'] = $insertData['lastid'];
-        
         //ajax form
         if($insertData){
-            $data['status'] = 'success';
-            echo json_encode($data);
+            if($insertData['status']){
+                $data['id'] = $insertData['lastid'];
+                $data['status'] = 'success';
+                echo json_encode($data);
+            }else{
+                $data['status'] = 'error';
+                echo json_encode($data);
+            }
         }else{
             $data['status'] = 'error';
             echo json_encode($data);
@@ -220,12 +236,18 @@ class onebyone extends Controller {
         $data['personID'] = $personID;
         
         $insertData = $this->insertonebyone->insertTransaction('indiv',$data);
-        $sess_onebyone = array('indivID' => $insertData['lastid']);
-        $session->set_session($sess_onebyone,'onebyone');
         
         if($insertData){
-            $this->msg->add('s', 'Update Individu Success');
-            header('Location: ../onebyone/detContent');
+            if($insertData['status']){
+                $sess_onebyone = array('indivID' => $insertData['lastid']);
+                $session->set_session($sess_onebyone,'onebyone');
+        
+                $this->msg->add('s', 'Update Individu Success');
+                header('Location: ../onebyone/detContent');
+            }else{
+                $this->msg->add('e', 'Update Individu Failed');
+                header('Location: ../onebyone/indivContent');
+            }
         }else{
             $this->msg->add('e', 'Update Individu Failed');
             header('Location: ../onebyone/indivContent');
@@ -253,8 +275,13 @@ class onebyone extends Controller {
         $insertData = $this->insertonebyone->insertTransaction('det',$data);
         
         if($insertData){
-            $this->msg->add('s', 'Update Determinant Success');
-            header('Location: ../onebyone/obsContent');
+            if($insertData['status']){
+                $this->msg->add('s', 'Update Determinant Success');
+                header('Location: ../onebyone/obsContent');
+            }else{
+                $this->msg->add('e', 'Update Determinant Failed');
+                header('Location: ../onebyone/detContent');
+            }
         }else{
             $this->msg->add('e', 'Update Determinant Failed');
             header('Location: ../onebyone/detContent');
@@ -284,8 +311,13 @@ class onebyone extends Controller {
         $insertData = $this->insertonebyone->insertTransaction('obs',$data);
         
         if($insertData){
-            $this->msg->add('s', 'Update Observation Success');
-            header('Location: ../onebyone/imageContent');
+            if($insertData['status']){
+                $this->msg->add('s', 'Update Observation Success');
+                header('Location: ../onebyone/imageContent');
+            }else{
+                $this->msg->add('e', 'Update Observation Failed');
+                header('Location: ../onebyone/obsContent');
+            }
         }else{
             $this->msg->add('e', 'Update Observation Failed');
             header('Location: ../onebyone/obsContent');
@@ -301,7 +333,11 @@ class onebyone extends Controller {
         
         //manual submission form
         /*if($insertData){
-            $this->msg->add('s', 'Update Taxon Success');
+            if($insertData['status']){
+                $this->msg->add('s', 'Update Taxon Success');
+            }else{
+                $this->msg->add('e', 'Update Taxon Failed');
+            }
         }else{
             $this->msg->add('e', 'Update Taxon Failed');
         }
@@ -311,8 +347,13 @@ class onebyone extends Controller {
         
         //ajax form
         if($insertData){
-            $data['status'] = 'success';
-            echo json_encode($data);
+            if($insertData['status']){
+                $data['status'] = 'success';
+                echo json_encode($data);
+            }else{
+                $data['status'] = 'error';
+                echo json_encode($data);
+            }
         }else{
             $data['status'] = 'error';
             echo json_encode($data);
