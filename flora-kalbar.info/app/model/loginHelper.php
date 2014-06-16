@@ -2,6 +2,19 @@
 
 class loginHelper extends Database {
 	
+    function __construct()
+    {
+        global $basedomain;
+        $this->loadmodule();
+        
+    }
+    
+    function loadmodule()
+    {
+        // include APP_MODELS.'activityHelper.php';
+        $this->activityHelper = new helper_model;
+       
+    }
 
 	function local($data=false)
 	{
@@ -82,6 +95,8 @@ class loginHelper extends Database {
 
             if ($sendMail['result']){
 
+                $this->activityHelper->updateEmailLog(false,$to,'account',1);
+                
                 $this->commit();
                 logFile('==success create user==');
                 return true;

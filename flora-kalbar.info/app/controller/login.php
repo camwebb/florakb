@@ -157,7 +157,7 @@ class login extends Controller {
             }
 
         }
-
+        
         return $this->loadView('home');
     }           
 }

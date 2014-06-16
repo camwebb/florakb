@@ -21,7 +21,7 @@ class upload extends Controller {
 		
 		$this->collectionHelper = $this->loadModel('collectionHelper');
         $this->excelHelper = $this->loadModel('excelHelper');
-        $this->userHelper = $this->loadModel('userHelper');
+        $this->activityHelper = new helper_model;
 	}
 	
 	public function index(){
@@ -267,7 +267,7 @@ class upload extends Controller {
 		$fileName = $CONFIG['default']['root_path']."/logs/".$this->user['login']['username'];
 		$data = json_encode(array('data'=>file_get_contents($fileName)));
 		
-		$storeLog = $this->userHelper->storeUserUploadLog($data, $file);
+		$storeLog = $this->activityHelper->storeUserUploadLog($data, $file);
 		return true;
 	}
 

@@ -10,7 +10,17 @@ class collectionHelper extends Database {
 		$session = new Session;
 		$getSessi = $session->get_session();
 		$this->user = $getSessi['login'];
+		$this->loadmodule();
 	}
+
+	function loadmodule()
+    {
+        // include APP_MODELS.'activityHelper.php';
+    	// pr(APP_MODELS);
+    	// pr($GLOBALS);
+        $this->activityHelper = new helper_model;
+       
+    }
 
 	function insertReference($newData=array(),$priority=array())
 	{
@@ -189,7 +199,9 @@ class collectionHelper extends Database {
 		
 		$query = $data['query'];
 		$unique = $data['uniqkey'];
-		
+		$rawdataPerson = $data['rawdata']['person']['data'];
+
+		// pr($data);exit;
 		if ($query){
 			$i = 0;
 			
@@ -241,6 +253,40 @@ class collectionHelper extends Database {
 								photographer = '{$unique[$val][$j]}' ";
 						// pr($updateLocn);
 						$res = $this->query($updatePhoto,1);
+
+						// check if system never send mail account to user
+						$to = $rawdataPerson[$j]['email'];
+
+						$checkBefore = $this->activityHelper->emailLog($to);
+						if (!$checkBefore){
+							$dataArr['email'] = $to;
+							$dataArr['username'] = substr(str_shuffle('abcdefghjkmn123456789'), 0, 8) ;
+							logFile('generate account '.serialize($dataArr));
+							$generateMail = $this->activityHelper->generateEmail($dataArr);
+							if (is_array($generateMail)){
+								$sendUserAccount = sendGlobalMail($generateMail['to'],$generateMail['from'],$generateMail['mesg']);
+								logFile('generate account success '.serialize($sendUserAccount));
+								if ($sendUserAccount['result']){
+
+                					$this->activityHelper->updateEmailLog(false,$to,'account',1);
+                					logFile('send account to email via xls success');
+                				}else{
+                					logFile('send account to email via xls failed');
+                					echo "Person data not complete"; exit;
+                					return false;
+                				}
+							}else{
+								logFile('generate email failed');
+								echo "Person data not complete"; exit;
+								return false;
+							}
+							
+						}else{
+							logFile('email send exist');
+							echo "Person data not complete"; exit;
+							return false;
+						}
+						
 					}
 					
 					if ($defineTable[$i] == 'locn'){
@@ -780,6 +826,8 @@ class collectionHelper extends Database {
 		logFile('====COMMIT TRANSACTION====');
 		return true;
 	}
+
+
 }
 
 ?>

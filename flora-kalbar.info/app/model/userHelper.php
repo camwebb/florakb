@@ -87,17 +87,6 @@ class userHelper extends Database {
         return $res; 
     }
 
-    function storeUserUploadLog($data=null, $filename=null)
-    {
-
-        $userid = $this->user['id'];
-        $date = date('Y-m-d H:i:s');
-        $sql = "INSERT INTO `florakb_upload_log` (userid, filename, `desc`, upload_date) 
-                VALUES ({$userid}, '{$filename}', '{$data}', '{$date}')";
-        // pr($sql);
-        $res = $this->query($sql,1);  
-        if ($res) return true;
-        return false;
-    }
+   
 }
 ?>

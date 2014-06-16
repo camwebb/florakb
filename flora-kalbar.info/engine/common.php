@@ -410,7 +410,7 @@ function sendGlobalMail($to,$from,$msg,$config=false){
 	
 	if (!$config){
 
-		mail($to,"[ NOTIFICATION ] Flora Kalbar",$msg,"From: $from\n");
+		@mail($to,"[ NOTIFICATION ] Flora Kalbar",$msg,"From: $from\n");
 
 		return array('message'=>'success send mail','result'=>true,'res'=>'');
 
