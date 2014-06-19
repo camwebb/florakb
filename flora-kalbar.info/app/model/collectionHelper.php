@@ -261,6 +261,8 @@ class collectionHelper extends Database {
 						if (!$checkBefore){
 							$dataArr['email'] = $to;
 							$dataArr['username'] = substr(str_shuffle('abcdefghjkmn123456789'), 0, 8) ;
+							$dataArr['regfrom'] = 2;
+							
 							logFile('generate account '.serialize($dataArr));
 							$generateMail = $this->activityHelper->generateEmail($dataArr);
 							if (is_array($generateMail)){

@@ -129,23 +129,38 @@ class login extends Controller {
             $userMail = $decode['email'];
             $origToken = sha1($salt.$userMail);
 
+            pr($decode);
             if ($decode['token']==$origToken){
                 // is valid, then create account and set status to validate
 
-                $updateAccount = $this->loginHelper->updateUserStatus($decode['username']);
-
-                if ($updateAccount){
-                    createAccount($data);
-                    logFile('account ftp user '.$decode['email']. ' created');
-
-                    $this->view->assign('validate','Validate account success');
+                if($decode['regfrom']==1){
                     
+                    $this->view->assign('enterAccount',false);  
+                    $updateAccount = $this->loginHelper->updateUserStatus($decode['username']);
+
+                    if ($updateAccount){
+
+
+                        createAccount($data);
+                        logFile('account ftp user '.$decode['email']. ' created');
+
+                        $this->view->assign('validate','Validate account success');
+                        
+
+                    }else{
+                        
+                        $this->view->assign('validate','Validate account error');
+                        logFile('update n_status user '.$decode['email'].' failed');
+                    }
 
                 }else{
-                    
-                    $this->view->assign('validate','Validate account error');
-                    logFile('update n_status user '.$decode['email'].' failed');
+
+                   $this->view->assign('enterAccount',true);         
                 }
+
+                
+
+                
                 
 
             }else{

@@ -1,18 +1,53 @@
     {if isset($validate)}{if $validate}<div class="messages info"><a href="#" class="closeMessage"></a><p>{$validate}</p></div>{/if}{/if}
+    
+{if isset($enterAccount)}
+    {if ($enterAccount)}
+
+        <div id="modal-login" class="modal-background">
+            <div class="modal-overlay"></div>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                      <h4>Login</h4>
+                      <img src="{$basedomain}assets/img/bg-login.png" />
+                      <div class="clear"></div>
+                    </div>
+                    <div class="modal-body">
+                      <form action="" method="POST" id="formLogin">
+                        <div class="form-group">
+                          <input type="username" id="login-username" class="input-modal" name="username" placeholder="Username" required aria-required="true"/>
+                        </div>
+                        <div class="form-group">
+                          <input type="password" id="login-password" class="input-modal" name="password" placeholder="Password" required aria-required="true"/>
+                        </div>
+                        <button type="button" class="btn close" style="width: 49%;">Cancel</button>
+                        <input type="submit" class="btn" style="width: 49%;" value="Login" />
+                      </form>
+                    </div>
+                    <div class="modal-footer"> 
+                        <!--Not a member? <a href="#" class="signup">Sign up now!</a><br />
+                        <a href="#">Forgotten password?</a>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+{/if}
+    
+{else}
     <div class="content">
         <article class="article" href="http://www.teguhsantoso.com/2011/01/biodiversitas-definisi-dan-batasan.html">
-        	<div>
-        		<h2 class="title">Citizen Science Solution For National Biodiversity Data Needs</h2>
+            <div>
+                <h2 class="title">Citizen Science Solution For National Biodiversity Data Needs</h2>
                 <h5>Developing a Plant checklist for West Kalimantan, Indonesia.</h5><br />
-        		
+                
                 <p>
-        			Software and Tools developments. Data acquisition and collection tools, social network, research log using mobile devices and digital reference library that has inter-operability feature.
+                    Software and Tools developments. Data acquisition and collection tools, social network, research log using mobile devices and digital reference library that has inter-operability feature.
         
-        		</p>
-        		<p>
-        			Capacity building. Intensive training courses (2 locations), and CodeCamp for botanists and computer scientists.
+                </p>
+                <p>
+                    Capacity building. Intensive training courses (2 locations), and CodeCamp for botanists and computer scientists.
         
-        		</p>
+                </p>
                 <p>
                     Expedition. 15 days expeditions and data will be uploaded and integrated directly. Participants will be equipped with digital camera, netbook and wireless internet connection.
         
@@ -21,8 +56,9 @@
                     Data match – validation. Photographs and data will be matched by technicians at the national herbarium via the developed system. Much of Indonesia's biodivesrity may be lost forever before it is ever recorded
                 </p>
                 
-        		
-        	</div>
-        	<img src="" alt=""/>
+                
+            </div>
+            <img src="" alt=""/>
         </article>
     </div>
+    {/if}
