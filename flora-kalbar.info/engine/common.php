@@ -412,7 +412,7 @@ function sendGlobalMail($to,$from,$msg,$config=false){
 
 		@mail($to,"[ NOTIFICATION ] Flora Kalbar",$msg,"From: $from\n");
 
-		return array('message'=>'success send mail','result'=>true,'res'=>'');
+		return array('message'=>'success send mail','result'=>true);
 
 	}
 
@@ -424,12 +424,15 @@ function sendGlobalMail($to,$from,$msg,$config=false){
 	
 	$mail = new PHPMailer();
 	$mail->IsSMTP(); // telling the class to use SMTP
+	$mail->Host       = $CONFIG['EMAIL_SMTP_HOST'];  // sets the SMTP server
 	$mail->SMTPDebug  = 1;                     // enables SMTP debug information (for testing)
 											   // 1 = errors and messages
 											   // 2 = messages only		
-	$mail->Host       = $CONFIG['EMAIL_SMTP_HOST'];  // sets the SMTP server
+	
 	$mail->SMTPAuth   = false;                  // enable SMTP authentication
-	// $mail->Port       = 26;                    // set the SMTP port for the GMAIL server
+	$mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
+	$mail->Host       = "smtp.gmail.com";      // sets GMAIL as the SMTP server
+	$mail->Port       = 465;                    // set the SMTP port for the GMAIL server
 	$mail->Username   = $CONFIG['EMAIL_SMTP_USER']; // SMTP account username
 	$mail->Password   = $CONFIG['EMAIL_SMTP_PASSWORD'];        // SMTP account password
 	
