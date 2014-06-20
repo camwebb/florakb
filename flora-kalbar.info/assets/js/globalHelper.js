@@ -164,101 +164,68 @@ $().ready(function() {
     
     // auto complete family
     $('#autoFamily').on('keyup', function(e) {
-        var value = $(this).val();
-        if(value.length % 3 == 0){
-        //if(value.length == 3){
-            $(this).autocomplete({
-                source: JSON.parse($.ajax({
-                            url: baseUrl+"onebyone/autoFamily",
-                            type: "POST",
-                            async: false,
-                            data: {'autoFamily' : $(this).val()},
-                            success: function(output) {}
-                        }).responseText),
-                select: function (event, ui) {
-                    clear_input('#inputTaxon');
-                    $(this).val(ui.item.label);
-                    $('#kewid').val(ui.item.id);
-                    return false;
-                },
-                change: function(event, ui) {
-                    if(this.value){
-                        if (!ui.item) {
-                            this.value = '';
-                            alert('Please select one of the options or leave it empty');
-                        }
-                    }
-                }
-            });
-        }
+        autoCompleteTaxon('#autoFamily', 'autoFamily');
     });
     // end auto complete family
     
     // auto complete genus
     $('#autoGenus').on('keyup', function(e) {
-        var value = $(this).val();
-        if(value.length % 3 == 0){
-        //if(value.length == 3){
-            $(this).autocomplete({
-                source: JSON.parse($.ajax({
-                            url: baseUrl+"onebyone/autoGenus",
-                            type: "POST",
-                            async: false,
-                            data: {'autoGenus' : $(this).val(),'family' : $('#autoFamily').val()},
-                            success: function(output) {}
-                        }).responseText),
-                select: function (event, ui) {
-                    clear_input('#inputTaxon');
-                    $(this).val(ui.item.label);
-                    $('#kewid').val(ui.item.id);
-                    return false;
-                },
-                change: function(event, ui) {
-                    if(this.value){
-                        if (!ui.item) {
-                            this.value = '';
-                            alert('Please select one of the options or leave it empty');
-                        }
-                    }
-                }
-            });
-        }
+        autoCompleteTaxon('#autoGenus', 'autoGenus');
     });
     // end auto complete genus
     
     // auto complete species
     $('#autoSpecies').on('keyup', function(e) {
-        var value = $(this).val();
-        if(value.length % 2 == 0){
-        //if(value.length == 3){
-            $(this).autocomplete({
-                source: JSON.parse($.ajax({
-                            url: baseUrl+"onebyone/autoSpecies",
-                            type: "POST",
-                            async: false,
-                            data: {'autoSpecies' : $(this).val(),'family' : $('#autoFamily').val(),'genus' : $('#autoGenus').val()},
-                            success: function(output) {}
-                        }).responseText),
-                select: function (event, ui) {
-                    clear_input('#inputTaxon');
-                    $(this).val(ui.item.label);
-                    $('#kewid').val(ui.item.id);
-                    return false;
-                },
-                change: function(event, ui) {
-                    if(this.value){
-                        if (!ui.item) {
-                            this.value = '';
-                            alert('Please select one of the options or leave it empty');
-                        }
-                    }
-                }
-            });
-        }
+        autoCompleteTaxon('#autoSpecies', 'autoSpecies');
     });
-    // end auto complete species
+    // end auto complete species               
                 
 });
+
+
+/**
+* auto complete taxon
+* @param keyupID = id of input autoTaxon
+* @param funcName = name of php function to get data auto complete
+* */
+function autoCompleteTaxon(keyupID,funcName){
+    var value = $(keyupID).val();
+    var dataTaxon = {'family' : $('#autoFamily').val(),'genus' : $('#autoGenus').val(),'species' : $('#autoSpecies').val()};
+    //console.log(dataTaxon);        
+    if(value.length % 3 == 0){
+    //if(value.length == 3){
+        $(keyupID).autocomplete({
+            source: JSON.parse($.ajax({
+                        url: baseUrl+"onebyone/"+funcName,
+                        type: "POST",
+                        async: false,
+                        data: dataTaxon,
+                        success: function(output) {}
+                    }).responseText),
+            response: function(event, ui) {
+                // ui.content is the array that's about to be sent to the response callback.
+                if (ui.content.length === 0) {
+                    alert("No results found");
+                }
+            },
+            select: function (event, ui) {
+                clear_input('#inputTaxon');
+                $(keyupID).val(ui.item.label);
+                $('#kewid').val(ui.item.id);
+                return false;
+            },
+            change: function(event, ui) {
+                if(this.value){
+                    if (!ui.item) {
+                        this.value = '';
+                        alert('Please select one of the options or leave it empty');
+                    }
+                }
+            }
+        });
+    }
+    
+}
 
 /**
 * checking extention from input file

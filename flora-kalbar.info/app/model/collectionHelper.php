@@ -266,7 +266,7 @@ class collectionHelper extends Database {
 							logFile('generate account '.serialize($dataArr));
 							$generateMail = $this->activityHelper->generateEmail($dataArr);
 							if (is_array($generateMail)){
-								$sendUserAccount = sendGlobalMail($generateMail['to'],$generateMail['from'],$generateMail['mesg']);
+								$sendUserAccount = sendGlobalMail($generateMail['to'],$generateMail['from'],$generateMail['msg']);
 								logFile('generate account success '.serialize($sendUserAccount));
 								if ($sendUserAccount['result']){
 

@@ -6,7 +6,6 @@ class helper_model extends Database {
 	var $user = null;
 	function __construct()
 	{
-
 		$session = new Session;
 		$getSessi = $session->get_session();
 		$this->user = $getSessi['login'];
@@ -15,7 +14,7 @@ class helper_model extends Database {
 
 	function generateEmail($email=false, $username=false)
 	{
-		global $CONFIG;
+		global $CONFIG, $basedomain;
 
 		if (!$email && !$username) return false;
 

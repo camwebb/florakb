@@ -1,6 +1,16 @@
 <?php
 
-class insertonebyone extends Database {	
+class insertonebyone extends Database {
+    
+    function __construct()
+	{
+		$this->loadmodule();
+	}
+
+	function loadmodule()
+    {
+        $this->activityHelper = new helper_model;
+    }
 	
     /**
      * @todo insert a record to database
@@ -69,10 +79,10 @@ class insertonebyone extends Database {
 		if (!$startTransaction) return false;
         
 		logFile('====one by one: TRANSACTION READY====');
-        if($table == 'person'){
+        /*if($table == 'person'){
             $username = $data['username'];
             unset($data['username']);
-        }
+        }*/
         // if table det
         if($table == 'det'){
             
@@ -124,7 +134,7 @@ class insertonebyone extends Database {
 		  
             // if table person, insert generated password
             if($table == 'person'){
-                $salt = $CONFIG['default']['salt'];
+                /*$salt = $CONFIG['default']['salt'];
                 
                 //this is the generated password
                 $genPass = $this->generate_pass();
@@ -133,6 +143,7 @@ class insertonebyone extends Database {
                 $password = sha1($genPass.$salt);
                 
                 //insert password id, password, salt
+                // insert to table florakb_person
                 $dataPass = array('id' => $insert['lastid'], 'password' => $password, 'salt' => $salt, 'username' => $username);
                 $insert_dataPas = $this->insertData('florakb_person',$dataPass,true);
                 
@@ -140,41 +151,42 @@ class insertonebyone extends Database {
         			$this->rollback();
         			logFile('====onebyone: failed insert to florakb_person====');
         			$return['status'] = false;
-        		}else{
-        			$return['status'] = true;
-                    $return['lastid'] = $insert['lastid'];
+        		}else{*/
+                
+        			//$return['status'] = true;
+                    //$return['lastid'] = $insert['lastid'];
                     
                     /* EMAIL */
                     // send mail before activate account
-                    $dataArr['email'] = $data['email'];
-                    $dataArr['username'] = $username;
-                    $dataArr['token'] = sha1('register'.$data['email']);
-                    $dataArr['validby'] = sha1(CODEKIR);
-        
-                    $inflatData = encode(serialize($dataArr));
-                    logFile($inflatData);
-        
-        
-                    $to = $data['email'];
-                    $from = $CONFIG['email']['EMAIL_FROM_DEFAULT'];
-                    $msg = "To activate your account please <a href='{$basedomain}login/validate/?ref={$inflatData}'>click here</a>";
-                    // try to send mail 
-                    $sendMail = sendGlobalMail($to, $from, $msg,false);
-                    logFile('mail send '.serialize($sendMail));
-        
-                    if ($sendMail['result']){
-        
-                        $this->commit();
-                        logFile('==onebyone: success create user==');
-                        return true;
-                        exit;
-                    }else{
+                    
+					$dataArr['email'] = $data['email'];
+                    $dataArr['username'] = $this->generate_pass();
+					$dataArr['regfrom'] = 2;
+					
+					//logFile('onebyone: generate account '.serialize($dataArr));
+					$generateMail = $this->activityHelper->generateEmail($dataArr['email'],$dataArr['username']);
+					if (is_array($generateMail)){
+						$sendUserAccount = sendGlobalMail($generateMail['to'],$generateMail['from'],$generateMail['msg']);
+						logFile('onebyone: generate account success '.serialize($sendUserAccount));
+						if ($sendUserAccount['result']){
+        					$this->activityHelper->updateEmailLog(false,$data['email'],'account',1);
+        					logFile('onebyone: send account to email success');
+                            $this->commit();
+                            $return['status'] = true;
+                            $return['lastid'] = $insert['lastid'];
+        				}else{
+        					logFile('onebyone: send account to email failed');
+                            $this->rollback();
+        					$return['status'] = false;
+        				}
+					}else{
+						logFile('onebyone: generate email failed');
                         $this->rollback();
-                        logFile('====onebyone: failed sending email====');
-                    }
+						$return['status'] = false;
+					}
                     
                     /* EMAIL */
-        		}
+        		//} // insert to table florakb_person
             }else{
                 $this->commit();
     			logFile('====onebyone: success inserting data====');
@@ -303,50 +315,25 @@ class insertonebyone extends Database {
     }
     
     /**
-     * @todo get list for auto taxon
-     * 
-     * @return sql result
-     * 
-     * */
-    /*function list_autoTaxon($like){
-        $sql = "SELECT * FROM taxon WHERE (fam LIKE '%$like%' OR gen LIKE 
-'%$like%' OR sp LIKE '%$like%' OR morphotype LIKE '%$like%') GROUP BY fam, gen, sp, morphotype ORDER BY fam, gen, sp, morphotype";
-		$res = $this->fetch($sql,1);
-        return $res;
-    }*/
-    
-    /**
-     * @todo get list for auto taxon from plantlist table
-     * 
-     * @return sql result
-     * 
-     * */
-    /*function list_autoTaxon($like){
-        $sql = "SELECT * FROM (SELECT *, CONCAT('(',family,')',' ',genus,' ',species) as taxonName FROM plantlist) base WHERE taxonName LIKE '%$like%';";
-		$res = $this->fetch($sql,1);
-        return $res;
-    }*/
-    
-    /**
-     * @todo get list apecified field for auto taxon from plantlist table
+     * @todo get list specified field for auto taxon from plantlist table
      * 
      * @return sql result
      * 
      * */
     function list_autoTaxon($field,$data){
         if($field=='family'){
-            $like = $data['autoFamily'];
+            $like = $data['family'];
             $sql = "SELECT kewid, {$field} FROM plantlist WHERE {$field} LIKE '%$like%' AND genus='' AND species='' GROUP BY {$field} ORDER BY {$field};";
     		$res = $this->fetch($sql,1);
         }elseif($field=='genus'){
             $family = $data['family'];
-            $like = $data['autoGenus'];
+            $like = $data['genus'];
             $sql = "SELECT kewid, {$field} FROM plantlist WHERE family='{$family}' AND {$field} LIKE '%$like%' AND species='' GROUP BY {$field} ORDER BY {$field};";
     		$res = $this->fetch($sql,1);
         }elseif($field=='species'){
             $family = $data['family'];
             $genus = $data['genus'];
-            $like = $data['autoSpecies'];
+            $like = $data['species'];
             $sql = "SELECT kewid, {$field} FROM plantlist WHERE family='{$family}' AND genus='{$genus}' AND {$field} LIKE '%$like%' GROUP BY {$field} ORDER BY {$field};";
     		$res = $this->fetch($sql,1);
         }else{
