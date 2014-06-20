@@ -28,6 +28,10 @@ $('#formSignup').submit(function(event) {
                 alert('User created, do login for enter the site.');
                 location.reload();
             } 
+        },
+        error: function(xhr, status, error) {
+          var err = eval("(" + xhr.responseText + ")");
+          alert(err.Message);
         }
     });
     $('#signup-name').keyup(function(){

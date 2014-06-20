@@ -99,7 +99,9 @@ class browseHelper extends Database {
                         $value=indiv.personID AND indiv.n_status='0'
                     INNER JOIN `person` ON
                         $value=person.id
-                    GROUP BY indiv.id";
+                    INNER JOIN `det` ON
+                        indiv.id=det.indivID
+                    GROUP BY indiv.id";                   
         }
         
         $res = $this->fetch($sql,1);
@@ -162,7 +164,9 @@ class browseHelper extends Database {
             return $res;
         }
         elseif($condition==false){
-            $sql = "SELECT * FROM `locn`";
+            //$sql = "SELECT * FROM `locn`";
+            //$sql="select * from `locn` where id in (select indiv.locnID from indiv where indiv.n_status = 0)";
+            $sql="select * from `locn` where id in (select indiv.locnID from indiv inner join det on indiv.id = det.indivID where indiv.n_status = 0)";
             $res = $this->fetch($sql,1);
             
             //PAGINATION
@@ -208,7 +212,7 @@ class browseHelper extends Database {
             return $res;
         }
         elseif($condition==false){
-            $sql = "SELECT * FROM `person`";
+            $sql = "SELECT * FROM `person`";           
             $res = $this->fetch($sql,1);
             
             //PAGINATION
@@ -245,7 +249,7 @@ class browseHelper extends Database {
      */
     function showImgIndiv($data,$limit,$limitVal){
         if($limit==TRUE){
-            $sql = "SELECT * FROM `img` WHERE indivID='$data' LIMIT $limitVal";
+            $sql = "SELECT * FROM `img` WHERE indivID='$data' AND md5sum IS NOT NULL LIMIT $limitVal";
         }
         elseif($limit==FALSE){
             $sql = "SELECT * FROM `img` WHERE indivID='$data'";

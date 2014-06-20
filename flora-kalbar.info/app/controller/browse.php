@@ -457,6 +457,7 @@ class browse extends Controller {
     public function addImg(){
         global $CONFIG;
         $data = $_POST;
+        $indivID = $_GET['id'];
         //pr($data);exit;
         
         $name = 'filename';
@@ -483,7 +484,6 @@ class browse extends Controller {
             $ses_user = $this->isUserOnline(); 
             $username = $ses_user['login']['username'];
             $personID = $ses_user['login']['id'];
-            $indivID = $_GET['id'];
         
             $tmp_name = $uploaded_file['full_name'];
             $entry = str_replace(array('\'', '"'), '', $uploaded_file['real_name']);
@@ -595,10 +595,9 @@ class browse extends Controller {
                         $dataSession = array();
                         
                         $sess_image = $session->get_session();
-                        $sess_user = $sess_image['ses_user'];
-                        if(isset($sess_user['image_sess'])){
+                        if(isset($sess_image['image_sess'])){
                             logFile('Fetch image session');
-                            foreach ($sess_user['image_sess'] as $data_before){
+                            foreach ($sess_image['image_sess'] as $data_before){
                                 array_push($dataSession,$data_before);
                             }
                         }
