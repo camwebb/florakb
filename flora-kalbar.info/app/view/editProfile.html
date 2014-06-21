@@ -23,7 +23,7 @@ $().ready(function() {
                       }
                 }
 			},
-            username: {
+            /*username: {
 				required: true,
                 alphanumeric: true,
                 checkUsernameExist: {
@@ -32,7 +32,7 @@ $().ready(function() {
                         return $('#username').val()!='{$user.login.username}';
                       }
                 }
-			},
+			},*/
 			twitter: {
 				minlength: 2,
                 checkTwitterExist: {
@@ -53,9 +53,9 @@ $().ready(function() {
 			email: {
                 required: " Please enter a valid email address"
 			},
-            username: {
+            /*username: {
                 required: " Please enter a username"
-			},
+			},*/
 			twitter: {
 				minlength: " Please enter a valid twitter account"
 			},
@@ -90,10 +90,10 @@ $().ready(function() {
                     <td><label for="email">Email</label></td>
                     <td><input class="inputbox" type="text" id="email" name="email" value="{$user.login.email}"/></td>
                 </tr>
-                <tr>
+                <!--<tr>
                     <td><label for="username">Username</label></td>
                     <td><input class="inputbox" type="text" id="username" name="username" value="{$user.login.username}"/></td>
-                </tr>
+                </tr>-->
                 <tr>
                     <td><label for="institutions">Institutions</label></td>
                     <td><input class="inputbox" type="text" id="institutions" name="institutions" value="{$user.login.institutions}" /></td>

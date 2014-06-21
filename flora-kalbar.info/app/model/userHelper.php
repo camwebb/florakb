@@ -7,7 +7,10 @@ class userHelper extends Database {
         $getSessi = $session->get_session();
         $this->user = $getSessi['login'];
     }
-
+    
+    /**
+     * @todo edit user profile, update user data from inputed data
+     */
     function editProfile($data=false){
         if($data==false) return false;
         
@@ -35,11 +38,15 @@ class userHelper extends Database {
              
         $sql = "UPDATE `person` SET `name` = '".$data['name']."', `email` = '".$data['email']."', `project` = '".$data['project']."', `institutions` = '".$data['institutions']."', `twitter` = $dataTwitter, `website` = $dataWeb, `phone` = $dataPhone WHERE `id` = '".$user['login']['id']."' ";
         $res = $this->query($sql,0);
-        $sql2 = "UPDATE `florakb_person` SET `username` = '".$data['username']."' WHERE `id` = '".$user['login']['id']."' ";
-        $res2 = $this->query($sql2,1);
-        if($res && $res2){return true;}
+        //$sql2 = "UPDATE `florakb_person` SET `username` = '".$data['username']."' WHERE `id` = '".$user['login']['id']."' ";
+        //$res2 = $this->query($sql2,1);
+        //if($res && $res2){return true;}
+        if($res){return true;}
     }
     
+    /**
+     * @todo edit user password
+     */
     function editPassword($data=false){
         if($data==false) return false;
         

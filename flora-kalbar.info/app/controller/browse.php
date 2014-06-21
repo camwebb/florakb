@@ -24,8 +24,6 @@ class browse extends Controller {
 	}
 	
 	function index(){
-        
-        
     }
     
     /**
@@ -182,7 +180,7 @@ class browse extends Controller {
     }
     
     /**
-     * @todo show all detail indiv from selected indiv
+     * @todo edit individual view
      * 
      */
     function editIndiv(){
@@ -382,6 +380,9 @@ class browse extends Controller {
         header('Location: ../../browse/editIndiv/?id='.$_GET['id']);
     }
     
+    /**
+     * @todo add determination view
+     * */
     public function addDetView(){
         //get list person
         $listPerson = $this->insertonebyone->list_person();
@@ -397,6 +398,9 @@ class browse extends Controller {
         return $this->loadView('addDetView');
     }
     
+    /**
+     * @todo add observation view
+     * */
     public function addObsView(){
         //get list person
         $listPerson = $this->insertonebyone->list_person();
@@ -470,11 +474,13 @@ class browse extends Controller {
         }
     }
     
+    /**
+     * @todo insert image from posted data
+     * */
     public function addImg(){
         global $CONFIG;
         $data = $_POST;
         $indivID = $_GET['id'];
-        //pr($data);exit;
         
         $name = 'filename';
         $path = '';
@@ -488,22 +494,12 @@ class browse extends Controller {
             if (extension_loaded('gd') && function_exists('gd_info')) {
             logFile('GD2 is installed. Checking image data.');
             //validate email and get short_namecode
-            /*$validateEmail = $this->validateEmail($data['email']);
-            if($validateEmail['status'] != 'success'){
-                $this->msg->add('e', 'Email validation Failed');
-                header('Location: ../onebyone/image');
-                exit;
-            }
-            
-            $personID = $validateEmail['personID'];
-            $username = $validateEmail['short_namecode'];*/
             $ses_user = $this->isUserOnline(); 
             $username = $ses_user['login']['username'];
             $personID = $ses_user['login']['id'];
         
             $tmp_name = $uploaded_file['full_name'];
             $entry = str_replace(array('\'', '"'), '', $uploaded_file['real_name']);
-            //$entry = $uploaded_file['real_name'];
             $image_name_encrypt = md5($entry);
             
             //check filename
@@ -591,10 +587,6 @@ class browse extends Controller {
                     logFile('Cropping to 100px image');
                     
                     //add file information to array
-                    /*$fileToInsert = array('filename' => $entry,'md5sum' => $image_name_encrypt, 'directory' => '', 'mimetype' => $fileinfo['mime']);
-                    
-                    $insertImage = $this->imagezip->updateImage($personID, $fileToInsert);*/
-                    
                     $data['filename'] = $entry;
                     $data['md5sum'] = $image_name_encrypt;
                     $data['mimetype'] = $fileinfo['mime'];

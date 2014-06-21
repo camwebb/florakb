@@ -69,7 +69,9 @@ class browseHelper extends Database {
     /**
      * @todo retrieve all data from table indiv from selected taxon
      * 
-     * @param $data=id taxon
+     * @param $action=action selected taxon/locn/person
+     * @param $field=field name in db
+     * @param $value=id taxon
      * @return 
      */
     function dataIndiv($action,$field,$value){
@@ -133,6 +135,9 @@ class browseHelper extends Database {
             else{return false;}
     }
     
+    /**
+     * @todo delete selected image
+     */
     function deleteImg($data){
         foreach ($data['id'] as $id){
             $sql="DELETE FROM `img` WHERE `id`='$id' AND indivID='".$data['indivID']."'";
@@ -141,8 +146,9 @@ class browseHelper extends Database {
         return true;
     }
     
-    //ntar dirapiin -,-
-    
+    /**
+     * @todo delete all image in one individual
+     */
     function deleteImgIndiv($data){
         $sql="DELETE FROM `img` WHERE indivID='$data'";
         $res = $this->query($sql,0);
@@ -332,7 +338,10 @@ class browseHelper extends Database {
     }
     
     /**
-     * @todo search from table taxon
+     * @todo searching from selected table
+     * 
+     * @param $table= table name
+     * @param $data = data to search
      * 
      */
     function search($table,$data){
