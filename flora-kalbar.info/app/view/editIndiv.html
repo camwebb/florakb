@@ -168,14 +168,20 @@ $().ready(function() {
     $('#obsBtn').click(function(){
         $('#editIndiv_img,#editIndiv_det').hide();
         $('#editIndiv_obs').show();
+        $('html,body').animate({ scrollTop: '600px' }, 800);
+        return false;
     });
     $('#imgBtn').click(function(){
         $('#editIndiv_obs,#editIndiv_det').hide();
         $('#editIndiv_img').show();
+        $('html,body').animate({ scrollTop: '600px' }, 800);
+        return false;
     });
     $('#detBtn').click(function(){
         $('#editIndiv_img,#editIndiv_obs').hide();
         $('#editIndiv_det').show();
+        $('html,body').animate({ scrollTop: '600px' }, 800);
+        return false;
     });
     
     $('a#personPopup').click(function(){

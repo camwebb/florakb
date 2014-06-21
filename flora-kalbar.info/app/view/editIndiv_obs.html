@@ -74,7 +74,7 @@
                             <td>{$dataObs.notes}</td>
                             <td>
                                 {if $user.login && $dataObs.personID eq $user.login.id || $dataIndiv.id eq $user.login.id}
-                                    <a href="{$basedomain}browse/deleteObs/?id={$dataObs.obsID}&&indivID={$dataObs.indivID}" id="deleteObs" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
+                                    <a href="{$basedomain}browse/deleteObs/?id={$dataObs.obsID}&&indivID={$dataObs.indivID}&&action=delObsOwn" id="deleteObs" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
                                 {/if}
                             </td>
                         </tr>

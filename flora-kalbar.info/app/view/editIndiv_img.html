@@ -7,16 +7,15 @@
             
             {foreach $img as $dataImg}
             {if $dataImg.md5sum}
-                <form id="formImg" method="POST" action="{$basedomain}browse/deleteImg/?indivID={$smarty.get.id}&&action=addDet">
+                <form id="formImg" method="POST" action="{$basedomain}browse/deleteImg/?indivID={$smarty.get.id}&&action=delImgOwn">
                 <input type="checkbox" name="idImg[]" value="{$dataImg.id}" />
                 <a class="gallery" href="{$basedomain}public_assets/img/500px/{$dataImg.md5sum}.500px.jpg"><img src="{$basedomain}public_assets/img/100px/{$dataImg.md5sum}.100px.jpg" /></a>
                 <br />
-                <input style="float: right;" type="submit" id="deleteImgBtn" class="btn" value="Delete Image" />
-                <div class="clear"></div>
             {/if}
             {foreachelse}<i>No image available</i>
             {/foreach}
-            
+            <input style="float: right;" type="submit" id="deleteImgBtn" class="btn" value="Delete Image" />
+                <div class="clear"></div>
             </form>
         </td>
     </tr>
@@ -56,16 +55,19 @@
 
 <a href="#addImg" class="btn" id="addImg" style="float: right;">Add Image</a>
 <div class="clear"></div>
-
+<literal>
 <script type="text/javascript">
     $('a.gallery').colorbox({ opacity:0.5 , rel:'groupIndiv' });
     $('a#addImg').click(function(){
        $('div#tableAddImage').fadeToggle("linear");
+       $('html,body').animate({ scrollTop: $('body').height() }, 800);
+       return false;            
     });
     $(document).on('click','#deleteImgBtn', function(){
             var msg = confirm('Are you sure to delete ?');
             if (!msg) return false;    
         });
 </script>
+</literal>
 
 <br />

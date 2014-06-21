@@ -241,8 +241,8 @@
                             <td><b>Notes</b></td>
                             <td>:</td>
                             <td><i>{$dataDet.notes}</i></td>
-                            <td>
-                                {if $user.login && $dataDet.personID != $user.login.id && $dataIndiv.name != $user.login.name}
+                            <td>                          
+                                {if $user.login && $dataDet.personID == $user.login.id && $dataIndiv.name != $user.login.name}
                                     <a href="{$basedomain}browse/deleteDet/?id={$dataDet.detID}&&indivID={$dataDet.indivID}" id="deleteDetOwner" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
                                 {/if}
                             </td>

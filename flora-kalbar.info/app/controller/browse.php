@@ -309,7 +309,13 @@ class browse extends Controller {
             $this->msg->add('e', 'Delete Determinant Failed');
         }
         
-        header('Location: ../../browse/indivDetail/?id='.$idIndiv);
+        if($_GET['action']=='delDetOwn'){
+            header('Location: ../../browse/editIndiv/?id='.$idIndiv);
+        }
+        else{
+            header('Location: ../../browse/indivDetail/?id='.$idIndiv);
+        }
+        
     }
     
     /**
@@ -329,7 +335,12 @@ class browse extends Controller {
             $this->msg->add('e', 'Delete Observation Failed');
         }
         
-        header('Location: ../../browse/indivDetail/?id='.$idIndiv);
+        if($_GET['action']=='delObsOwn'){
+            header('Location: ../../browse/editIndiv/?id='.$idIndiv);
+        }
+        else{
+            header('Location: ../../browse/indivDetail/?id='.$idIndiv);
+        }
     }
     
     /**
@@ -348,7 +359,12 @@ class browse extends Controller {
             $this->msg->add('e', 'Delete Image Failed');
         }
         
-        header('Location: ../../browse/indivDetail/?id='.$idIndiv);
+        if($_GET['action']=='delImgOwn'){
+            header('Location: ../../browse/editIndiv/?id='.$idIndiv);
+        }
+        else{
+            header('Location: ../../browse/indivDetail/?id='.$idIndiv);
+        }
     }
     
     /**
@@ -422,7 +438,7 @@ class browse extends Controller {
             header('Location: ../../browse/indivDetail/?id='.$data['indivID']);
         }
         else{
-            header('Location: ../../browse/indivDetail/?id='.$data['indivID']);
+            header('Location: ../../browse/editIndiv/?id='.$data['indivID']);
         }
     }
     
@@ -450,7 +466,7 @@ class browse extends Controller {
             header('Location: ../../browse/indivDetail/?id='.$data['indivID']);
         }
         else{
-            header('Location: ../../browse/indivDetail/?id='.$data['indivID']);
+            header('Location: ../../browse/editIndiv/?id='.$data['indivID']);
         }
     }
     
@@ -623,7 +639,7 @@ class browse extends Controller {
             logFile('Upload Image Failed');
             $this->msg->add('e', $uploaded_file['message']);
         }
-        header('Location: ../../browse/indivDetail/?id='.$indivID);
+        header('Location: ../../browse/editIndiv/?id='.$indivID);
     }
     
     /**
