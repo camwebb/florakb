@@ -158,7 +158,7 @@
                             <td>{$dataObs.notes}</td>
                             <td>
                                 {if $user.login && $dataObs.personID == $user.login.id && $dataIndiv.name != $user.login.name}
-                                    <a href="{$basedomain}browse/deleteObs/?id={$dataObs.obsID}&&indivID={$dataObs.indivID}" id="deleteObsOwner" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
+                                    <a href="{$basedomain}browse/deleteObs/?id={$dataObs.obsID}&&indivID={$dataObs.indivID}&&action=delObs" id="deleteObsOwner" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
                                 {/if}
                             </td>
                             
@@ -243,7 +243,7 @@
                             <td><i>{$dataDet.notes}</i></td>
                             <td>                          
                                 {if $user.login && $dataDet.personID == $user.login.id && $dataIndiv.name != $user.login.name}
-                                    <a href="{$basedomain}browse/deleteDet/?id={$dataDet.detID}&&indivID={$dataDet.indivID}" id="deleteDetOwner" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
+                                    <a href="{$basedomain}browse/deleteDet/?id={$dataDet.detID}&&indivID={$dataDet.indivID}&&action=delDet" id="deleteDetOwner" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
                                 {/if}
                             </td>
                         </tr>
