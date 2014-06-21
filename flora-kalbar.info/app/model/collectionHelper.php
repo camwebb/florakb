@@ -18,7 +18,7 @@ class collectionHelper extends Database {
         // include APP_MODELS.'activityHelper.php';
     	// pr(APP_MODELS);
     	// pr($GLOBALS);
-        $this->activityHelper = new helper_model;
+        $this->helper_model = new helper_model;
        
     }
 
@@ -257,39 +257,8 @@ class collectionHelper extends Database {
 						// check if system never send mail account to user
 						$to = $rawdataPerson[$j]['email'];
 
-						$checkBefore = $this->activityHelper->emailLog($to);
-						if (!$checkBefore){
-							$dataArr['email'] = $to;
-							$dataArr['username'] = substr(str_shuffle('abcdefghjkmn123456789'), 0, 8) ;
-							
-							
-							logFile('generate account '.serialize($dataArr));
-							$generateMail = $this->activityHelper->generateEmail($dataArr['email'],$dataArr['username'],2);
-							if (is_array($generateMail)){
+						$storeLogEmail = $this->helper_model->updateEmailLog(false,$to,'account',0);
 
-								logFile('generate account status '.serialize($generateMail));
-								$sendUserAccount = sendGlobalMail($generateMail['to'],$generateMail['from'],$generateMail['msg']);
-								logFile('generate account success '.serialize($sendUserAccount));
-								if ($sendUserAccount['result']){
-
-                					$this->activityHelper->updateEmailLog(false,$to,'account',1);
-                					logFile('send account to email via xls success');
-                				}else{
-                					logFile('send account to email via xls failed');
-                					echo "Person data not complete"; exit;
-                					return false;
-                				}
-							}else{
-								logFile('generate email failed');
-								echo "Person data not complete"; exit;
-								return false;
-							}
-							
-						}else{
-							logFile('email send exist');
-							echo "Person data not complete"; exit;
-							return false;
-						}
 						
 					}
 					
@@ -791,6 +760,59 @@ class collectionHelper extends Database {
 		
 	}
 	
+	/**
+     * @todo send user mail
+     * 
+     * @return boolean true/false
+     * 
+     * */
+	function sendMail()
+	{
+
+		// pr('ada');
+		$checkBefore = $this->helper_model->getEmailLog();
+		// pr($checkBefore);exit;
+		if ($checkBefore){
+			
+			foreach ($checkBefore as $key => $value) {
+
+				$dataArr['email'] = $value['receipt'];
+				$dataArr['username'] = substr(str_shuffle('abcdefghjkmn123456789'), 0, 8) ;
+				
+				logFile('generate account '.serialize($dataArr));
+				$generateMail = $this->helper_model->generateEmail($dataArr['email'],$dataArr['username'],2);
+				if (is_array($generateMail)){
+
+					logFile('generate account status '.serialize($generateMail));
+					$sendUserAccount = sendGlobalMail($generateMail['to'],$generateMail['from'],$generateMail['msg']);
+					logFile('generate account success '.serialize($sendUserAccount));
+					if ($sendUserAccount['result']){
+
+						usleep(500);
+						$this->helper_model->updateEmailLog(true, $generateMail['to'],'account',1);
+						logFile('send account to email via xls success');
+					}else{
+						logFile('send account to email via xls failed');
+						// echo "Person data not complete"; exit;
+						return false;
+					}
+				}else{
+					logFile('generate email failed');
+					// echo "Person data not complete"; exit;
+					return false;
+				}
+			}
+
+			
+			
+		}else{
+			logFile('email status 1');
+			// echo "Person data not complete"; exit;
+			return false;
+		}
+	}
+
+
 	/**
      * @todo start sql transaction
      * 

@@ -155,9 +155,9 @@ class upload extends Controller {
 						// pr($imgQuery);
 						if ($insertImage){
 
-							// $this->logUploadUser($_FILES[$formName]['name']);
-							// sleep(1);
 							$this->collectionHelper->commitTransaction();
+
+							
 							$insertData = true;
 
 						}else{
@@ -195,6 +195,10 @@ class upload extends Controller {
 						print json_encode(array('status'=>true, 'finish'=>true, 'msg'=>'Insert success  ('. execTime($startTime,$endTime).')'));
 						// echo 'Insert success  ('. execTime($startTime,$endTime).')';	
 						
+						// send mail to user
+						$this->collectionHelper->sendMail();
+							
+							
 						exit;
 					}else{
 						logFile('Insert xls failed');
