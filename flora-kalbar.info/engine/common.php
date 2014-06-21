@@ -425,7 +425,7 @@ function sendGlobalMail($to,$from,$msg,$config=true){
 	$mail->IsSMTP(); // telling the class to use SMTP
 
 	try {
-	
+		logFile('ready to send mail');
 		$mail->Host       = $CONFIG['email']['EMAIL_SMTP_HOST']; // SMTP server
 		$mail->SMTPDebug  = 1;                     // enables SMTP debug information (for testing)
 		$mail->SMTPAuth   = true;                  // enable SMTP authentication
@@ -440,6 +440,8 @@ function sendGlobalMail($to,$from,$msg,$config=true){
 		$mail->AltBody = 'To view the message, please use an HTML compatible email viewer!'; // optional - MsgHTML will create an alternate automatically
 		$mail->MsgHTML($msg);
 		$result = $mail->Send();
+		
+		logFile('status send = '.$result);
 
 		if($result) return array('message'=>'success send mail','result'=>true,'res'=>$result);
 		else return array('message'=>'error mail setting','result'=>false,'res'=>$mail->ErrorInfo);

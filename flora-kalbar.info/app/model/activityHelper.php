@@ -13,7 +13,7 @@ class activityHelper extends Database {
 
 	}
 
-	function generateEmail($email=false, $username=false)
+	function generateEmail($email=false, $username=false,$regfrom=1)
 	{
 		global $CONFIG;
 
@@ -23,6 +23,7 @@ class activityHelper extends Database {
         $dataArr['username'] = $username;
         $dataArr['token'] = sha1('register'.$email);
         $dataArr['validby'] = sha1(CODEKIR);
+        $dataArr['regfrom'] = $regfrom;
 
         $inflatData = encode(serialize($dataArr));
         logFile($inflatData);
