@@ -96,20 +96,6 @@
         </form>
 </div>
 
-<!--START MODAL TAXON-->
-<div id="modal-taxon" class="modal-background">
-    <div class="modal-overlay"></div>
-    <div class="modal-dialog dialogStep">
-        <button type="button" class="closebtn close"></button>
-        <div class="modal-content">
-            <div class="modal-body bodyStep">
-              <h2 class="title">Insert Taxon</h2>
-                {include file='formTaxon_addDet.html'}
-            </div>
-        </div>
-    </div>
-</div>
-
 <script type="text/javascript">
 $().ready(function() {
         
@@ -148,14 +134,6 @@ $().ready(function() {
                 required: "&nbsp;&nbsp;&nbsp;&nbsp;Please select the options"
             }
 		}
-    });
-    
-    $('a#taxonPopup').click(function(){
-       $('div#modal-taxon').fadeToggle("linear");
-       $('div.modal-overlay').show();
-    });
-    $('.close,.modal-overlay').click(function(){
-       $('div#modal-taxon').fadeOut(); 
     });
 });
 </script>

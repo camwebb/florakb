@@ -52,7 +52,7 @@ class browse extends Controller {
         $this->view->assign('pageno',$taxon['pageno']);
         $this->view->assign('lastpage',$taxon['lastpage']);
         $this->view->assign('data',$listAll);
-        return $this->loadView('browseTaxon');
+        return $this->loadView('browse/allTaxon');
     }
     
     /**
@@ -75,7 +75,7 @@ class browse extends Controller {
         $this->view->assign('pageno',$location['pageno']);
         $this->view->assign('lastpage',$location['lastpage']);
         $this->view->assign('result',$location['result']);
-        return $this->loadView('browseLocation');
+        return $this->loadView('browse/allLocation');
     }
     
     /**
@@ -98,7 +98,7 @@ class browse extends Controller {
         $this->view->assign('pageno',$person['pageno']);
         $this->view->assign('lastpage',$person['lastpage']);
         $this->view->assign('result',$person['result']);
-        return $this->loadView('browsePerson');
+        return $this->loadView('browse/allPerson');
     }
     
     /**
@@ -142,7 +142,7 @@ class browse extends Controller {
         $this->view->assign('lastpage',$getIndiv['lastpage']);        
         $this->view->assign('title',$title);
         $this->view->assign('data',$listAll);
-        return $this->loadView('browseIndiv');
+        return $this->loadView('browse/allIndiv');
     }
     
     /**
@@ -176,7 +176,7 @@ class browse extends Controller {
         $this->view->assign('obs',$indivObs);
         $ses_user = $this->isUserOnline();
         $this->view->assign('user', $ses_user); 
-        return $this->loadView('browseIndivDetail');
+        return $this->loadView('browse/indivDetail');
     }
     
     /**
@@ -238,7 +238,7 @@ class browse extends Controller {
         $this->view->assign('img',$indivImages);
         $this->view->assign('indiv',$indivDetail);
         $this->view->assign('det',$indivDeterminant);
-        return $this->loadView('editIndiv');
+        return $this->loadView('editIndiv/editIndiv');
     }
     
     
@@ -395,7 +395,7 @@ class browse extends Controller {
         //get list enum confid
         $confid_enum = $this->insertonebyone->get_enum('det','confid');
         $this->view->assign('confid_enum', $confid_enum);
-        return $this->loadView('addDetView');
+        return $this->loadView('editIndiv/addDetView');
     }
     
     /**
@@ -418,7 +418,7 @@ class browse extends Controller {
         $subtype_enum = $this->insertonebyone->get_enum('taxon','subtype');
         $this->view->assign('subtype_enum', $subtype_enum);
         
-        return $this->loadView('addObsView');
+        return $this->loadView('editIndiv/addObsView');
     }
     
     /**
@@ -730,7 +730,7 @@ class browse extends Controller {
         $this->view->assign('pageno',$search['pageno']);
         $this->view->assign('lastpage',$search['lastpage']);
         $this->view->assign('data',$search['result']);
-        return $this->loadView('browseSearchTaxon');       
+        return $this->loadView('Search/searchTaxon');       
     }
     
     /**
@@ -752,7 +752,7 @@ class browse extends Controller {
         $this->view->assign('pageno',$search['pageno']);
         $this->view->assign('lastpage',$search['lastpage']);
         $this->view->assign('data',$search['result']);
-        return $this->loadView('browseSearchLocn');       
+        return $this->loadView('Search/searchLocn');       
     }
     
     /**
@@ -774,7 +774,7 @@ class browse extends Controller {
         $this->view->assign('pageno',$search['pageno']);
         $this->view->assign('lastpage',$search['lastpage']);
         $this->view->assign('data',$search['result']);
-        return $this->loadView('browseSearchPerson');       
+        return $this->loadView('Search/searchPerson');       
     }
 	
 }
