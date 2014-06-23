@@ -1,12 +1,12 @@
 <?php
 
 class loginHelper extends Database {
-	
+	var $salt;
     function __construct()
     {
         global $basedomain;
         $this->loadmodule();
-        
+        $this->salt = '12345678PnD';
     }
     
     function loadmodule()
@@ -255,6 +255,28 @@ class loginHelper extends Database {
         $sql = "UPDATE florakb_person SET n_status = 1 WHERE username = '{$username}' AND n_status = 0 LIMIT 1";
         $res = $this->query($sql,1);
         if($res) return true;
+        return false;
+    }
+
+    function updateUserAccount($data=array())
+    {
+
+        $email = $data['email'];
+        $username = $data['username'];
+        $password = sha1($data['password'].$this->salt);
+
+        $getID = "SELECT id FROM person WHERE email = '{$email}' LIMIT 1";
+        // pr($getID);
+        $resID = $this->fetch($getID);
+        if ($resID){
+            $sql = "UPDATE florakb_person SET username = '{$username}', password = '{$password}', n_status = 1 
+                    WHERE id = '{$resID['id']}' AND n_status = 0 LIMIT 1";
+            // pr($sql);
+            $res = $this->query($sql,1);
+            if($res) return true;
+        }
+        
+        
         return false;
     }
 

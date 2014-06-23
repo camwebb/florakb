@@ -21,7 +21,7 @@ class login extends Controller {
 	}
 	
 	function index(){
-    	//return $this->loadView('home');
+    	return $this->loadView('home');
     }
 	
     /**
@@ -117,7 +117,9 @@ class login extends Controller {
     {
 
         $data = _g('ref');
-       
+        
+
+        // exit;
         logFile($data);
         if ($data){
 
@@ -129,7 +131,7 @@ class login extends Controller {
             $userMail = $decode['email'];
             $origToken = sha1($salt.$userMail);
 
-            pr($decode);
+            // pr($decode);
             if ($decode['token']==$origToken){
                 // is valid, then create account and set status to validate
 
@@ -155,7 +157,9 @@ class login extends Controller {
 
                 }else{
 
-                   $this->view->assign('enterAccount',true);         
+                    $this->view->assign('email',$decode['email']);
+                    $this->view->assign('enterAccount',true);         
+                    return $this->loadView('validateProfile');
                 }
 
                 
@@ -174,7 +178,31 @@ class login extends Controller {
         }
         
         return $this->loadView('home');
-    }           
+    }
+
+    function accountValid()
+    {
+
+        $token = _p('token');
+        if ($token){
+
+            $data['email'] = _p('email');
+            $data['username'] = _p('username');
+            $data['password'] = _p('password');
+
+            $updateAccount = $this->loginHelper->updateUserAccount($data);
+            if ($updateAccount){
+                $this->view->assign('validate','Validate account success');
+            }else{
+                $this->view->assign('validate','Validate account error');
+            }
+        }
+
+        $this->view->assign('enterAccount',false);  
+        return $this->loadView('home');
+    }
+
+          
 }
 
 ?>

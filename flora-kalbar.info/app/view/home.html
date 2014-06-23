@@ -1,39 +1,6 @@
     {if isset($validate)}{if $validate}<div class="messages info"><a href="#" class="closeMessage"></a><p>{$validate}</p></div>{/if}{/if}
     
-{if isset($enterAccount)}
-    {if ($enterAccount)}
 
-        <div id="modal-login" class="modal-background">
-            <div class="modal-overlay"></div>
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                      <h4>Login</h4>
-                      <img src="{$basedomain}assets/img/bg-login.png" />
-                      <div class="clear"></div>
-                    </div>
-                    <div class="modal-body">
-                      <form action="" method="POST" id="formLogin">
-                        <div class="form-group">
-                          <input type="username" id="login-username" class="input-modal" name="username" placeholder="Username" required aria-required="true"/>
-                        </div>
-                        <div class="form-group">
-                          <input type="password" id="login-password" class="input-modal" name="password" placeholder="Password" required aria-required="true"/>
-                        </div>
-                        <button type="button" class="btn close" style="width: 49%;">Cancel</button>
-                        <input type="submit" class="btn" style="width: 49%;" value="Login" />
-                      </form>
-                    </div>
-                    <div class="modal-footer"> 
-                        <!--Not a member? <a href="#" class="signup">Sign up now!</a><br />
-                        <a href="#">Forgotten password?</a>-->
-                    </div>
-                </div>
-            </div>
-        </div>
-{/if}
-    
-{else}
     <div class="content">
         <article class="article" href="http://www.teguhsantoso.com/2011/01/biodiversitas-definisi-dan-batasan.html">
             <div>
@@ -61,4 +28,4 @@
             <img src="" alt=""/>
         </article>
     </div>
-    {/if}
+   
