@@ -14,7 +14,7 @@ class helper_model extends Database {
 
 	function generateEmail($email=false, $username=false,$regfrom=1)
     {
-        global $CONFIG;
+        global $CONFIG, $basedomain;
 
         if (!$email && !$username) return false;
 
