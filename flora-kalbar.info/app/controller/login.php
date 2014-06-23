@@ -192,9 +192,15 @@ class login extends Controller {
 
             $updateAccount = $this->loginHelper->updateUserAccount($data);
             if ($updateAccount){
+
+                // createAccount($data);
+                logFile('account ftp user '.$data['email']. ' created');
+
                 $this->view->assign('validate','Validate account success');
+                
             }else{
                 $this->view->assign('validate','Validate account error');
+                logFile('update n_status user '.$data['email'].' failed');
             }
         }
 

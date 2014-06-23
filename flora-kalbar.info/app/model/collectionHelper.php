@@ -4,6 +4,7 @@ class collectionHelper extends Database {
 	/* generate reference query */
 
 	var $user = null;
+	var $salt;
 	function __construct()
 	{
 
@@ -11,6 +12,7 @@ class collectionHelper extends Database {
 		$getSessi = $session->get_session();
 		$this->user = $getSessi['login'];
 		$this->loadmodule();
+		$this->salt = '12345678PnD';
 	}
 
 	function loadmodule()
@@ -253,6 +255,12 @@ class collectionHelper extends Database {
 								photographer = '{$unique[$val][$j]}' ";
 						// pr($updateLocn);
 						$res = $this->query($updatePhoto,1);
+
+						// store account 
+						$username = substr(str_shuffle('abcdefghjkmn123456789'), 0, 8) ;
+						$storeAccount = "INSERT INTO florakb_person (id, password, username, salt, n_status)
+										VALUES ({$lastID}, '1234512345','{$username}', '{$this->salt}',0)";
+						$resAccount = $this->query($storeAccount,1);
 
 						// check if system never send mail account to user
 						$to = $rawdataPerson[$j]['email'];
