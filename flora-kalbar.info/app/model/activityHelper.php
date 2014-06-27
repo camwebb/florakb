@@ -63,7 +63,7 @@ class activityHelper extends Database {
 	        return false;
 
         }else{
-        	$sql = "INSERT INTO `florakb_mail_log` (receipt, subject, send_date, n_status) 
+        	$sql = "INSERT IGNORE INTO `florakb_mail_log` (receipt, subject, send_date, n_status) 
 	                VALUES ('{$receipt}', '{$subject}', '{$date}', {$n_status})";
 	        // pr($sql);
 	        $res = $this->query($sql,1);  

@@ -18,10 +18,13 @@ class login extends Controller {
 	{
         $this->userHelper = $this->loadModel('userHelper');
         $this->loginHelper = $this->loadModel('loginHelper');
+        $this->activityHelper = $this->loadModel('activityHelper');
+        
 	}
 	
 	function index(){
-    	return $this->loadView('home');
+
+        return $this->loadView('home');
     }
 	
     /**
@@ -34,6 +37,7 @@ class login extends Controller {
      */    
     function doSignup(){
         
+        global $CONFIG;
         $data = $_POST;
         
         $checkEmail = $this->loginHelper->checkEmail($data['email']); 
@@ -69,7 +73,36 @@ class login extends Controller {
         // }
         
         if($checkEmail && $checkUsername && $checkTwitter){
+
+        
             $signup = $this->loginHelper->createUser($data);
+            if ($signup){
+
+                // send mail before activate account
+                $dataArr['email'] = $data['email'];
+                $dataArr['username'] = $data['username'];
+                $dataArr['token'] = sha1('register'.$data['email']);
+                $dataArr['validby'] = sha1(CODEKIR);
+                $dataArr['regfrom'] = 1;
+
+                $inflatData = encode(serialize($dataArr));
+                logFile($inflatData);
+
+
+                $to = $data['email'];
+                $from = $CONFIG['email']['EMAIL_FROM_DEFAULT'];
+                // $msg = "To activate your account please <a href='{$basedomain}login/validate/?ref={$inflatData}'>click here</a>";
+                $this->view->assign('encode',$inflatData);
+                $msg = "<p>Hi ".$data['username']."!</p>";
+                $msg .= $this->loadView('emailTemplate');
+                // try to send mail 
+                $sendMail = sendGlobalMail($to, $from, $msg,true);
+                logFile('mail send '.serialize($sendMail));
+
+                $this->activityHelper->updateEmailLog(false,$to,'account',1);
+
+            }
+
             echo json_encode(array('test' => 'test'));
             exit;
         }
@@ -188,7 +221,7 @@ class login extends Controller {
 
             $data['email'] = _p('email');
             $data['username'] = _p('username');
-            $data['password'] = _p('password');
+            $data['password'] = _p('newPassword');
 
             $updateAccount = $this->loginHelper->updateUserAccount($data);
             if ($updateAccount){

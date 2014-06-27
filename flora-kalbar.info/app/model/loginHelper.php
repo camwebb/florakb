@@ -76,40 +76,19 @@ class loginHelper extends Database {
 		
         if ($res && $res2){
 
-            // send mail before activate account
-            $dataArr['email'] = $data['email'];
-            $dataArr['username'] = $data['username'];
-            $dataArr['token'] = sha1('register'.$data['email']);
-            $dataArr['validby'] = sha1(CODEKIR);
-
-            $inflatData = encode(serialize($dataArr));
-            logFile($inflatData);
-
-
-            $to = $data['email'];
-            $from = $CONFIG['email']['EMAIL_FROM_DEFAULT'];
-            $msg = "To activate your account please <a href='{$basedomain}login/validate/?ref={$inflatData}'>click here</a>";
-            // try to send mail 
-            $sendMail = sendGlobalMail($to, $from, $msg,false);
-            logFile('mail send '.$sendMail);
-
-            if ($sendMail['result']){
-
-                $this->activityHelper->updateEmailLog(false,$to,'account',1);
-                
+            
                 $this->commit();
                 logFile('==success create user==');
                 return true;
                 exit;
-            } 
-            else $this->rollback();
+            // else $this->rollback();
             // createAccount($data);
 			// exec("echo '".$data['username']. " ".$data['password']."' | nc ".$host." ".$port);
 			
 			// logFile("echo '".$data['username']. " ".$data['password']."' | nc ".$host." ".$port);
 			
 			
-			return false;
+			// return false;
 		}
 		
 		$this->rollback();
@@ -261,6 +240,7 @@ class loginHelper extends Database {
     function updateUserAccount($data=array())
     {
 
+        
         $email = $data['email'];
         $username = $data['username'];
         $password = sha1($data['password'].$this->salt);

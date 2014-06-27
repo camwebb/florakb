@@ -21,7 +21,7 @@ class upload extends Controller {
 		
 		$this->collectionHelper = $this->loadModel('collectionHelper');
         $this->excelHelper = $this->loadModel('excelHelper');
-        $this->activityHelper = new helper_model;
+        $this->helper_model = new helper_model;
 	}
 	
 	public function index(){
@@ -196,7 +196,7 @@ class upload extends Controller {
 						// echo 'Insert success  ('. execTime($startTime,$endTime).')';	
 						
 						// send mail to user
-						$this->collectionHelper->sendMail();
+						$this->sendMail();
 							
 							
 						exit;
@@ -226,6 +226,67 @@ class upload extends Controller {
 		exit;
 	}
 	
+
+	/**
+     * @todo send user mail
+     * 
+     * @return boolean true/false
+     * 
+     * */
+	function sendMail()
+	{
+
+		// pr('ada');
+		$checkBefore = $this->helper_model->getEmailLog();
+		// pr($checkBefore);exit;
+		if ($checkBefore){
+			
+			foreach ($checkBefore as $key => $value) {
+
+				$dataArr['email'] = $value['receipt'];
+				$dataArr['username'] = substr(str_shuffle('abcdefghjkmn123456789'), 0, 8) ;
+				
+				logFile('generate account '.serialize($dataArr));
+				$generateMail = $this->helper_model->generateEmail($dataArr['email'],$dataArr['username'],2);
+				if (is_array($generateMail)){
+
+					$msg = null;
+					$this->view->assign('encode',$generateMail['encode']);
+	                $msg .= "<p>Hi ".$dataArr['username']."!</p>";
+	                $msg .= $this->loadView('emailTemplate');
+	                // try to send mail 
+	                $sendMail = sendGlobalMail($to, $from, $msg,true);
+
+
+					logFile('generate account status ');
+					$sendUserAccount = sendGlobalMail($generateMail['to'],$generateMail['from'],$msg);
+					logFile('generate account success '.serialize($sendUserAccount));
+					if ($sendUserAccount['result']){
+
+						usleep(500);
+						$this->helper_model->updateEmailLog(true, $generateMail['to'],'account',1);
+						logFile('send account to email via xls success');
+					}else{
+						logFile('send account to email via xls failed');
+						// echo "Person data not complete"; exit;
+						return false;
+					}
+				}else{
+					logFile('generate email failed');
+					// echo "Person data not complete"; exit;
+					return false;
+				}
+			}
+
+			
+			
+		}else{
+			logFile('email status 1');
+			// echo "Person data not complete"; exit;
+			return false;
+		}
+	}
+
 
 	function showUploadProcess()
 	{
@@ -271,7 +332,7 @@ class upload extends Controller {
 		$fileName = $CONFIG['default']['root_path']."/logs/".$this->user['login']['username'];
 		$data = json_encode(array('data'=>file_get_contents($fileName)));
 		
-		$storeLog = $this->activityHelper->storeUserUploadLog($data, $file);
+		$storeLog = $this->helper_model->storeUserUploadLog($data, $file);
 		return true;
 	}
 

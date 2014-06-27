@@ -32,7 +32,8 @@ class helper_model extends Database {
         $return['from'] = $CONFIG['email']['EMAIL_FROM_DEFAULT'];
         $return['subject'] = "[NOTIFICATION]";
         $return['msg'] = "To activate your account please <a href='{$basedomain}login/validate/?ref={$inflatData}'>click here</a>";
-            
+        $return['encode'] = $inflatData;
+
         return $return;
     }
 
