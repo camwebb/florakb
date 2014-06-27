@@ -269,50 +269,58 @@ function do_ajax(form, formID, modalID, msgFormat){
     var end = '</p></div>';
     var msg = ".msg";
     
-    $(form).ajaxSubmit(function(output){
-        var data = JSON.parse(output);
-        //console.log(data);
-        $(".messages").remove();
+    $(form).ajaxSubmit(function(output, status, xhr){
+        var ct = xhr.getResponseHeader("content-type") || "";
         
+        $(".messages").remove();
         $(modalID).fadeOut();
-        if(data.status == 'success'){
-            $(msg).html(first_success + 'Update ' + msgFormat + ' Success' + end);
+        
+        try {
+            var data = JSON.parse(output);
+            //console.log(data);
             
-            if(formID == 'formLocation'){
-                $("#locnID").find('option').removeAttr('selected');
-                $("#locnID").removeClass('error');
-                $("#locnID").append('<option value="'+ data.id +'" selected>'+ data.locality +'</option>');
-            }
-            
-            if(formID == 'formPerson'){
-                $("#personID").find('option').removeAttr('selected');
-                $("#personID").removeClass('error');
-                $("#personID").append('<option value="'+ data.id +'" selected>'+ data.name + ', ' + data.email +'</option>');
-            }
-            
-            if(formID == 'formTaxon'){
-                //$("#taxonID").find('option').removeAttr('selected');
-                clear_input('#autoCompleteTaxon');
-                $("#autoCompleteTaxon").hide();
-                $("#inputTaxon").show();                                
-                $("#taxonID").removeClass('error');
+            if(data.status == 'success'){
+                $(msg).html(first_success + 'Update ' + msgFormat + ' Success' + end);
                 
-                if(data.gen != ''){
-                    if(data.fam){
-                        $("#taxonID").val(data.id);
-                        $("#labelTaxon").val('(' + data.fam + ') ' + data.gen + ' ' + data.sp);
+                if(formID == 'formLocation'){
+                    $("#locnID").find('option').removeAttr('selected');
+                    $("#locnID").removeClass('error');
+                    $("#locnID").append('<option value="'+ data.id +'" selected>'+ data.locality +'</option>');
+                }
+                
+                if(formID == 'formPerson'){
+                    $("#personID").find('option').removeAttr('selected');
+                    $("#personID").removeClass('error');
+                    $("#personID").append('<option value="'+ data.id +'" selected>'+ data.name + ', ' + data.email +'</option>');
+                }
+                
+                if(formID == 'formTaxon'){
+                    //$("#taxonID").find('option').removeAttr('selected');
+                    clear_input('#autoCompleteTaxon');
+                    $("#autoCompleteTaxon").hide();
+                    $("#inputTaxon").show();                                
+                    $("#taxonID").removeClass('error');
+                    
+                    if(data.gen != ''){
+                        if(data.fam){
+                            $("#taxonID").val(data.id);
+                            $("#labelTaxon").val('(' + data.fam + ') ' + data.gen + ' ' + data.sp);
+                        }else{
+                            $("#taxonID").val(data.id);
+                            $("#labelTaxon").val(data.gen + ' ' + data.sp);
+                        }
                     }else{
                         $("#taxonID").val(data.id);
-                        $("#labelTaxon").val(data.gen + ' ' + data.sp);
+                        $("#labelTaxon").val(data.morphotype);
                     }
-                }else{
-                    $("#taxonID").val(data.id);
-                    $("#labelTaxon").val(data.morphotype);
                 }
+                
+            }else{
+                $(msg).html(first_error + 'Update ' + msgFormat + ' Failed' + end);
             }
-            
-        }else{
-            $(msg).html(first_error + 'Update ' + msgFormat + ' Failed' + end);
+        }catch(error){
+            $(msg).html(first_error + 'System error or failed to connect to server' + end);
         }
+        
     });
 }

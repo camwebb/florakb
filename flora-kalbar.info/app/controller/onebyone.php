@@ -152,6 +152,7 @@ class onebyone extends Controller {
      * */
     public function insertPerson(){
         $data = $_POST;
+        ob_start();
         $insertData = $this->insertonebyone->insertTransaction('person',$data);
         
         //manual submission form
@@ -167,6 +168,7 @@ class onebyone extends Controller {
         header('Location: ../onebyone/detContent');*/
         
         //ajax form
+        ob_end_clean();
         if($insertData){
             if($insertData['status']){
                 $data['id'] = $insertData['lastid'];

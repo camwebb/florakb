@@ -156,6 +156,9 @@ class insertonebyone extends Database {
         			//$return['status'] = true;
                     //$return['lastid'] = $insert['lastid'];
                     
+                    $dataPass = array('id' => $insert['lastid']);
+                    $insert_dataPas = $this->insertData('florakb_person',$dataPass,true);
+                    
                     /* EMAIL */
                     // send mail before activate account
                     
@@ -164,7 +167,7 @@ class insertonebyone extends Database {
 					$dataArr['regfrom'] = 2;
 					
 					//logFile('onebyone: generate account '.serialize($dataArr));
-					$generateMail = $this->activityHelper->generateEmail($dataArr['email'],$dataArr['username']);
+					$generateMail = $this->activityHelper->generateEmail($dataArr['email'],$dataArr['username'],2);
 					if (is_array($generateMail)){
 						$sendUserAccount = sendGlobalMail($generateMail['to'],$generateMail['from'],$generateMail['msg']);
 						logFile('onebyone: generate account success '.serialize($sendUserAccount));
