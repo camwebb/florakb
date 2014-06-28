@@ -62,7 +62,7 @@ class Controller extends Application{
 				if ($DATA[$this->configkey]['page']=='login'){
 
 					/* remove session if user exist in same browser */
-					$ignoreFunc = array('validate','accountValid','doLogin');
+					$ignoreFunc = array('validate','accountValid','doLogin','doSignup');
 					if (in_array($DATA[$this->configkey]['function'], $ignoreFunc)){
 						// do nothing
 					}else{
