@@ -17,11 +17,11 @@ class collectionHelper extends Database {
 
 	function loadmodule()
     {
-        // include APP_MODELS.'activityHelper.php';
+        include APP_MODELS.'activityHelper.php';
     	// pr(APP_MODELS);
     	// pr($GLOBALS);
-        $this->helper_model = new helper_model;
-       
+        // $this->helper_model = new helper_model;
+       $this->activityHelper = new activityHelper;
     }
 
 	function insertReference($newData=array(),$priority=array())
@@ -257,15 +257,19 @@ class collectionHelper extends Database {
 						$res = $this->query($updatePhoto,1);
 
 						// store account 
+						$date = date('Y-m-d H:i:s');
 						$username = substr(str_shuffle('abcdefghjkmn123456789'), 0, 8) ;
-						$storeAccount = "INSERT INTO florakb_person (id, password, username, salt, n_status)
-										VALUES ({$lastID}, '1234512345','{$username}', '{$this->salt}',0)";
+						$password = "1234512345";
+						$email_token = sha1(CODEKIR.date('ymdhis'));
+
+						$storeAccount = "INSERT INTO florakb_person (id, password, username, salt, n_status,register_date,email_token)
+										VALUES ({$lastID}, '{$password}','{$username}', '{$this->salt}',0,'{$date}','{$email_token}')";
 						$resAccount = $this->query($storeAccount,1);
 
 						// check if system never send mail account to user
 						$to = $rawdataPerson[$j]['email'];
 
-						$storeLogEmail = $this->helper_model->updateEmailLog(false,$to,'account',0);
+						$storeLogEmail = $this->activityHelper->updateEmailLog(false,$to,'account',0);
 
 						
 					}

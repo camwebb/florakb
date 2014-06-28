@@ -164,7 +164,7 @@ class Application {
 		
 		if (is_file($param['path'].$fileName)){
 		
-			include $param['path'].$fileName;
+			include_once $param['path'].$fileName;
 			
 			$$param['file'] = new $param['file']();
 			

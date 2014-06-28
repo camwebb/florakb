@@ -12,7 +12,7 @@ class loginHelper extends Database {
     function loadmodule()
     {
         // include APP_MODELS.'activityHelper.php';
-        $this->activityHelper = new helper_model;
+        // $this->activityHelper = new helper_model;
        
     }
 
@@ -71,7 +71,10 @@ class loginHelper extends Database {
         
         $getID = "SELECT id from person WHERE email= '".$data['email']."' ";
 		$resID = $this->fetch($getID,0);
-        $sql2 = "INSERT INTO florakb_person (id, password, username, salt) VALUES ('{$resID['id']}','{$password}','{$data['username']}','{$salt}')";
+
+        $email_token = sha1(CODEKIR.date('ymdhis'));
+        $register_date = date('Y-m-d H:i:s');
+        $sql2 = "INSERT INTO florakb_person (id, password, username, salt,register_date,email_token) VALUES ('{$resID['id']}','{$password}','{$data['username']}','{$salt}','{$register_date}','{$email_token}')";
 		$res2 = $this->query($sql2,1);
 		
         if ($res && $res2){
@@ -228,10 +231,21 @@ class loginHelper extends Database {
      * 
      */
 
+    function getEmailToken($username=false)
+    {
+        if($username==false) return false;
+        $sql = "SELECT email_token FROM `florakb_person` WHERE `username` = '".$username."' LIMIT 1";
+        // logFile($sql);
+        $res = $this->fetch($sql,0,1);
+        if ($res) return $res;
+        return false;
+    }
+
     function updateUserStatus($username=false)
     {
         if (!$username) return false;
-        $sql = "UPDATE florakb_person SET n_status = 1 WHERE username = '{$username}' AND n_status = 0 LIMIT 1";
+        $date = date('Y-m-d H:i:s');
+        $sql = "UPDATE florakb_person SET n_status = 1, verified_date = '{$date}' WHERE username = '{$username}' AND n_status = 0 LIMIT 1";
         $res = $this->query($sql,1);
         if($res) return true;
         return false;
@@ -240,7 +254,7 @@ class loginHelper extends Database {
     function updateUserAccount($data=array())
     {
 
-        
+        $date = date('Y-m-d H:i:s');
         $email = $data['email'];
         $username = $data['username'];
         $password = sha1($data['password'].$this->salt);
@@ -249,8 +263,8 @@ class loginHelper extends Database {
         // pr($getID);
         $resID = $this->fetch($getID);
         if ($resID){
-            $sql = "UPDATE florakb_person SET username = '{$username}', password = '{$password}', n_status = 1 
-                    WHERE id = '{$resID['id']}' AND n_status = 0 LIMIT 1";
+            $sql = "UPDATE florakb_person SET username = '{$username}', password = '{$password}', n_status = 1, 
+                    verified_date = '{$date}' WHERE id = '{$resID['id']}' AND n_status = 0 LIMIT 1";
             // pr($sql);
             $res = $this->query($sql,1);
             if($res) return true;

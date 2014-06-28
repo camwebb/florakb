@@ -13,45 +13,65 @@ class activityHelper extends Database {
 
 	}
 
-	function generateEmail($email=false, $username=false)
-	{
-		global $CONFIG;
+	function generateEmail($email=false, $username=false,$regfrom=1, $token=CODEKIR)
+    {
+        global $CONFIG, $basedomain;
 
-		if (!$email && !$username) return false;
+        if (!$email && !$username) return false;
 
-		$dataArr['email'] = $email;
+        $dataArr['email'] = $email;
         $dataArr['username'] = $username;
         $dataArr['token'] = sha1('register'.$email);
-        $dataArr['validby'] = sha1(CODEKIR);
+        $dataArr['validby'] = $token;
+        $dataArr['regfrom'] = $regfrom;
+
+        logFile('token ori : '.$token);
 
         $inflatData = encode(serialize($dataArr));
-        logFile($inflatData);
+        logFile(serialize($dataArr));
 
 
         $return['to'] = $email;
         $return['from'] = $CONFIG['email']['EMAIL_FROM_DEFAULT'];
         $return['subject'] = "[NOTIFICATION]";
         $return['msg'] = "To activate your account please <a href='{$basedomain}login/validate/?ref={$inflatData}'>click here</a>";
-            
+        $return['encode'] = $inflatData;
+
         return $return;
-	}
+    }
 
 	function emailLog($email=false, $subject='account')
-	{
-		if (!$email) return false;
+    {
+        if (!$email) return false;
 
-		$sql = "SELECT COUNT(1) AS total FROM florakb_mail_log WHERE receipt = '{$email}' 
-				AND subject = '{$subject}' AND n_status = 1";
-		// pr($sql);
-		$res = $this->fetch($sql,1);
-		if ($res['total']>0) return true; // true if exist
-		return false;
-	}
+        $sql = "SELECT COUNT(1) AS total FROM florakb_mail_log WHERE receipt = '{$email}' 
+                AND subject = '{$subject}' AND n_status = 1";
+        // pr($sql);
+        $res = $this->fetch($sql,1);
+        if ($res['total']>0) return true; // true if exist
+        return false;
+    }
+
+    function getEmailLog($email=false, $subject='account')
+    {
+        if ($email) $filter = " AND receipt = '{$email}'";
+        if ($subject) $filter = " AND subject = '{$subject}'";
+
+        $sql = "SELECT * FROM florakb_mail_log WHERE n_status = 0 {$filter}";
+        // pr($sql);
+        $res = $this->fetch($sql,1,1);
+        if ($res) return $res; // true if exist
+        return false;
+    }
+
 
 	function updateEmailLog($update=true, $receipt=false, $subject='account', $n_status=0)
 	{
 		
         $date = date('Y-m-d H:i:s');
+        $sql = false;
+
+        $this->begin();
 
         if ($update){
         	
@@ -59,15 +79,22 @@ class activityHelper extends Database {
         			WHERE receipt = '{$receipt}' AND subject = '{$subject}' AND n_status = 0 LIMIT 1";
 	        // pr($sql);
 	        $res = $this->query($sql,1);  
-	        if ($res) return true;
+	        if ($res){
+	        	$this->commit();
+	        	return true;
+	        }
 	        return false;
 
         }else{
+
         	$sql = "INSERT IGNORE INTO `florakb_mail_log` (receipt, subject, send_date, n_status) 
 	                VALUES ('{$receipt}', '{$subject}', '{$date}', {$n_status})";
 	        // pr($sql);
 	        $res = $this->query($sql,1);  
-	        if ($res) return true;
+	        if ($res){
+	        	$this->commit();
+	        	return true;
+	        }
 	        return false;
         }
         

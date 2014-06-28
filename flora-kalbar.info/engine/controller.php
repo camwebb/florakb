@@ -60,8 +60,18 @@ class Controller extends Application{
 
 			if ($this->configkey == 'default'){
 				if ($DATA[$this->configkey]['page']=='login'){
-					if ($this->isUserOnline()){
-					redirect($CONFIG[$this->configkey]['default_view']);
+
+					/* remove session if user exist in same browser */
+					$ignoreFunc = array('validate','accountValid','doLogin');
+					if (in_array($DATA[$this->configkey]['function'], $ignoreFunc)){
+						// do nothing
+					}else{
+						if ($this->isUserOnline()){
+						// redirect($CONFIG[$this->configkey]['default_view']);
+						redirect($basedomain);
+					}
+
+					
 					exit;
 					}
 				}

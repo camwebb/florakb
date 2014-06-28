@@ -19,7 +19,7 @@ class login extends Controller {
         $this->userHelper = $this->loadModel('userHelper');
         $this->loginHelper = $this->loadModel('loginHelper');
         $this->activityHelper = $this->loadModel('activityHelper');
-        
+        // $this->helper_model = $this->loadModel('helper_model');
 	}
 	
 	function index(){
@@ -78,11 +78,13 @@ class login extends Controller {
             $signup = $this->loginHelper->createUser($data);
             if ($signup){
 
+                $getToken = $this->loginHelper->getEmailToken($data['username']);
+
                 // send mail before activate account
                 $dataArr['email'] = $data['email'];
                 $dataArr['username'] = $data['username'];
                 $dataArr['token'] = sha1('register'.$data['email']);
-                $dataArr['validby'] = sha1(CODEKIR);
+                $dataArr['validby'] = $getToken['email_token'];
                 $dataArr['regfrom'] = 1;
 
                 $inflatData = encode(serialize($dataArr));
@@ -99,11 +101,11 @@ class login extends Controller {
                 $sendMail = sendGlobalMail($to, $from, $msg,true);
                 logFile('mail send '.serialize($sendMail));
 
-                $this->activityHelper->updateEmailLog(false,$to,'account',1);
+                $this->activityHelper->updateEmailLog(false,$to,'account',0);
 
             }
 
-            echo json_encode(array('test' => 'test'));
+            echo json_encode(array('status' => true));
             exit;
         }
         exit;
@@ -165,48 +167,56 @@ class login extends Controller {
             $origToken = sha1($salt.$userMail);
 
             // pr($decode);
-            if ($decode['token']==$origToken){
-                // is valid, then create account and set status to validate
+            $getToken = $this->loginHelper->getEmailToken($decode['username']);
 
-                if($decode['regfrom']==1){
-                    
-                    $this->view->assign('enterAccount',false);  
-                    $updateAccount = $this->loginHelper->updateUserStatus($decode['username']);
+            if ($getToken['email_token']==$decode['validby']){
 
-                    if ($updateAccount){
+                if ($decode['token']==$origToken){
+                    // is valid, then create account and set status to validate
 
-
-                        createAccount($data);
-                        logFile('account ftp user '.$decode['email']. ' created');
-
-                        $this->view->assign('validate','Validate account success');
+                    if($decode['regfrom']==1){
                         
+                        $this->view->assign('enterAccount',false);  
+                        $updateAccount = $this->loginHelper->updateUserStatus($decode['username']);
+
+                        if ($updateAccount){
+
+                            $this->activityHelper->updateEmailLog(true, $userMail,'account',1);
+
+                            createAccount($data);
+                            logFile('account ftp user '.$decode['email']. ' created');
+
+                            $this->view->assign('validate','Validate account success');
+                            
+
+                        }else{
+                            
+                            $this->view->assign('validate','Validate account error');
+                            logFile('update n_status user '.$decode['email'].' failed');
+                        }
 
                     }else{
-                        
-                        $this->view->assign('validate','Validate account error');
-                        logFile('update n_status user '.$decode['email'].' failed');
+
+                        $this->view->assign('email',$decode['email']);
+                        $this->view->assign('enterAccount',true);         
+                        return $this->loadView('validateProfile');
                     }
 
                 }else{
 
-                    $this->view->assign('email',$decode['email']);
-                    $this->view->assign('enterAccount',true);         
-                    return $this->loadView('validateProfile');
+                    // invalid token
+                    $this->view->assign('validate','Validate account error');
+                    logFile('token mismatch');
                 }
-
-                
-
-                
-                
 
             }else{
 
                 // invalid token
                 $this->view->assign('validate','Validate account error');
                 logFile('token mismatch');
-                
             }
+
+            
 
         }
         
@@ -215,7 +225,7 @@ class login extends Controller {
 
     function accountValid()
     {
-
+       
         $token = _p('token');
         if ($token){
 
@@ -226,7 +236,7 @@ class login extends Controller {
             $updateAccount = $this->loginHelper->updateUserAccount($data);
             if ($updateAccount){
 
-                // createAccount($data);
+                createAccount($data);
                 logFile('account ftp user '.$data['email']. ' created');
 
                 $this->view->assign('validate','Validate account success');

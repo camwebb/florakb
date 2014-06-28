@@ -12,6 +12,7 @@ class helper_model extends Database {
 
 	}
 
+    /*
 	function generateEmail($email=false, $username=false,$regfrom=1)
     {
         global $CONFIG, $basedomain;
@@ -103,7 +104,8 @@ class helper_model extends Database {
         if ($res) return true;
         return false;
     }
-
+    */
+    
     function logActivity($action='surf', $comment=null)
     {
     	$sql = "SELECT id FROM code_activity WHERE activityValue = '{$action}' LIMIT 1 ";

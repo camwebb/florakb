@@ -21,7 +21,11 @@ class upload extends Controller {
 		
 		$this->collectionHelper = $this->loadModel('collectionHelper');
         $this->excelHelper = $this->loadModel('excelHelper');
-        $this->helper_model = new helper_model;
+        $this->activityHelper = $this->loadModel('activityHelper');
+        $this->loginHelper = $this->loadModel('loginHelper');
+        $this->userHelper = $this->loadModel('userHelper');
+
+        
 	}
 	
 	public function index(){
@@ -237,45 +241,63 @@ class upload extends Controller {
 	{
 
 		// pr('ada');
-		$checkBefore = $this->helper_model->getEmailLog();
+		$checkBefore = $this->activityHelper->getEmailLog('');
 		// pr($checkBefore);exit;
 		if ($checkBefore){
 			
 			foreach ($checkBefore as $key => $value) {
 
 				$dataArr['email'] = $value['receipt'];
-				$dataArr['username'] = substr(str_shuffle('abcdefghjkmn123456789'), 0, 8) ;
+
+				$getEmail = $this->userHelper->getUserData('email',$value['receipt']);
+
+				if ($getEmail){
+					$getUserName = $this->userHelper->getUserappData('id',$getEmail['id'],0);
+
+					// $dataArr['username'] = substr(str_shuffle('abcdefghjkmn123456789'), 0, 8) ;
+					$dataArr['username'] = $getUserName['username'];
+
+					logFile('generate account '.serialize($dataArr));
 				
-				logFile('generate account '.serialize($dataArr));
-				$generateMail = $this->helper_model->generateEmail($dataArr['email'],$dataArr['username'],2);
-				if (is_array($generateMail)){
+					$getToken = $this->loginHelper->getEmailToken($dataArr['username']);
+					logFile('get email token '. serialize($getToken));
+					$generateMail = $this->activityHelper->generateEmail($dataArr['email'],$dataArr['username'],2,$getToken['email_token']);
+					if (is_array($generateMail)){
 
-					$msg = null;
-					$this->view->assign('encode',$generateMail['encode']);
-	                $msg .= "<p>Hi ".$dataArr['username']."!</p>";
-	                $msg .= $this->loadView('emailTemplate');
-	                // try to send mail 
-	                $sendMail = sendGlobalMail($to, $from, $msg,true);
+						logFile(' generate mail : '. serialize($generateMail));
+
+						$msg = null;
+						$this->view->assign('encode',$generateMail['encode']);
+		                $msg .= "<p>Hi ".$dataArr['username']."!</p>";
+		                $msg .= $this->loadView('emailTemplate');
+		                // try to send mail 
+		                $sendMail = sendGlobalMail($to, $from, $msg,true);
 
 
-					logFile('generate account status ');
-					$sendUserAccount = sendGlobalMail($generateMail['to'],$generateMail['from'],$msg);
-					logFile('generate account success '.serialize($sendUserAccount));
-					if ($sendUserAccount['result']){
+						logFile('generate account status ');
+						$sendUserAccount = sendGlobalMail($generateMail['to'],$generateMail['from'],$msg);
+						logFile('generate account success '.serialize($sendUserAccount));
+						if ($sendUserAccount['result']){
 
-						usleep(500);
-						$this->helper_model->updateEmailLog(true, $generateMail['to'],'account',1);
-						logFile('send account to email via xls success');
+							// usleep(500);
+							// $this->activityHelper->updateEmailLog(true, $generateMail['to'],'account',1);
+							logFile('send account to email via xls success');
+						}else{
+							logFile('send account to email via xls failed');
+							// echo "Person data not complete"; exit;
+							return false;
+						}
 					}else{
-						logFile('send account to email via xls failed');
+						logFile('generate email failed');
 						// echo "Person data not complete"; exit;
 						return false;
 					}
 				}else{
-					logFile('generate email failed');
-					// echo "Person data not complete"; exit;
-					return false;
+					logFile('user not exist');
 				}
+				
+				
+				
 			}
 
 			
@@ -332,7 +354,7 @@ class upload extends Controller {
 		$fileName = $CONFIG['default']['root_path']."/logs/".$this->user['login']['username'];
 		$data = json_encode(array('data'=>file_get_contents($fileName)));
 		
-		$storeLog = $this->helper_model->storeUserUploadLog($data, $file);
+		$storeLog = $this->activityHelper->storeUserUploadLog($data, $file);
 		return true;
 	}
 
