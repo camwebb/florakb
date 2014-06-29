@@ -116,7 +116,7 @@ class activate extends Controller {
             $updateAccount = $this->loginHelper->updateUserAccount($data);
             if ($updateAccount){
 
-                // createAccount($data);
+                createAccount($data);
                 logFile('account ftp user '.$data['email']. ' created');
 
                 $this->view->assign('validate','Validate account success');
