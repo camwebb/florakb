@@ -76,7 +76,7 @@ class activityHelper extends Database {
         if ($update){
         	
         	$sql = "UPDATE `florakb_mail_log` SET  n_status = {$n_status} 
-        			WHERE receipt = '{$receipt}' AND subject = '{$subject}' AND n_status = 0 LIMIT 1";
+        			WHERE receipt = '{$receipt}' AND subject = '{$subject}' LIMIT 1";
 	        // pr($sql);
 	        $res = $this->query($sql,1);  
 	        if ($res){

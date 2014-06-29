@@ -280,7 +280,7 @@ class upload extends Controller {
 						if ($sendUserAccount['result']){
 
 							// usleep(500);
-							// $this->activityHelper->updateEmailLog(true, $generateMail['to'],'account',1);
+							$this->activityHelper->updateEmailLog(true, $generateMail['to'],'account',1);
 							logFile('send account to email via xls success');
 						}else{
 							logFile('send account to email via xls failed');

@@ -61,9 +61,9 @@ class activate extends Controller {
 
                         if ($updateAccount){
 
-                            $this->activityHelper->updateEmailLog(true, $userMail,'account',1);
+                            $this->activityHelper->updateEmailLog(true, $userMail,'account',2);
 
-                            createAccount($data);
+                            // createAccount($data);
                             logFile('account ftp user '.$decode['email']. ' created');
 
                             $this->view->assign('validate','Validate account success');
@@ -115,8 +115,8 @@ class activate extends Controller {
 
             $updateAccount = $this->loginHelper->updateUserAccount($data);
             if ($updateAccount){
-
-                createAccount($data);
+                $this->activityHelper->updateEmailLog(true, $data['email'],'account',2);
+                // createAccount($data);
                 logFile('account ftp user '.$data['email']. ' created');
 
                 $this->view->assign('validate','Validate account success');
