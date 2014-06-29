@@ -10,8 +10,9 @@
     
     
     <div id="login" class="loginwelcome"> 
+        {if $page.page!=='activate'}
         <a id="welcome" href="#" class="btn welcome">Welcome, {$user.login.name}</a> 
-        
+        {/if}
         <div id="box-user">
         <ul>
             <li style="border-bottom: 1px dotted #0095a2;border-top: 1px dotted #0095a2;"><a href="{$basedomain}user/editProfile">Setting</a></li>

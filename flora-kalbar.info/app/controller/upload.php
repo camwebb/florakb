@@ -1,7 +1,4 @@
 <?php
-if(!$_SESSION){
-    header('Location: '.$basedomain);
-}
 
 class upload extends Controller {
 	
@@ -15,6 +12,7 @@ class upload extends Controller {
         $this->view = $this->setSmarty();
         $this->view->assign('basedomain',$basedomain);
         $this->user = $this->isUserOnline();
+        if (!$this->isUserOnline()){ redirect($basedomain); exit;}
 	}
 	public function loadmodule()
 	{
@@ -25,7 +23,7 @@ class upload extends Controller {
         $this->loginHelper = $this->loadModel('loginHelper');
         $this->userHelper = $this->loadModel('userHelper');
 
-        
+
 	}
 	
 	public function index(){
@@ -267,6 +265,8 @@ class upload extends Controller {
 						logFile(' generate mail : '. serialize($generateMail));
 
 						$msg = null;
+						$this->view->assign('username',$dataArr['username']);
+						$this->view->assign('email',$dataArr['email']);
 						$this->view->assign('encode',$generateMail['encode']);
 		                $msg .= "<p>Hi ".$dataArr['username']."!</p>";
 		                $msg .= $this->loadView('emailTemplate');

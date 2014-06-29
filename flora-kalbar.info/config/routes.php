@@ -13,6 +13,7 @@ $ROUTES = array(
                 'login',
                 'onebyone',
                 'browse',
-                'user'               
+                'user',
+                'activate'               
                 );
 ?>
