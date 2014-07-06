@@ -110,7 +110,7 @@ class Controller extends Application{
 				$this->view->assign('content',$content);
 			} else {
 				
-				if ($config['app_debug'] == TRUE) {
+				if ($CONFIG['default']['app_debug'] == TRUE) {
 					show_error_page($LOCALE[$this->configkey]['error']['debug']); exit;
 				} else {
 					

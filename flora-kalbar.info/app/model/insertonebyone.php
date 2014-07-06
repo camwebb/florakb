@@ -138,16 +138,18 @@ class insertonebyone extends Database {
                 $salt = $CONFIG['default']['salt'];
                 $register_date = date('Y-m-d H:i:s');
                 $token = sha1(CODEKIR.date('ymdhis'));
-                /*
+                
                 //this is the generated password
                 $genPass = $this->generate_pass();
                 
                 //this is the encrypted password
                 $password = sha1($genPass.$salt);
-                */
+                
+                //this is the generated username
+                $username = $this->generate_pass();
                 
                 //insert to table florakb_person
-                $dataPass = array('id' => $insert['lastid'], 'register_date' => $register_date, 'email_token' => $token);
+                $dataPass = array('id' => $insert['lastid'], 'password' => $password, 'username' => $username, 'salt' => $salt, 'register_date' => $register_date, 'email_token' => $token);
                 $insert_dataPas = $this->insertData('florakb_person',$dataPass,true);
                 
                 if ($insert_dataPas['status'] == 0){
@@ -160,8 +162,7 @@ class insertonebyone extends Database {
                     // send mail before activate account
                     
 					$dataArr['email'] = $data['email'];
-                    $dataArr['username'] = $this->generate_pass();
-					$dataArr['regfrom'] = 2;
+                    $dataArr['username'] = $username;
                     
 					
 					//logFile('onebyone: generate account '.serialize($dataArr));
