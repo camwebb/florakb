@@ -268,7 +268,7 @@ function do_ajax(form, formID, modalID, msgFormat){
     var first_warning = '<div class="messages warning"><a href="#" class="closeMessage"></a><p>';
     var end = '</p></div>';
     var msg = ".msg";
-    
+    $(modalID + ":input").attr('readonly', true);
     $(form).ajaxSubmit(function(output, status, xhr){
         var ct = xhr.getResponseHeader("content-type") || "";
         

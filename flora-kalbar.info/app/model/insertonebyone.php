@@ -9,7 +9,8 @@ class insertonebyone extends Database {
 
 	function loadmodule()
     {
-        $this->activityHelper = new helper_model;
+        include APP_MODELS.'activityHelper.php';
+        $this->activityHelper = new activityHelper;
     }
 	
     /**
@@ -134,30 +135,26 @@ class insertonebyone extends Database {
 		  
             // if table person, insert generated password
             if($table == 'person'){
-                /*$salt = $CONFIG['default']['salt'];
-                
+                $salt = $CONFIG['default']['salt'];
+                $register_date = date('Y-m-d H:i:s');
+                $token = sha1(CODEKIR.date('ymdhis'));
+                /*
                 //this is the generated password
                 $genPass = $this->generate_pass();
                 
                 //this is the encrypted password
                 $password = sha1($genPass.$salt);
+                */
                 
-                //insert password id, password, salt
-                // insert to table florakb_person
-                $dataPass = array('id' => $insert['lastid'], 'password' => $password, 'salt' => $salt, 'username' => $username);
+                //insert to table florakb_person
+                $dataPass = array('id' => $insert['lastid'], 'register_date' => $register_date, 'email_token' => $token);
                 $insert_dataPas = $this->insertData('florakb_person',$dataPass,true);
                 
                 if ($insert_dataPas['status'] == 0){
         			$this->rollback();
         			logFile('====onebyone: failed insert to florakb_person====');
         			$return['status'] = false;
-        		}else{*/
-                
-        			//$return['status'] = true;
-                    //$return['lastid'] = $insert['lastid'];
-                    
-                    $dataPass = array('id' => $insert['lastid']);
-                    $insert_dataPas = $this->insertData('florakb_person',$dataPass,true);
+        		}else{
                     
                     /* EMAIL */
                     // send mail before activate account
@@ -165,11 +162,12 @@ class insertonebyone extends Database {
 					$dataArr['email'] = $data['email'];
                     $dataArr['username'] = $this->generate_pass();
 					$dataArr['regfrom'] = 2;
+                    
 					
 					//logFile('onebyone: generate account '.serialize($dataArr));
-					$generateMail = $this->activityHelper->generateEmail($dataArr['email'],$dataArr['username'],2);
+					$generateMail = $this->activityHelper->generateEmail($dataArr['email'],$dataArr['username'],2,$token);
 					if (is_array($generateMail)){
-						$sendUserAccount = sendGlobalMail($generateMail['to'],$generateMail['from'],$generateMail['msg']);
+						$sendUserAccount = sendGlobalMail($generateMail['to'],$generateMail['from'],$generateMail['msg'],true);
 						logFile('onebyone: generate account success '.serialize($sendUserAccount));
 						if ($sendUserAccount['result']){
         					$this->activityHelper->updateEmailLog(false,$data['email'],'account',1);
@@ -189,7 +187,7 @@ class insertonebyone extends Database {
 					}
                     
                     /* EMAIL */
-        		//} // insert to table florakb_person
+        		} // insert to table florakb_person
             }else{
                 $this->commit();
     			logFile('====onebyone: success inserting data====');

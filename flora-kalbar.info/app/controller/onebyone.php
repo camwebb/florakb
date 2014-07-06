@@ -46,8 +46,9 @@ class onebyone extends Controller {
      * 
      * */
 	public function index(){
+	    global $basedomain;
         $this->view->assign('msg', '');        	   
-		header('Location: ../onebyone/indivContent');
+		header('Location: '.$basedomain.'onebyone/indivContent');
 	}
     
     /**
