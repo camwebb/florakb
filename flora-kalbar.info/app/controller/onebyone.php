@@ -227,6 +227,8 @@ class onebyone extends Controller {
      * @todo insert individu from posted data
      * */
     public function insertIndiv(){
+
+        global $basedomain;
         $data = $_POST;
         
         //get data user from session
@@ -246,14 +248,17 @@ class onebyone extends Controller {
                 $session->set_session($sess_onebyone,'onebyone');
         
                 $this->msg->add('s', 'Update Individu Success');
-                header('Location: ../onebyone/detContent');
+                // header('Location: ../onebyone/detContent');
+                redirect($basedomain.'onebyone/detContent');
             }else{
                 $this->msg->add('e', 'Update Individu Failed');
-                header('Location: ../onebyone/indivContent');
+                // header('Location: ../onebyone/indivContent');
+                redirect($basedomain.'onebyone/indivContent');
             }
         }else{
             $this->msg->add('e', 'Update Individu Failed');
-            header('Location: ../onebyone/indivContent');
+            // header('Location: ../onebyone/indivContent');
+            redirect($basedomain.'onebyone/indivContent');
         }
     }
     
