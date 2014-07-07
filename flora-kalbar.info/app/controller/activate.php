@@ -46,7 +46,7 @@ class activate extends Controller {
             $userMail = $decode['email'];
             $origToken = sha1($salt.$userMail);
 
-            // pr($decode);
+            // pr($decode);exit;
             $getToken = $this->loginHelper->getEmailToken($decode['username']);
 
             if ($getToken['email_token']==$decode['validby']){
@@ -63,7 +63,10 @@ class activate extends Controller {
 
                             $this->activityHelper->updateEmailLog(true, $userMail,'account',2);
 
-                            createAccount($data);
+                            $dataUSer['username'] = $decode['username'];
+                            $dataUSer['password'] = $decode['password']; 
+                            
+                            createAccount($dataUSer);
                             logFile('account ftp user '.$decode['email']. ' created');
 
                             $this->view->assign('validate','Validate account success');

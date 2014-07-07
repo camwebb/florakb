@@ -83,6 +83,7 @@ class login extends Controller {
                 // send mail before activate account
                 $dataArr['email'] = $data['email'];
                 $dataArr['username'] = $data['username'];
+                $dataArr['password'] = $data['password'];
                 $dataArr['token'] = sha1('register'.$data['email']);
                 $dataArr['validby'] = $getToken['email_token'];
                 $dataArr['regfrom'] = 1;
