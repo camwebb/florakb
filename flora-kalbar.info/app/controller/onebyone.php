@@ -22,7 +22,7 @@ class onebyone extends Controller {
         global $basedomain;
 		$this->loadmodule();
         $this->view = $this->setSmarty();
-        $this->view->assign('basedomain',$basedomain);
+        //$this->view->assign('basedomain',$basedomain);
         $this->msg = new Messages();
 	}
     
@@ -39,6 +39,9 @@ class onebyone extends Controller {
         
         //used for update image data and validate email input in insertImage function
         $this->imagezip = $this->loadModel('imagezip');
+        
+        //loaded to send email in update person
+        $this->activityHelper = $this->loadModel('activityHelper');
 	}
 	
     /**
@@ -169,17 +172,58 @@ class onebyone extends Controller {
         header('Location: ../onebyone/detContent');*/
         
         //ajax form
-        ob_end_clean();
+        
         if($insertData){
+            if(isset($insertData['msg'])){
+                $data['msg'] = $insertData['msg'];
+            }
             if($insertData['status']){
-                $data['id'] = $insertData['lastid'];
-                $data['status'] = 'success';
-                echo json_encode($data);
+                
+                //sending email
+                $email = $insertData['dataEmail'];
+                
+                $msg = null;
+				$this->view->assign('username',$email['username']);
+				$this->view->assign('email',$email['email']);
+				$this->view->assign('encode',$email['encode']);
+                $msg .= "<p>Hi ".$email['username']."!</p>";
+                $msg .= $this->loadView('emailTemplate');
+                
+                // try to send mail
+                $sendUserAccount = sendGlobalMail($email['to'],$email['from'],$msg,true);
+                
+				logFile('onebyone: generate account success '.serialize($sendUserAccount));
+
+                ob_end_clean();
+
+				if ($sendUserAccount['result']){
+					$this->activityHelper->updateEmailLog(false,$email['email'],'account',1);
+					logFile('onebyone: send account to email success');
+                    
+                    $data['id'] = $insertData['lastid'];
+                    $data['status'] = 'success';
+                    echo json_encode($data);
+                    
+                    //$this->insertonebyone->commitTransaction();
+				}else{
+				    $this->activityHelper->updateEmailLog(false,$email['email'],'account',0);
+					logFile('onebyone: send account to email failed');
+                    
+                    $data['status'] = 'error';
+                    $date['msg'] = 'Send account to email failed';
+                    echo json_encode($data);
+                    
+                    //$this->insertonebyone->rollbackTransaction();
+				}
+                //sending email
             }else{
                 $data['status'] = 'error';
                 echo json_encode($data);
             }
         }else{
+            if(isset($insertData['msg'])){
+                $data['msg'] = $insertData['msg'];
+            }
             $data['status'] = 'error';
             echo json_encode($data);
         }

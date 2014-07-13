@@ -280,6 +280,7 @@ function do_ajax(form, formID, modalID, msgFormat){
             //console.log(data);
             
             if(data.status == 'success'){
+
                 $(msg).html(first_success + 'Update ' + msgFormat + ' Success' + end);
                 
                 if(formID == 'formLocation'){
@@ -316,7 +317,11 @@ function do_ajax(form, formID, modalID, msgFormat){
                 }
                 
             }else{
-                $(msg).html(first_error + 'Update ' + msgFormat + ' Failed' + end);
+                if(data.msg){
+                    $(msg).html(first_error + 'Update ' + msgFormat + ' Failed. ' + data.msg + end);
+                }else{
+                    $(msg).html(first_error + 'Update ' + msgFormat + ' Failed' + end);
+                }
             }
         }catch(error){
             $(msg).html(first_error + 'System error or failed to connect to server' + end);

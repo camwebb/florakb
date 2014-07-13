@@ -4,12 +4,14 @@ class insertonebyone extends Database {
     
     function __construct()
 	{
+        global $basedomain;
 		$this->loadmodule();
 	}
 
 	function loadmodule()
     {
-        include APP_MODELS.'activityHelper.php';
+        global $CONFIG;
+        require_once (APP_MODELS.'activityHelper.php');
         $this->activityHelper = new activityHelper;
     }
 	
@@ -164,23 +166,23 @@ class insertonebyone extends Database {
 					$dataArr['email'] = $data['email'];
                     $dataArr['username'] = $username;
                     
+                    
 					
 					//logFile('onebyone: generate account '.serialize($dataArr));
 					$generateMail = $this->activityHelper->generateEmail($dataArr['email'],$dataArr['username'],2,$token);
 					if (is_array($generateMail)){
-						$sendUserAccount = sendGlobalMail($generateMail['to'],$generateMail['from'],$generateMail['msg'],true);
-						logFile('onebyone: generate account success '.serialize($sendUserAccount));
-						if ($sendUserAccount['result']){
-        					$this->activityHelper->updateEmailLog(false,$data['email'],'account',1);
-        					logFile('onebyone: send account to email success');
-                            $this->commit();
-                            $return['status'] = true;
-                            $return['lastid'] = $insert['lastid'];
-        				}else{
-        					logFile('onebyone: send account to email failed');
-                            $this->rollback();
-        					$return['status'] = false;
-        				}
+					   
+                        logFile('onebyone: generated mail : '. serialize($generateMail));
+                        
+                        $dataArr['encode'] = $generateMail['encode'];
+                        $dataArr['to'] = $generateMail['to'];
+                        $dataArr['from'] = $generateMail['from'];
+                        
+                        $return['status'] = true;
+                        $return['lastid'] = $insert['lastid'];
+                        $return['dataEmail'] = $dataArr;
+                        $this->commit();
+                        
 					}else{
 						logFile('onebyone: generate email failed');
                         $this->rollback();
