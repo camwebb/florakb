@@ -29,13 +29,13 @@ class Controller extends Application{
 		$this->view->assign('basedomain',$basedomain);
 		$this->view->assign('page',$DATA[$this->configkey]);
 		
+		
 		if ($this->configkey=='default')$this->view->assign('user',$this->isUserOnline());
 		if ($this->configkey=='admin')$this->view->assign('admin',$this->isAdminOnline());
 		if ($this->configkey=='dashboard')$this->view->assign('dashboard',$this->isAdminOnline());
-		
+		if ($this->configkey=='services')$this->view->assign('services',$this->isAdminOnline());
 		// $this->inject();
-		// pr($this->isAdminOnline());
-		
+		// pr($filePath);
 		// exit;
 		if (file_exists($filePath)){
 			
@@ -49,7 +49,7 @@ class Controller extends Application{
 				}
 
 				if (array_key_exists('dashboard',$CONFIG)) {
-					echo '2';
+					
 					if (!$this->isAdminOnline()){
 						redirect($basedomain.$CONFIG[$this->configkey]['login']);
 						exit;
@@ -87,7 +87,7 @@ class Controller extends Application{
 				}
 			}
 
-			if ($this->configkey == 'dashboard'){ echo '1';
+			if ($this->configkey == 'dashboard'){ 
 				if ($DATA[$this->configkey]['page']=='login'){
 					if ($this->isAdminOnline()){
 					redirect($CONFIG[$this->configkey]['default_view']);
@@ -96,7 +96,16 @@ class Controller extends Application{
 				}
 			}
 
-			// echo 'ada';
+			if ($this->configkey == 'services'){  
+				if ($DATA[$this->configkey]['page']=='login'){
+					if ($this->isAdminOnline()){
+					redirect($CONFIG[$this->configkey]['default_view']);
+					exit;
+					}
+				}
+			}
+
+			
 			include $filePath;
 			
 			$createObj = new $this->page();

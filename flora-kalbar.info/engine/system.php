@@ -70,6 +70,7 @@ if ($vPage){
 	
 	$validation['pid'] = @$vPage[0];
 	if ($validation['pid']=='admin') exit;
+	if ($validation['pid']=='services') exit;
 	$validation['act'] = @$vPage[1];
 	$validation['det'] = @$vPage['det'];
 	
@@ -134,7 +135,7 @@ $DATA['default']['uri'] = @$validation ;
  * yang dikirimkan lewat browser
  */
  
-// pr($DATA);
+
 // pr($_GET);
 
 $route = $_SERVER['PHP_SELF'];

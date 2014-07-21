@@ -262,9 +262,11 @@ class collectionHelper extends Database {
 						$password = "1234512345";
 						$email_token = sha1(CODEKIR.date('ymdhis'));
 
-						$storeAccount = "INSERT INTO florakb_person (id, password, username, salt, n_status,register_date,email_token)
+						$storeAccount = "INSERT IGNORE INTO florakb_person (id, password, username, salt, n_status,register_date,email_token)
 										VALUES ({$lastID}, '{$password}','{$username}', '{$this->salt}',0,'{$date}','{$email_token}')";
+						logFile($storeAccount);
 						$resAccount = $this->query($storeAccount,1);
+
 
 						// check if system never send mail account to user
 						$to = $rawdataPerson[$j]['email'];

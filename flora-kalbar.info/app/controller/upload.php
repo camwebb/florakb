@@ -134,7 +134,12 @@ class upload extends Controller {
 						$referenceQuery = $this->excelHelper->referenceData($getRef);
 						
 						$insertRef = $this->collectionHelper->storeRefData($referenceQuery);
-						
+						if (!$insertRef){
+							
+							$this->collectionHelper->rollbackTransaction();
+							print json_encode(array('status'=>false, 'msg'=>'upload data failed'));
+							exit;
+						}
 						$getMaster = $this->collectionHelper->getMasterData();
 						// insert indiv
 						$indivQuery = $this->excelHelper->parseMasterData($getMaster,true);

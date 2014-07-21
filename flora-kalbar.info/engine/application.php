@@ -23,6 +23,9 @@ class Application {
 		if (array_key_exists('dashboard', $CONFIG)){
 			$this->configkey = 'dashboard';
 		}
+		if (array_key_exists('services', $CONFIG)){
+			$this->configkey = 'services';
+		}
 
 		// pr($DATA);exit;
 		$this->php_ext = $CONFIG[$this->configkey]['php_ext'];
@@ -110,6 +113,9 @@ class Application {
 		}
 		if (array_key_exists('dashboard', $CONFIG)){
 			$this->configkey = 'dashboard';
+		}
+		if (array_key_exists('services', $CONFIG)){
+			$this->configkey = 'services';
 		}
 		$getFileView = null;
 		// $php_ext = $CONFIG[$this->configkey]['php_ext'];
@@ -206,6 +212,9 @@ class Application {
 		
 		if (array_key_exists('admin', $CONFIG)){
 			$this->configkey = 'admin';
+		}
+		if (array_key_exists('services', $CONFIG)){
+			$this->configkey = 'services';
 		}
 		
 		$php_ext = $CONFIG[$this->configkey]['php_ext'];
