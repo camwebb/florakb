@@ -6,14 +6,15 @@
 */
 
 $ROUTES = array(
-				'home',
-				'contact',
-				'upload',
+		'home',
+		'contact',
+		'upload',
                 'zip', 
                 'login',
                 'onebyone',
                 'browse',
                 'user',
-                'activate'               
+                'activate',
+                'register'               
                 );
 ?>

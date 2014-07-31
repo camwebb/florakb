@@ -25,8 +25,10 @@ $('#formSignup').submit(function(event) {
                 console.log('something went wrong');
             }
             else{
-                alert('User created, do login for enter the site.');
-                location.reload();
+                // alert('User created, do login for enter the site.');
+                alert('Account created, check your email to verified your account.');
+                // location.reload();
+                window.location.href=basedomain;
             } 
         },
         error: function(xhr, status, error) {
