@@ -6,8 +6,15 @@ $('#formSignup').submit(function(event) {
     $.ajax({
         url: baseUrl+"login/doSignup",
         type: 'POST',
+        beforeSend: function( xhr ) {
+            $('a#btn-message').trigger('click');
+            $('.message-body').html('Please Wait...');
+        },
         data: $(this).serialize(),
         success: function(data) {
+            
+            
+
             var result = $.parseJSON(data);            
             if(result.statusEmail == 'exist' || result.statusUsername == 'exist' || result.statusTwitter == 'exist'){
                 $('#signup-password,#signup-re_password').val('');
@@ -20,15 +27,23 @@ $('#formSignup').submit(function(event) {
                 if(result.statusTwitter == 'exist'){
                     $('#twitterGroup').append('<span class="florakb-error">'+result.msgTwitter+'</span>');
                 }
+
+                $('.close').trigger('click');
             }
             else if(result.result == 'error'){
+                var html = 'Sorry, something went wrong';
+                $('.message-body').html(html);
                 console.log('something went wrong');
             }
             else{
                 // alert('User created, do login for enter the site.');
-                alert('Account created, check your email to verified your account.');
+                var html = 'Account created, check your email to verified your account.';
+
+                // $('a#btn-message').trigger('click');
+                $('.message-body').html(html);
+                // alert('Account created, check your email to verified your account.');
                 // location.reload();
-                window.location.href=basedomain;
+                // window.location.href=basedomain;
             } 
         },
         error: function(xhr, status, error) {

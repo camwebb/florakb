@@ -329,3 +329,15 @@ function do_ajax(form, formID, modalID, msgFormat){
         
     });
 }
+
+$('a#btn-message').click(function(){
+   $('div#modal-message').fadeToggle("linear");
+   $('div.modal-overlay').show();
+
+});
+
+$('.close,.modal-overlay').click(function(){
+   $('div#modal-message').fadeOut(); 
+});
+
+
