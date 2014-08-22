@@ -104,7 +104,7 @@ class login extends Controller {
                 $sendMail = sendGlobalMail($to, $from, $msg,true);
                 logFile('mail send '.serialize($sendMail));
 
-                $this->activityHelper->updateEmailLog(false,$to,'account',0);
+                $this->activityHelper->updateEmailLog(false,$to,'account',0,$inflatData);
 
             }
 

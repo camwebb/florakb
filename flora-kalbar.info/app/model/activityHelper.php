@@ -65,7 +65,7 @@ class activityHelper extends Database {
     }
 
 
-	function updateEmailLog($update=true, $receipt=false, $subject='account', $n_status=0)
+	function updateEmailLog($update=true, $receipt=false, $subject='account', $n_status=0, $encode=null)
 	{
 		
         $date = date('Y-m-d H:i:s');
@@ -87,8 +87,8 @@ class activityHelper extends Database {
 
         }else{
 
-        	$sql = "INSERT IGNORE INTO `florakb_mail_log` (receipt, subject, send_date, n_status) 
-	                VALUES ('{$receipt}', '{$subject}', '{$date}', {$n_status})";
+        	$sql = "INSERT IGNORE INTO `florakb_mail_log` (receipt, subject, send_date, n_status,encode) 
+	                VALUES ('{$receipt}', '{$subject}', '{$date}', {$n_status},'{encode}')";
 	        // pr($sql);
 	        $res = $this->query($sql,1);  
 	        if ($res){
