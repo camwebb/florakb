@@ -1,0 +1,112 @@
+<div class="form-group">
+    <label for="name" class="col-sm-4 control-label">Name</label>
+    <div class="col-sm-6">
+        <input class="form-control" type="text" id="name" name="name" />
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="email" class="col-sm-4 control-label">Email</label>
+    <div class="col-sm-6">
+        <input class="form-control" type="text" id="email" name="email" />
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="institutions" class="col-sm-4 control-label">Institutions</label>
+    <div class="col-sm-6">
+        <input class="form-control" type="text" id="institutions" name="institutions" />
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="project" class="col-sm-4 control-label">Project</label>
+    <div class="col-sm-6">
+        <input class="form-control" type="text" id="project" name="project" />
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="twitter" class="col-sm-4 control-label">Twitter</label>
+    <div class="col-sm-6">
+        <input class="form-control" type="text" id="twitter" name="twitter" />
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="website" class="col-sm-4 control-label">Website</label>
+    <div class="col-sm-6">
+        <input class="form-control" type="text" id="website" name="website" />
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="phone" class="col-sm-4 control-label">Phone</label>
+    <div class="col-sm-6">
+        <input class="form-control" type="text" id="phone" name="phone" />
+    </div>
+</div>
+
+<!--<tr>
+        <td><label for="username">Username</label></td>
+        <td><input class="form-control" type="text" id="username" name="username" /></td>
+    </tr>-->
+
+<div class="form-group">
+    <div class="col-sm-offset-4 col-sm-6">
+      <button type="submit" class="btn florakb-btn">Submit</button>
+    </div>
+</div>
+
+<script language='javascript' type='text/javascript'>
+$().ready(function() {
+    
+    $("#formPerson").validate({
+        submitHandler: function(form){
+            do_ajax(form,"formPerson","#modal-person", "Person");
+        },
+        rules: {
+			name: {
+                required: true,
+                checkNameExist: true
+			},
+			email: {
+				required: true,
+				email: true,
+                checkEmailExist: true
+			},
+			twitter: {
+				minlength: 2,
+                checkTwitterExist: true
+			},
+			website: {
+                url: true
+			},
+            username: {
+                required: true,
+                minlength: 3,
+                checkUsernameExist: true
+            }
+		},
+		messages: {
+			name: {
+                required: " Please enter a name"
+			},
+			email: {
+                required: " Please enter a valid email address"
+			},
+			twitter: {
+				minlength: " Please enter a valid twitter account"
+			},
+			website: {
+				url: " Please enter a valid url"
+			},
+            username: {
+                required: " Please enter a username",
+                minlength: " Your username should be more than 3 characters",
+                checkUsernameExist: " Username already exist"
+            }
+		}
+    });
+});
+</script>

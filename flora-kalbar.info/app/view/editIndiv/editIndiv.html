@@ -1,204 +1,339 @@
-<div class="content">
-{$msg}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="florakb-content">
+    {$msg}
+    
     {if $noData eq 'empty'}
+        <a href="#" class="btn florakb-btn pull-right" onClick="history.back();return false;"><span class="glyphicon glyphicon-chevron-left"></span> Back</a>
+        <br />
         <i>No data available</i>
     {else}
     
-    <div class="btn-back">
-        <a href="#" onClick="history.back();return false;"><span>Back</span></a>
-    </div>
-    <div class="clear"></div>
-    <br />
+    <a href="#" class="btn florakb-btn pull-right" onClick="history.back();return false;"><span class="glyphicon glyphicon-chevron-left"></span> Back</a>
+    <div class="clearfix"></div><br />
     
-    <h2 class="title">Edit Individu</h2>
-    <form id="formEditIndiv" method="POST" action="{$basedomain}browse/doEditIndiv/?id={$smarty.get.id}">
-        <table class="browse indiv">
-            {foreach $indiv as $dataIndiv}
-            <tr>
-                <th style="-moz-border-radius: 6px 0 0 0;-webkit-border-radius: 6px 0 0 0;border-radius: 6px 0 0 0;width: 100px;">Creator</th>
-                <td>{$dataIndiv['name']}</td>
-            </tr>
-            <tr>
-                <th>Location</th>
-                <td>
-                    <select class="inputbox" name="locnID" id="locnID">
-                        <option value="">Choose Location</option>
-                        {foreach from=$locn item=location}
-                            <option id="{$location.id}" value="{$location.id}">{$location.locality}</option>
-                        {/foreach}
-                    </select>
-                    <a href="#locationPopup" class="btn" id="locationPopup">Add</a>
-                </td>
-                <literal>
-                <script type="text/javascript">
-                
-                    $().ready(function() {
-                        var localtity= "{$dataIndiv.locnID}";
-                        $("select option").each(function(){
-                          if ($(this).val() == localtity)
-                            $(this).attr("selected","selected");
-                        });
-                    });
-                
-                </script>
-                </literal>
-            </tr>
-            <tr>
-                <th>Plot</th>
-                <td><input class="inputbox" type="text" name="plot" value="{$dataIndiv['plot']}"/></td>
-            </tr>
-            <tr>
-                <th style="-moz-border-radius: 0 0 0 6px;-webkit-border-radius: 0 0 0 6px;border-radius: 0 0 0 6px;">Tag</th>
-                <td><input class="inputbox" type="text" name="tag" value="{$dataIndiv['tag']}"/></td>
-            </tr>
-             {/foreach}
-        </table>
-        <br />
-        <input class="btn" style="float: right;" type="submit" value="Submit" />
-        <div class="clear"></div>
-    </form>
-    <br />
-    
-    
-    <div class="sidebar-2-left">
-        <ul class="step">
-            <li>Edit Individu Attribut</li>
-            <li><a href="#" id="obsBtn">Edit Observation</a></li>
-            <li><a href="#" id="imgBtn">Edit Images</a></li>
-            <li><a href="#" id="detBtn">Edit Determinant</a></li>
+    <div class="florakb-tabs">
+        <!--<h3>Species Name</h3>-->
+        <ul class="nav nav-tabs" role="tablist" id="editIndiv-tabs">
+          <li class="active"><a href="#overview" role="tab" data-toggle="tab">Overview</a></li>
+          <li><a href="#obs" role="tab" data-toggle="tab">Observation</a></li>
+          <li><a href="#det" role="tab" data-toggle="tab">Determinant</a></li>
+          <li><a href="#img" role="tab" data-toggle="tab">Images</a></li>
         </ul>
     </div>
     
-    <div class="sidebar-2-right">
-
-<!-- Observation table-->
-    <div id="editIndiv_obs">
-        {include file='editIndiv/editIndiv_obs.html'}
-    </div>
-    
-<!-- Images table-->
-    <div id="editIndiv_img">
-        {include file='editIndiv/editIndiv_img.html'}
-    </div> 
-
-<!-- Determinants table-->
-    <div id="editIndiv_det">
-        {include file='editIndiv/editIndiv_det.html'}
-    </div>     
-    
-    
-    {/if}
-    </div>
-    <div class="clear"></div>
-</div>
-
-<!--START MODAL LOCATION-->
-<div id="modal-location" class="modal-background">
-    <div class="modal-overlay"></div>
-    <div class="modal-dialog dialogStep">
-        <button type="button" class="closebtn close"></button>
-        <div class="modal-content">
-            <div class="modal-body bodyStep">
-              <h2 class="title">Insert Location</h2>
-                {include file='formLocation.html'}
+    <div class="tab-content">
+      <div class="tab-pane active" id="overview">
+        <div class="florakb-tabscontent">
+            <form id="aa" method="POST" action="{$basedomain}browse/doEditIndiv/?id={$smarty.get.id}" class="form-horizontal" role="form">
+                {include file="file:$rootpath/app/view/editIndiv/formIndiv.html"}
+            </form>
+        </div>
+      </div><!-- END TAB OVERVIEW-->
+      
+      <div class="tab-pane" id="obs">
+        <div class="florakb-tabscontent">
+            <table id="table-obs" class="table table-striped table-bordered flora-table table-curved" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Creator</th>
+                        <th>Date</th>
+                        <th>Microhab</th>
+                        <th>Habit</th>
+                        <th>dbh</th>
+                        <th>Height</th>
+                        <th>Bud</th>
+                        <th>Flower</th>
+                        <th>Fruit</th>
+                        <th>Localname</th>
+                        <th>Notes</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+         
+                <tbody>
+                    {foreach $indiv as $dataIndiv}
+                    {foreach from=$obs key=myId item=dataObs}
+                    <tr>
+                        <td>
+                            {if $user.login && $dataObs.personID == $user.login.id && $dataIndiv.name != $user.login.name}
+                                <a href="{$basedomain}browse/deleteObs/?id={$dataObs.obsID}&&indivID={$dataObs.indivID}&&action=delObs" id="deleteObsOwner" class="florakb-delete" title="Delete Observation"><span class="glyphicon glyphicon-remove-sign pull-right"></span></a>
+                            {/if}
+                            {$dataObs.name}
+                        </td>
+                        <td>{$dataObs.date}</td>
+                        <td>{$dataObs.microhab}</td>
+                        <td>{$dataObs.habit}</td>
+                        <td>{$dataObs.dbh}</td>
+                        <td>{$dataObs.height}</td>
+                        <td class="text-center"><span class="glyphicon glyphicon-{if {$dataObs.bud} eq 'yes'}ok{else}remove{/if}"></span></td>
+                        <td class="text-center"><span class="glyphicon glyphicon-{if {$dataObs.flower} eq 'yes'}ok{else}remove{/if}"></span></td>
+                        <td class="text-center"><span class="glyphicon glyphicon-{if {$dataObs.fruit} eq 'yes'}ok{else}remove{/if}"></span></td>
+                        <td>{$dataObs.localname}</td>
+                        <td>{$dataObs.notes}</td>
+                        <td>
+                            {if $user.login && $dataObs.personID eq $user.login.id || $dataIndiv.id eq $user.login.id}
+                                <a href="{$basedomain}browse/deleteObs/?id={$dataObs.obsID}&&indivID={$dataObs.indivID}&&action=delObsOwn" id="deleteObs" class="btn florakb-btn">Delete</a>
+                            {/if}
+                        </td>
+                    </tr>
+                    {foreachelse}<i>No observation available</i>
+                    {/foreach}
+                    {/foreach}
+                </tbody>
+            </table>
+             <a href="#addObs" class="btn florakb-btn pull-right" data-toggle="modal" data-target="#modal-obs">Add Observations</a>
+             <div class="clearfix"></div>
+            </div>
+      </div><!-- END TAB OBS-->
+      
+      <div class="tab-pane" id="det">
+        <div class="florakb-tabscontent">
+            <table id="table-det" class="table table-striped table-bordered flora-table table-curved" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Creator</th>
+                        <th>Date</th>
+                        <th>Taxon</th>
+                        <th>Confid</th>
+                        <th>Using</th>
+                        <th>Notes</th>
+                        <th style="width: 7%;">Action</th>
+                    </tr>
+                </thead>
+         
+                <tbody>
+                {foreach $indiv as $dataIndiv}
+                {foreach from=$det key=myId item=dataDet}
+                    <tr>
+                        <td>
+                            {if $user.login && $dataDet.personID == $user.login.id && $dataIndiv.name != $user.login.name}
+                                <a href="{$basedomain}browse/deleteDet/?id={$dataDet.detID}&&indivID={$dataDet.indivID}&&action=delDet" id="deleteDetOwner" class="florakb-delete" title="Delete Determinant"><span class="glyphicon glyphicon-remove-sign pull-right"></span></a>
+                            {/if}
+                            {$dataDet.name}
+                        </td>
+                        <td>{$dataDet.det_date}</td>
+                        <td>
+                            {if {$dataDet.sp}=='' AND {$dataDet.gen}=='' AND {$dataDet.fam}==''}
+                            {else}
+                            <i>{$dataDet.sp}, {$dataDet.gen}, {$dataDet.fam}</i>
+                            {/if}
+                        </td>
+                        <td>{$dataDet.confid}</td>
+                        <td>{$dataDet.using}</td>
+                        <td>{$dataDet.notes}</td>
+                        <td>
+                            {if $user.login && $dataDet.personID eq $user.login.id || $dataIndiv.id eq $user.login.id}
+                                <a href="{$basedomain}browse/deleteDet/?id={$dataDet.detID}&&indivID={$dataDet.indivID}&&action=delDetOwn" id="deleteDet" class="btn florakb-btn pull-right">Delete</a>
+                                <div class="clearfix"></div>
+                            {/if}
+                        </td>
+                    </tr>
+                {foreachelse}<i>No determination available</i>
+                {/foreach}
+                {/foreach}
+                </tbody>
+            </table>
+            <a href="#addDet" class="btn florakb-btn pull-right" data-toggle="modal" data-target="#modal-det">Add Determination</a>
+             <div class="clearfix"></div>
+        </div>
+      </div><!-- END TAB DET-->
+      
+      <div class="tab-pane" id="img">
+        <div class="florakb-tabscontent">
+            <div id="links">
+            {foreach $img as $dataImg}
+            {if $dataImg.md5sum}
+                <form id="formImg" method="POST" action="{$basedomain}browse/deleteImg/?indivID={$smarty.get.id}&&action=delImgOwn">
+                    <input type="checkbox" name="idImg[]" value="{$dataImg.id}" />
+                    <a href="{$basedomain}public_assets/img/500px/{$dataImg.md5sum}.500px.jpg" data-gallery>
+                        <img src="{$basedomain}public_assets/img/100px/{$dataImg.md5sum}.100px.jpg" class="flora-gallery">
+                    </a>
+            {/if}
+            {foreachelse}<i>No image available</i>
+            {/foreach}
+                    <br /><br />
+                    <div class="pull-left">
+                        <input type="submit" id="deleteImg" class="btn florakb-btn" value="Delete Image" />
+                        <a href="#addImg" class="btn florakb-btn" data-toggle="modal" data-target="#modal-img">Add Image</a>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>    
             </div>
         </div>
+      </div><!-- END TAB IMG-->
+      
     </div>
+    {/if}
+    </div>
+</div>
+
+<!--START MODAL OBS-->
+<div class="modal fade" id="modal-obs" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Insert Observation</h4>
+      </div>
+      <div class="modal-body">
+        <form id="formObs" method="POST" action="{$basedomain}browse/addObs/?id={$smarty.get.id}&&action=addObs" class="form-horizontal" role="form">
+            {include file="file:$rootpath/app/view/editIndiv/modal_formObs.html"}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--START MODAL LOCN-->
+<div class="modal fade" id="modal-location" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Insert Location</h4>
+      </div>
+      <div class="modal-body">
+        <form id="formLocation" method="POST" action="{$basedomain}onebyone/insertLocation" class="form-horizontal" role="form">
+            {include file="file:$rootpath/app/view/onebyone/formLocation.html"}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--START MODAL DET-->
+<div class="modal fade" id="modal-det" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Insert Determination</h4>
+      </div>
+      <div class="modal-body">
+        {$msg}
+        <div class="msg"></div>
+        <form id="formDet" method="POST" action="{$basedomain}browse/addDet/?id={$smarty.get.id}&&action=addDet" class="form-horizontal" role="form">
+            {include file="file:$rootpath/app/view/editIndiv/modal_formDet.html"}
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!--START MODAL PERSON-->
-<div id="modal-person" class="modal-background">
-    <div class="modal-overlay"></div>
-    <div class="modal-dialog dialogStep">
-        <button type="button" class="closebtn close"></button>
-        <div class="modal-content">
-            <div class="modal-body bodyStep">
-              <h2 class="title">Insert Person</h2>
-                {include file='formPerson.html'}
-            </div>
-        </div>
+<div class="modal fade" id="modal-person" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Insert Person</h4>
+      </div>
+      <div class="modal-body">
+        <form id="formPerson" method="POST" action="{$basedomain}onebyone/insertPerson" class="form-horizontal" role="form">
+            {include file="file:$rootpath/app/view/onebyone/formPerson.html"}
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 
 <!--START MODAL TAXON-->
-<div id="modal-taxon" class="modal-background">
-    <div class="modal-overlay"></div>
-    <div class="modal-dialog dialogStep">
-        <button type="button" class="closebtn close"></button>
-        <div class="modal-content">
-            <div class="modal-body bodyStep">
-              <h2 class="title">Insert Taxon</h2>
-                {include file='formTaxon.html'}
+<div class="modal fade" id="modal-taxon" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Insert Taxon</h4>
+      </div>
+      <div class="modal-body">
+        <form id="formTaxon" method="POST" action="{$basedomain}onebyone/insertTaxon" class="form-horizontal" role="form">
+            {include file="file:$rootpath/app/view/onebyone/formTaxon.html"}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--START MODAL IMG-->
+<div class="modal fade" id="modal-img" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Insert Image</h4>
+      </div>
+      <div class="modal-body">
+        <form id="formImage" method="POST" action="{$basedomain}browse/addImg/?id={$smarty.get.id}" enctype="multipart/form-data" class="form-horizontal" role="form">
+            {include file="file:$rootpath/app/view/editIndiv/modal_formImage.html"}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- The Bootstrap Image Gallery lightbox, should be a child element of the document body -->
+<div id="blueimp-gallery" class="blueimp-gallery" data-use-bootstrap-modal="false">
+    <!-- The container for the modal slides -->
+    <div class="slides"></div>
+    <!-- Controls for the borderless lightbox -->
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+    <!-- The modal dialog, which will be used to wrap the lightbox content -->
+    <div class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body next"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left prev">
+                        <i class="glyphicon glyphicon-chevron-left"></i>
+                        Previous
+                    </button>
+                    <button type="button" class="btn btn-primary next">
+                        Next
+                        <i class="glyphicon glyphicon-chevron-right"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<script type="text/javascript">
-$().ready(function() {
-    
-    $("#formEditIndiv").validate({
-        rules: {
-            tag: {
-                number: true
-            },
-            locnID: {
-                required: true
-            }
-		},
-		messages: {
-            tag: {
-                number: " Please enter number"
-            },
-            locnID: {
-                required: " Please choose location"
-            }
-		}
-    });
-    
-    $('a#locationPopup').click(function(){
-       $('div#modal-location').fadeToggle("linear");
-       $('div.modal-overlay').show();
-    });
-    $('.close,.modal-overlay').click(function(){
-       $('div#modal-location').fadeOut(); 
-    });
-    
-    $('#editIndiv_img,#editIndiv_det').hide();
-    $('#obsBtn').click(function(){
-        $('#editIndiv_img,#editIndiv_det').hide();
-        $('#editIndiv_obs').show();
-        $('html,body').animate({ scrollTop: '600px' }, 800);
-        return false;
-    });
-    $('#imgBtn').click(function(){
-        $('#editIndiv_obs,#editIndiv_det').hide();
-        $('#editIndiv_img').show();
-        $('html,body').animate({ scrollTop: '600px' }, 800);
-        return false;
-    });
-    $('#detBtn').click(function(){
-        $('#editIndiv_img,#editIndiv_obs').hide();
-        $('#editIndiv_det').show();
-        $('html,body').animate({ scrollTop: '600px' }, 800);
-        return false;
-    });
-    
-    $('a#personPopup').click(function(){
-       $('div#modal-person').fadeToggle("linear");
-       $('div.modal-overlay').show();
-    });
-    $('.close,.modal-overlay').click(function(){
-       $('div#modal-person').fadeOut(); 
-    });
-    
-    $('a#taxonPopup').click(function(){
-       $('div#modal-taxon').fadeToggle("linear");
-       $('div.modal-overlay').show();
-    });
-    $('.close,.modal-overlay').click(function(){
-       $('div#modal-taxon').fadeOut(); 
-    });
-    
-});
-</script>
+<literal>
+    <script>
+        $(document).on('click','#deleteObs', function(){
+            var msg = confirm('Are you sure to delete ?');
+            if (!msg) return false;    
+        });
+        $(document).on('click','#deleteDet', function(){
+            var msg = confirm('Are you sure to delete ?');
+            if (!msg) return false;    
+        });
+        $(document).on('click','#deleteImg', function(){
+            var msg = confirm('Are you sure to delete ?');
+            if (!msg) return false;    
+        });
+        
+        var ID = {$indivID};
+        
+        if(document.URL==basedomain+'browse/editIndiv/?id='+ID+'#obs'){
+            $('#editIndiv-tabs a[href="#obs"]').tab('show');
+        }
+        else if(document.URL==basedomain+'browse/editIndiv/?id='+ID+'#det'){
+            $('#editIndiv-tabs a[href="#det"]').tab('show');
+        }
+        else if(document.URL==basedomain+'browse/editIndiv/?id='+ID+'#img'){
+            $('#editIndiv-tabs a[href="#img"]').tab('show');
+        }
+        else{
+            $('#editIndiv-tabs a[href="#overview"]').tab('show');
+        }
+    </script>
+</literal>

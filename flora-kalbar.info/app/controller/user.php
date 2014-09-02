@@ -30,12 +30,12 @@ class user extends Controller {
     	//return $this->loadView('home');
     }
     
-    function editProfile(){
+    function setting(){
         $msg = $this->msg->display('all', false);
         $this->view->assign('msg', $msg);
         $ses_user = $this->isUserOnline();
         $this->view->assign('user', $ses_user);                
-        return $this->loadView('editProfile');
+        return $this->loadView('user/setting');
     }
     
     function checkPassword(){
@@ -81,13 +81,7 @@ class user extends Controller {
         }else{
             $this->msg->add('e', 'Update Failed');
         }
-        header('Location: ../user/editProfile');
-    }
-    
-    function editPassword(){
-        $msg = $this->msg->display('all', false);
-        $this->view->assign('msg', $msg);
-        return $this->loadView('editPassword');
+        redirect($basedomain.'setting');
     }
     
     function doEditPassword(){
@@ -99,7 +93,7 @@ class user extends Controller {
         }else{
             $this->msg->add('e', 'Update Failed');
         }
-        header('Location: ../user/editPassword');
+        redirect($basedomain.'setting');
     }
 }
 

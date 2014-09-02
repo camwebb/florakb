@@ -24,14 +24,15 @@ class browseHelper extends Database {
                     det.n_status='0'";*/
             $sql="select * from taxon where id in (select det.taxonID from det inner join indiv on indiv.id = det.indivID where indiv.n_status = 0)";
             $res = $this->fetch($sql,1);
-            
+            $return['result'] = $res;
+            return $return;
             //PAGINATION
-            if (isset($_GET['pageno'])) {
+            /*if (isset($_GET['pageno'])) {
                $pageno = $_GET['pageno'];
             } else {
                $pageno = 1;
             } // if
-            $rows_per_page = 10;
+            $rows_per_page = 100;
             $lastpage      = ceil(count($res)/$rows_per_page);
             $pageno = (int)$pageno;
             if ($pageno > $lastpage) {
@@ -50,7 +51,7 @@ class browseHelper extends Database {
                 $return['lastpage'] = $lastpage;
                 return $return;
             }
-            else{return false;}
+            else{return false;}*/
         }
     }
     
@@ -107,9 +108,11 @@ class browseHelper extends Database {
         }
         
         $res = $this->fetch($sql,1);
+        $return['result'] = $res;
+        return $return;
         
         //PAGINATION
-            if (isset($_GET['pageno'])) {
+            /*if (isset($_GET['pageno'])) {
                $pageno = $_GET['pageno'];
             } else {
                $pageno = 1;
@@ -132,7 +135,7 @@ class browseHelper extends Database {
                 $return['lastpage'] = $lastpage;
                 return $return;
             }
-            else{return false;}
+            else{return false;}*/
     }
     
     /**
@@ -174,9 +177,10 @@ class browseHelper extends Database {
             //$sql="select * from `locn` where id in (select indiv.locnID from indiv where indiv.n_status = 0)";
             $sql="select * from `locn` where id in (select indiv.locnID from indiv inner join det on indiv.id = det.indivID where indiv.n_status = 0)";
             $res = $this->fetch($sql,1);
-            
+            $return['result'] = $res;
+            return $return;
             //PAGINATION
-            if (isset($_GET['pageno'])) {
+            /*if (isset($_GET['pageno'])) {
                $pageno = $_GET['pageno'];
             } else {
                $pageno = 1;
@@ -199,7 +203,7 @@ class browseHelper extends Database {
                 $return['lastpage'] = $lastpage;
                 return $return;
             }
-            else{return false;}
+            else{return false;}*/
         }
     }
     
@@ -220,9 +224,11 @@ class browseHelper extends Database {
         elseif($condition==false){
             $sql = "SELECT * FROM `person`";           
             $res = $this->fetch($sql,1);
+            $return['result'] = $res;
+            return $return;
             
             //PAGINATION
-            if (isset($_GET['pageno'])) {
+            /*if (isset($_GET['pageno'])) {
                $pageno = $_GET['pageno'];
             } else {
                $pageno = 1;
@@ -245,7 +251,7 @@ class browseHelper extends Database {
                 $return['lastpage'] = $lastpage;
                 return $return;
             }
-            else{return false;}
+            else{return false;}*/
         }
     }
     

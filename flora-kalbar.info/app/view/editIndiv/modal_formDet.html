@@ -1,0 +1,152 @@
+<div class="form-group">
+    <label for="confid" class="col-sm-3 control-label">Confidence of determination</label>
+    <div class="col-sm-5">
+        <select class="form-control" name="confid" id="confid">
+            <option value="" selected="1">Choose a level of confidence</option>
+            {foreach from=$confid_enum item=enum}
+                <option value="{$enum}">{$enum}</option>
+            {/foreach}
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="using" class="col-sm-3 control-label">Uses Resource</label>
+    <div class="col-sm-5">
+        <input class="form-control" type="text" id="using" name="using" />
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="notes" class="col-sm-3 control-label">Notes</label>
+    <div class="col-sm-5">
+        <textarea class="form-control" id="notes" name="notes"></textarea>
+    </div>
+</div>
+
+<div id="inputTaxon" style="display: none;">
+    <div class="form-group">
+        <label for="taxonID" class="col-sm-3 control-label">Taxon :</label>
+        <div class="col-sm-5">
+            <input type="hidden" id="taxonID" name="taxonID" value=""/>
+            <input class="form-control" type="text" id="labelTaxon"  disabled="disabled" />
+            <a class="btn" id="resetTaxon">Reset</a>
+        </div>
+    </div>
+</div>
+
+<div id="autoCompleteTaxon"> <!-- INPUT AUTO COMPLETE TAXON -->
+    <div class="form-group" id="inputFamily">
+        <label for="" class="col-sm-1 control-label">Taxon</label>
+        <label for="" class="col-sm-2 control-label">Family</label>
+        <div class="col-sm-5">
+            <input class="form-control" type="hidden" id="kewid" name="kewid" value=""/>
+            <input class="form-control" type="text" id="autoFamily" name="family" />
+            <!--<input class="form-control" type="text" id="autoTaxon" />
+                <input class="form-control" type="hidden" id="taxonID" name="taxonID" value=""/>
+                <select class="form-control" name="taxonID" id="taxonID">
+                    <option value="" selected="1">Choose a taxonomy</option>
+                    {foreach from=$taxon item=itemTaxon}
+                        <option value="{$itemTaxon.id}">
+                        {if $itemTaxon.gen}
+                            {if $itemTaxon.fam}
+                                ({$itemTaxon.fam})
+                            {/if}
+                            {$itemTaxon.gen} {$itemTaxon.sp}
+                        {else}
+                            {$itemTaxon.morphotype}
+                        {/if}
+                        </option>
+                    {/foreach}
+
+                </select>-->
+        </div>
+        <div class="col-sm-1">
+            <a class="btn florakb-btn" id="nextGenus">Next</a>
+        </div>
+        <div class="col-sm-3">
+            <a href="#taxon-modal" class="btn florakb-btn" data-toggle="modal" data-target="#modal-taxon">New Taxon</a>
+        </div>
+    </div>
+</div>
+
+<div id="autoCompleteTaxon"><!-- INPUT AUTO COMPLETE TAXON -->
+    <div class="form-group" id="inputGenus" style="display: none;">
+        <label for="taxonID" class="col-sm-3 control-label">Genus</label>
+        <div class="col-sm-5">
+            <input class="form-control" type="text" id="autoGenus" name="genus" />
+        </div>
+        <div class="col-sm-1">
+            <a class="btn florakb-btn" id="nextSpecies">Next</a>
+        </div>
+    </div>
+    
+    <div class="form-group" id="inputSpecies" style="display: none;">
+        <label for="taxonID" class="col-sm-3 control-label">Species</label>
+        <div class="col-sm-5">
+            <input class="form-control" type="text" id="autoSpecies" name="species" />
+        </div>
+    </div>
+</div><!-- END INPUT AUTO COMPLETE TAXON -->
+
+<div class="form-group">
+    <label for="personID" class="col-sm-3 control-label">Person</label>
+    <div class="col-sm-5">
+        <select class="form-control" name="personID" id="personID">
+            <option value="">Choose a person</option>
+            {foreach from=$person item=itemPerson}
+                <option value="{$itemPerson.id}">{$itemPerson.name}, {$itemPerson.email}</option>
+            {/foreach}
+        </select>
+    </div>
+    <div class="col-sm-3">
+        <a href="#person-modal" class="btn florakb-btn" data-toggle="modal" data-target="#modal-person">New Person</a>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-offset-3 col-sm-5">
+      <button type="submit" class="btn florakb-btn">Submit</button>
+    </div>
+</div>
+<script type="text/javascript">
+$().ready(function() {
+    
+    $("#formDet").validate({
+        rules: {
+			confid: {
+                required: true
+			},
+            using: {
+                required: true
+            },
+            /*taxonID: {
+                required: true
+            },*/
+            personID: {
+                required: true
+            }
+		},
+		messages: {
+			confid: {
+                required: " Please choose a level"
+			},
+            using: {
+                required: " Please enter a resource"
+            },
+            /*taxonID: {
+                required: " Please choose a taxonomy"
+            },*/
+            personID: {
+                required: " Please choose a person"
+            }
+		}
+    });
+    /*$("#autoTaxon").rules("add", {
+        required:true,
+        messages: {
+            required : " Please choose a taxonomy"
+        }
+    });*/
+});
+</script>

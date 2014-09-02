@@ -1,52 +1,33 @@
-
-<!-- LOGIN SIGNUP -->
-
-
-<div id="modal-signup" class="">
-    <div class="modal"></div>
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-              <h4>Sign Up</h4>
-              <img src="{$basedomain}assets/img/bg-signup.png" />
-              <div class="clear"></div>
-            </div>
-            <div class="modal-body">
-            <form action="{$basedomain}" method="POST" id="formSignup">
-                <div class="form-group" id="nameGroup">
-                  <input type="text" id="signup-name" class="input-modal" name="name" placeholder="Name (Required)" required aria-required="true"/>
+<div class="container">
+    
+    <div class="form-signin">
+        <form role="form" action="{$basedomain}login/doSignup" method="POST" id="formSignup">
+            <div class="bodyForm bodyForm-signup">
+                <h1 class="text-center">Flora<span> Kalbar</span></h1>
+                <h5 class="text-center"></h5>
+                <input type="text" id="signup-name" class="form-control" name="name" placeholder="Name (Required)" required aria-required="true"/>
+                <div id="emailGroup">
+                    <input type="email" id="signup-email" class="form-control" name="email" placeholder="Email (Required)" required aria-required="true"/>
                 </div>
-                <div class="form-group" id="emailGroup">
-                  <input type="email" id="signup-email" class="input-modal" name="email" placeholder="Email (Required)" required aria-required="true"/>
+                <div id="usernameGroup">
+                    <input type="text" id="signup-username" class="form-control" name="username" placeholder="Username (Required)" pattern="[a-zA-Z0-9_]+" required aria-required="true"/>
                 </div>
-                <div class="form-group" id="usernameGroup">
-                  <input type="text" id="signup-username" class="input-modal" name="username" placeholder="Username (Required)" pattern="[a-zA-Z0-9_]+" required aria-required="true"/>
-                </div>
-                <div class="form-group" id="twitterGroup">
-                  <label for='signup-twitter' id="usernameValue" style="padding-top: 10px; color: #555; position: absolute; top: 250px; left: 20px; display: none;">@</label>
-                    <input type="text" id="signup-twitter" class="input-modal" name="twitter" placeholder="Twitter" oninput="usernameValue()"/>
-                 <script language='javascript' type='text/javascript'>
-					{literal}
-                    function usernameValue() {
-                        $('label#usernameValue').show();
-                        $('input#signup-twitter').css("padding-left","20px");
-                        $('input#signup-twitter').css("width","315px");
-                    }
-					{/literal}
+                <div id="twitterGroup">
+                    <label for='signup-twitter' id="usernameValue" style="padding-top: 10px; margin-left: 10px; color: #555; position: absolute; display: none;z-index: 3;">@</label>
+                        <input type="text" id="signup-twitter" class="form-control" name="twitter" placeholder="Twitter" oninput="usernameValue()"/>
+                     <script language='javascript' type='text/javascript'>
+    					{literal}
+                        function usernameValue() {
+                            $('label#usernameValue').show();
+                            $('input#signup-twitter').css("padding-left","25px");
+                        }
+    					{/literal}
                     </script>   
-                  
                 </div>
-                <div class="form-group">
-                  <input type="url" id="signup-website" class="input-modal" name="website" placeholder="Website"/>
-                </div>
-                <div class="form-group">
-                  <input type="text" id="signup-phone" class="input-modal" name="phone" placeholder="Phone"/>
-                </div>
-                <div class="form-group">
-                  <input type="password" id="signup-password" class="input-modal" name="password" placeholder="Password (Required)" required aria-required="true"/>                  
-                </div>
-                <div class="form-group">
-                  <input type="password" id="signup-re_password" class="input-modal" name="rePassword" placeholder="Retype Password (Required)" required aria-required="true" oninput="check(this)"/>
+                <input type="url" id="signup-website" class="form-control" name="website" placeholder="Website"/>
+                <input type="text" id="signup-phone" class="form-control" name="phone" placeholder="Phone"/>
+                <input type="password" id="signup-password" class="form-control" name="password" placeholder="Password (Required)" required aria-required="true"/>
+                <input type="password" id="signup-re_password" class="form-control" name="rePassword" placeholder="Retype Password (Required)" required aria-required="true" oninput="check(this)"/>
                   
                   <script language='javascript' type='text/javascript'>
                     {literal}
@@ -60,18 +41,24 @@
                     }
 					{/literal}
                     </script>
-                  
-                  
-                </div>
-                <button type="button" class="btn close" style="width: 49%;">Cancel</button>
-                <input type="submit" class="btn" style="width: 49.5%;" value="Signup" />
-              </form>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+                <p class="text-right" style="margin-top: 10px;">Already a member? <a href="{$basedomain}login">Login now!</a></p>
             </div>
-            <div class="modal-footer"> 
-                <!--Already a member? <a href="#" class="signup">Login now!</a><br />
-                <a href="#">Forgotten password?</a>-->
-            </div>
-        </div>
+        </form>
     </div>
-</div>
+</div> <!-- /container -->
 
+<!--Message Modal-->
+<div class="modal fade bs-example-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Flora Kalbar</h4>
+        </div>
+        <div class="modal-body messageRegister">
+            <p>Please wait...</p>
+      </div>
+    </div>
+  </div>
+</div>

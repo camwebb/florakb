@@ -23,8 +23,16 @@ class login extends Controller {
 	}
 	
 	function index(){
-
-        return $this->loadView('home');
+        $ses_user = $this->isUserOnline();
+       
+        global $basedomain;
+        if($ses_user){
+            redirect($basedomain.'home');
+            exit;
+        }
+        else{
+            return $this->loadView('login');
+        }
     }
 	
     /**
@@ -104,7 +112,7 @@ class login extends Controller {
                 $sendMail = sendGlobalMail($to, $from, $msg,true);
                 logFile('mail send '.serialize($sendMail));
 
-                $this->activityHelper->updateEmailLog(false,$to,'account',0,$inflatData);
+                $this->activityHelper->updateEmailLog(false,$to,'account',0);
 
             }
 

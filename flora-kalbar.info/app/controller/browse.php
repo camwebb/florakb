@@ -49,8 +49,8 @@ class browse extends Controller {
             $this->view->assign('noData','data existed');
         }
         
-        $this->view->assign('pageno',$taxon['pageno']);
-        $this->view->assign('lastpage',$taxon['lastpage']);
+        //$this->view->assign('pageno',$taxon['pageno']);
+        //$this->view->assign('lastpage',$taxon['lastpage']);
         $this->view->assign('data',$listAll);
         return $this->loadView('browse/allTaxon');
     }
@@ -72,8 +72,8 @@ class browse extends Controller {
             $this->view->assign('noData','data existed');
         }
         
-        $this->view->assign('pageno',$location['pageno']);
-        $this->view->assign('lastpage',$location['lastpage']);
+        //$this->view->assign('pageno',$location['pageno']);
+        //$this->view->assign('lastpage',$location['lastpage']);
         $this->view->assign('result',$location['result']);
         return $this->loadView('browse/allLocation');
     }
@@ -95,8 +95,8 @@ class browse extends Controller {
             $this->view->assign('noData','data existed');
         }
         
-        $this->view->assign('pageno',$person['pageno']);
-        $this->view->assign('lastpage',$person['lastpage']);
+        //$this->view->assign('pageno',$person['pageno']);
+        //$this->view->assign('lastpage',$person['lastpage']);
         $this->view->assign('result',$person['result']);
         return $this->loadView('browse/allPerson');
     }
@@ -138,11 +138,43 @@ class browse extends Controller {
         else{
             $this->view->assign('noData','data existed');
         }
-        $this->view->assign('pageno',$getIndiv['pageno']);
-        $this->view->assign('lastpage',$getIndiv['lastpage']);        
+        //$this->view->assign('pageno',$getIndiv['pageno']);
+        //$this->view->assign('lastpage',$getIndiv['lastpage']);        
         $this->view->assign('title',$title);
         $this->view->assign('data',$listAll);
         return $this->loadView('browse/allIndiv');
+    }
+    
+    /**
+     * @todo show all indiv from selected taxon/location/person
+     * 
+     */
+    function allPost(){
+        $id = $_GET['id'];
+        $action = 'indivPerson';
+        
+        $title='';
+        //get data indiv
+        $getIndiv = $this->browseHelper->dataIndiv($action,'personID',$id);
+        
+        $listAll = array();
+        for($i=0;$i<count($getIndiv['result']);$i++){
+            //Get indiv's 'images
+            $img = $this->browseHelper->showImgIndiv($getIndiv['result'][$i]['indivID'],true,'0,5');
+            $listAll[]= array('indiv'=>$getIndiv['result'][$i],'img'=>$img);
+        }
+        
+        if(empty($listAll)){
+            $this->view->assign('noData','empty');
+        }
+        else{
+            $this->view->assign('noData','data existed');
+        }
+        //$this->view->assign('pageno',$getIndiv['pageno']);
+        //$this->view->assign('lastpage',$getIndiv['lastpage']);        
+        $this->view->assign('title',$title);
+        $this->view->assign('data',$listAll);
+        return $this->loadView('browse/allPost');
     }
     
     /**
@@ -160,6 +192,22 @@ class browse extends Controller {
         //get all observations from indiv selected
         $indivObs = $this->browseHelper->dataObsIndiv($indivID);
         
+        //get list enum habit
+        $habit_enum = $this->insertonebyone->get_enum('obs','habit');
+        $this->view->assign('habit_enum', $habit_enum);
+        
+        //get list person
+        $listPerson = $this->insertonebyone->list_person();
+        $this->view->assign('person', $listPerson);
+        
+        //get list taxon
+        $listTaxon = $this->insertonebyone->list_taxon();
+        $this->view->assign('taxon', $listTaxon);
+        
+        //get list enum confid
+        $confid_enum = $this->insertonebyone->get_enum('det','confid');
+        $this->view->assign('confid_enum', $confid_enum);
+        
         if(empty($indivDetail)){
             $this->view->assign('noData','empty');
         }
@@ -171,6 +219,7 @@ class browse extends Controller {
         $this->view->assign('msg', $msg);
         
         $this->view->assign('indiv',$indivDetail);
+        $this->view->assign('indivID',$indivID);
         $this->view->assign('det',$indivDeterminant);
         $this->view->assign('img',$indivImages);
         $this->view->assign('obs',$indivObs);
@@ -188,7 +237,8 @@ class browse extends Controller {
         $ses_user = $this->isUserOnline();
         global $basedomain;
         if(!$ses_user){
-            header('Location: '.$basedomain);
+            redirect($basedomain);
+            exit;
         }
         $indivID = $_GET['id'];
         //get whole data indiv detail
@@ -234,6 +284,7 @@ class browse extends Controller {
         $this->view->assign('msg', $msg);
         
         $this->view->assign('user', $ses_user); 
+        $this->view->assign('indivID',$indivID);
         $this->view->assign('obs',$indivObs);
         $this->view->assign('img',$indivImages);
         $this->view->assign('indiv',$indivDetail);
@@ -265,7 +316,8 @@ class browse extends Controller {
             $this->msg->add('e', 'Update Individu Failed');
         }
         
-        header('Location: ../../browse/editIndiv/?id='.$idIndiv);
+        //header('Location: ../../browse/editIndiv/?id='.$idIndiv);
+        redirect($basedomain.'../editIndiv/?id='.$idIndiv);
     }
     
     /**
@@ -287,7 +339,8 @@ class browse extends Controller {
             $this->msg->add('e', 'Delete Individu Failed');
         }
         
-        header('Location: ../../browse/indivDetail/?id='.$idIndiv);
+        //header('Location: ../../browse/indivDetail/?id='.$idIndiv);
+        redirect($basedomain.'../indivDetail/?id='.$idIndiv);
     }
     
     /**
@@ -308,10 +361,12 @@ class browse extends Controller {
         }
         
         if($_GET['action']=='delDetOwn'){
-            header('Location: ../../browse/editIndiv/?id='.$idIndiv);
+            //header('Location: ../../browse/editIndiv/?id='.$idIndiv);
+            redirect($basedomain.'../editIndiv/?id='.$idIndiv.'#det');
         }
         else{
-            header('Location: ../../browse/indivDetail/?id='.$idIndiv);
+            //header('Location: ../../browse/indivDetail/?id='.$idIndiv);
+            redirect($basedomain.'../indivDetail/?id='.$idIndiv.'#det');
         }
         
     }
@@ -334,10 +389,12 @@ class browse extends Controller {
         }
         
         if($_GET['action']=='delObsOwn'){
-            header('Location: ../../browse/editIndiv/?id='.$idIndiv);
+            //header('Location: ../../browse/editIndiv/?id='.$idIndiv);
+            redirect($basedomain.'../editIndiv/?id='.$idIndiv.'#obs');
         }
         else{
-            header('Location: ../../browse/indivDetail/?id='.$idIndiv);
+            //header('Location: ../../browse/indivDetail/?id='.$idIndiv);
+            redirect($basedomain.'../indivDetail/?id='.$idIndiv.'#obs');
         }
     }
     
@@ -358,67 +415,13 @@ class browse extends Controller {
         }
         
         if($_GET['action']=='delImgOwn'){
-            header('Location: ../../browse/editIndiv/?id='.$idIndiv);
+            //header('Location: ../../browse/editIndiv/?id='.$idIndiv);
+            redirect($basedomain.'../editIndiv/?id='.$idIndiv.'#img');
         }
         else{
-            header('Location: ../../browse/indivDetail/?id='.$idIndiv);
+            //header('Location: ../../browse/indivDetail/?id='.$idIndiv);
+            redirect($basedomain.'../indivDetail/?id='.$idIndiv.'#img');
         }
-    }
-    
-    /**
-     * @todo insert location from edit Indiv
-     * */
-    public function insertLocation(){
-        $data = $_POST;
-        $insertData = $this->insertonebyone->insertTransaction('locn',$data);
-        
-        if($insertData){
-            $this->msg->add('s', 'Location Success Added');
-        }else{
-            $this->msg->add('e', 'Location Failed Added');
-        }
-        header('Location: ../../browse/editIndiv/?id='.$_GET['id']);
-    }
-    
-    /**
-     * @todo add determination view
-     * */
-    public function addDetView(){
-        //get list person
-        $listPerson = $this->insertonebyone->list_person();
-        $this->view->assign('person', $listPerson);
-        
-        //get list taxon
-        $listTaxon = $this->insertonebyone->list_taxon();
-        $this->view->assign('taxon', $listTaxon);
-        
-        //get list enum confid
-        $confid_enum = $this->insertonebyone->get_enum('det','confid');
-        $this->view->assign('confid_enum', $confid_enum);
-        return $this->loadView('editIndiv/addDetView');
-    }
-    
-    /**
-     * @todo add observation view
-     * */
-    public function addObsView(){
-        //get list person
-        $listPerson = $this->insertonebyone->list_person();
-        $this->view->assign('person', $listPerson);
-        
-        //get list taxon
-        $listTaxon = $this->insertonebyone->list_taxon();
-        $this->view->assign('taxon', $listTaxon);
-        
-        //get list enum confid
-        $habit_enum = $this->insertonebyone->get_enum('obs','habit');
-        $this->view->assign('habit_enum', $habit_enum);
-        
-        //get list enum subtype
-        $subtype_enum = $this->insertonebyone->get_enum('taxon','subtype');
-        $this->view->assign('subtype_enum', $subtype_enum);
-        
-        return $this->loadView('editIndiv/addObsView');
     }
     
     /**
@@ -439,10 +442,12 @@ class browse extends Controller {
         }
         
         if($_GET['action']=='addOnly'){
-            header('Location: ../../browse/indivDetail/?id='.$data['indivID']);
+            //header('Location: ../../browse/indivDetail/?id='.$data['indivID']);
+            redirect($basedomain.'../indivDetail/?id='.$data['indivID'].'#det');
         }
         else{
-            header('Location: ../../browse/editIndiv/?id='.$data['indivID']);
+            //header('Location: ../../browse/editIndiv/?id='.$data['indivID']);
+            redirect($basedomain.'../editIndiv/?id='.$data['indivID'].'#det');
         }
     }
     
@@ -467,11 +472,14 @@ class browse extends Controller {
         }
         
         if($_GET['action']=='addOnly'){
-            header('Location: ../../browse/indivDetail/?id='.$data['indivID']);
+            //header('Location: ../../browse/indivDetail/?id='.$data['indivID']);
+            redirect($basedomain.'../indivDetail/?id='.$data['indivID'].'#obs');
         }
         else{
-            header('Location: ../../browse/editIndiv/?id='.$data['indivID']);
+            //header('Location: ../../browse/editIndiv/?id='.$data['indivID']);
+            redirect($basedomain.'../editIndiv/?id='.$data['indivID'].'#obs');
         }
+        exit;
     }
     
     /**
@@ -631,7 +639,8 @@ class browse extends Controller {
             logFile('Upload Image Failed');
             $this->msg->add('e', $uploaded_file['message']);
         }
-        header('Location: ../../browse/editIndiv/?id='.$indivID);
+        //header('Location: ../../browse/editIndiv/?id='.$indivID);
+        redirect($basedomain.'../editIndiv/?id='.$indivID.'#img');
     }
     
     /**
@@ -693,22 +702,6 @@ class browse extends Controller {
                 return true;
             }
         }
-    }
-    
-    
-    /**
-     * @todo insert taxon from posted data
-     * */
-    public function insertTaxon(){
-        $data = $_POST;
-        $insertData = $this->insertonebyone->insertTransaction('taxon',$data);
-        
-        if($insertData){
-            $this->msg->add('s', 'Taxon Success Added');
-        }else{
-            $this->msg->add('e', 'Taxon Failed Added');
-        }
-        header('Location: ../../browse/editIndiv/?id='.$_GET['id']);
     }
     
     /**

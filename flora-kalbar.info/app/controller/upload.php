@@ -5,7 +5,8 @@ class upload extends Controller {
 	var $models = FALSE;
 	var $view;
 	var $user;
-	public function __construct()
+	
+    public function __construct()
 	{
         global $basedomain;
 		$this->loadmodule();
@@ -14,31 +15,22 @@ class upload extends Controller {
         $this->user = $this->isUserOnline();
         if (!$this->isUserOnline()){ redirect($basedomain); exit;}
 	}
-	public function loadmodule()
+	
+    public function loadmodule()
 	{
-		
 		$this->collectionHelper = $this->loadModel('collectionHelper');
         $this->excelHelper = $this->loadModel('excelHelper');
         $this->activityHelper = $this->loadModel('activityHelper');
         $this->loginHelper = $this->loadModel('loginHelper');
         $this->userHelper = $this->loadModel('userHelper');
-
-
-	}
+    }
 	
 	public function index(){
-
-
-		
-
-		$username = $this->user['login']['username'];
-		
+        $username = $this->user['login']['username'];
 		$this->log('surf','upload excel');
 		// logFile("Begin upload", $username);
-
-		return $this->loadView('upload');
-
-	}
+        return $this->loadView('batchUpload/index');
+    }
 	
 	function parseExcel()
 	{

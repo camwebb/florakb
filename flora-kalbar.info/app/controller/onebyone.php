@@ -6,7 +6,8 @@ defined ('CODEKIR') or exit ( 'Forbidden Access' );
 //------------------------------------------------------------------------------
 if( !session_id() ) session_start();
 if(!$_SESSION){
-    header('Location: '.$basedomain);
+    //header('Location: '.$basedomain);
+    redirect($basedomain);
 }
 class onebyone extends Controller {
 	
@@ -20,7 +21,7 @@ class onebyone extends Controller {
 	public function __construct()
 	{
         global $basedomain;
-		$this->loadmodule();
+        $this->loadmodule();
         $this->view = $this->setSmarty();
         //$this->view->assign('basedomain',$basedomain);
         $this->msg = new Messages();
@@ -51,7 +52,8 @@ class onebyone extends Controller {
 	public function index(){
 	    global $basedomain;
         $this->view->assign('msg', '');        	   
-		header('Location: '.$basedomain.'onebyone/indivContent');
+		//header('Location: '.$basedomain.'onebyone/indivContent');
+        redirect($basedomain.'indivContent');
 	}
     
     /**
@@ -75,8 +77,8 @@ class onebyone extends Controller {
         //get list location
         $listlocn = $this->insertonebyone->list_locn();
         $this->view->assign('locn', $listlocn);
-        
-        return $this->loadView('formContentIndiv');
+       
+        return $this->loadView('onebyone/formContentIndiv');
     }
     
     /**
@@ -102,7 +104,7 @@ class onebyone extends Controller {
         $subtype_enum = $this->insertonebyone->get_enum('taxon','subtype');
         $this->view->assign('subtype_enum', $subtype_enum);
         
-        return $this->loadView('formContentDet');
+        return $this->loadView('onebyone/formContentDet');
     }
     
     /**
@@ -128,7 +130,7 @@ class onebyone extends Controller {
         $subtype_enum = $this->insertonebyone->get_enum('taxon','subtype');
         $this->view->assign('subtype_enum', $subtype_enum);
         
-        return $this->loadView('formContentObs');
+        return $this->loadView('onebyone/formContentObs');
     }
     
     /**
@@ -148,7 +150,7 @@ class onebyone extends Controller {
         $plantpart_enum = $this->insertonebyone->get_enum('img','plantpart');
         $this->view->assign('plantpart_enum', $plantpart_enum);
         
-        return $this->loadView('formContentImage');
+        return $this->loadView('onebyone/formContentImage');
     }
     
     /**
@@ -329,14 +331,17 @@ class onebyone extends Controller {
         if($insertData){
             if($insertData['status']){
                 $this->msg->add('s', 'Update Determinant Success');
-                header('Location: ../onebyone/obsContent');
+                redirect($basedomain.'obsContent');
+                //header('Location: ../onebyone/obsContent');
             }else{
                 $this->msg->add('e', 'Update Determinant Failed');
-                header('Location: ../onebyone/detContent');
+                redirect($basedomain.'detContent');
+                //header('Location: ../onebyone/detContent');
             }
         }else{
             $this->msg->add('e', 'Update Determinant Failed');
-            header('Location: ../onebyone/detContent');
+            redirect($basedomain.'detContent');
+            //header('Location: ../onebyone/detContent');
         }
     }
     
@@ -365,14 +370,17 @@ class onebyone extends Controller {
         if($insertData){
             if($insertData['status']){
                 $this->msg->add('s', 'Update Observation Success');
-                header('Location: ../onebyone/imageContent');
+                redirect($basedomain.'imageContent');
+                //header('Location: ../onebyone/imageContent');
             }else{
                 $this->msg->add('e', 'Update Observation Failed');
-                header('Location: ../onebyone/obsContent');
+                redirect($basedomain.'obsContent');
+                //header('Location: ../onebyone/obsContent');
             }
         }else{
             $this->msg->add('e', 'Update Observation Failed');
-            header('Location: ../onebyone/obsContent');
+            redirect($basedomain.'obsContent');
+            //header('Location: ../onebyone/obsContent');
         }
     }
     
@@ -596,7 +604,8 @@ class onebyone extends Controller {
             logFile('Upload Image Failed');
             $this->msg->add('e', $uploaded_file['message']);
         }
-        header('Location: ../onebyone/imageContent');
+        redirect($basedomain.'imageContent');
+        //header('Location: ../onebyone/imageContent');
     }
     
     /**

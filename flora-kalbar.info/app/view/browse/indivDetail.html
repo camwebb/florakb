@@ -1,276 +1,331 @@
-<div class="content">
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="florakb-content">
     {$msg}
+    
     {if $noData eq 'empty'}
-        <div class="btn-back">
-            <a href="#" onClick="history.back();return false;"><span>Back</span></a>
-        </div>
-        <div class="clear"></div>
+        <a href="#" class="btn florakb-btn pull-right" onClick="history.back();return false;"><span class="glyphicon glyphicon-chevron-left"></span> Back</a>
+        <br />
         <i>No data available</i>
     {else}
     
-    <div class="btn-back">
-        <a href="#" onClick="history.back();return false;"><span>Back</span></a>
+    <a href="#" class="btn florakb-btn pull-right" onClick="history.back();return false;"><span class="glyphicon glyphicon-chevron-left"></span> Back</a>
+    <div class="clearfix"></div><br />
+    
+    <div class="florakb-tabs">
+        <!--<h3>Species Name</h3>-->
+        <ul class="nav nav-tabs" role="tablist" id="indivDetail-tabs">
+          <li class="active"><a href="#overview" role="tab" data-toggle="tab">Overview</a></li>
+          <li><a href="#obs" role="tab" data-toggle="tab">Observation</a></li>
+          <li><a href="#det" role="tab" data-toggle="tab">Determinant</a></li>
+          <li><a href="#img" role="tab" data-toggle="tab">Images</a></li>
+        </ul>
     </div>
-    <div class="clear"></div>
-    <br />
     
-    <table class="browse indiv">
-        {foreach $indiv as $dataIndiv}
-        <tr>
-            <th style="-moz-border-radius: 6px 0 0 0;-webkit-border-radius: 6px 0 0 0;border-radius: 6px 0 0 0;width:100px;">Creator</th>
-            <td><p>{$dataIndiv['name']}</p></td>
-        </tr>
-        <tr>
-            <th>Location</th>
-            <td>
-                <table class="det">
-                    <tr>
-                        <td style="width: 4%;">Longitude</td>
-                        <td>:</td>
-                        <td style="width: 92%;">{$dataIndiv.longitude}</td>
-                    </tr>
-                    <tr>
-                        <td>Latidude</td>
-                        <td>:</td>
-                        <td>{$dataIndiv.latitude}</td>
-                    </tr>
-                    <tr>
-                        <td>Elevation</td>
-                        <td>:</td>
-                        <td>{$dataIndiv.elev}</td>
-                    </tr>
-                    <tr>
-                        <td>Geomorph</td>
-                        <td>:</td>
-                        <td>{$dataIndiv.geomorph}</td>
-                    </tr>
-                    <tr>
-                        <td>Locality</td>
-                        <td>:</td>
-                        <td>{$dataIndiv.locality}</td>
-                    </tr>
-                    <tr>
-                        <td>County</td>
-                        <td>:</td>
-                        <td>{$dataIndiv.county}</td>
-                    </tr>
-                    <tr>
-                        <td>Province</td>
-                        <td>:</td>
-                        <td>{$dataIndiv.province}</td>
-                    </tr>
-                    <tr>
-                        <td>Island</td>
-                        <td>:</td>
-                        <td>{$dataIndiv.island}</td>
-                    </tr>
-                    <tr>
-                        <td>Country</td>
-                        <td>:</td>
-                        <td>{$dataIndiv.country}</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <th>Plot</th>
-            <td>{$dataIndiv['plot']}</td>
-        </tr>
-        <tr>
-            <th>Tag</th>
-            <td>{$dataIndiv['tag']}</td>
-        </tr>
-        {/foreach}
-    </table>
-    <br />
-    
-    <table class="browse indiv">    
-        <tr>
-            <th style="-moz-border-radius: 6px 0 0 0;-webkit-border-radius: 6px 0 0 0;border-radius: 6px 0 0 0;width:100px;">Observations</th>
-            <td>
+    <div class="tab-content">
+      <div class="tab-pane active" id="overview">
+        <div class="florakb-tabscontent">
+            <div class="row">
                 {foreach $indiv as $dataIndiv}
-                {foreach from=$obs key=myId item=dataObs}
-                    <table class="det">
-                        <tr>
-                            <td class="detNumber"><b>#{$myId+1}</b></td>
-                            <td class="detHeader"><b>Creator</b></td>
-                            <td class="detColon">:</td>
-                            <td class="detContent">{$dataObs.name}</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Date</b></td>
-                            <td>:</td>
-                            <td>{$dataObs.date}</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Microhab</b></td>
-                            <td>:</td>
-                            <td>{$dataObs.microhab}</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Habit</b></td>
-                            <td>:</td>
-                            <td><i>{$dataObs.habit}</i></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>dbh</b></td>
-                            <td>:</td>
-                            <td><i>{$dataObs.dbh}</i></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Height</b></td>
-                            <td>:</td>
-                            <td><i>{$dataObs.height}</i></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>bud</b></td>
-                            <td>:</td>
-                            <td><i>{$dataObs.bud}</i></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Flower</b></td>
-                            <td>:</td>
-                            <td><i>{$dataObs.flower}</i></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Fruit</b></td>
-                            <td>:</td>
-                            <td><i>{$dataObs.fruit}</i></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Localname</b></td>
-                            <td>:</td>
-                            <td><i>{$dataObs.localname}</i></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Notes</b></td>
-                            <td>:</td>
-                            <td>{$dataObs.notes}</td>
-                            <td>
-                                {if $user.login && $dataObs.personID == $user.login.id && $dataIndiv.name != $user.login.name}
-                                    <a href="{$basedomain}browse/deleteObs/?id={$dataObs.obsID}&&indivID={$dataObs.indivID}&&action=delObs" id="deleteObsOwner" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
-                                {/if}
-                            </td>
-                            
-                        </tr>
-                    </table>
+                <div class="col-md-4">
+                    <h3>Overview</h3>
+                    
+                    <p class="label_detail" style="margin: 0 0 0;">Creator</p>
+                    <p>{$dataIndiv.name}</p>
+                    
+                    <p class="label_detail" style="margin: 0 0 0;">Plot</p>
+                    <p>{$dataIndiv.plot}</p>
+                    
+                    <p class="label_detail" style="margin: 0 0 0;">Tag</p>
+                    <p>{$dataIndiv.tag}</p>
+                </div>
+                <div class="col-md-8">
+                    <h3>Location</h3>
+                    <div class="row">
+                        <div class="col-md-2"><p class="label_detail">Longitude</p></div>
+                        <div class="col-md-10"><p>{$dataIndiv.longitude}</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"><p class="label_detail">Latitude</p></div>
+                        <div class="col-md-10"><p>{$dataIndiv.latitude}</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"><p class="label_detail">Elevation</p></div>
+                        <div class="col-md-10"><p>{$dataIndiv.elev}</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"><p class="label_detail">Geomorph</p></div>
+                        <div class="col-md-10"><p>{$dataIndiv.geomorph}</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"><p class="label_detail">Locality</p></div>
+                        <div class="col-md-10"><p>{$dataIndiv.locality}</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"><p class="label_detail">County</p></div>
+                        <div class="col-md-10"><p>{$dataIndiv.county}</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"><p class="label_detail">Province</p></div>
+                        <div class="col-md-10"><p>{$dataIndiv.province}</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"><p class="label_detail">Island</p></div>
+                        <div class="col-md-10"><p>{$dataIndiv.island}</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"><p class="label_detail">Country</p></div>
+                        <div class="col-md-10"><p>{$dataIndiv.country}</p></div>
+                    </div>
+                </div>
+                {/foreach}
+            </div>
+        </div>
+      </div><!-- END TAB OVERVIEW-->
+      
+      <div class="tab-pane" id="obs">
+        <div class="florakb-tabscontent">
+            <table id="table-obs" class="table table-striped table-bordered flora-table table-curved" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Creator</th>
+                        <th>Date</th>
+                        <th>Microhab</th>
+                        <th>Habit</th>
+                        <th>dbh</th>
+                        <th>Height</th>
+                        <th>Bud</th>
+                        <th>Flower</th>
+                        <th>Fruit</th>
+                        <th>Localname</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+         
+                <tbody>
+                    {foreach $indiv as $dataIndiv}
+                    {foreach from=$obs key=myId item=dataObs}
+                    <tr>
+                        <td>
+                            {if $user.login && $dataObs.personID == $user.login.id && $dataIndiv.name != $user.login.name}
+                                <a href="{$basedomain}browse/deleteObs/?id={$dataObs.obsID}&&indivID={$dataObs.indivID}&&action=delObs" id="deleteObsOwner" class="florakb-delete" title="Delete Observation"><span class="glyphicon glyphicon-remove-sign pull-right"></span></a>
+                            {/if}
+                            {$dataObs.name}
+                        </td>
+                        <td>{$dataObs.date}</td>
+                        <td>{$dataObs.microhab}</td>
+                        <td>{$dataObs.habit}</td>
+                        <td>{$dataObs.dbh}</td>
+                        <td>{$dataObs.height}</td>
+                        <td class="text-center"><span class="glyphicon glyphicon-{if {$dataObs.bud} eq 'yes'}ok{else}remove{/if}"></span></td>
+                        <td class="text-center"><span class="glyphicon glyphicon-{if {$dataObs.flower} eq 'yes'}ok{else}remove{/if}"></span></td>
+                        <td class="text-center"><span class="glyphicon glyphicon-{if {$dataObs.fruit} eq 'yes'}ok{else}remove{/if}"></span></td>
+                        <td>{$dataObs.localname}</td>
+                        <td>{$dataObs.notes}</td>
+                    </tr>
                     {foreachelse}<i>No observation available</i>
-                {/foreach}
-                {/foreach}
-            </td>
-        </tr>
-    </table>
-    {foreach $indiv as $dataIndiv}
-        {if $user.login && $dataIndiv.name != $user.login.name}
-            <br />
-            <a href="{$basedomain}browse/addObsView/?id={$smarty.get.id}" id="addIndiv" class="btn" style="float: right;">Add Observations</a>
-            <div class="clear"></div>
-        {/if}
-    {/foreach}
-    <br />
-    
-    <table class="browse indiv">
-        <tr>
-            <th style="-moz-border-radius: 6px 0 0 0;-webkit-border-radius: 6px 0 0 0;border-radius: 6px 0 0 0;width:100px;">Images</th>
-            <td>
-                {foreach $img as $dataImg}
-                {if $dataImg.md5sum}
-                    <a class="gallery" href="{$basedomain}public_assets/img/500px/{$dataImg.md5sum}.500px.jpg"><img src="{$basedomain}public_assets/img/100px/{$dataImg.md5sum}.100px.jpg" /></a>
+                    {/foreach}
+                    {/foreach}
+                </tbody>
+            </table>
+            {foreach $indiv as $dataIndiv}
+                {if $user.login && $dataIndiv.name != $user.login.name}
+                    <br />
+                    <!--<a href="{$basedomain}browse/addObsView/?id={$smarty.get.id}" id="addIndiv" class="btn florakb-btn pull-right">Add Observations</a>-->
+                    <a href="#addObs" class="btn florakb-btn pull-right" data-toggle="modal" data-target="#modal-obs">Add Observations</a>
+                    <div class="clearfix"></div>
                 {/if}
-                
-                {foreachelse}<i>No image available</i>
-                {/foreach}
-            </td>
-        </tr>
-    </table>
-    
-    <script type="text/javascript">
-        $('a.gallery').colorbox({ opacity:0.5 , rel:'groupIndiv' });
-    </script>
-    
-    <br />
-    <table class="browse indiv">    
-        <tr>
-            <th style="-moz-border-radius: 6px 0 0 0;-webkit-border-radius: 6px 0 0 0;border-radius: 6px 0 0 0;width:100px;">Determinant</th>
-            <td>
+            {/foreach}
+            </div>
+      </div><!-- END TAB OBS-->
+      
+      <div class="tab-pane" id="det">
+        <div class="florakb-tabscontent">
+            <table id="table-det" class="table table-striped table-bordered flora-table table-curved" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Creator</th>
+                        <th>Date</th>
+                        <th>Taxon</th>
+                        <th>Confid</th>
+                        <th>Using</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+         
+                <tbody>
                 {foreach $indiv as $dataIndiv}
                 {foreach from=$det key=myId item=dataDet}
-                    <table class="det">
-                        <tr>
-                            <td class="detNumber"><b>#{$myId+1}</b></td>
-                            <td class="detHeader"><b>Creator</b></td>
-                            <td class="detColon">:</td>
-                            <td class="detContent">{$dataDet.name}</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Date</b></td>
-                            <td>:</td>
-                            <td>{$dataDet.det_date}</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Taxon</b></td>
-                            <td>:</td>
-                            <td><i>{$dataDet.sp}, {$dataDet.gen}, {$dataDet.fam}</i></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Confid</b></td>
-                            <td>:</td>
-                            <td><i>{$dataDet.confid}</i></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Using</b></td>
-                            <td>:</td>
-                            <td><i>{$dataDet.using}</i></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><b>Notes</b></td>
-                            <td>:</td>
-                            <td><i>{$dataDet.notes}</i></td>
-                            <td>                          
-                                {if $user.login && $dataDet.personID == $user.login.id && $dataIndiv.name != $user.login.name}
-                                    <a href="{$basedomain}browse/deleteDet/?id={$dataDet.detID}&&indivID={$dataDet.indivID}&&action=delDet" id="deleteDetOwner" class="btn" style="float: right; margin-left: 10px;;">Delete</a>
-                                {/if}
-                            </td>
-                        </tr>
-                    </table>
-                    {foreachelse}<i>No determinant available</i>
+                    <tr>
+                        <td>
+                            {if $user.login && $dataDet.personID == $user.login.id && $dataIndiv.name != $user.login.name}
+                                <a href="{$basedomain}browse/deleteDet/?id={$dataDet.detID}&&indivID={$dataDet.indivID}&&action=delDet" id="deleteDetOwner" class="florakb-delete" title="Delete Determinant"><span class="glyphicon glyphicon-remove-sign pull-right"></span></a>
+                            {/if}
+                            {$dataDet.name}
+                        </td>
+                        <td>{$dataDet.det_date}</td>
+                        <td>
+                            {if {$dataDet.sp}=='' AND {$dataDet.gen}=='' AND {$dataDet.fam}==''}
+                            {else}
+                            <i>{$dataDet.sp}, {$dataDet.gen}, {$dataDet.fam}</i>
+                            {/if}
+                        </td>
+                        <td>{$dataDet.confid}</td>
+                        <td>{$dataDet.using}</td>
+                        <td>{$dataDet.notes}</td>
+                    </tr>
+                {foreachelse}<i>No determination available</i>
                 {/foreach}
                 {/foreach}
-            </td>
-        </tr>
-    </table>
-    {/if}
+                </tbody>
+            </table>
+            {foreach $indiv as $dataIndiv}
+                {if $user.login && $dataIndiv.name != $user.login.name}
+                    <br />
+                    <!--<a href="{$basedomain}browse/addDetView/?id={$smarty.get.id}" id="addDet" class="btn florakb-btn pull-right">Add Determinant</a>-->
+                    <a href="#addDet" class="btn florakb-btn pull-right" data-toggle="modal" data-target="#modal-det">Add Determination</a>
+                    <div class="clearfix"></div>
+                {/if}
+            {/foreach}
+        </div>
+      </div><!-- END TAB DET-->
+      
+      <div class="tab-pane" id="img">
+        <div class="florakb-tabscontent">
+            <div id="links">
+            {foreach $img as $dataImg}
+            {if $dataImg.md5sum}
+                <a href="{$basedomain}public_assets/img/500px/{$dataImg.md5sum}.500px.jpg" data-gallery>
+                    <img src="{$basedomain}public_assets/img/100px/{$dataImg.md5sum}.100px.jpg" class="flora-gallery">
+                </a>
+            {/if}
+            {foreachelse}<i>No image available</i>
+            {/foreach}
+            </div>
+        </div>
+      </div><!-- END TAB IMG-->
+      
+    </div>
     
     {foreach $indiv as $dataIndiv}
         {if $user.login && $dataIndiv['name'] eq $user.login.name}
             <br />
-            <a href="{$basedomain}browse/deleteIndiv/?id={$smarty.get.id}" id="deleteIndiv" class="btn" style="float: right; margin-left: 10px;;">Delete Individu</a>
-            <a href="{$basedomain}browse/editIndiv/?id={$smarty.get.id}" id="editIndiv" class="btn" style="float: right;">Edit Individu</a>
-            <div class="clear"></div>
-        {elseif $user.login}
-            <br />
-            <a href="{$basedomain}browse/addDetView/?id={$smarty.get.id}" id="addIndiv" class="btn" style="float: right;">Add Determinant</a>
-            <div class="clear"></div>
+            <div class="pull-right">
+                <a href="{$basedomain}browse/editIndiv/?id={$smarty.get.id}" id="editIndiv" class="btn florakb-btn">Edit Individu</a>
+                <a href="{$basedomain}browse/deleteIndiv/?id={$smarty.get.id}" id="deleteIndiv" class="btn florakb-btn">Delete Individu</a>
+            </div>
         {/if}
     {/foreach}
+    
+    {/if}
+    </div>
 </div>
 
-{literal}
+<!--START MODAL OBS-->
+<div class="modal fade" id="modal-obs" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Insert Observation</h4>
+      </div>
+      <div class="modal-body">
+        <form id="formObs_browse" method="POST" action="{$basedomain}browse/addObs/?id={$smarty.get.id}&&action=addOnly" class="form-horizontal" role="form">
+            {include file="file:$rootpath/app/view/editIndiv/modal_formObs.html"}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--START MODAL DET-->
+<div class="modal fade" id="modal-det" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Insert Determination</h4>
+      </div>
+      <div class="modal-body">
+        {$msg}
+        <div class="msg"></div>
+        <form id="formDet" method="POST" action="{$basedomain}browse/addDet/?id={$smarty.get.id}&&action=addOnly" class="form-horizontal" role="form">
+            {include file="file:$rootpath/app/view/editIndiv/modal_formDet.html"}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--START MODAL PERSON-->
+<div class="modal fade" id="modal-person" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Insert Person</h4>
+      </div>
+      <div class="modal-body">
+        <form id="formPerson" method="POST" action="{$basedomain}onebyone/insertPerson" class="form-horizontal" role="form">
+            {include file="file:$rootpath/app/view/onebyone/formPerson.html"}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--START MODAL TAXON-->
+<div class="modal fade" id="modal-taxon" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Insert Taxon</h4>
+      </div>
+      <div class="modal-body">
+        <form id="formTaxon" method="POST" action="{$basedomain}onebyone/insertTaxon" class="form-horizontal" role="form">
+            {include file="file:$rootpath/app/view/onebyone/formTaxon.html"}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- The Bootstrap Image Gallery lightbox, should be a child element of the document body -->
+<div id="blueimp-gallery" class="blueimp-gallery" data-use-bootstrap-modal="false">
+    <!-- The container for the modal slides -->
+    <div class="slides"></div>
+    <!-- Controls for the borderless lightbox -->
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+    <!-- The modal dialog, which will be used to wrap the lightbox content -->
+    <div class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body next"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left prev">
+                        <i class="glyphicon glyphicon-chevron-left"></i>
+                        Previous
+                    </button>
+                    <button type="button" class="btn btn-primary next">
+                        Next
+                        <i class="glyphicon glyphicon-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<literal>
     <script>
         $(document).on('click','#deleteIndiv', function(){
             var msg = confirm('Are you sure to delete ?');
@@ -284,5 +339,21 @@
             var msg = confirm('Are you sure to delete ?');
             if (!msg) return false;    
         });
+        
+        var ID = {$indivID};
+        
+        if(document.URL==basedomain+'browse/indivDetail/?id='+ID+'#obs'){
+            $('#indivDetail-tabs a[href="#obs"]').tab('show');
+        }
+        else if(document.URL==basedomain+'browse/indivDetail/?id='+ID+'#det'){
+            $('#indivDetail-tabs a[href="#det"]').tab('show');
+        }
+        else if(document.URL==basedomain+'browse/indivDetail/?id='+ID+'#img'){
+            $('#indivDetail-tabs a[href="#img"]').tab('show');
+        }
+        else{
+            $('#indivDetail-tabs a[href="#overview"]').tab('show');
+        }
+        
     </script>
-{/literal}
+</literal>

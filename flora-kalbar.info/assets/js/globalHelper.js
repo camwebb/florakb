@@ -273,7 +273,7 @@ function do_ajax(form, formID, modalID, msgFormat){
         var ct = xhr.getResponseHeader("content-type") || "";
         
         $(".messages").remove();
-        $(modalID).fadeOut();
+        $(modalID).modal('hide');
         
         try {
             var data = JSON.parse(output);

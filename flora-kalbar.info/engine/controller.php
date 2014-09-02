@@ -22,11 +22,13 @@ class Controller extends Application{
 	function index()
 	{
 		
-		global $CONFIG, $LOCALE, $basedomain, $title, $DATA, $app_domain, $CODEKIR;
+		global $CONFIG, $LOCALE, $basedomain, $rootpath, $portaldomain, $title, $DATA, $app_domain, $CODEKIR;
 		$filePath = APP_CONTROLLER.$this->page.$this->php_ext;
 		
 		$this->view = $CODEKIR['smarty'];
 		$this->view->assign('basedomain',$basedomain);
+        $this->view->assign('rootpath',$rootpath);
+        $this->view->assign('portaldomain',$portaldomain);
 		$this->view->assign('page',$DATA[$this->configkey]);
 		
 		
@@ -62,7 +64,7 @@ class Controller extends Application{
 				if ($DATA[$this->configkey]['page']=='login'){
 
 					/* remove session if user exist in same browser */
-					$ignoreFunc = array('validate','accountValid','doLogin','doSignup');
+					$ignoreFunc = array('validate','accountValid','doLogin','doSignup','index');
 					if (in_array($DATA[$this->configkey]['function'], $ignoreFunc)){
 						// do nothing
 					}else{

@@ -8,7 +8,7 @@ $('#formSignup').submit(function(event) {
         type: 'POST',
         beforeSend: function( xhr ) {
             $('a#btn-message').trigger('click');
-            $('.message-body').html('Please Wait...');
+            $('#myModal').modal();
         },
         data: $(this).serialize(),
         success: function(data) {
@@ -19,16 +19,17 @@ $('#formSignup').submit(function(event) {
             if(result.statusEmail == 'exist' || result.statusUsername == 'exist' || result.statusTwitter == 'exist'){
                 $('#signup-password,#signup-re_password').val('');
                 if(result.statusEmail == 'exist'){
-                    $('#emailGroup').append('<span class="florakb-error">'+result.msgEmail+'</span>');
+                    $('#emailGroup').before('<span class="florakb-error">'+result.msgEmail+'</span>');
+                    $('#signup-email').css("border","1px dotted #FF0000");
                 } 
                 if(result.statusUsername == 'exist'){
-                    $('#usernameGroup').append('<span class="florakb-error">'+result.msgUsername+'</span>');
+                    $('#usernameGroup').before('<span class="florakb-error">'+result.msgUsername+'</span>');
+                    $('#signup-username').css("border","1px dotted #FF0000");
                 }
                 if(result.statusTwitter == 'exist'){
-                    $('#twitterGroup').append('<span class="florakb-error">'+result.msgTwitter+'</span>');
+                    $('#twitterGroup').before('<span class="florakb-error">'+result.msgTwitter+'</span>');
+                    $('#signup-twitter').css("border","1px dotted #FF0000");
                 }
-
-                $('.close').trigger('click');
             }
             else if(result.result == 'error'){
                 var html = 'Sorry, something went wrong';
@@ -40,10 +41,13 @@ $('#formSignup').submit(function(event) {
                 var html = 'Account created, check your email to verified your account.';
 
                 // $('a#btn-message').trigger('click');
-                $('.message-body').html(html);
+                $('.messageRegister').html(html);
+                setTimeout(function() {
+                  window.location.href = basedomain;
+                }, 2000);
                 // alert('Account created, check your email to verified your account.');
-                // location.reload();
-                // window.location.href=basedomain;
+                //location.reload();
+                //window.location.href=basedomain;
             } 
         },
         error: function(xhr, status, error) {

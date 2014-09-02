@@ -20,7 +20,15 @@ class home extends Controller {
 	}
 	
 	function index(){
-    	return $this->loadView('home');
+    	$ses_user = $this->isUserOnline();
+        global $basedomain;
+        if(!$ses_user){
+            redirect($basedomain.'login');
+            exit;
+        }
+        else{
+            return $this->loadView('home');
+        }
     }
 	
 	function fetchExcel($sheet=1,$startRow=1,$startCol=0)

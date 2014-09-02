@@ -457,18 +457,5 @@ function sendGlobalMail($to,$from,$msg,$config=true){
 	
 }
 
-function decodeJson($url=false)
-{
-	
-	if (!$url) return false;
-	$content = file_get_contents($url);
-	if ($content){
-		$decodeJson = json_decode($content);
-		return $decodeJson;	
-	}
-	return false;
-	
-}
-
 
 ?>
