@@ -12,7 +12,11 @@ $().ready(function() {
                         data: data,
                         success: function(output) {}
                     }).responseText;
-        return check;
+        if(check == false){
+            return false;
+        }else{
+            return true;
+        }
     }," Name already exist");
     
     /**
@@ -28,7 +32,11 @@ $().ready(function() {
                         data: data,
                         success: function(output) {}
                     }).responseText;
-        return check;
+        if(check == false){
+            return false;
+        }else{
+            return true;
+        }
     }," Email already registered");
     
     /**
