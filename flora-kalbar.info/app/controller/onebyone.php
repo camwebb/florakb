@@ -77,7 +77,7 @@ class onebyone extends Controller {
         //get list location
         $listlocn = $this->insertonebyone->list_locn();
         $this->view->assign('locn', $listlocn);
-       
+        
         return $this->loadView('onebyone/formContentIndiv');
     }
     

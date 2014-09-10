@@ -24,7 +24,6 @@ class login extends Controller {
 	
 	function index(){
         $ses_user = $this->isUserOnline();
-       
         global $basedomain;
         if($ses_user){
             redirect($basedomain.'home');
