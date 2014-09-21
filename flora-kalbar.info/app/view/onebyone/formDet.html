@@ -1,17 +1,5 @@
 <div class="form-group">
-    <label for="confid" class="col-sm-2 control-label">Confidence of determination</label>
-    <div class="col-sm-5">
-        <select class="form-control" name="confid" id="confid">
-            <option value="" selected="1">Choose a level of confidence</option>
-            {foreach from=$confid_enum item=enum}
-                <option value="{$enum}">{$enum}</option>
-            {/foreach}
-        </select>
-    </div>
-</div>
-
-<div class="form-group">
-    <label for="using" class="col-sm-2 control-label">Uses Resource</label>
+    <label for="using" class="col-sm-2 control-label">Uses Resource (*)</label>
     <div class="col-sm-5">
         <input class="form-control" type="text" id="using" name="using" />
     </div>
@@ -90,7 +78,7 @@
 </div><!-- END INPUT AUTO COMPLETE TAXON -->
 
 <div class="form-group">
-    <label for="personID" class="col-sm-2 control-label">Person</label>
+    <label for="personID" class="col-sm-2 control-label">Person (*)</label>
     <div class="col-sm-5">
         <select class="form-control" name="personID" id="personID">
             <option value="">Choose a person</option>
@@ -102,6 +90,22 @@
     <div class="col-sm-2">
         <a href="#person-modal" class="btn florakb-btn" data-toggle="modal" data-target="#modal-person">New Person</a>
     </div>
+</div>
+
+<div class="form-group">
+    <label for="confid" class="col-sm-2 control-label">Confidence of determination (*)</label>
+    <div class="col-sm-5">
+        <select class="form-control" name="confid" id="confid">
+            <option value="" selected="1">Choose a level of confidence</option>
+            {foreach from=$confid_enum item=enum}
+                <option value="{$enum}">{$enum}</option>
+            {/foreach}
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">(*) is required</label>
 </div>
 
 <div class="form-group">

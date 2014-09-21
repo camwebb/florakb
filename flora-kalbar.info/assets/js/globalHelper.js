@@ -200,7 +200,7 @@ function autoCompleteTaxon(keyupID,funcName){
     var value = $(keyupID).val();
     var dataTaxon = {'family' : $('#autoFamily').val(),'genus' : $('#autoGenus').val(),'species' : $('#autoSpecies').val()};
     //console.log(dataTaxon);        
-    if(value.length % 3 == 0){
+    if(value.length % 2 == 0){
     //if(value.length == 3){
         $(keyupID).autocomplete({
             source: JSON.parse($.ajax({
