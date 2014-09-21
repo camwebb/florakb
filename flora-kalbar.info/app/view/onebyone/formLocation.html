@@ -13,7 +13,7 @@
 </div>
 
 <div class="form-group">
-    <label for="elev" class="col-sm-4 control-label">Elevation ASL (m)</label>
+    <label for="elev" class="col-sm-4 control-label">Elevasi ASL (m)</label>
     <div class="col-sm-6">
         <input class="form-control" type="text" id="elev" name="elev" />
     </div>
@@ -27,7 +27,7 @@
 </div>
 
 <div class="form-group">
-    <label for="locality" class="col-sm-4 control-label">Locality<br /><span style="font-weight: lighter; font-size: 12px;"><i>(Descriptive name of place)</i></span></label>
+    <label for="locality" class="col-sm-4 control-label">Lokalitas<br /><span style="font-weight: lighter; font-size: 12px;"><i>(Nama deskriptif)</i></span></label>
     <div class="col-sm-6">
         <input class="form-control" type="text" id="locality" name="locality" />
     </div>
@@ -41,28 +41,28 @@
 </div>
 
 <div class="form-group">
-    <label for="province" class="col-sm-4 control-label">Province</label>
+    <label for="province" class="col-sm-4 control-label">Provinsi</label>
     <div class="col-sm-6">
         <input class="form-control" type="text" id="province" name="province" value="Kalimantan Barat" />
     </div>
 </div>
 
 <div class="form-group">
-    <label for="island" class="col-sm-4 control-label">Island</label>
+    <label for="island" class="col-sm-4 control-label">Pulau</label>
     <div class="col-sm-6">
         <input class="form-control" type="text" id="island" name="island" value="Borneo" />
     </div>
 </div>
 
 <div class="form-group">
-    <label for="country" class="col-sm-4 control-label">Country</label>
+    <label for="country" class="col-sm-4 control-label">Negara</label>
     <div class="col-sm-6">
         <input class="form-control" type="text" id="country" name="country" value="Indonesia" />
     </div>
 </div>
 
 <div class="form-group">
-    <label for="notes" class="col-sm-4 control-label">Notes</label>
+    <label for="notes" class="col-sm-4 control-label">Catatan</label>
     <div class="col-sm-6">
         <textarea class="form-control" id="notes" name="notes"></textarea>
     </div>
@@ -79,7 +79,7 @@ $().ready(function() {
     
     $("#formLocation").validate({
         submitHandler: function(form){
-            do_ajax(form,"formLocation","#modal-location", "Location");
+            do_ajax(form,"formLocation","#modal-location", "Lokasi");
         },
         rules: {
             longitude: {
@@ -109,25 +109,25 @@ $().ready(function() {
 		},
 		messages: {
             longitude: {
-                required: " Please enter longitude"
+                required: " Harap Masukkan longitude"
             },
             latitude: {
-                required: " Please enter latitude"
+                required: " Harap Masukkan latitude"
             },
 			locality: {
-                required: " Please enter locality"
+                required: " Harap Masukkan lokalitas"
 			},
             elev: {
-                required: " Please enter elevation"
+                required: " Harap Masukkan elevasi"
             },
             province: {
-                required: " Please enter province"
+                required: " Harap Masukkan provinsi"
             },
             island: {
-                required: " Please enter island"
+                required: " Harap Masukkan pulau"
             },
             country: {
-                required: " Please enter country"
+                required: " Harap Masukkan negara"
             }
 		}
     });
