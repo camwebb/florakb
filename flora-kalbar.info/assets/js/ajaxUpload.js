@@ -12,13 +12,13 @@ function zipExtract()
     $(".message").html('');
     
     if( email == ''){
-        $(".errorbox").html(first_error + 'Email must be filled' + end);
+        $(".errorbox").html(first_error + 'Email harus diisi' + end);
     }else{
         if ( filename == '') {
-            $(".errorbox").html(first_error + 'Filename can not be empty' + end);
+            $(".errorbox").html(first_error + 'Nama file harus diisi' + end);
         }else{
             $(".errorbox").html('');
-            $(".message").html(first_info + 'Fetching files ...' + end);
+            $(".message").html(first_info + 'Mengambil file ...' + end);
             var data = { 'email' : email, 'imagezip' : filename };
             
             var extract_file = 
@@ -51,8 +51,8 @@ function zipExtract()
                 
                 if(dataNotExist.length != 0){
                     $(".errorbox").append(first_warning +
-                        'The following file(s) is not associated with any data <br /><table style="margin-top:20px;" class="browse" id="data">' +
-                        '<tr><th>Filename</th><th>Directory</th><th>Mimetype</th></tr></table>' +
+                        'File berikut tidak memiliki data terkait di dalam sistem <br /><table style="margin-top:20px;" class="browse" id="data">' +
+                        '<tr><th>Nama File</th><th>Direktori</th><th>Mimetype</th></tr></table>' +
                         end
                     );
                     

@@ -17,7 +17,7 @@ $().ready(function() {
         }else{
             return true;
         }
-    }," Name already exist");
+    }," Nama sudah terdaftar");
     
     /**
     * checking email exist or not in database
@@ -37,7 +37,7 @@ $().ready(function() {
         }else{
             return true;
         }
-    }," Email already registered");
+    }," Email sudah terdaftar");
     
     /**
     * checking email exist or not in database
@@ -57,7 +57,7 @@ $().ready(function() {
         }else{
             return true;
         }
-    }," Email Not Exist");
+    }," Email tidak ditemukan");
     
     /**
     * checking twitter exist or not in database
@@ -73,7 +73,7 @@ $().ready(function() {
                         success: function(output) {}
                     }).responseText;
         return check;
-    }," Twitter name already exist");
+    }," Nama twitter sudah terdaftar");
     
     /**
     * checking username exist or not in database
@@ -89,14 +89,14 @@ $().ready(function() {
                         success: function(output) {}
                     }).responseText;
         return check;
-    }," Username name already exist");
+    }," Nama pengguna sudah terdaftar");
     
     /**
     * checking alphanumeric
     */
     $.validator.addMethod("alphanumeric", function(value, element) {
         return this.optional(element) || /^[A-Za-z\d_]+$/.test(value);
-    }, "Must contain only letters, numbers, or underscore.");
+    }, "Hanya dapat berisi huruf, angka, atau garis bawah.");
     
     /**
     * checking password
@@ -112,14 +112,14 @@ $().ready(function() {
                         success: function(output) {}
                     }).responseText;
         return check;
-    }," Invalid password or incorrect password");
+    }," Sandi tidak valid atau sandi salah");
     
     /**
     * checking decimal input
     */
     $.validator.addMethod('Decimal', function(value, element) {
         return this.optional(element) || /^\d+(\.\d{0,3})?$/.test(value); 
-    }, "Please enter a correct number, only dot permitted");
+    }, "Harap masukkan angka yang valid, hanya titik yang diijinkan");
     
     $('#nextGenus').on('click', function(e) {
         $('#inputGenus').show();
@@ -213,7 +213,7 @@ function autoCompleteTaxon(keyupID,funcName){
             response: function(event, ui) {
                 // ui.content is the array that's about to be sent to the response callback.
                 if (ui.content.length === 0) {
-                    alert("No results found");
+                    alert("Hasil tidak ditemukan");
                 }
             },
             select: function (event, ui) {
@@ -226,7 +226,7 @@ function autoCompleteTaxon(keyupID,funcName){
                 if(this.value){
                     if (!ui.item) {
                         this.value = '';
-                        alert('Please select one of the options or leave it empty');
+                        alert('Harap pilih salah satu dari opsi atau tinggalkan kosong.');
                     }
                 }
             }
@@ -289,7 +289,7 @@ function do_ajax(form, formID, modalID, msgFormat){
             
             if(data.status == 'success'){
 
-                $(msg).html(first_success + 'Update ' + msgFormat + ' Success' + end);
+                $(msg).html(first_success + 'Sukses ' + 'Memperbarui ' + msgFormat + end);
                 
                 if(formID == 'formLocation'){
                     $("#locnID").find('option').removeAttr('selected');
@@ -326,13 +326,13 @@ function do_ajax(form, formID, modalID, msgFormat){
                 
             }else{
                 if(data.msg){
-                    $(msg).html(first_error + 'Update ' + msgFormat + ' Failed. ' + data.msg + end);
+                    $(msg).html(first_error + 'Gagal ' + 'Memperbarui ' + msgFormat + ' ' + data.msg + end);
                 }else{
-                    $(msg).html(first_error + 'Update ' + msgFormat + ' Failed' + end);
+                    $(msg).html(first_error + 'Gagal ' + 'Memperbarui ' + msgFormat + end);
                 }
             }
         }catch(error){
-            $(msg).html(first_error + 'System error or failed to connect to server' + end);
+            $(msg).html(first_error + 'Kesalahan sistem atau gagal untuk terhubung ke server' + end);
         }
         
     });
