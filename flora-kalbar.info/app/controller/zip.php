@@ -72,7 +72,7 @@ class zip extends Controller {
         
         if (empty($username) || empty($personID) || empty($password)){
             $status = "error";
-            $msg = "Error occured while validating user data, please log out then login again";
+            $msg = "Kesalahan terjadi saat validasi data pengguna, silakan logout kemudian login lagi";
             
             echo json_encode(array('status' => $status, 'message' => $msg));
             exit;
@@ -115,7 +115,7 @@ class zip extends Controller {
         
         if(!$copy_zip){
             $status = "error";
-            $msg = "Error while fetching zip file";
+            $msg = "Kesalahan saat mengambil file zip atau file zip tidak ditemukan";
             echo json_encode(array('status' => $status, 'message' => $msg));
             exit;
         }
@@ -131,7 +131,7 @@ class zip extends Controller {
                 //check file zip exist
                 if(!file_exists($file)){
                     $status = "error";
-                    $msg = "The system cannot find the file specified";
+                    $msg = "Sistem tidak dapat menemukan file yang ditentukan";
                     
                     echo json_encode(array('status' => $status, 'message' => $msg));
                     exit;
@@ -171,7 +171,7 @@ class zip extends Controller {
                         $fileinfo = getimagesize($path_entry.'/'.$entry);
                         if(!$fileinfo) {
                             $status = "error";
-                            $msg = "No file type info";
+                            $msg = "Tidak ada informasi jenis berkas";
                         }else{
                             $valid_types = array(IMAGETYPE_JPEG);
                             $valid_mime = array('image/jpeg');
@@ -263,24 +263,24 @@ class zip extends Controller {
                 
                 if($list = $dataNotExist){
                     $status = 'warning';
-                    $msg = 'File extracted. No image match the data.';
+                    $msg = 'File berhasil diekstrak. Tidak ada gambar yang sesuai dengan data.';
                     $data['dataNotExist'] = $dataNotExist;
                 }else{
                     //send dataNotExist information to user   
 
                     $status = 'success';
-                    $msg = 'File extracted';
+                    $msg = 'File berhasil diekstrak';
                     $data['dataNotExist'] = $dataNotExist;
                 }
                 
                 deleteDir($path_extract);
             }else{
                 $status = "error";
-                $msg = 'Filename must be a zip file';
+                $msg = 'Nama file harus file zip';
             }
         }else{
             $status = "error";
-            $msg = 'Filename can not be empty';
+            $msg = 'Nama file tidak boleh kosong';
         }
         
         echo json_encode(array('status' => $status, 'message' => $msg, 'data' => $data));

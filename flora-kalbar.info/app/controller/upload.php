@@ -91,7 +91,7 @@ class upload extends Controller {
 							
 						}
 					}else{
-						print json_encode(array('status'=>false, 'msg'=>'Data not available'));
+						print json_encode(array('status'=>false, 'msg'=>'Data tidak tersedia'));
 						exit;
 					}
 					
@@ -129,7 +129,7 @@ class upload extends Controller {
 						if (!$insertRef){
 							
 							$this->collectionHelper->rollbackTransaction();
-							print json_encode(array('status'=>false, 'msg'=>'upload data failed'));
+							print json_encode(array('status'=>false, 'msg'=>'Gagal mengunggah data'));
 							exit;
 						}
 						$getMaster = $this->collectionHelper->getMasterData();
@@ -164,7 +164,7 @@ class upload extends Controller {
 						}
 						
 					}else{
-						print json_encode(array('status'=>false, 'msg'=>'Load data failed'));
+						print json_encode(array('status'=>false, 'msg'=>'Gagal memuat data'));
 						exit;
 					}
 					
@@ -191,7 +191,7 @@ class upload extends Controller {
 						sleep(1);
 						logFile('Insert xls success');
 						$this->log('upload','success upload xls');
-						print json_encode(array('status'=>true, 'finish'=>true, 'msg'=>'Insert success  ('. execTime($startTime,$endTime).')'));
+						print json_encode(array('status'=>true, 'finish'=>true, 'msg'=>'Proses xls berhasil  ('. execTime($startTime,$endTime).')'));
 						// echo 'Insert success  ('. execTime($startTime,$endTime).')';	
 						
 						// send mail to user
@@ -202,23 +202,23 @@ class upload extends Controller {
 					}else{
 						logFile('Insert xls failed');
 						// echo 'Insert data failed';	
-						print json_encode(array('status'=>false, 'msg'=>'Insert data failed'));
+						print json_encode(array('status'=>false, 'msg'=>'Proses xls gagal'));
 						exit;
 					} 
 					
 					
 				}else{
-					print json_encode(array('status'=>false, 'msg'=>'No data available'));
+					print json_encode(array('status'=>false, 'msg'=>'Tidak ada data yang tersedia'));
 					exit;
 				}
 			}else{
-				print json_encode(array('status'=>false, 'msg'=>'Extract failed'));
+				print json_encode(array('status'=>false, 'msg'=>'Ekstrak gagal'));
 				exit;
 			}
 		}else{
 			logFile('File xls empty');
 			// echo "File is empty";
-			print json_encode(array('status'=>true, 'msg'=>'File is empty'));
+			print json_encode(array('status'=>true, 'msg'=>'File kosong'));
 		}
 		
 		

@@ -212,7 +212,7 @@ class onebyone extends Controller {
 					logFile('onebyone: send account to email failed');
                     
                     $data['status'] = 'error';
-                    $date['msg'] = 'Send account to email failed';
+                    $data['msg'] = 'Gagal mengirim akun data melalui email';
                     echo json_encode($data);
                     
                     //$this->insertonebyone->rollbackTransaction();
@@ -293,16 +293,16 @@ class onebyone extends Controller {
                 $sess_onebyone = array('indivID' => $insertData['lastid']);
                 $session->set_session($sess_onebyone,'onebyone');
         
-                $this->msg->add('s', 'Update Individu Success');
+                $this->msg->add('s', 'Sukses Memperbarui Individu');
                 // header('Location: ../onebyone/detContent');
                 redirect($basedomain.'onebyone/detContent');
             }else{
-                $this->msg->add('e', 'Update Individu Failed');
+                $this->msg->add('e', 'Gagal Memperbarui Individu');
                 // header('Location: ../onebyone/indivContent');
                 redirect($basedomain.'onebyone/indivContent');
             }
         }else{
-            $this->msg->add('e', 'Update Individu Failed');
+            $this->msg->add('e', 'Gagal Memperbarui Individu');
             // header('Location: ../onebyone/indivContent');
             redirect($basedomain.'onebyone/indivContent');
         }
@@ -330,16 +330,16 @@ class onebyone extends Controller {
         
         if($insertData){
             if($insertData['status']){
-                $this->msg->add('s', 'Update Determinant Success');
+                $this->msg->add('s', 'Sukses Memperbarui Determinasi');
                 redirect($basedomain.'obsContent');
                 //header('Location: ../onebyone/obsContent');
             }else{
-                $this->msg->add('e', 'Update Determinant Failed');
+                $this->msg->add('e', 'Gagal Memperbarui Determinasi');
                 redirect($basedomain.'detContent');
                 //header('Location: ../onebyone/detContent');
             }
         }else{
-            $this->msg->add('e', 'Update Determinant Failed');
+            $this->msg->add('e', 'Gagal Memperbarui Determinasi');
             redirect($basedomain.'detContent');
             //header('Location: ../onebyone/detContent');
         }
@@ -369,16 +369,16 @@ class onebyone extends Controller {
         
         if($insertData){
             if($insertData['status']){
-                $this->msg->add('s', 'Update Observation Success');
+                $this->msg->add('s', 'Sukses Memperbarui Observasi');
                 redirect($basedomain.'imageContent');
                 //header('Location: ../onebyone/imageContent');
             }else{
-                $this->msg->add('e', 'Update Observation Failed');
+                $this->msg->add('e', 'Gagal Memperbarui Observasi');
                 redirect($basedomain.'obsContent');
                 //header('Location: ../onebyone/obsContent');
             }
         }else{
-            $this->msg->add('e', 'Update Observation Failed');
+            $this->msg->add('e', 'Gagal Memperbarui Observasi');
             redirect($basedomain.'obsContent');
             //header('Location: ../onebyone/obsContent');
         }
@@ -566,7 +566,7 @@ class onebyone extends Controller {
                     
                     if($insertData){
                         logFile('Insert Data Success');
-                        $this->msg->add('s', 'Update image success');
+                        $this->msg->add('s', 'Sukses Memperbarui Data Gambar');
                         $session = new Session;
                         
                         $dataSession = array();
@@ -587,18 +587,18 @@ class onebyone extends Controller {
                         //$session->delete_session('onebyone');
                     }else{
                         logFile('Insert Data Failed');
-                        $this->msg->add('e', 'Update image failed');
+                        $this->msg->add('e', 'Gagal Memperbarui Data Gambar');
                     }
                 } // end if copy
                 
             }else{
                 logFile('File Image exist');
-                $this->msg->add('e', 'Image exist');
+                $this->msg->add('e', 'Data Gambar Telah Ada');
             }
             unlink($src_tmp);
             }else{
                 logFile('GD2 is not installed');
-                $this->msg->add('e', 'System Error. Please contact our developer team');
+                $this->msg->add('e', 'Sistem Error. Harap menghubungi tim developer kami.');
             }
         }else{
             logFile('Upload Image Failed');
