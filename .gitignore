@@ -7,3 +7,5 @@ flora-kalbar.info/libs/smarty/*
 flora-kalbar.info/libs/excel/*
 flora-kalbar.info/logs/*
 flora-kalbar.info/cache/*
+flora-kalbar.info/dashboard/*
+flora-kalbar.info/plugin/*
