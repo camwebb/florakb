@@ -231,15 +231,40 @@ class loginHelper extends Database {
      * 
      */
 
-    function getEmailToken($username=false)
+    function getEmailToken($username=false, $all=false)
     {
+
+        $filter = "";
+
         if($username==false) return false;
-        $sql = "SELECT email_token FROM `florakb_person` WHERE `username` = '".$username."' LIMIT 1";
+        
+        if($all) $filter = " * ";
+        else $filter = " email_token ";
+
+        $sql = "SELECT {$filter} FROM `florakb_person` WHERE `username` = '".$username."' LIMIT 1";
         // logFile($sql);
         $res = $this->fetch($sql,0,1);
         if ($res) return $res;
         return false;
     }
+
+    function getUserEmail($email=false, $all=false)
+    {
+
+        $filter = "";
+
+        if($username==false) return false;
+        
+        if($all) $filter = " * ";
+        else $filter = " email ";
+
+        $sql = "SELECT {$filter} FROM `florakb_person` WHERE `email` = '".$email."' LIMIT 1";
+        // logFile($sql);
+        $res = $this->fetch($sql,0,1);
+        if ($res) return $res;
+        return false;
+    }
+
 
     function updateUserStatus($username=false)
     {
@@ -279,6 +304,25 @@ class loginHelper extends Database {
         session_destroy();
         global $basedomain;  
         header( 'Location: '.$basedomain ) ;  
+    }
+
+    function resetAccount($email)
+    {
+        if (!$username) return false;
+
+        
+        $sql = "SELECT * FROM `person` WHERE email = '".$email."' ";
+        $res = $this->fetch($sql,0);  
+        if ($res){
+
+            $date = date('Y-m-d H:i:s');
+            $q = "UPDATE florakb_person SET n_status = 2 WHERE id = '{$res['id']}' LIMIT 1";
+            $r= $this->query($q,1);
+            if($r) return true;
+            return false;
+        }
+
+        
     }
 }
 ?>

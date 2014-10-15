@@ -86,6 +86,7 @@ class excelHelper extends Database {
 			// parameternya adalah name dari input type file
 			$excel = $this->loadexcel($formName);
 			
+			
 			if ($excel){
 			
 				for ($i=0; $i<$numberOfSheet; $i++){
@@ -169,6 +170,7 @@ class excelHelper extends Database {
 		$ignoreTable = array(2);
 		$numberTable = array(1,2,3,4);
 		$defineTable = array(1=>'taxon',2=>'img',3=>'person',4=>'locn');
+		$defineStartIndex = 1;
 		
 		// Img table identified
 		$fieldFetch[2] = array('id','indivID','personID','md5sum','filename','directory','plantpart','notes','mimetype'); 
@@ -176,7 +178,7 @@ class excelHelper extends Database {
 		$fieldUnique[2] = array('unique_key'); 
 		
 		// Taxon table identified
-		$fieldFetch[1] = array('tmp_unique_key','morphotype','fam','gen','sp','subtype','ssp','auth','notes'); 
+		$fieldFetch[1] = array('tmp_unique_key','morphotype','fam','gen','sp','subtype','ssp','auth','notes','kewid'); 
 		$fieldConvert[1] = array('ssp_auth'=>'auth', 'unique_key'=>'tmp_unique_key'); 
 		$fieldUnique[1] = array('tmp_unique_key'); 
 		
@@ -186,15 +188,30 @@ class excelHelper extends Database {
 		$fieldUnique[3] = array('tmp_unique_key'); 
 		
 		// Locn table identified
-		$fieldFetch[4] = array('tmp_unique_key','longitude','latitude', 'elev', 'geomorph','locality','county',
+		$fieldFetch[4] = array('tmp_unique_key','longitude','latitude', 'elev', 'geomorph','locality',
 								'province','island','country','notes','short_namecode'); 
 		$fieldConvert[4] = array('long'=>'longitude', 'lat'=>'latitude','geomorphology'=>'geomorph','kabupaten'=>'county','unique_key'=>'tmp_unique_key'); 
 		$fieldUnique[4] = array('tmp_unique_key'); 
 		
 		$fieldIgnoreUpdateOnDuplicate = array('name','email'); //,'gen','sp','subtype','ssp','auth');
-		$fieldNotNull = array('personID','indivID','taxonID','subtype','email'); //,'gen','sp','subtype','ssp','auth');
+		$fieldNotNull = array('personID','indivID','taxonID','email'); //,'gen','sp','subtype','ssp','auth');
 		$fieldIgnoreEnum = array('subtype');
+		
+		/* Start convert index array ($defineTable)*/
 		$convert = 1;
+		/* End convert index */
+
+		/* Start Manipulate index array */
+
+		// foreach ($newData as $values){
+		// 	$convertData[$defineStartIndex] = $values;
+
+		// 	$defineStartIndex++;
+		// }
+		/* End Manipulate index array */
+
+
+		// pr($newData);
 		foreach ($newData as $key => $values){
 			
 			
@@ -287,7 +304,7 @@ class excelHelper extends Database {
 					$tmpField = implode(',',$t_field); 
 					$tmpData = implode(',',$t_data); 
 					$update = implode(',', $tmpupdate);
-
+					// pr($tmpField);
 					if (!in_array($key,$ignoreTable)){
 						$sql[$defineTable[$key]][] = "INSERT INTO {$defineTable[$key]} ({$tmpField}) VALUES ({$tmpData}) ON DUPLICATE KEY UPDATE {$update} , id=LAST_INSERT_ID(id)";
 						
@@ -295,7 +312,7 @@ class excelHelper extends Database {
 						
 						
 					}
-					// pr($uniqueKey);
+					// pr($sql);
 					if ($uniqueKey) $dataKey[$defineTable[$key]][] = $uniqueKey;
 					// $arrTmp[$defineTable[$key]]['field'][] = $t_field;
 					$arrTmp[$defineTable[$key]]['data'][] = $t_dataraw;
@@ -345,7 +362,7 @@ class excelHelper extends Database {
 		
 		// Indiv table identified
 		$fieldFetch[0] = array('locnID','plot','tag','unique_key', 'personID'); 
-		$fieldConvert[0] = array('tmp_location_key'=>'locnID', 'tmp_creator_key'=>'personID'); 
+		$fieldConvert[0] = array('tmp_location_key'=>'locnID', 'tmp_person_key'=>'personID'); 
 		$fieldUnique[0] = array('unique_key');
 		
 		// Det table identified
@@ -381,6 +398,8 @@ class excelHelper extends Database {
 		$dataKey = array();
 		$returnArr = array();
 		
+		
+
 		foreach ($defineTable as $a => $b){
 		
 			foreach ($newData as $key => $values){
@@ -432,7 +451,7 @@ class excelHelper extends Database {
 								
 								
 								
-								
+								// pr($tmpkeyField);
 								
 								if ($b=='indiv'){
 									if (in_array($tmpkeyField, $fieldUnique[$convert])){
@@ -460,8 +479,10 @@ class excelHelper extends Database {
 										$t_dataraw[$tmpkeyField] = $keyData; 
 										$tmpupdate[] = "`{$tmpkeyField}` = '$keyData'";
 
+										// pr($tmpkeyField);
 										logFile('data field :'.$tmpkeyField.'='.$keyData);
 										if (in_array($tmpkeyField, $fieldNotNull)){
+											// echo 'field '.$tmpkeyField. ' data ='.$keyData;
 											if ($keyData==""){
 												echo json_encode(array('status'=>false, 'msg'=>"Error ! $b {$this->locale['default']['upload_xls_error']}"));
 											exit;

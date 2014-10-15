@@ -158,7 +158,7 @@ class login extends Controller {
         $logout = $this->loginHelper->logoutUser(); 
     }
 
-
+    
 }
 
 ?>

@@ -52,7 +52,7 @@ class upload extends Controller {
 
 		if ($_FILES){
 			
-			$numberOfSheet = 5;
+			$numberOfSheet = 4;
 			$startRowData = 1;
 			$startColData = 1;
 			$formNametmp = array_keys($_FILES);
@@ -98,6 +98,7 @@ class upload extends Controller {
 					
 				}
 				
+				// pr($newData);exit;
 				/* here begin process */
 				if ($newData){
 					
@@ -107,106 +108,134 @@ class upload extends Controller {
 						
 						logFile('empty tmp table before insert');
 
-						sleep(1);
+						// sleep(1);
 						$referenceQuery = $this->collectionHelper->tmp_data($newData);
 
 						logFile('store data from xls to tmp table');
 
-					}
-					// pr($newData);
+						if ($referenceQuery){
+
+							// pr($newData);exit;
 					
-					// logFile('Preparing database ', $username);
-					$insertData = false;
-					// $referenceQuery = true;
-					if ($referenceQuery){
-						
-						$this->collectionHelper->startTransaction();
-						
-						$getRef = $this->collectionHelper->getRefData($newData);
-						$referenceQuery = $this->excelHelper->referenceData($getRef);
-						
-						$insertRef = $this->collectionHelper->storeRefData($referenceQuery);
-						if (!$insertRef){
-							
-							$this->collectionHelper->rollbackTransaction();
-							print json_encode(array('status'=>false, 'msg'=>'Gagal mengunggah data'));
-							exit;
-						}
-						$getMaster = $this->collectionHelper->getMasterData();
-						// insert indiv
-						$indivQuery = $this->excelHelper->parseMasterData($getMaster,true);
-						$insertIndiv = $this->collectionHelper->storeIndivData($indivQuery);
-						
-						// insert det,obs,coll
-						sleep(1);
-						$getMaster = $this->collectionHelper->getMasterData();
-						$masterQuery = $this->excelHelper->parseMasterData($getMaster);
-						$insertIndiv = $this->collectionHelper->storeMasterData($masterQuery);
-						
-						// insert collector
-						$getMaster = $this->collectionHelper->getMasterData();
-						$collectorQuery = $this->excelHelper->parseMasterData($getMaster,true,5,'collector');
-						$insertCollector = $this->collectionHelper->storeSingleData($collectorQuery);
-						
-						$getMaster = $this->collectionHelper->getMasterData(true,'tmp_photo');
-						$imgQuery = $this->excelHelper->parseMasterData($getMaster,true,4,'img');
-						$insertImage = $this->collectionHelper->storeSingleData($imgQuery,'img');
-						// pr($imgQuery);
-						if ($insertImage){
+							// logFile('Preparing database ', $username);
+							$insertData = false;
+							// $referenceQuery = true;
+							if ($referenceQuery){
+								
+								$this->collectionHelper->startTransaction();
+								
+								$getRef = $this->collectionHelper->getRefData($newData);
+								
+								$referenceQuery = $this->excelHelper->referenceData($getRef);
+								
+								$insertRef = $this->collectionHelper->storeRefData($referenceQuery);
+								
+								if (!$insertRef){
+									
+									$this->collectionHelper->rollbackTransaction();
+									print json_encode(array('status'=>false, 'msg'=>'Upload data gagal'));
+									exit;
+								}
 
-							$this->collectionHelper->commitTransaction();
+								
+								$getMaster = $this->collectionHelper->getMasterData();
+								// insert indiv
+								// pr($getMaster);
+								$indivQuery = $this->excelHelper->parseMasterData($getMaster,true);
+								// pr($indivQuery);
+								// exit;
+								$insertIndiv = $this->collectionHelper->storeIndivData($indivQuery);
+								
+								// insert det,obs,coll
+								sleep(1);
+								$getMaster = $this->collectionHelper->getMasterData();
+								$masterQuery = $this->excelHelper->parseMasterData($getMaster);
+								
+								$insertIndiv = $this->collectionHelper->storeMasterData($masterQuery);
+								
+								// update tmp photo
+								$updateTmpPhoto = $this->collectionHelper->updateTmpPhoto();
+
+								// exit;
+								// insert collector
+								$getMaster = $this->collectionHelper->getMasterData();
+								$collectorQuery = $this->excelHelper->parseMasterData($getMaster,true,5,'collector');
+								
+								$insertCollector = $this->collectionHelper->storeSingleData($collectorQuery);
+								
+								$getMaster = $this->collectionHelper->getMasterData(true,'tmp_photo');
+								
+
+								$imgQuery = $this->excelHelper->parseMasterData($getMaster,true,4,'img');
+								
+								// pr($imgQuery);
+								// exit;
+								$insertImage = $this->collectionHelper->storeSingleData($imgQuery,'img');
+								// pr($imgQuery);
+								if ($insertImage){
+
+									$this->collectionHelper->commitTransaction();
+
+									
+									$insertData = true;
+
+								}else{
+									$this->collectionHelper->rollbackTransaction();
+								}
+								
+							}else{
+								print json_encode(array('status'=>false, 'msg'=>'Gagal mengunggah data'));
+								exit;
+							}
+							
+
+							// exit;
+							/*
+							[Old script]
+							
+							$masterQuery = $this->excelHelper->parseMasterData($newData);
+							$masterQuery['rawdata']['img'] =  $referenceQuery['rawdata']['img'];
+							
+							$priority = array('taxon','locn','person');
+							$masterPriority = array('indiv','img','det','obs','coll','collector');
+							
+							$param['ref'] = $referenceQuery;
+							$param['ref_priority'] = $priority;
+							$param['master'] = $masterQuery;
+							$param['master_priority'] = $masterPriority;
 
 							
-							$insertData = true;
+							$insertData = $this->collectionHelper->insertCollFromExcel($param);
+							*/ 
+							$endTime = microtime(true);
+							
+							if ($insertData){
+								sleep(1);
+								logFile('Insert xls success');
+								$this->log('upload','success upload xls');
+								print json_encode(array('status'=>true, 'finish'=>true, 'msg'=>'Insert success  ('. execTime($startTime,$endTime).')'));
+								// echo 'Insert success  ('. execTime($startTime,$endTime).')';	
+								
+								// send mail to user
+								$this->sendMail();
+									
+									
+								exit;
+							}else{
+								logFile('Insert xls failed');
+								// echo 'Insert data failed';	
+								print json_encode(array('status'=>false, 'msg'=>'Insert data gagal'));
+								exit;
+							} 
 
 						}else{
-							$this->collectionHelper->rollbackTransaction();
+							logFile('failed insert to tmp database');
+							print json_encode(array('status'=>false, 'msg'=>'Insert data gagal'));
+							exit;
 						}
-						
-					}else{
-						print json_encode(array('status'=>false, 'msg'=>'Gagal memuat data'));
-						exit;
 					}
 					
-					// exit;
-					/*
-					[Old script]
-					
-					$masterQuery = $this->excelHelper->parseMasterData($newData);
-					$masterQuery['rawdata']['img'] =  $referenceQuery['rawdata']['img'];
-					
-					$priority = array('taxon','locn','person');
-					$masterPriority = array('indiv','img','det','obs','coll','collector');
-					
-					$param['ref'] = $referenceQuery;
-					$param['ref_priority'] = $priority;
-					$param['master'] = $masterQuery;
-					$param['master_priority'] = $masterPriority;
-					
-					$insertData = $this->collectionHelper->insertCollFromExcel($param);
-					*/ 
-					$endTime = microtime(true);
-					
-					if ($insertData){
-						sleep(1);
-						logFile('Insert xls success');
-						$this->log('upload','success upload xls');
-						print json_encode(array('status'=>true, 'finish'=>true, 'msg'=>'Proses xls berhasil  ('. execTime($startTime,$endTime).')'));
-						// echo 'Insert success  ('. execTime($startTime,$endTime).')';	
-						
-						// send mail to user
-						$this->sendMail();
-							
-							
-						exit;
-					}else{
-						logFile('Insert xls failed');
-						// echo 'Insert data failed';	
-						print json_encode(array('status'=>false, 'msg'=>'Proses xls gagal'));
-						exit;
-					} 
-					
-					
+
 				}else{
 					print json_encode(array('status'=>false, 'msg'=>'Tidak ada data yang tersedia'));
 					exit;

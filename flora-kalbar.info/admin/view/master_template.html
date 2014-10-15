@@ -1,0 +1,34 @@
+
+{include file="meta.html"}
+<body>
+	<!-- RUNNING GLOBAL VAR -->
+	<script>
+		var basedomain = "{$basedomain}";
+	</script>
+	
+	
+	<div id="wrapper">
+	<!-- HEADER -->
+		
+		{if ($admin)}
+
+		{include file= "header.html"} 
+		{include file= "jsplugin.html"} 
+		{include file= "top-bar.html"} 
+		{include file= "sidebar.html"} 
+		
+		<div id="content">
+			{$content}
+		</div>
+
+		
+		{else}
+			{$content}
+
+		{/if}
+		
+	
+	</div>
+
+</body> 
+</html>

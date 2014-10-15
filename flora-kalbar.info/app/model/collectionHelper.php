@@ -122,45 +122,148 @@ class collectionHelper extends Database {
 		return $query;
 	}
 	
+	function translateField($table, $field)
+	{
+		$arrFields['tmp_location'] = array(
+										'nama_tempat_lengkap'=>'unique_key',
+										'longitude'=>'long',
+										'latitude'=>'lat',
+										'ketinggian'=>'elev',
+										'medan'=>'geomorphology',
+										'kabupaten'=>'kabupaten',
+										'provinsi'=>'province',
+										'catatan'=>'notes',
+										);
+		$arrFields['tmp_person'] = array(
+										'nama_orang'=>'unique_key',
+										'email'=>'email',
+										);
+		$arrFields['tmp_plant'] = array(
+										'kode_tumbuhan'=>'unique_key',
+										'tanggal'=>'date',
+										'obs_oleh'=>'obs_by',
+										'lokasi'=>'locn',
+										'mikrohab'=>'microhab',
+										'habit'=>'habit',
+										'dbh'=>'dbh',
+										'tinggi'=>'height',
+										'bud'=>'bud',
+										'flower'=>'flower',
+										'fruit'=>'fruit',
+										'catatan_tumbuhan'=>'indiv_notes',
+										'plantlist_kode'=>'plantlist_kode',
+										'jenis'=>'det',
+										'confid'=>'confid',
+										'det_by'=>'det_by',
+										'det_date'=>'det_date',
+										'det_using'=>'det_using',
+										'det_notes'=>'det_notes',
+										'nama_lokal'=>'local_name',
+										'manfaatan'=>'benefit'
+										);
+		$arrFields['tmp_photo'] = array(
+										'filename'=>'filename',
+										'kode_tumbuhan'=>'tree_id',
+										'photographer'=>'photographer',
+										'plant_part'=>'plant_part',
+										'notes'=>'notes',
+										);
+		$arrFields['tmp_taxon'] = array(
+										'plantlist_kode'=>'unique_key',
+										'jenis'=>'gen',
+										);
+
+		return $arrFields[$table][$field];
+	}
 	
 	/* insert data to tmp table */
 	function tmp_data($newData=array())
 	{
 		if (!is_array($newData)) return false;
-		// pr($newData);
-		$defineTable = array('tmp_plant','tmp_taxon','tmp_photo','tmp_person','tmp_location');
+		// pr($newData);exit;
+		$defineTable = array('tmp_location', 'tmp_person', 'tmp_plant','tmp_photo');
 		
 		foreach ($defineTable as $k =>$val){
 			$fields = array();
 			$datas = array();
+			$fieldsTaxa = array();
+			$datasTaxa = array();
+
 			foreach ($newData[$k]['data'] as $value){
 				
 				foreach ($value as $key => $v){
-				
-					$fields[] = "`$key`";
-					$cleanData = addslashes($v);
-					$datas[] = "'$cleanData'";
+					
+					if ($key){
+						$translateField = $this->translateField($val, $key);
+						$fields[] = "`$translateField`";
+						$cleanData = addslashes($v);
+						$datas[] = "'$cleanData'";
 
-					$updateTmp[] = "`$key` = '$cleanData'";
+						if ($val == 'tmp_location'){
+
+							
+							if ($translateField == 'unique_key'){
+
+								$fields[] = "`locality`";
+								$datas[] = "'$cleanData'";
+							} 
+						}	
+
+						$updateTmp[] = "`$key` = '$cleanData'";
+
+						if ($val == 'tmp_plant'){
+
+							$translateFieldTaxa = $this->translateField('tmp_taxon', $key);
+							if ($translateFieldTaxa){
+								$fieldsTaxa[] = "`$translateFieldTaxa`";
+								$cleanData = htmlentities(addslashes($v));
+								$datasTaxa[] = "'$cleanData'";
+								
+								if ($translateFieldTaxa == 'unique_key'){
+
+									$fieldsTaxa[] = "`kewid`";
+									$datasTaxa[] = "'$cleanData'";
+								}
+
+								$updateTmpTaxa[] = "`$key` = '$cleanData'";
+							}
+							
+						}
+					}
+					
 				}
+				
+				
 				
 				$tmpField = implode(',',$fields);
 				$tmpData = implode(',',$datas);
-
 				$updateFIeld = implode(',', $updateTmp);
 				
 				$sql[] = "INSERT INTO {$val} ({$tmpField}) VALUES ({$tmpData})"; 
-				
 				$fields = null;
 				$datas = null;
+				
+				if ($k==2){ // taxon
+
+					$tmpFieldTaxa = implode(',',$fieldsTaxa);
+					$tmpDataTaxa = implode(',',$datasTaxa);
+					$updateFIeldTaxa = implode(',', $updateTmpTaxa);
+					
+					$sql[] = "INSERT INTO tmp_taxon ({$tmpFieldTaxa}) VALUES ({$tmpDataTaxa})"; 
+					$fieldsTaxa = null;
+					$datasTaxa = null;
+				}
+				
+
+				
 			}
 			
 		}
 		
-		
+		// pr($sql);exit;
 		if ($sql){
 		
-			// pr($sql);exit;
+			
 			$startTransaction = $this->begin();
 			if (!$startTransaction) return false;
 			logFile('====TRANSACTION READY====');
@@ -197,7 +300,7 @@ class collectionHelper extends Database {
 		
 		$tmpTable = array('tmp_taxon','tmp_person','tmp_location');
 		$defineTable = array('taxon','person','locn');
-		$defineFieldIndiv = array('taxon'=>'tmp_taxon_key','person'=>'tmp_person_key','locn'=>'tmp_location_key');
+		$defineFieldIndiv = array('person'=>'tmp_person_key','locn'=>'tmp_location_key');
 		
 		$query = $data['query'];
 		$unique = $data['uniqkey'];
@@ -234,13 +337,14 @@ class collectionHelper extends Database {
 
 						if (!$lastID){ echo "Taxon not complete"; exit;}
 						$updateTaxon = "UPDATE tmp_plant SET tmp_taxon_key = '{$lastID}' WHERE 
-								det = '{$unique[$val][$j]}' ";
+								plantlist_kode = '{$unique[$val][$j]}' ";
 						// pr($updateTaxon);
 						$res = $this->query($updateTaxon,1);
 
 						$updateCreate = "UPDATE tmp_plant SET tmp_creator_key = '{$this->user['id']}' WHERE 
-								det = '{$unique[$val][$j]}' ";
+								plantlist_kode = '{$unique[$val][$j]}' ";
 						// pr($updateTaxon);
+						usleep(500);
 						$res = $this->query($updateCreate,1);
 
 					}
@@ -250,11 +354,12 @@ class collectionHelper extends Database {
 						$updatePerson = "UPDATE tmp_plant SET tmp_person_key = '{$lastID}' WHERE 
 								obs_by = '{$unique[$val][$j]}' ";
 						// pr($updatePerson);
+						usleep(500);
 						$res = $this->query($updatePerson,1);
-						$updatePhoto = "UPDATE  tmp_photo SET tmp_person_key = '{$lastID}' WHERE 
-								photographer = '{$unique[$val][$j]}' ";
-						// pr($updateLocn);
-						$res = $this->query($updatePhoto,1);
+						// $updatePhoto = "UPDATE  tmp_photo SET tmp_person_key = '{$lastID}' WHERE 
+						// 		tree_id = '{$unique[$val][$j]}' ";
+						// pr($updatePhoto);
+						// $res = $this->query($updatePhoto,1);
 
 						// store account 
 						$date = date('Y-m-d H:i:s');
@@ -277,10 +382,12 @@ class collectionHelper extends Database {
 					}
 					
 					if ($defineTable[$i] == 'locn'){
+
 						if (!$lastID){ echo "Location not complete"; exit;}
 						$updateLocn = "UPDATE tmp_plant SET tmp_location_key = '{$lastID}' WHERE 
 								locn = '{$unique[$val][$j]}' ";
 						// pr($updateLocn);
+						usleep(500);
 						$res = $this->query($updateLocn,1);
 					}
 					
@@ -363,7 +470,7 @@ class collectionHelper extends Database {
 				logFile('====ROLLBACK TRANSACTION====');
 				return false;
 			}else{
-				// $this->commit();
+				$this->commit();
 				logFile('Store data individu success', $this->user['username']);
 				logFile('====COMMIT TRANSACTION====');
 				return true;
@@ -492,7 +599,7 @@ class collectionHelper extends Database {
 		4. update tmp table id with new id
 		*/
 		$defineTable = array('tmp_taxon','tmp_photo','tmp_person','tmp_location');
-		$realTable = array('taxon','img','person','locn');
+		$realTable = array('img','person','locn');
 		
 		$sql = array();
 		$dataArr = array();
@@ -750,15 +857,31 @@ class collectionHelper extends Database {
 		return $data;
 	}
 
+	function updateTmpPhoto($data=array())
+	{
+
+		$sql = "SELECT f.tree_id, p.tmp_person_key FROM tmp_photo AS f LEFT JOIN tmp_plant AS p 
+				ON f.tree_id = p.unique_key GROUP BY f.tree_id";
+		$res = $this->fetch($sql,1,1);
+		if ($res){
+			// pr($res);
+			foreach ($res as $key => $val) {
+				$update = $this->query("UPDATE tmp_photo SET tmp_person_key = '{$val['tmp_person_key']}' WHERE tree_id = '{$val['tree_id']}'", 1);
+			}
+		}
+	}
+
 	function truncateData($ori=false, $tmp=false)
 	{
 		$data1 = array('collector','det','img','obs','coll','indiv','locn','person','taxon');
 		$data2 = array('tmp_location','tmp_person','tmp_photo','tmp_plant','tmp_taxon');
-		
+		$success = true;
+
 		if ($ori){
 			foreach ($data1 as $val){
 				
-				$this->query("DELETE FROM ".$val);
+				$sql = $this->query("DELETE FROM ".$val);
+				if (!$sql) $success = false;
 			}
 
 		}
@@ -766,11 +889,13 @@ class collectionHelper extends Database {
 		if ($tmp){
 			foreach ($data2 as $val){
 				
-				$this->query("DELETE FROM ".$val,1);
+				$sqltmp = $this->query("DELETE FROM ".$val,1);
+				if (!$sqltmp) $success = false;
 			}
 		}
 
-		return true;
+		if ($success) return true;
+		return false;
 		
 	}
 	
