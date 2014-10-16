@@ -32,13 +32,13 @@ $('#formSignup').submit(function(event) {
                 }
             }
             else if(result.result == 'error'){
-                var html = 'Sorry, something went wrong';
+                var html = 'Maaf, ada yang tidak beres';
                 $('.message-body').html(html);
                 console.log('something went wrong');
             }
             else{
                 // alert('User created, do login for enter the site.');
-                var html = 'Account created, check your email to verified your account.';
+                var html = 'Akun telah dibuat, periksa email Anda untuk memverifikasi akun.';
 
                 // $('a#btn-message').trigger('click');
                 $('.messageRegister').html(html);
@@ -83,7 +83,7 @@ $('#formLogin').submit(function(event){
                 window.location.href=basedomain;
             }
             else{
-                alert('You have entered an invalid username or password');
+                alert('Anda telah memasukkan username atau password yang tidak benar');
                 $('#login-password').val('');
             }
         }
