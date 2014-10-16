@@ -14,10 +14,10 @@
     <div class="florakb-tabs">
         <!--<h3>Species Name</h3>-->
         <ul class="nav nav-tabs" role="tablist" id="indivDetail-tabs">
-          <li class="active"><a href="#overview" role="tab" data-toggle="tab">Overview</a></li>
-          <li><a href="#obs" role="tab" data-toggle="tab">Observation</a></li>
-          <li><a href="#det" role="tab" data-toggle="tab">Determinant</a></li>
-          <li><a href="#img" role="tab" data-toggle="tab">Images</a></li>
+          <li class="active"><a href="#overview" role="tab" data-toggle="tab">Ringkasan</a></li>
+          <li><a href="#obs" role="tab" data-toggle="tab">Observasi</a></li>
+          <li><a href="#det" role="tab" data-toggle="tab">Determinasi</a></li>
+          <li><a href="#img" role="tab" data-toggle="tab">Gambar</a></li>
         </ul>
     </div>
     
@@ -27,9 +27,9 @@
             <div class="row">
                 {foreach $indiv as $dataIndiv}
                 <div class="col-md-4">
-                    <h3>Overview</h3>
+                    <h3>Ringkasan</h3>
                     
-                    <p class="label_detail" style="margin: 0 0 0;">Creator</p>
+                    <p class="label_detail" style="margin: 0 0 0;">Pencipta</p>
                     <p>{$dataIndiv.name}</p>
                     
                     <p class="label_detail" style="margin: 0 0 0;">Plot</p>
@@ -39,7 +39,7 @@
                     <p>{$dataIndiv.tag}</p>
                 </div>
                 <div class="col-md-8">
-                    <h3>Location</h3>
+                    <h3>Lokasi</h3>
                     <div class="row">
                         <div class="col-md-2"><p class="label_detail">Longitude</p></div>
                         <div class="col-md-10"><p>{$dataIndiv.longitude}</p></div>
@@ -57,23 +57,23 @@
                         <div class="col-md-10"><p>{$dataIndiv.geomorph}</p></div>
                     </div>
                     <div class="row">
-                        <div class="col-md-2"><p class="label_detail">Locality</p></div>
+                        <div class="col-md-2"><p class="label_detail">Lokalitas</p></div>
                         <div class="col-md-10"><p>{$dataIndiv.locality}</p></div>
                     </div>
                     <div class="row">
-                        <div class="col-md-2"><p class="label_detail">County</p></div>
+                        <div class="col-md-2"><p class="label_detail">Daerah</p></div>
                         <div class="col-md-10"><p>{$dataIndiv.county}</p></div>
                     </div>
                     <div class="row">
-                        <div class="col-md-2"><p class="label_detail">Province</p></div>
+                        <div class="col-md-2"><p class="label_detail">Provinsi</p></div>
                         <div class="col-md-10"><p>{$dataIndiv.province}</p></div>
                     </div>
                     <div class="row">
-                        <div class="col-md-2"><p class="label_detail">Island</p></div>
+                        <div class="col-md-2"><p class="label_detail">Pulau</p></div>
                         <div class="col-md-10"><p>{$dataIndiv.island}</p></div>
                     </div>
                     <div class="row">
-                        <div class="col-md-2"><p class="label_detail">Country</p></div>
+                        <div class="col-md-2"><p class="label_detail">Negara</p></div>
                         <div class="col-md-10"><p>{$dataIndiv.country}</p></div>
                     </div>
                 </div>
@@ -87,17 +87,17 @@
             <table id="table-obs" class="table table-striped table-bordered flora-table table-curved" cellspacing="0" width="100%">
                 <thead>
                     <tr>
-                        <th>Creator</th>
-                        <th>Date</th>
+                        <th>Pencipta</th>
+                        <th>Tanggal</th>
                         <th>Microhab</th>
                         <th>Habit</th>
                         <th>dbh</th>
-                        <th>Height</th>
+                        <th>Tinggi</th>
                         <th>Bud</th>
-                        <th>Flower</th>
-                        <th>Fruit</th>
-                        <th>Localname</th>
-                        <th>Notes</th>
+                        <th>Bunga</th>
+                        <th>Buah</th>
+                        <th>Nama Lokal</th>
+                        <th>Catatan</th>
                     </tr>
                 </thead>
          
@@ -122,7 +122,7 @@
                         <td>{$dataObs.localname}</td>
                         <td>{$dataObs.notes}</td>
                     </tr>
-                    {foreachelse}<i>No observation available</i>
+                    {foreachelse}<i>Tidak ada data observasi</i>
                     {/foreach}
                     {/foreach}
                 </tbody>
@@ -131,7 +131,7 @@
                 {if $user.login && $dataIndiv.name != $user.login.name}
                     <br />
                     <!--<a href="{$basedomain}browse/addObsView/?id={$smarty.get.id}" id="addIndiv" class="btn florakb-btn pull-right">Add Observations</a>-->
-                    <a href="#addObs" class="btn florakb-btn pull-right" data-toggle="modal" data-target="#modal-obs">Add Observations</a>
+                    <a href="#addObs" class="btn florakb-btn pull-right" data-toggle="modal" data-target="#modal-obs">Tambah Observasi</a>
                     <div class="clearfix"></div>
                 {/if}
             {/foreach}
@@ -143,12 +143,12 @@
             <table id="table-det" class="table table-striped table-bordered flora-table table-curved" cellspacing="0" width="100%">
                 <thead>
                     <tr>
-                        <th>Creator</th>
-                        <th>Date</th>
+                        <th>Pencipta</th>
+                        <th>Tanggal</th>
                         <th>Taxon</th>
-                        <th>Confid</th>
-                        <th>Using</th>
-                        <th>Notes</th>
+                        <th>Konfidensi</th>
+                        <th>Sumber Daya</th>
+                        <th>Catatan</th>
                     </tr>
                 </thead>
          
@@ -173,7 +173,7 @@
                         <td>{$dataDet.using}</td>
                         <td>{$dataDet.notes}</td>
                     </tr>
-                {foreachelse}<i>No determination available</i>
+                {foreachelse}<i>Tidak ada data determinasi</i>
                 {/foreach}
                 {/foreach}
                 </tbody>
@@ -182,7 +182,7 @@
                 {if $user.login && $dataIndiv.name != $user.login.name}
                     <br />
                     <!--<a href="{$basedomain}browse/addDetView/?id={$smarty.get.id}" id="addDet" class="btn florakb-btn pull-right">Add Determinant</a>-->
-                    <a href="#addDet" class="btn florakb-btn pull-right" data-toggle="modal" data-target="#modal-det">Add Determination</a>
+                    <a href="#addDet" class="btn florakb-btn pull-right" data-toggle="modal" data-target="#modal-det">Tambah Determinasi</a>
                     <div class="clearfix"></div>
                 {/if}
             {/foreach}
@@ -198,7 +198,7 @@
                     <img src="{$basedomain}public_assets/img/100px/{$dataImg.md5sum}.100px.jpg" class="flora-gallery">
                 </a>
             {/if}
-            {foreachelse}<i>No image available</i>
+            {foreachelse}<i>Tidak ada gambar</i>
             {/foreach}
             </div>
         </div>
@@ -210,8 +210,8 @@
         {if $user.login && $dataIndiv['name'] eq $user.login.name}
             <br />
             <div class="pull-right">
-                <a href="{$basedomain}browse/editIndiv/?id={$smarty.get.id}" id="editIndiv" class="btn florakb-btn">Edit Individu</a>
-                <a href="{$basedomain}browse/deleteIndiv/?id={$smarty.get.id}" id="deleteIndiv" class="btn florakb-btn">Delete Individu</a>
+                <a href="{$basedomain}browse/editIndiv/?id={$smarty.get.id}" id="editIndiv" class="btn florakb-btn">Sunting Individu</a>
+                <a href="{$basedomain}browse/deleteIndiv/?id={$smarty.get.id}" id="deleteIndiv" class="btn florakb-btn">Hapus Individu</a>
             </div>
         {/if}
     {/foreach}
@@ -226,7 +226,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Insert Observation</h4>
+        <h4 class="modal-title" id="myModalLabel">Tambah Observasi</h4>
       </div>
       <div class="modal-body">
         <form id="formObs_browse" method="POST" action="{$basedomain}browse/addObs/?id={$smarty.get.id}&&action=addOnly" class="form-horizontal" role="form">
@@ -243,7 +243,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Insert Determination</h4>
+        <h4 class="modal-title" id="myModalLabel">Tambah Determinasi</h4>
       </div>
       <div class="modal-body">
         {$msg}
@@ -262,7 +262,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Insert Person</h4>
+        <h4 class="modal-title" id="myModalLabel">Tambah Orang</h4>
       </div>
       <div class="modal-body">
         <form id="formPerson" method="POST" action="{$basedomain}onebyone/insertPerson" class="form-horizontal" role="form">
@@ -279,7 +279,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Insert Taxon</h4>
+        <h4 class="modal-title" id="myModalLabel">Tambah Taxon</h4>
       </div>
       <div class="modal-body">
         <form id="formTaxon" method="POST" action="{$basedomain}onebyone/insertTaxon" class="form-horizontal" role="form">
@@ -328,15 +328,15 @@
 <literal>
     <script>
         $(document).on('click','#deleteIndiv', function(){
-            var msg = confirm('Are you sure to delete ?');
+            var msg = confirm('Apakah Anda yakin ingin menghapus data ?');
             if (!msg) return false;    
         });
         $(document).on('click','#deleteObsOwner', function(){
-            var msg = confirm('Are you sure to delete ?');
+            var msg = confirm('Apakah Anda yakin ingin menghapus data ?');
             if (!msg) return false;    
         });
         $(document).on('click','#deleteDetOwner', function(){
-            var msg = confirm('Are you sure to delete ?');
+            var msg = confirm('Apakah Anda yakin ingin menghapus data ?');
             if (!msg) return false;    
         });
         
