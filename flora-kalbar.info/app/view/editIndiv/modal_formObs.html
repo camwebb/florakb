@@ -6,10 +6,10 @@
 </div>
 
 <div class="form-group">
-    <label for="habit" class="col-sm-4 control-label">Habit</label>
+    <label for="habit" class="col-sm-4 control-label">Habit (*)</label>
     <div class="col-sm-6">
         <select class="form-control" name="habit" id="habit">
-            <option value="" selected="1">Choose Habit</option>
+            <option value="" selected="1">Pilih Habit</option>
             {foreach from=$habit_enum item=enum}
                 <option value="{$enum}">{$enum}</option>
             {/foreach}
@@ -32,56 +32,60 @@
 </div>
 
 <div class="form-group">
-    <label for="" class="col-sm-4 control-label">Bud</label>
+    <label for="" class="col-sm-4 control-label">Bud (*)</label>
     <div class="col-sm-6">
         <label class="radio-inline">
-            <input type="radio" name="bud" value="yes">Yes
+            <input type="radio" name="bud" value="yes">Ya
         </label>
         <label class="radio-inline">
-            <input type="radio" name="bud" value="no">No
+            <input type="radio" name="bud" value="no">Tidak
         </label>
         <label for="bud" class="error"></label>
     </div>
 </div>
 
 <div class="form-group">
-    <label for="" class="col-sm-4 control-label">Flower</label>
+    <label for="" class="col-sm-4 control-label">Bunga (*)</label>
     <div class="col-sm-6">
         <label class="radio-inline">
-            <input type="radio" name="flower" value="yes">Yes
+            <input type="radio" name="flower" value="yes">Ya
         </label>
         <label class="radio-inline">
-            <input type="radio" name="flower" value="no">No
+            <input type="radio" name="flower" value="no">Tidak
         </label>
         <label for="flower" class="error"></label>
     </div>
 </div>
 
 <div class="form-group">
-    <label for="" class="col-sm-4 control-label">Fruit</label>
+    <label for="" class="col-sm-4 control-label">Buah (*)</label>
     <div class="col-sm-6">
         <label class="radio-inline">
-            <input type="radio" name="fruit" value="yes">Yes
+            <input type="radio" name="fruit" value="yes">Ya
         </label>
         <label class="radio-inline">
-            <input type="radio" name="fruit" value="no">No
+            <input type="radio" name="fruit" value="no">Tidak
         </label>
         <label for="fruit" class="error"></label>
     </div>
 </div>
 
 <div class="form-group">
-    <label for="localname" class="col-sm-4 control-label">Localname</label>
+    <label for="localname" class="col-sm-4 control-label">Nama Lokal</label>
     <div class="col-sm-6">
         <input class="form-control" type="text" id="localname" name="localname" />
     </div>
 </div>
 
 <div class="form-group">
-    <label for="notes" class="col-sm-4 control-label">Notes</label>
+    <label for="notes" class="col-sm-4 control-label">Catatan</label>
     <div class="col-sm-6">
         <textarea class="form-control" id="notes" name="notes"></textarea>
     </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-3 control-label">(*) harus diisi</label>
 </div>
 
 <div class="form-group">

@@ -3,21 +3,21 @@
     {$msg}
     
     {if $noData eq 'empty'}
-        <a href="#" class="btn florakb-btn pull-right" onClick="history.back();return false;"><span class="glyphicon glyphicon-chevron-left"></span> Back</a>
+        <a href="#" class="btn florakb-btn pull-right" onClick="history.back();return false;"><span class="glyphicon glyphicon-chevron-left"></span> Kembali</a>
         <br />
         <i>No data available</i>
     {else}
     
-    <a href="#" class="btn florakb-btn pull-right" onClick="history.back();return false;"><span class="glyphicon glyphicon-chevron-left"></span> Back</a>
+    <a href="#" class="btn florakb-btn pull-right" onClick="history.back();return false;"><span class="glyphicon glyphicon-chevron-left"></span> Kembali</a>
     <div class="clearfix"></div><br />
     
     <div class="florakb-tabs">
         <!--<h3>Species Name</h3>-->
         <ul class="nav nav-tabs" role="tablist" id="editIndiv-tabs">
-          <li class="active"><a href="#overview" role="tab" data-toggle="tab">Overview</a></li>
-          <li><a href="#obs" role="tab" data-toggle="tab">Observation</a></li>
-          <li><a href="#det" role="tab" data-toggle="tab">Determinant</a></li>
-          <li><a href="#img" role="tab" data-toggle="tab">Images</a></li>
+          <li class="active"><a href="#overview" role="tab" data-toggle="tab">Ringkasan</a></li>
+          <li><a href="#obs" role="tab" data-toggle="tab">Observasi</a></li>
+          <li><a href="#det" role="tab" data-toggle="tab">Determinasi</a></li>
+          <li><a href="#img" role="tab" data-toggle="tab">Gambar</a></li>
         </ul>
     </div>
     
@@ -35,18 +35,18 @@
             <table id="table-obs" class="table table-striped table-bordered flora-table table-curved" cellspacing="0" width="100%">
                 <thead>
                     <tr>
-                        <th>Creator</th>
-                        <th>Date</th>
+                        <th>Pencipta</th>
+                        <th>Tanggal</th>
                         <th>Microhab</th>
                         <th>Habit</th>
                         <th>dbh</th>
-                        <th>Height</th>
+                        <th>Tinggi</th>
                         <th>Bud</th>
-                        <th>Flower</th>
-                        <th>Fruit</th>
-                        <th>Localname</th>
-                        <th>Notes</th>
-                        <th>Action</th>
+                        <th>Bunga</th>
+                        <th>Buah</th>
+                        <th>Nama Lokal</th>
+                        <th>Catatan</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
          
@@ -72,16 +72,16 @@
                         <td>{$dataObs.notes}</td>
                         <td>
                             {if $user.login && $dataObs.personID eq $user.login.id || $dataIndiv.id eq $user.login.id}
-                                <a href="{$basedomain}browse/deleteObs/?id={$dataObs.obsID}&&indivID={$dataObs.indivID}&&action=delObsOwn" id="deleteObs" class="btn florakb-btn">Delete</a>
+                                <a href="{$basedomain}browse/deleteObs/?id={$dataObs.obsID}&&indivID={$dataObs.indivID}&&action=delObsOwn" id="deleteObs" class="btn florakb-btn">Hapus</a>
                             {/if}
                         </td>
                     </tr>
-                    {foreachelse}<i>No observation available</i>
+                    {foreachelse}<i>Tidak ada data observasi</i>
                     {/foreach}
                     {/foreach}
                 </tbody>
             </table>
-             <a href="#addObs" class="btn florakb-btn pull-right" data-toggle="modal" data-target="#modal-obs">Add Observations</a>
+             <a href="#addObs" class="btn florakb-btn pull-right" data-toggle="modal" data-target="#modal-obs">Tambah Observasi</a>
              <div class="clearfix"></div>
             </div>
       </div><!-- END TAB OBS-->
@@ -91,13 +91,13 @@
             <table id="table-det" class="table table-striped table-bordered flora-table table-curved" cellspacing="0" width="100%">
                 <thead>
                     <tr>
-                        <th>Creator</th>
-                        <th>Date</th>
+                        <th>Pencipta</th>
+                        <th>Tanggal</th>
                         <th>Taxon</th>
-                        <th>Confid</th>
-                        <th>Using</th>
-                        <th>Notes</th>
-                        <th style="width: 7%;">Action</th>
+                        <th>Konfidensi</th>
+                        <th>Sumber Daya</th>
+                        <th>Catatan</th>
+                        <th style="width: 7%;">Aksi</th>
                     </tr>
                 </thead>
          
@@ -123,17 +123,17 @@
                         <td>{$dataDet.notes}</td>
                         <td>
                             {if $user.login && $dataDet.personID eq $user.login.id || $dataIndiv.id eq $user.login.id}
-                                <a href="{$basedomain}browse/deleteDet/?id={$dataDet.detID}&&indivID={$dataDet.indivID}&&action=delDetOwn" id="deleteDet" class="btn florakb-btn pull-right">Delete</a>
+                                <a href="{$basedomain}browse/deleteDet/?id={$dataDet.detID}&&indivID={$dataDet.indivID}&&action=delDetOwn" id="deleteDet" class="btn florakb-btn pull-right">Hapus</a>
                                 <div class="clearfix"></div>
                             {/if}
                         </td>
                     </tr>
-                {foreachelse}<i>No determination available</i>
+                {foreachelse}<i>Tidak ada data determinasi</i>
                 {/foreach}
                 {/foreach}
                 </tbody>
             </table>
-            <a href="#addDet" class="btn florakb-btn pull-right" data-toggle="modal" data-target="#modal-det">Add Determination</a>
+            <a href="#addDet" class="btn florakb-btn pull-right" data-toggle="modal" data-target="#modal-det">Tambah Determinasi</a>
              <div class="clearfix"></div>
         </div>
       </div><!-- END TAB DET-->
@@ -149,12 +149,12 @@
                         <img src="{$basedomain}public_assets/img/100px/{$dataImg.md5sum}.100px.jpg" class="flora-gallery">
                     </a>
             {/if}
-            {foreachelse}<i>No image available</i>
+            {foreachelse}<i>Tidak ada gambar</i>
             {/foreach}
                     <br /><br />
                     <div class="pull-left">
-                        <input type="submit" id="deleteImg" class="btn florakb-btn" value="Delete Image" />
-                        <a href="#addImg" class="btn florakb-btn" data-toggle="modal" data-target="#modal-img">Add Image</a>
+                        <input type="submit" id="deleteImg" class="btn florakb-btn" value="Hapus Gambar" />
+                        <a href="#addImg" class="btn florakb-btn" data-toggle="modal" data-target="#modal-img">Tambah Gambar</a>
                     </div>
                     <div class="clearfix"></div>
                 </form>    
