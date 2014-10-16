@@ -311,9 +311,9 @@ class browse extends Controller {
         $updateData = $this->browseHelper->updateIndiv($data,$idIndiv);
         
         if($updateData){
-            $this->msg->add('s', 'Update Individu Success');
+            $this->msg->add('s', 'Sukses Memperbarui Individu');
         }else{
-            $this->msg->add('e', 'Update Individu Failed');
+            $this->msg->add('e', 'Gagal Memperbarui Individu');
         }
         
         //header('Location: ../../browse/editIndiv/?id='.$idIndiv);
@@ -334,9 +334,9 @@ class browse extends Controller {
         $deleteDet = $this->browseHelper->deleteIndiv('','det','indivID',$data);
         
         if($deleteIndiv && $deleteColl && $deleteObs && $deleteImg && $deleteDet){
-            $this->msg->add('s', 'Delete Individu Success');
+            $this->msg->add('s', 'Sukses Menghapus Individu');
         }else{
-            $this->msg->add('e', 'Delete Individu Failed');
+            $this->msg->add('e', 'Gagal Menghapus Individu');
         }
         
         //header('Location: ../../browse/indivDetail/?id='.$idIndiv);
@@ -355,9 +355,9 @@ class browse extends Controller {
         $deleteDet = $this->browseHelper->deleteIndiv('AND','det','indivID',$data);
         
         if($deleteDet){
-            $this->msg->add('s', 'Delete Determinant Success');
+            $this->msg->add('s', 'Sukses Menghapus Determinasi');
         }else{
-            $this->msg->add('e', 'Delete Determinant Failed');
+            $this->msg->add('e', 'Gagal Menghapus Determinasi');
         }
         
         if($_GET['action']=='delDetOwn'){
@@ -383,9 +383,9 @@ class browse extends Controller {
         $deleteDet = $this->browseHelper->deleteIndiv('AND','obs','indivID',$data);
         
         if($deleteDet){
-            $this->msg->add('s', 'Delete Observation Success');
+            $this->msg->add('s', 'Sukses Menghapus Observasi');
         }else{
-            $this->msg->add('e', 'Delete Observation Failed');
+            $this->msg->add('e', 'Gagal Menghapus Observasi');
         }
         
         if($_GET['action']=='delObsOwn'){
@@ -409,9 +409,9 @@ class browse extends Controller {
         $deleteImg = $this->browseHelper->deleteImg($data);
         
         if($deleteImg){
-            $this->msg->add('s', 'Delete Image Success');
+            $this->msg->add('s', 'Sukses Menghapus Gambar');
         }else{
-            $this->msg->add('e', 'Delete Image Failed');
+            $this->msg->add('e', 'Gagal Menghapus Gambar');
         }
         
         if($_GET['action']=='delImgOwn'){
@@ -436,9 +436,9 @@ class browse extends Controller {
         $insertData = $this->insertonebyone->insertTransaction('det',$data);
         
         if($insertData){
-            $this->msg->add('s', 'Determinant Success Added');
+            $this->msg->add('s', 'Sukses Menambah Determinasi');
         }else{
-            $this->msg->add('e', 'Determinant Failed Added');
+            $this->msg->add('e', 'Gagal Menambah Determinasi');
         }
         
         if($_GET['action']=='addOnly'){
@@ -466,9 +466,9 @@ class browse extends Controller {
         $insertData = $this->insertonebyone->insertTransaction('obs',$data);
         
         if($insertData){
-            $this->msg->add('s', 'Observation Success Added');
+            $this->msg->add('s', 'Sukses Menambah Observasi');
         }else{
-            $this->msg->add('e', 'Observation Failed Added');
+            $this->msg->add('e', 'Gagal Menambah Observasi');
         }
         
         if($_GET['action']=='addOnly'){
@@ -605,7 +605,7 @@ class browse extends Controller {
                     
                     if($insertData){
                         logFile('Insert Data Success');
-                        $this->msg->add('s', 'Update image success');
+                        $this->msg->add('s', 'Sukses Memperbarui Gambar');
                         $session = new Session;
                         
                         $dataSession = array();
@@ -622,18 +622,18 @@ class browse extends Controller {
                         //$session->delete_session('onebyone');
                     }else{
                         logFile('Insert Data Failed');
-                        $this->msg->add('e', 'Update image failed');
+                        $this->msg->add('e', 'Gagal Memperbarui Gambar');
                     }
                 } // end if copy
                 
             }else{
                 logFile('File Image exist');
-                $this->msg->add('e', 'Image exist');
+                $this->msg->add('e', 'Data Gambar Telah Ada');
             }
             unlink($src_tmp);
             }else{
                 logFile('GD2 is not installed');
-                $this->msg->add('e', 'System Error. Please contact our developer team');
+                $this->msg->add('e', 'Sistem Error. Harap menghubungi tim developer kami.');
             }
         }else{
             logFile('Upload Image Failed');

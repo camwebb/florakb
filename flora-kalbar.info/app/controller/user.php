@@ -77,9 +77,9 @@ class user extends Controller {
         $startSession = $this->loginHelper->setSession($data,'login');
         
         if($editProfile){
-            $this->msg->add('s', 'Update Success');
+            $this->msg->add('s', 'Sukses Memperbarui Data');
         }else{
-            $this->msg->add('e', 'Update Failed');
+            $this->msg->add('e', 'Gagal Memperbarui Data');
         }
         redirect($basedomain.'setting');
     }
@@ -89,9 +89,9 @@ class user extends Controller {
         $editPassword = $this->userHelper->editPassword($data);
         
         if($editPassword){
-            $this->msg->add('s', 'Update Success');
+            $this->msg->add('s', 'Sukses Memperbarui Data');
         }else{
-            $this->msg->add('e', 'Update Failed');
+            $this->msg->add('e', 'Gagal Memperbarui Data');
         }
         redirect($basedomain.'setting');
     }
