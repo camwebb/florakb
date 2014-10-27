@@ -9,3 +9,5 @@ flora-kalbar.info/logs/*
 flora-kalbar.info/cache/*
 flora-kalbar.info/dashboard/*
 flora-kalbar.info/plugin/*
+flora-kalbar.info/admin/CACHE/*
+flora-kalbar.info/admin/tmp/*
