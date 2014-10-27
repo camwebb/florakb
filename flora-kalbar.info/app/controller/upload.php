@@ -217,8 +217,18 @@ class upload extends Controller {
 								// echo 'Insert success  ('. execTime($startTime,$endTime).')';	
 								
 								// send mail to user
-								$this->sendMail();
-									
+								
+
+								$sendMail = $this->sendMail();
+								// if ($sendMail){
+								// 	logFile('Send mail success');
+								// 	print json_encode(array('status'=>true, 'finish'=>true, 'msg'=>'Insert success  ('. execTime($startTime,$endTime).')'));
+								// exit;
+								// }else{
+								// 	logFile('Send mail failed');
+								// 	print json_encode(array('status'=>true, 'msg'=>'Kirim akun gagal'));
+								// exit;
+								// }	
 									
 								exit;
 							}else{
@@ -263,7 +273,7 @@ class upload extends Controller {
      * */
 	function sendMail()
 	{
-
+		ob_start();
 		// pr('ada');
 		$checkBefore = $this->activityHelper->getEmailLog('');
 		// pr($checkBefore);exit;
