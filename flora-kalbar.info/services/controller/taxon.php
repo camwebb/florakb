@@ -35,56 +35,96 @@ class taxon extends Controller {
 
 	}
     
-	function getData()
+	function getDataTaxon()
 	{
-		// pr($_GET);
-
-
-		$family =  $this->browseHelper->detailIndiv(1);
-		// pr($family);
-		if ($family){
-			print json_encode($family);
+		$taxon =  $this->browseHelper->dataTaxon();
+		if ($taxon){
+			print json_encode($taxon);
 		}
-
-
 		exit;
 		/*
-			
 			1. jika tidak ada parameter kedua maka get data 
 		*/
 	}
 
-	function getFamily()
+	function getImgTaxon()
 	{
-		pr($_GET);
-
-
-		/*
-			
-			1. jika tidak ada parameter kedua maka get data 
-		*/
+		$id = $_GET['id'];
+		$img =  $this->browseHelper->getImgTaxon($id);
+		if ($img){
+			print json_encode($img);
+		}
+		exit;
 	}
 
-	function getGenus()
+	function getTitle()
 	{
-		pr($_GET);
-
-
-		/*
-			
-			1. jika tidak ada parameter kedua maka get data 
-		*/
+		$id = $_GET['id'];
+		$title =  $this->browseHelper->getTitle($id);
+		if ($title){
+			print json_encode($title);
+		}
+		exit;
 	}
 
-	function getSpecies()
+	function getIndivTaxon()
 	{
-		pr($_GET);
+		$id = $_GET['id'];
+		$indiv =  $this->browseHelper->dataIndivTaxon($id);
+		if ($indiv){
+			print json_encode($indiv);
+		}
+		exit;
+	}
 
+	function getImgIndiv()
+	{
+		$id = $_GET['id'];
+		$img =  $this->browseHelper->showImgIndiv($id);
+		if ($img){
+			print json_encode($img);
+		}
+		exit;
+	}
 
-		/*
-			
-			1. jika tidak ada parameter kedua maka get data 
-		*/
+	function detailIndiv()
+	{
+		$id = $_GET['id'];
+		$detailIndiv =  $this->browseHelper->detailIndiv($id);
+		if ($detailIndiv){
+			print json_encode($detailIndiv);
+		}
+		exit;
+	}
+
+	function dataDetIndiv()
+	{
+		$id = $_GET['id'];
+		$dataDetIndiv =  $this->browseHelper->dataDetIndiv($id);
+		if ($dataDetIndiv){
+			print json_encode($dataDetIndiv);
+		}
+		exit;
+	}
+
+	function dataObsIndiv()
+	{
+		$id = $_GET['id'];
+		$dataObsIndiv =  $this->browseHelper->dataObsIndiv($id);
+		if ($dataObsIndiv){
+			print json_encode($dataObsIndiv);
+		}
+		exit;
+	}
+
+	function getAllImgIndiv()
+	{
+		$id = $_GET['id'];
+		$img =  $this->browseHelper->showAllImgIndiv($id);
+		if ($img){
+			print json_encode($img);
+		}
+		exit;
 	}
 
 	function validateToken()
@@ -94,14 +134,6 @@ class taxon extends Controller {
 		$token = $_SESSION['services'];
 		if ($token['token']) return true;
 		return false;
-	}
-
-	function decode()
-	{
-		global $basedomain;
-		
-		$decode = decodeJson($basedomain."taxon/getData");
-		pr($decode);
 	}
 }
 
