@@ -34,12 +34,32 @@ class browseHelper extends Database {
         $res = $this->fetch($sql,1);
         return $res;
     }
+
+    /**
+     * @todo retrieve all data from table location
+     * @return 
+     */
+    function dataLocation(){
+        $sql= "SELECT * FROM `locn` WHERE id in (SELECT indiv.locnID FROM indiv inner join det on indiv.id = det.indivID WHERE indiv.n_status = 0)";
+        $res = $this->fetch($sql,1);
+        $return['result'] = $res;
+        return $return;
+    }
+
+    /**
+     * @todo retrieve all data from table person
+     * @return 
+     */
+    function dataPerson(){
+        $sql= "SELECT * FROM `person`";
+        $res = $this->fetch($sql,1);
+        $return['result'] = $res;
+        return $return;
+    }
 	
     /**
      * @todo retrieve all data from table indiv from selected taxon
      * 
-     * @param $action=action selected taxon/locn/person
-     * @param $field=field name in db
      * @param $value=id taxon
      * @return 
      */
@@ -66,6 +86,46 @@ class browseHelper extends Database {
         $sql = "SELECT * FROM `img` WHERE indivID='$data' AND md5sum IS NOT NULL LIMIT 0,5";
         $res = $this->fetch($sql,1);
         return $res;
+    }
+
+    /**
+     * @todo retrieve all data from table indiv from selected location
+     * 
+     * @param $value=id location
+     * @return 
+     */
+    function dataIndivLocation($value){
+        $sql = "SELECT indiv.id as indivID, indiv.locnID, indiv.plot, indiv.tag, indiv.personID, locn.*, person.*
+                    FROM `indiv` INNER JOIN `locn` ON 
+                        $value=indiv.locnID AND indiv.n_status='0'
+                    INNER JOIN `person` ON
+                        indiv.personID=person.id
+                    GROUP BY indiv.id";
+        
+        $res = $this->fetch($sql,1);
+        $return['result'] = $res;
+        return $return;
+    }
+
+    /**
+     * @todo retrieve all data from table indiv from selected person
+     * 
+     * @param $value=id person
+     * @return 
+     */
+    function dataIndivPerson($value){
+        $sql = "SELECT indiv.id as indivID, indiv.locnID, indiv.plot, indiv.tag, indiv.personID, locn.*, person.*
+                    FROM `indiv` INNER JOIN `locn` ON 
+                        $value=indiv.personID AND indiv.n_status='0'
+                    INNER JOIN `person` ON
+                        $value=person.id
+                    INNER JOIN `det` ON
+                        indiv.id=det.indivID
+                    GROUP BY indiv.id";
+        
+        $res = $this->fetch($sql,1);
+        $return['result'] = $res;
+        return $return;
     }
 
     /**

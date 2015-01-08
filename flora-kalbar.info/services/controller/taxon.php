@@ -67,6 +67,30 @@ class taxon extends Controller {
 		exit;
 	}
 
+	function getDataLocation()
+	{
+		$location =  $this->browseHelper->dataLocation();
+		if ($location){
+			print json_encode($location);
+		}
+		exit;
+		/*
+			1. jika tidak ada parameter kedua maka get data 
+		*/
+	}
+
+	function getDataPerson()
+	{
+		$person =  $this->browseHelper->dataPerson();
+		if ($person){
+			print json_encode($person);
+		}
+		exit;
+		/*
+			1. jika tidak ada parameter kedua maka get data 
+		*/
+	}
+
 	function getIndivTaxon()
 	{
 		$id = $_GET['id'];
@@ -83,6 +107,26 @@ class taxon extends Controller {
 		$img =  $this->browseHelper->showImgIndiv($id);
 		if ($img){
 			print json_encode($img);
+		}
+		exit;
+	}
+
+	function getIndivLocation()
+	{
+		$id = $_GET['id'];
+		$indiv =  $this->browseHelper->dataIndivLocation($id);
+		if ($indiv){
+			print json_encode($indiv);
+		}
+		exit;
+	}
+
+	function getIndivPerson()
+	{
+		$id = $_GET['id'];
+		$indiv =  $this->browseHelper->dataIndivPerson($id);
+		if ($indiv){
+			print json_encode($indiv);
 		}
 		exit;
 	}
