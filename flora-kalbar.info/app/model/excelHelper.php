@@ -269,7 +269,7 @@ class excelHelper extends Database {
 								
 								
 								// if unique data field is empty do nothing
-								logFile('data field :'.$keyField.'='.$keyData);
+								logFile('data field 1 :'.$keyField.'='.$keyData);
 								if (in_array($keyField, $fieldNotNull)){
 									if ($keyData==""){
 										echo json_encode(array('status'=>false, 'msg'=>"Error ! $keyField {$this->locale['default']['upload_xls_error']}"));
@@ -399,7 +399,7 @@ class excelHelper extends Database {
 		$returnArr = array();
 		
 		
-
+		// pr($newData);exit;
 		foreach ($defineTable as $a => $b){
 		
 			foreach ($newData as $key => $values){
@@ -480,7 +480,7 @@ class excelHelper extends Database {
 										$tmpupdate[] = "`{$tmpkeyField}` = '$keyData'";
 
 										// pr($tmpkeyField);
-										logFile('data field :'.$tmpkeyField.'='.$keyData);
+										logFile('data field 2:'.$tmpkeyField.'='.$keyData);
 										if (in_array($tmpkeyField, $fieldNotNull)){
 											// echo 'field '.$tmpkeyField. ' data ='.$keyData;
 											if ($keyData==""){
@@ -491,6 +491,8 @@ class excelHelper extends Database {
 
 									}
 								}else{
+
+									// echo $b;exit;
 									if (in_array($tmpkeyField, $fieldUnique[$convert])){
 										if ($keyData) $uniqueKey = $keyData;
 										
@@ -518,7 +520,7 @@ class excelHelper extends Database {
 									$tmpupdate[] = "`{$tmpkeyField}` = '$keyData'";
 
 									// if unique data field is empty do nothing
-									logFile('data field :'.$tmpkeyField.'='.$keyData);
+									logFile('data field 3 :'.$tmpkeyField.'='.$keyData);
 									if (in_array($tmpkeyField, $fieldNotNull)){
 										if ($keyData==""){
 											echo json_encode(array('status'=>false, 'msg'=> "Error ! $tmpkeyField {$this->locale['default']['upload_xls_error']}"));
@@ -543,7 +545,7 @@ class excelHelper extends Database {
 							// $dataKey[$b][] = $tmpCode;
 							$tmpupdate[] = "`collCode` = '$tmpCode'";
 
-							logFile('data field :'.$tmpkeyField.'='.$keyData);
+							logFile('data field 4 :'.$tmpkeyField.'='.$keyData);
 							if (in_array($tmpkeyField, $fieldNotNull)){
 								if ($keyData==""){
 									echo json_encode(array('status'=>false, 'msg'=> "Error ! $b {$this->locale['default']['upload_xls_error']}"));
