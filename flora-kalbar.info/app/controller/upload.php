@@ -27,9 +27,14 @@ class upload extends Controller {
 	
 	public function index(){
         $username = $this->user['login']['username'];
+		return $this->loadView('batchUpload/index');
+    }
+
+    public function excel(){
+        $username = $this->user['login']['username'];
 		$this->log('surf','upload excel');
 		// logFile("Begin upload", $username);
-        return $this->loadView('batchUpload/index');
+        return $this->loadView('batchUpload/excel');
     }
 	
 	function parseExcel()
