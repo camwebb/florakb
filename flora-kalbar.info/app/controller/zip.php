@@ -72,7 +72,7 @@ class zip extends Controller {
         
         if (empty($username) || empty($personID) || empty($password)){
             $status = "error";
-            $msg = "Kesalahan terjadi saat validasi data pengguna, silakan logout kemudian login lagi";
+            $msg = "Kesalahan terjadi saat validasi data pengguna, silakan logout kemudian login kembali";
             
             echo json_encode(array('status' => $status, 'message' => $msg));
             exit;
